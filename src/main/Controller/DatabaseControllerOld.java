@@ -1,22 +1,11 @@
 package main.Controller;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.sql.*;
 
-public class DatabaseController {
+public class DatabaseControllerOld {
 
-	private final String JDBC_DRIVER = "org.h2.Driver";
-	private final String DB_URL = "jdbc:h2:./data/db"; // relative path
-	private String user;
-	private String pass;
-	private Connection dbConnection; // H2 Database // Logout: Close DB Connection
-
-	public DatabaseController(String user, String pass) {
-		this.user = user;
-		this.pass = pass;
-	}
-
+	// H2 Database // Logout: Close DB Connection
+	private Connection dbConnection;
 	public Connection getDbConnection() {
 		return dbConnection;
 	}
@@ -41,6 +30,14 @@ public class DatabaseController {
 		this.pass = pass;
 	}
 
+	public String[] getArrayOfTables() {
+		return arrayOfTables;
+	}
+
+	public void setArrayOfTables(String[] arrayOfTables) {
+		this.arrayOfTables = arrayOfTables;
+	}
+
 	public String getJDBC_DRIVER() {
 		return JDBC_DRIVER;
 	}
@@ -49,6 +46,26 @@ public class DatabaseController {
 		return DB_URL;
 	}
 
+	private final String JDBC_DRIVER = "org.h2.Driver";
+	private final String DB_URL = "jdbc:h2:./data/db"; // relative path
+	private String user;
+	private String pass;
+	private String[] arrayOfTables = new String[] {
+			// TODO: Define final tables with correct identifiers
+			"CREATE TABLE IF NOT EXISTS hourentries (id BIGINT PRIMARY KEY AUTO_INCREMENT, date VARCHAR(20), username VARCHAR(200), project VARCHAR(200), service VARCHAR(200), starttime VARCHAR(200), endtime VARCHAR(200), comment VARCHAR(200), durationInSeconds BIGINT, pauseInSeconds BIGINT)", // TIMESTAMP
+			"CREATE TABLE IF NOT EXISTS users (id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(200), password VARCHAR(200), email VARCHAR(200))",
+			"CREATE TABLE IF NOT EXISTS projects (id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(200))",
+			"CREATE TABLE IF NOT EXISTS services (id BIGINT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(200))"
+};
+	
+	public DatabaseControllerOld(String user, String pass) {
+		this.user = user;
+		this.pass = pass;
+		for (int i = 0; i < arrayOfTables.length; i++) {
+			insert(arrayOfTables[i]);
+		}
+	}
+	
 	public void connect() {
 		try {
 			Class.forName(JDBC_DRIVER);
@@ -60,7 +77,7 @@ public class DatabaseController {
 			e.printStackTrace(); // Handle errors for Class.forName()
 		}
 	}
-
+	
 	public void close() {
 		try {
 			dbConnection.close();
@@ -69,7 +86,7 @@ public class DatabaseController {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public void insert(String sql) {
 		try {
 			Class.forName(JDBC_DRIVER);
@@ -89,7 +106,7 @@ public class DatabaseController {
 			}
 		}
 	}
-
+	
 	public ResultSet query(String sql) {
 		ResultSet rs = null;
 		try {
@@ -111,43 +128,6 @@ public class DatabaseController {
 		}
 		return rs;
 	}
+
 	
-	public void initializeDB() {
-		if(executeSQLScript("./data/createTables.sql") == 0 && executeSQLScript("./data/insertDummyData.sql") == 0) {
-			System.out.println("Database successfully initialized");
-		}
-	}
-
-	public int executeSQLScript(String scriptFilePath) {
-		BufferedReader bReader = null;
-		Statement statement = null;
-
-		try {
-			// Load Driver for H2
-			Class.forName(JDBC_DRIVER);
-			// Create Connection
-			dbConnection = DriverManager.getConnection(DB_URL, user, pass);
-			// Create Statement object
-			statement = dbConnection.createStatement();
-			// Read file
-			bReader = new BufferedReader(new FileReader(scriptFilePath));
-			String line = null;
-
-			while ((line = bReader.readLine()) != null) {
-				// execute query
-				statement.executeUpdate(line);
-			}
-
-			statement.close();
-			bReader.close();
-			dbConnection.close();
-			
-			System.out.println("SQL-Script " + scriptFilePath + " executed successfully");
-		} catch (Exception e) {
-			System.out.println("Problem executing SQL Script");
-			e.printStackTrace();
-			return 1;
-		}
-		return 0;
-	}
 }

@@ -1,14 +1,17 @@
 package main;
 
+
+import main.Controller.DatabaseController;
 import main.Controller.TestHourEntryController;
 import main.Controller.TimerHourController;
 
 public class MainMethod {
 
 	public static void main(String[] args) throws Exception {
-	
-		new TimerHourController();
-		new TestHourEntryController();
-	}
+		DatabaseController dbc = new DatabaseController("sa", "");
+		dbc.initializeDB();
+//		new TimerHourController();
+//		new TestHourEntryController();
 
+	}
 }
