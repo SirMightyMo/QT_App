@@ -1,4 +1,5 @@
 package main.Controller;
+
 import java.time.LocalDateTime;
 
 import main.Model.HourEntry;
@@ -21,17 +22,16 @@ public class TimerHourController implements ActionListener {
 	private TimerView timerView;
 	private LocalDateTime timeNow;
 	private HourEntry hourEntry;
-	
-	
+
 	// Constructor
 	@SuppressWarnings("deprecation")
 	public TimerHourController() {
 		this.timerModel = new TimerModel();
 		this.timerView = new TimerView(this);
-		
+
 		this.timerModel.addObserver(this.timerView);
 		this.timerView.setVisible(true);
-		
+
 	}
 
 	// Getter/Setter
@@ -69,12 +69,11 @@ public class TimerHourController implements ActionListener {
 
 	// Additional Methods
 	public void createHourEntry() {
-		hourEntry = new HourEntry(
-				timeNow.getDayOfMonth() + "-" + timeNow.getMonthValue() + "-" + timeNow.getYear(), // date
+		hourEntry = new HourEntry(timeNow.getDayOfMonth() + "-" + timeNow.getMonthValue() + "-" + timeNow.getYear(), // date
 				timeNow // startTime
-				);
+		);
 	}
-	
+
 //	public void updateCurrentHourEntry(String action) {
 //		if (hourEntry != null) {
 //			switch(action) {
@@ -96,11 +95,12 @@ public class TimerHourController implements ActionListener {
 		if (event.equalsIgnoreCase(StaticActions.ACTION_TIMER_START)) {
 			// Timer
 			setTimeNow(); // set time now
-			
-			/* Hour Entry
+
+			/*
+			 * Hour Entry
 			 * 
-			 * If not exists, create here.
-			 * If already exists and pause not ended, end it here.
+			 * If not exists, create here. If already exists and pause not ended, end it
+			 * here.
 			 */
 			if (this.hourEntry == null) {
 				createHourEntry();
@@ -117,7 +117,7 @@ public class TimerHourController implements ActionListener {
 				}
 				setTimeNow(); // set time now
 				this.timerModel.pauseTimer();
-				this.hourEntry.setPauseStart(timeNow);				
+				this.hourEntry.setPauseStart(timeNow);
 			}
 		}
 		// Stop
@@ -130,31 +130,22 @@ public class TimerHourController implements ActionListener {
 					this.hourEntry.setPauseEnd(timeNow);
 				}
 				DatabaseController db = new DatabaseController("sa", "");
-				
+
 				String date = this.hourEntry.getDate();
 				long sessionTimeInSeconds = this.hourEntry.getSessionTimeInSeconds();
 				long pauseTimeInSeconds = this.hourEntry.getPauseTimeInSeconds();
 				String startTime = this.hourEntry.getStartTime().toString();
 				String endTime = this.hourEntry.getEndTime().toString();
-				//TODO: define all values
+				// TODO: define all values
 
-				db.insert("INSERT INTO hourentries (date, username, project, service, starttime, endtime, comment, durationInSeconds, pauseInSeconds) VALUES ("
-						+ date + ","
-						+ "'Testuser'" + "," 
-						+ "'Testprojekt'" + ","
-						+ "'Leistung1'" + ","
-						+ "'" + startTime.toString() + "',"
-						+ "'" + endTime.toString() + "',"
-						+ "'TestKommentar'" + "," 
-						+ sessionTimeInSeconds + ","
-						+ pauseTimeInSeconds + ")");
-				
-				this.hourEntry = null;			
+				db.insert(
+						"INSERT INTO hourentries (date, username, project, service, starttime, endtime, comment, durationInSeconds, pauseInSeconds) VALUES ("
+								+ date + "," + "'Testuser'" + "," + "'Testprojekt'" + "," + "'Leistung1'" + "," + "'"
+								+ startTime.toString() + "'," + "'" + endTime.toString() + "'," + "'TestKommentar'"
+								+ "," + sessionTimeInSeconds + "," + pauseTimeInSeconds + ")");
+
+				this.hourEntry = null;
 			}
-			
-			
 		}
-		
 	}
-	
 }
