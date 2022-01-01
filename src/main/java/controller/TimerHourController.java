@@ -1,14 +1,14 @@
-package main.Controller;
+package main.java.controller;
 
 import java.time.LocalDateTime;
 
-import main.Model.HourEntry;
-import main.Model.Project;
-import main.Model.Service;
-import main.Model.StaticActions;
-import main.Model.TimerModel;
-import main.Model.User;
-import main.View.TimerView;
+import main.java.model.HourEntry;
+import main.java.model.Project;
+import main.java.model.Service;
+import main.java.model.StaticActions;
+import main.java.model.TimerModel;
+import main.java.model.User;
+import main.java.view.TimerView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

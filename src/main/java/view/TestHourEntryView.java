@@ -1,4 +1,4 @@
-package main.View;
+package main.java.view;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -13,12 +13,12 @@ import javax.swing.SpringLayout;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import main.Controller.TestHourEntryController;
-import main.Controller.TimerHourController;
-import main.Model.HourEntry;
-import main.Model.StaticActions;
-import main.Model.TestHourEntryModel;
-import main.Model.TimerModel;
+import main.java.controller.TestHourEntryController;
+import main.java.controller.TimerHourController;
+import main.java.model.HourEntry;
+import main.java.model.StaticActions;
+import main.java.model.TestHourEntryModel;
+import main.java.model.TimerModel;
 
 import java.awt.Font;
 import java.awt.Toolkit;

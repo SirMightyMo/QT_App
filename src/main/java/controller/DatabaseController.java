@@ -1,4 +1,4 @@
-package main.Controller;
+package main.java.controller;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -7,7 +7,7 @@ import java.sql.*;
 public class DatabaseController {
 
 	private final String JDBC_DRIVER = "org.h2.Driver";
-	private final String DB_URL = "jdbc:h2:./data/db"; // relative path
+	private final String DB_URL = "jdbc:h2:./src/main/resources/data/db"; // relative path
 	private String user;
 	private String pass;
 	private Connection dbConnection; // H2 Database // Logout: Close DB Connection
@@ -113,7 +113,7 @@ public class DatabaseController {
 	}
 	
 	public void initializeDB() {
-		if(executeSQLScript("./data/createTables.sql") == 0 && executeSQLScript("./data/insertDummyData.sql") == 0) {
+		if(executeSQLScript("./src/main/resources/data/createTables.sql") == 0 && executeSQLScript("./src/main/resources/data/insertDummyData.sql") == 0) {
 			System.out.println("Database successfully initialized");
 		}
 	}

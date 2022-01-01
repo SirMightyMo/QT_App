@@ -1,4 +1,4 @@
-package main.View;
+package main.java.view;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -10,9 +10,9 @@ import javax.swing.JSplitPane;
 import javax.swing.SpringLayout;
 import javax.swing.border.EmptyBorder;
 
-import main.Controller.TimerHourController;
-import main.Model.StaticActions;
-import main.Model.TimerModel;
+import main.java.controller.TimerHourController;
+import main.java.model.StaticActions;
+import main.java.model.TimerModel;
 
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -32,7 +32,7 @@ public class TimerView extends JFrame implements Observer{
 	public TimerView(TimerHourController timerHourController) {
 		setFont(new Font("Open Sans ExtraBold", Font.PLAIN, 12));
 		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\LEAND\\Downloads\\qtproject_qtcreator_qt_22392.gif"));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TimerView.class.getResource("/main/resources/img/icons/qtproject_placeholder.gif")));
 		setTitle("Quality Time");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 273, 115); // x, y, width, height
@@ -51,21 +51,21 @@ public class TimerView extends JFrame implements Observer{
 		
 		// Button start
 		JButton btnStart = new JButton("");
-		btnStart.setIcon(new ImageIcon(TimerView.class.getResource("/images/play.gif")));
+		btnStart.setIcon(new ImageIcon(TimerView.class.getResource("/main/resources/img/icons/play.gif")));
 		btnStart.addActionListener(timerHourController);
 		btnStart.setActionCommand(StaticActions.ACTION_TIMER_START); // Defined in Class StaticActions
 		buttonPane.add(btnStart);
 		
 		// Button pause
 		JButton btnPause = new JButton("");
-		btnPause.setIcon(new ImageIcon(TimerView.class.getResource("/images/pause.gif")));
+		btnPause.setIcon(new ImageIcon(TimerView.class.getResource("/main/resources/img/icons/pause.gif")));
 		btnPause.addActionListener(timerHourController);
 		btnPause.setActionCommand(StaticActions.ACTION_TIMER_PAUSE);
 		buttonPane.add(btnPause);
 		
 		// Button stop
 		JButton btnStop = new JButton("");
-		btnStop.setIcon(new ImageIcon(TimerView.class.getResource("/images/stop.gif")));
+		btnStop.setIcon(new ImageIcon(TimerView.class.getResource("/main/resources/img/icons/stop.gif")));
 		btnStop.addActionListener(timerHourController);
 		btnStop.setActionCommand(StaticActions.ACTION_TIMER_STOP);
 		buttonPane.add(btnStop);

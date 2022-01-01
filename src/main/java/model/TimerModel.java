@@ -1,4 +1,4 @@
-package main.Model;
+package main.java.model;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;

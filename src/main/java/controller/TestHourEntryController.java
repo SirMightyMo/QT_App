@@ -1,12 +1,12 @@
-package main.Controller;
+package main.java.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
-import main.Model.StaticActions;
-import main.Model.TestHourEntryModel;
-import main.View.TestHourEntryView;
+import main.java.model.StaticActions;
+import main.java.model.TestHourEntryModel;
+import main.java.view.TestHourEntryView;
 
 public class TestHourEntryController implements ActionListener {
 
