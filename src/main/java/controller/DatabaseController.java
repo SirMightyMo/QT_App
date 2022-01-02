@@ -3,6 +3,7 @@ package main.java.controller;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class DatabaseController {
 
@@ -90,26 +91,47 @@ public class DatabaseController {
 		}
 	}
 
-	public ResultSet query(String sql) {
+	public ArrayList<Object> query(String sql) {
+		ArrayList<Object> resultArrayList = new ArrayList<>();
 		ResultSet rs = null;
+		Statement statement = null;
 		try {
 			Class.forName(JDBC_DRIVER);
 			dbConnection = DriverManager.getConnection(DB_URL, user, pass);
-			Statement statement = dbConnection.createStatement();
+			statement = dbConnection.createStatement();
 			rs = statement.executeQuery(sql);
-			statement.close();
+			
+			while (rs.next()) {
+				int i = 1;
+				resultArrayList.add(rs.getObject(i));
+				//System.out.println(rs.getString(i));
+				i++;
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				dbConnection.close();
+				if (rs != null) 
+					rs.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if (statement != null) 
+					statement.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
-		return rs;
+		try {
+			dbConnection.close();			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return resultArrayList;
 	}
 	
 	public void initializeDB() {
