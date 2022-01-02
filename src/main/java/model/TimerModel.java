@@ -158,7 +158,7 @@ public class TimerModel extends Observable{
 		return hours + ":" + minutes + ":" + seconds;
 	}
 	
-	public void retreiveProjects() {
+	public void retrieveProjects() {
 		this.projectList = new ArrayList<>();
 		DatabaseController db = new DatabaseController("sa", "");
 		ArrayList<Object> result = db.query("SELECT name FROM project");

@@ -1,6 +1,7 @@
 package main.java.controller;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -17,8 +18,10 @@ import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class TimerHourController implements ActionListener {
 
@@ -81,9 +84,8 @@ public class TimerHourController implements ActionListener {
 	 */
 	
 	public void createHourEntry() {
-		hourEntry = new HourEntry(timeNow.getDayOfMonth() + "-" + timeNow.getMonthValue() + "-" + timeNow.getYear(), // date
-				timeNow // startTime
-		);
+		hourEntry = new HourEntry(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE), //date
+				timeNow); // startTime
 	}
 	
 	public void actionStartTimer() {
@@ -102,27 +104,12 @@ public class TimerHourController implements ActionListener {
 		setTimeNow(); // set time now
 		this.timerModel.stopTimer();
 		if (this.hourEntry != null) {
-			this.hourEntry.setEndTime(timeNow);
+			if (this.hourEntry.getEndTime() == null) {
+				this.hourEntry.setEndTime(timeNow);
+			}
 			if (this.hourEntry.getPauseStart() != null && this.hourEntry.getPauseEnd() == null) {
 				this.hourEntry.setPauseEnd(timeNow);
 			}
-//			DatabaseController db = new DatabaseController("sa", "");
-//
-//			String date = this.hourEntry.getDate();
-//			long sessionTimeInSeconds = this.hourEntry.getSessionTimeInSeconds();
-//			long pauseTimeInSeconds = this.hourEntry.getPauseTimeInSeconds();
-//			String startTime = this.hourEntry.getStartTime().toString();
-//			String endTime = this.hourEntry.getEndTime().toString();
-			
-			// TODO: write into db
-
-//			db.insert(
-//					"INSERT INTO hour_entry (date, username, project, service, starttime, endtime, comment, durationInSeconds, pauseInSeconds) VALUES ("
-//							+ date + "," + "'Testuser'" + "," + "'Testprojekt'" + "," + "'Leistung1'" + "," + "'"
-//							+ startTime.toString() + "'," + "'" + endTime.toString() + "'," + "'TestKommentar'"
-//							+ "," + sessionTimeInSeconds + "," + pauseTimeInSeconds + ")");
-
-			this.hourEntry = null;
 		}
 	}
 	
@@ -131,24 +118,56 @@ public class TimerHourController implements ActionListener {
 			if (this.hourEntry.getPauseStart() != null) {
 				this.hourEntry.setPauseEnd(null);
 			}
-			setTimeNow(); // set time now
+			setTimeNow();
 			this.timerModel.pauseTimer();
 			this.hourEntry.setPauseStart(timeNow);
 		}
 	}
 	
 	public void actionSaveTimer() {
-		//TODO: write hour entry into db
-		this.hourEntry = null;
+		if (this.hourEntry != null) {
+			actionStopTimer();
+			
+			String comment = this.timerView.getTextFieldComment().getText();
+			this.hourEntry.setComment(comment);
+			
+			// TODO: Get project-id instead of name
+			String project = this.timerView.getComboBox().getSelectedItem().toString();
+			
+			this.hourEntry.setProject(project);
+			
+			//TODO: tbd: what about pause durations? columns in DB
+			DatabaseController db = new DatabaseController("sa", "");
+			Date entryDate = Date.valueOf(this.hourEntry.getDate());
+			String description = this.hourEntry.getComment();
+			Timestamp startTime = Timestamp.valueOf(this.hourEntry.getStartTime());
+			Timestamp endTime = Timestamp.valueOf(this.hourEntry.getEndTime());
+			int timeHours = (int) this.hourEntry.getSessionTimeInSeconds() / 3600;
+			int timeMinutes = (int) (this.hourEntry.getSessionTimeInSeconds() - timeHours * 3600) / 60; // FRAGE: Dauer gesplittet oder nur umgerechnet?
+			int projectID = 1; // TODO: get correct project-ID
+			
+			
+			db.insert("INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_hours,time_minutes,p_id) VALUES("
+					+ "'" + entryDate + "',"
+					+ "'" + description + "',"
+					+ "'" + startTime + "',"
+					+ "'" + endTime + "',"
+					+ "'" + timeHours + "',"
+					+ "'" + timeMinutes + "',"
+					+ "'" + projectID + "')");
+			
+			actionResetTimer();
+		}
 	}
 	
 	public void actionResetTimer() {
 		this.timerModel.stopAndResetTimer();
+		this.timerView.getTextFieldComment().setText("");
 		this.hourEntry = null;
 	}
 	
 	public void actionLoadProjects() {
-		this.timerModel.retreiveProjects();
+		this.timerModel.retrieveProjects();
 	}
 	
 //	public void updateCurrentHourEntry(String action) {

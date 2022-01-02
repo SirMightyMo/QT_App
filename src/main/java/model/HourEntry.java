@@ -15,8 +15,8 @@ public class HourEntry {
 	private LocalDateTime pauseStart;
 	private LocalDateTime pauseEnd;
 	private User user;
-	private Project project;
-	private Service service;
+	private String project;
+	private String service;
 	private String comment;
 	
 	
@@ -104,19 +104,19 @@ public class HourEntry {
 		this.user = user;
 	}
 
-	public Project getProject() {
+	public String getProject() {
 		return project;
 	}
 
-	public void setProject(Project project) {
+	public void setProject(String project) {
 		this.project = project;
 	}
 
-	public Service getService() {
+	public String getService() {
 		return service;
 	}
 
-	public void setService(Service service) {
+	public void setService(String service) {
 		this.service = service;
 	}
 

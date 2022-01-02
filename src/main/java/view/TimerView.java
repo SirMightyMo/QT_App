@@ -40,7 +40,8 @@ import java.awt.BorderLayout;
 public class TimerView extends JFrame implements Observer{
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPanel; // Container
-	JComboBox comboBox = new JComboBox();
+
+	private JComboBox comboBox = new JComboBox();
 	private JLabel durationLabel = new JLabel("00:00:00");
 	private JTextField txtStartTime;
 	private JTextField txtEndTime;
@@ -187,6 +188,30 @@ public class TimerView extends JFrame implements Observer{
 		
 	}
 
+	public JPanel getContentPanel() {
+		return contentPanel;
+	}
+	
+	public void setContentPanel(JPanel contentPanel) {
+		this.contentPanel = contentPanel;
+	}
+	
+	public JTextField getTextFieldComment() {
+		return textFieldComment;
+	}
+	
+	public void setTextFieldComment(JTextField textFieldComment) {
+		this.textFieldComment = textFieldComment;
+	}
+	
+	public JComboBox getComboBox() {
+		return comboBox;
+	}
+
+	public void setComboBox(JComboBox comboBox) {
+		this.comboBox = comboBox;
+	}
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		if(arg instanceof TimerModel) {

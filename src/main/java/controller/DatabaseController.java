@@ -72,17 +72,23 @@ public class DatabaseController {
 	}
 
 	public void insert(String sql) {
+		Statement statement = null;
 		try {
 			Class.forName(JDBC_DRIVER);
 			dbConnection = DriverManager.getConnection(DB_URL, user, pass);
-			Statement statement = dbConnection.createStatement();
+			statement = dbConnection.createStatement();
 			statement.executeUpdate(sql);
-			statement.close();
+			System.out.println("Executed '" + sql + "'.");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
+			try {
+				statement.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 			try {
 				dbConnection.close();
 			} catch (SQLException e) {
