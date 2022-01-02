@@ -2,13 +2,10 @@ package main.java.model;
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Observable;
 
-public class HourEntry implements Serializable{ // Serializable: Save Objects as Bytestream, get Objects from Bytestream
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+@SuppressWarnings("deprecation")
+public class HourEntry {
 	
 	private String date;
 	private long sessionTimeInSeconds;

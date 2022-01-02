@@ -1,10 +1,13 @@
 package main.java.model;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import main.java.controller.DatabaseController;
+
 @SuppressWarnings("deprecation")
-public class TimerModel extends Observable{ // Or: implements IModel
+public class TimerModel extends Observable{
 
 	private boolean timerRunning;
 	private boolean timerPaused;
@@ -12,10 +15,12 @@ public class TimerModel extends Observable{ // Or: implements IModel
 	private int timerMinutes;
 	private int timerHours;
 	private Timer taskTimer;
-	//private IView[] watchingViews;
+	private ArrayList<String> projectList;
 	
-	
-	// Constructor
+
+	/**
+	 *  Constructor
+	 */
 	public TimerModel() {
 		super();
 		this.timerHours = 0;
@@ -23,7 +28,9 @@ public class TimerModel extends Observable{ // Or: implements IModel
 		this.timerHours = 0;
 	}
 
-	// Getter/Setter
+	/**
+	 *  Getter/Setter
+	 */
 	public boolean isTimerRunning() {
 		return timerRunning;
 	}
@@ -63,16 +70,19 @@ public class TimerModel extends Observable{ // Or: implements IModel
 	public void setTimerHours(int timerHours) {
 		this.timerHours = timerHours;
 	}
+	
+	public ArrayList<String> getProjectList() {
+		return projectList;
+	}
 
-//	public IView[] getWatchingViews() {
-//		return watchingViews;
-//	}
-//
-//	public void setWatchingViews(IView[] watchingViews) {
-//		this.watchingViews = watchingViews;
-//	}
+	public void setProjectList(ArrayList<String> projectList) {
+		this.projectList = projectList;
+	}
+	
 
-	// Additional Methods
+	/**
+	 *  Additional Methods
+	 */
 	public void startTimer() {
 		if (!timerRunning) {
 			this.setTimerRunning(true);
@@ -97,17 +107,23 @@ public class TimerModel extends Observable{ // Or: implements IModel
 		}
 	}
 	
-	public void stopAndResetTimer() {
-		if (timerRunning  || timerPaused) {
+	public void stopTimer() {
+		if (timerRunning || timerPaused) {
 			taskTimer.cancel();
 			this.setTimerRunning(false);
 			this.setTimerRunning(false);
-			this.setTimerHours(0);
-			this.setTimerMinutes(0);
-			this.setTimerSeconds(0);
 			setChanged();
 			notifyObservers(this);			
 		}
+	}
+	
+	public void stopAndResetTimer() {
+		stopTimer();
+		this.setTimerHours(0);
+		this.setTimerMinutes(0);
+		this.setTimerSeconds(0);
+		setChanged();
+		notifyObservers(this);
 	}
 	
 	public void updateTimer() {
@@ -140,6 +156,18 @@ public class TimerModel extends Observable{ // Or: implements IModel
 			hours = "0" + timerHours;
 		}
 		return hours + ":" + minutes + ":" + seconds;
+	}
+	
+	public void retreiveProjects() {
+		this.projectList = new ArrayList<>();
+		DatabaseController db = new DatabaseController("sa", "");
+		ArrayList<Object> result = db.query("SELECT name FROM project");
+		result.forEach(entry -> {
+			this.projectList.add((String) entry);
+			//System.out.println((String) entry);
+		});
+		setChanged();
+		notifyObservers(this);
 	}
 
 }
