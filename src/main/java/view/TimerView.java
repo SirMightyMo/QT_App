@@ -1,4 +1,5 @@
 package main.java.view;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -41,12 +42,13 @@ public class TimerView extends JFrame implements Observer{
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPanel; // Container
 
-	private JComboBox comboBox = new JComboBox();
+	private JComboBox comboBox = new JComboBox(); // ComboBox for project-list
 	private JLabel durationLabel = new JLabel("00:00:00");
 	private JTextField txtStartTime;
 	private JTextField txtEndTime;
 	private JTextField textFieldComment;
 	private JTextField textPauseDuration;
+	private JTextField hiddenTextFieldProjectID;
 	
 	/**
 	 * Create Frame
@@ -73,16 +75,25 @@ public class TimerView extends JFrame implements Observer{
 		projectPanel.add(lblProject);
 		
 		// Project List
-		
 		comboBox.setPreferredSize(new Dimension(300,20));
 		lblProject.setLabelFor(comboBox);
 		comboBox.setAlignmentX(0.0f);
+		comboBox.addActionListener(timerHourController);
+		comboBox.setActionCommand(StaticActions.ACTION_SET_PROJECT);
 		projectPanel.add(comboBox);
 		
 		JButton btnLoadProjects = new JButton("\u21BB");
 		btnLoadProjects.addActionListener(timerHourController);
 		btnLoadProjects.setActionCommand(StaticActions.ACTION_LOAD_PROJECTS);
 		projectPanel.add(btnLoadProjects);
+		
+		hiddenTextFieldProjectID = new JTextField();
+		hiddenTextFieldProjectID.setFont(new Font("Tahoma", Font.PLAIN, 5));
+		hiddenTextFieldProjectID.setHorizontalAlignment(SwingConstants.RIGHT);
+		hiddenTextFieldProjectID.setEnabled(false);
+		hiddenTextFieldProjectID.setEditable(false);
+		hiddenTextFieldProjectID.setVisible(false);
+		projectPanel.add(hiddenTextFieldProjectID);
 		
 		JPanel durationPanel = new JPanel();
 		contentPanel.add(durationPanel);
@@ -196,6 +207,30 @@ public class TimerView extends JFrame implements Observer{
 		this.contentPanel = contentPanel;
 	}
 	
+	public JTextField getTxtStartTime() {
+		return txtStartTime;
+	}
+
+	public void setTxtStartTime(JTextField txtStartTime) {
+		this.txtStartTime = txtStartTime;
+	}
+
+	public JTextField getTxtEndTime() {
+		return txtEndTime;
+	}
+
+	public void setTxtEndTime(JTextField txtEndTime) {
+		this.txtEndTime = txtEndTime;
+	}
+
+	public JTextField getTextPauseDuration() {
+		return textPauseDuration;
+	}
+
+	public void setTextPauseDuration(JTextField textPauseDuration) {
+		this.textPauseDuration = textPauseDuration;
+	}
+
 	public JTextField getTextFieldComment() {
 		return textFieldComment;
 	}
@@ -212,11 +247,36 @@ public class TimerView extends JFrame implements Observer{
 		this.comboBox = comboBox;
 	}
 	
+	public JTextField getHiddenTextFieldProjectID() {
+		return hiddenTextFieldProjectID;
+	}
+
+	public void setHiddenTextFieldProjectID(JTextField hiddenTextFieldProjectID) {
+		this.hiddenTextFieldProjectID = hiddenTextFieldProjectID;
+	}
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		if(arg instanceof TimerModel) {
-			this.durationLabel.setText(((TimerModel) arg).timerToString());
-			this.comboBox.setModel(new DefaultComboBoxModel((((TimerModel) arg).getProjectList()).toArray()));
+			// update timer-stopwatch
+			this.durationLabel.setText(((TimerModel) arg).timerToString(true));
+			
+			/*
+			 * Update project list:
+			 * ProjectList from TimerModel is an ArrayList of Objects containing ArrayLists of Objects (project data).
+			 * The inner ArrayList contains the project id (index 0) and the project name (index 1).
+			 * To only display the projects names, the program is iterating over the project data and adds the names to a new ArrayList 'projectNames'.
+			 * This ArrayList is then converted to an Array and provides the needed information for the ComboBox (dropdown with selectable projects).
+			 */
+			if (!((TimerModel) arg).isTimerRunning() && !((TimerModel) arg).isProjectSet()) {
+				ArrayList<String> projectNames = new ArrayList<>();
+				((TimerModel) arg).getProjectList().forEach(project -> {
+					projectNames.add(project.get(1).toString());
+				});
+				this.comboBox.setModel(new DefaultComboBoxModel(projectNames.toArray()));
+				System.out.println("Projects loaded into TimerView.");
+			}
+			
 		}
 		
 	}

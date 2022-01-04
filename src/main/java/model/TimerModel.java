@@ -14,8 +14,9 @@ public class TimerModel extends Observable{
 	private int timerSeconds;
 	private int timerMinutes;
 	private int timerHours;
+	private boolean projectSet;
 	private Timer taskTimer;
-	private ArrayList<String> projectList;
+	private ArrayList<ArrayList<Object>> projectList;
 	
 
 	/**
@@ -71,11 +72,19 @@ public class TimerModel extends Observable{
 		this.timerHours = timerHours;
 	}
 	
-	public ArrayList<String> getProjectList() {
+	public boolean isProjectSet() {
+		return projectSet;
+	}
+
+	public void setProjectSet(boolean projectSet) {
+		this.projectSet = projectSet;
+	}
+
+	public ArrayList<ArrayList<Object>> getProjectList() {
 		return projectList;
 	}
 
-	public void setProjectList(ArrayList<String> projectList) {
+	public void setProjectList(ArrayList<ArrayList<Object>> projectList) {
 		this.projectList = projectList;
 	}
 	
@@ -101,9 +110,7 @@ public class TimerModel extends Observable{
 		if (timerRunning) {
 			taskTimer.cancel();
 			this.setTimerRunning(false);
-			this.setTimerPaused(true);
-			setChanged();
-			notifyObservers(this);			
+			this.setTimerPaused(true);	
 		}
 	}
 	
@@ -111,9 +118,7 @@ public class TimerModel extends Observable{
 		if (timerRunning || timerPaused) {
 			taskTimer.cancel();
 			this.setTimerRunning(false);
-			this.setTimerRunning(false);
-			setChanged();
-			notifyObservers(this);			
+			this.setTimerRunning(false);	
 		}
 	}
 	
@@ -142,7 +147,7 @@ public class TimerModel extends Observable{
 		notifyObservers(this);
 	}
 	
-	public String timerToString() {
+	public String timerToString(boolean showSeconds) {
 		String seconds = Integer.toString(timerSeconds);
 		String minutes = Integer.toString(timerMinutes);
 		String hours = Integer.toString(timerHours);
@@ -155,16 +160,24 @@ public class TimerModel extends Observable{
 		if (timerHours < 10) {
 			hours = "0" + timerHours;
 		}
-		return hours + ":" + minutes + ":" + seconds;
+		if (showSeconds) {
+			return hours + ":" + minutes + ":" + seconds;			
+		} else {
+			return hours + ":" + minutes;
+		}
 	}
 	
 	public void retrieveProjects() {
 		this.projectList = new ArrayList<>();
 		DatabaseController db = new DatabaseController("sa", "");
-		ArrayList<Object> result = db.query("SELECT name FROM project");
+		ArrayList<Object> result = db.query("SELECT p_id, name FROM project WHERE active = TRUE;");
 		result.forEach(entry -> {
-			this.projectList.add((String) entry);
-			//System.out.println((String) entry);
+			ArrayList<Object> row = (ArrayList<Object>) entry;
+			this.projectList.add(row);
+			
+//			row.forEach(value -> {
+//				System.out.println(value);
+//			});
 		});
 		setChanged();
 		notifyObservers(this);

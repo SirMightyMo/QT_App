@@ -94,6 +94,7 @@ public class TimerHourController implements ActionListener {
 		if (this.hourEntry == null || this.hourEntry.getEndTime() != null) {
 			this.timerModel.stopAndResetTimer();
 			createHourEntry();
+			this.timerView.getTxtStartTime().setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
 		} else if (this.hourEntry.getPauseEnd() == null && !this.timerModel.isTimerRunning()) {
 			this.hourEntry.setPauseEnd(timeNow);
 		}
@@ -106,10 +107,12 @@ public class TimerHourController implements ActionListener {
 		if (this.hourEntry != null) {
 			if (this.hourEntry.getEndTime() == null) {
 				this.hourEntry.setEndTime(timeNow);
+				this.timerView.getTxtEndTime().setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
 			}
 			if (this.hourEntry.getPauseStart() != null && this.hourEntry.getPauseEnd() == null) {
 				this.hourEntry.setPauseEnd(timeNow);
 			}
+			this.timerView.getTextPauseDuration().setText(this.hourEntry.pauseMinutesToFormattedString());
 		}
 	}
 	
@@ -124,6 +127,7 @@ public class TimerHourController implements ActionListener {
 		}
 	}
 	
+	// TODO: Use manual textfields for writing into database and then activate them for editing.
 	public void actionSaveTimer() {
 		if (this.hourEntry != null) {
 			actionStopTimer();
@@ -131,32 +135,35 @@ public class TimerHourController implements ActionListener {
 			String comment = this.timerView.getTextFieldComment().getText();
 			this.hourEntry.setComment(comment);
 			
-			// TODO: Get project-id instead of name
 			String project = this.timerView.getComboBox().getSelectedItem().toString();
+			int comboBoxIndex = this.timerView.getComboBox().getSelectedIndex();
+			//System.out.println(this.timerModel.getProjectList().get(projectIndex).get(1));
 			
-			this.hourEntry.setProject(project);
-			
-			//TODO: tbd: what about pause durations? columns in DB
 			DatabaseController db = new DatabaseController("sa", "");
 			Date entryDate = Date.valueOf(this.hourEntry.getDate());
 			String description = this.hourEntry.getComment();
 			Timestamp startTime = Timestamp.valueOf(this.hourEntry.getStartTime());
 			Timestamp endTime = Timestamp.valueOf(this.hourEntry.getEndTime());
-			int timeHours = (int) this.hourEntry.getSessionTimeInSeconds() / 3600;
-			int timeMinutes = (int) (this.hourEntry.getSessionTimeInSeconds() - timeHours * 3600) / 60; // FRAGE: Dauer gesplittet oder nur umgerechnet?
-			int projectID = 1; // TODO: get correct project-ID
 			
+			int timeMinutes = (int) this.hourEntry.getSessionTimeInMinutes();
+			int pauseMinutes = (int) this.hourEntry.getPauseTimeInMinutes();
+			// check index of ComboBox (project list) and get item with same index from project list in timerModel to get projectID
+			int projectID = (int) this.timerModel.getProjectList().get(comboBoxIndex).get(0);
 			
-			db.insert("INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_hours,time_minutes,p_id) VALUES("
+			this.hourEntry.setProjectName(project);
+			this.hourEntry.setProjectID(projectID);
+			
+			db.insert("INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes,p_id) VALUES("
 					+ "'" + entryDate + "',"
 					+ "'" + description + "',"
 					+ "'" + startTime + "',"
 					+ "'" + endTime + "',"
-					+ "'" + timeHours + "',"
 					+ "'" + timeMinutes + "',"
+					+ "'" + pauseMinutes + "',"
 					+ "'" + projectID + "')");
 			
 			actionResetTimer();
+			actionLoadProjects();
 		}
 	}
 	
@@ -167,21 +174,35 @@ public class TimerHourController implements ActionListener {
 	}
 	
 	public void actionLoadProjects() {
+		this.timerModel.setProjectSet(false);
 		this.timerModel.retrieveProjects();
+		
+		// if project was not set yet, select last used project (highest h_id)
+		if ((this.hourEntry == null || this.hourEntry.getProjectID() == 0) && !this.timerModel.isProjectSet()) {
+			
+			DatabaseController db = new DatabaseController("sa", "");
+			ArrayList<Object> result = db.query("SELECT p_id FROM hour_entry WHERE h_id = (SELECT MAX(h_id) FROM hour_entry);"); // TODO: Check, if querying for specific user is necessary or if this table already contains hour entries of user only
+			if (!result.isEmpty()) {
+				// find out projectListIndex by looking for p_id in ArrayList projectList of timerModel
+				int projectListIndex = 0; // initialize variable for list index in timerView
+				int latestHourEntryProjectID = (int) ((ArrayList<Object>) result.get(0)).get(0); // get actual projectID of latest project used
+				
+				// iterator through project list of timerModel for every project
+				for (ArrayList<Object> project : this.timerModel.getProjectList()) {
+									//System.out.println(this.timerModel.getProjectList().indexOf(project));
+									//System.out.println(project);
+					// if one of the projectIDs equal the projectID of the latest project used, condition is met
+					if ((int) project.get(0) == latestHourEntryProjectID) {
+						projectListIndex = this.timerModel.getProjectList().indexOf(project);
+						break;
+					}
+				}
+				// set selected item to latest project
+				this.timerView.getComboBox().setSelectedIndex(projectListIndex);
+			}
+		}
+		
 	}
-	
-//	public void updateCurrentHourEntry(String action) {
-//		if (hourEntry != null) {
-//			switch(action) {
-//			case "stop":
-//				hourEntry.setEndTime(timeNow);
-//			case "pauseStart":
-//				hourEntry.setPauseStart(timeNow);
-//			case "pauseStop":
-//				hourEntry.setPauseEnd(timeNow);
-//			}
-//		}
-//	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -210,6 +231,10 @@ public class TimerHourController implements ActionListener {
 		
 		if (event.equalsIgnoreCase(StaticActions.ACTION_LOAD_PROJECTS)) {
 			actionLoadProjects();
+		}
+		
+		if (event.equalsIgnoreCase(StaticActions.ACTION_SET_PROJECT)) {
+			this.timerModel.setProjectSet(true);
 		}
 	}
 }

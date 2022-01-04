@@ -10,12 +10,15 @@ public class HourEntry {
 	private String date;
 	private long sessionTimeInSeconds;
 	private long pauseTimeInSeconds;
+	private long sessionTimeInMinutes;
+	private long pauseTimeInMinutes;
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
 	private LocalDateTime pauseStart;
 	private LocalDateTime pauseEnd;
 	private User user;
-	private String project;
+	private String projectName;
+	private int projectID;
 	private String service;
 	private String comment;
 	
@@ -25,9 +28,6 @@ public class HourEntry {
 		super();
 		this.date = date;
 		this.startTime = startTime;
-		this.sessionTimeInSeconds = 0;
-		this.pauseTimeInSeconds = 0;
-		//TODO: Use all variables necessary
 	}
 
 	// Getter/Setter
@@ -46,6 +46,7 @@ public class HourEntry {
 	public void setSessionTimeInSeconds() {
 		long duration = Duration.between(startTime, endTime).getSeconds() - pauseTimeInSeconds;
 		this.sessionTimeInSeconds = duration;
+		setSessionTimeInMinutes();
 	}
 
 	public long getPauseTimeInSeconds() {
@@ -55,6 +56,23 @@ public class HourEntry {
 	public void setPauseTimeInSeconds() {
 		long duration = Duration.between(pauseStart, pauseEnd).getSeconds();
 		this.pauseTimeInSeconds += duration;
+		setPauseTimeInMinutes();
+	}
+
+	public long getSessionTimeInMinutes() {
+		return sessionTimeInMinutes;
+	}
+
+	public void setSessionTimeInMinutes() {
+		this.sessionTimeInMinutes = Math.round((float) this.sessionTimeInSeconds/60);
+	}
+
+	public long getPauseTimeInMinutes() {
+		return pauseTimeInMinutes;
+	}
+
+	public void setPauseTimeInMinutes() {
+		this.pauseTimeInMinutes = Math.round((float) this.pauseTimeInSeconds/60);
 	}
 
 	public LocalDateTime getStartTime() {
@@ -104,12 +122,20 @@ public class HourEntry {
 		this.user = user;
 	}
 
-	public String getProject() {
-		return project;
+	public String getProjectName() {
+		return projectName;
 	}
 
-	public void setProject(String project) {
-		this.project = project;
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+
+	public int getProjectID() {
+		return projectID;
+	}
+
+	public void setProjectID(int project) {
+		this.projectID = project;
 	}
 
 	public String getService() {
@@ -127,6 +153,19 @@ public class HourEntry {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-		
+	
+	public String pauseMinutesToFormattedString() {
+		int hours = Math.round((float) pauseTimeInMinutes / 60);
+		int minutes = Math.round((pauseTimeInMinutes / 60 - hours) * 60);
+		String hourString = Integer.toString(hours);
+		String minuteString = Integer.toString(hours);
+		if (minutes < 10) {
+			minuteString = "0" + minutes;
+		}
+		if (hours < 10) {
+			hourString = "0" + hours;
+		}
+		return hourString + ":" + minuteString;
+	}
 
 }
