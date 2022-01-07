@@ -10,7 +10,5 @@ public class MainMethod {
 		DatabaseController dbc = new DatabaseController("sa", "");
 		dbc.initializeDB();
 		new TimerHourController();
-//		new TestHourEntryController();
-
 	}
 }
