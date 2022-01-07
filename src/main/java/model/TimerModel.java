@@ -1,21 +1,27 @@
-package main.Model;
+package main.java.model;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import main.java.controller.DatabaseController;
+
 @SuppressWarnings("deprecation")
-public class TimerModel extends Observable{ // Or: implements IModel
+public class TimerModel extends Observable{
 
 	private boolean timerRunning;
 	private boolean timerPaused;
 	private int timerSeconds;
 	private int timerMinutes;
 	private int timerHours;
+	private boolean projectSet;
 	private Timer taskTimer;
-	//private IView[] watchingViews;
+	private ArrayList<ArrayList<Object>> projectList;
 	
-	
-	// Constructor
+
+	/**
+	 *  Constructor
+	 */
 	public TimerModel() {
 		super();
 		this.timerHours = 0;
@@ -23,7 +29,9 @@ public class TimerModel extends Observable{ // Or: implements IModel
 		this.timerHours = 0;
 	}
 
-	// Getter/Setter
+	/**
+	 *  Getter/Setter
+	 */
 	public boolean isTimerRunning() {
 		return timerRunning;
 	}
@@ -63,16 +71,27 @@ public class TimerModel extends Observable{ // Or: implements IModel
 	public void setTimerHours(int timerHours) {
 		this.timerHours = timerHours;
 	}
+	
+	public boolean isProjectSet() {
+		return projectSet;
+	}
 
-//	public IView[] getWatchingViews() {
-//		return watchingViews;
-//	}
-//
-//	public void setWatchingViews(IView[] watchingViews) {
-//		this.watchingViews = watchingViews;
-//	}
+	public void setProjectSet(boolean projectSet) {
+		this.projectSet = projectSet;
+	}
 
-	// Additional Methods
+	public ArrayList<ArrayList<Object>> getProjectList() {
+		return projectList;
+	}
+
+	public void setProjectList(ArrayList<ArrayList<Object>> projectList) {
+		this.projectList = projectList;
+	}
+	
+
+	/**
+	 *  Additional Methods
+	 */
 	public void startTimer() {
 		if (!timerRunning) {
 			this.setTimerRunning(true);
@@ -91,23 +110,25 @@ public class TimerModel extends Observable{ // Or: implements IModel
 		if (timerRunning) {
 			taskTimer.cancel();
 			this.setTimerRunning(false);
-			this.setTimerPaused(true);
-			setChanged();
-			notifyObservers(this);			
+			this.setTimerPaused(true);	
+		}
+	}
+	
+	public void stopTimer() {
+		if (timerRunning || timerPaused) {
+			taskTimer.cancel();
+			this.setTimerRunning(false);
+			this.setTimerRunning(false);	
 		}
 	}
 	
 	public void stopAndResetTimer() {
-		if (timerRunning  || timerPaused) {
-			taskTimer.cancel();
-			this.setTimerRunning(false);
-			this.setTimerRunning(false);
-			this.setTimerHours(0);
-			this.setTimerMinutes(0);
-			this.setTimerSeconds(0);
-			setChanged();
-			notifyObservers(this);			
-		}
+		stopTimer();
+		this.setTimerHours(0);
+		this.setTimerMinutes(0);
+		this.setTimerSeconds(0);
+		setChanged();
+		notifyObservers(this);
 	}
 	
 	public void updateTimer() {
@@ -126,7 +147,7 @@ public class TimerModel extends Observable{ // Or: implements IModel
 		notifyObservers(this);
 	}
 	
-	public String timerToString() {
+	public String timerToString(boolean showSeconds) {
 		String seconds = Integer.toString(timerSeconds);
 		String minutes = Integer.toString(timerMinutes);
 		String hours = Integer.toString(timerHours);
@@ -139,7 +160,27 @@ public class TimerModel extends Observable{ // Or: implements IModel
 		if (timerHours < 10) {
 			hours = "0" + timerHours;
 		}
-		return hours + ":" + minutes + ":" + seconds;
+		if (showSeconds) {
+			return hours + ":" + minutes + ":" + seconds;			
+		} else {
+			return hours + ":" + minutes;
+		}
+	}
+	
+	public void retrieveProjects() {
+		this.projectList = new ArrayList<>();
+		DatabaseController db = new DatabaseController("sa", "");
+		ArrayList<Object> result = db.query("SELECT p_id, name FROM project WHERE active = TRUE;");
+		result.forEach(entry -> {
+			ArrayList<Object> row = (ArrayList<Object>) entry;
+			this.projectList.add(row);
+			
+//			row.forEach(value -> {
+//				System.out.println(value);
+//			});
+		});
+		setChanged();
+		notifyObservers(this);
 	}
 
 }
