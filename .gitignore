@@ -24,3 +24,8 @@ hs_err_pid*
 
 # H2 db-files
 *db.*
+
+# eclipse project file
+.settings/
+.classpath
+.project
