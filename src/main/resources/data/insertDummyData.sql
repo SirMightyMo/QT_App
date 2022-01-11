@@ -12,3 +12,7 @@ INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,p
 INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes,p_id)VALUES('2021-02-16','Noch mehr wichtige Funktionen geschrieben','2021-09-18 18:47:52.069','2012-09-18 18:47:52.069','523','35','5');
 INSERT INTO users(username,password,email,security_question,answer)VALUES('Bob','abc','bob@msn.com','Wie viel ist 2+2','5');
 INSERT INTO assign_project_user(p_id,u_id)VALUES('1','1');
+INSERT INTO assign_project_user(p_id,u_id)VALUES('2','1');
+INSERT INTO assign_project_user(p_id,u_id)VALUES('3','1');
+INSERT INTO assign_project_user(p_id,u_id)VALUES('4','1');
+INSERT INTO assign_project_user(p_id,u_id)VALUES('5','1');

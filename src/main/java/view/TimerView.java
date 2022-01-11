@@ -28,6 +28,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 
@@ -49,12 +50,12 @@ public class TimerView extends JFrame implements Observer{
 	private JTextField textFieldComment;
 	private JTextField textPauseDuration;
 	private JTextField hiddenTextFieldProjectID;
+
 	
 	/**
 	 * Create Frame
 	 */
-	public TimerView(TimerHourController timerHourController) {
-				
+	public TimerView(TimerHourController timerHourController) {	
 		setFont(new Font("Open Sans ExtraBold", Font.PLAIN, 12));
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TimerView.class.getResource("/main/resources/img/icons/qtproject_placeholder.gif")));
