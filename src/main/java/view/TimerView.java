@@ -2,6 +2,8 @@ package main.java.view;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -50,6 +52,8 @@ public class TimerView extends JFrame implements Observer{
 	private JTextField textFieldComment;
 	private JTextField textPauseDuration;
 	private JTextField hiddenTextFieldProjectID;
+	private JLabel lblErrorMessage;
+	boolean errorVisible;
 
 	
 	/**
@@ -140,10 +144,11 @@ public class TimerView extends JFrame implements Observer{
 		manualEntryPanel.add(lblFrom);
 		
 		txtStartTime = new JTextField();
-		txtStartTime.setEnabled(false);
+		txtStartTime.setEnabled(true);
 		lblFrom.setLabelFor(txtStartTime);
 		txtStartTime.setHorizontalAlignment(SwingConstants.CENTER);
-		txtStartTime.setText("HH:MM");
+		txtStartTime.setText("");
+		txtStartTime.getDocument().addDocumentListener(timerHourController);
 		manualEntryPanel.add(txtStartTime);
 		txtStartTime.setColumns(5);
 		
@@ -151,10 +156,11 @@ public class TimerView extends JFrame implements Observer{
 		manualEntryPanel.add(lblTo);
 		
 		txtEndTime = new JTextField();
-		txtEndTime.setEnabled(false);
+		txtEndTime.setEnabled(true);
 		lblTo.setLabelFor(txtEndTime);
 		txtEndTime.setHorizontalAlignment(SwingConstants.CENTER);
-		txtEndTime.setText("HH:MM");
+		txtEndTime.setText("");
+		txtEndTime.getDocument().addDocumentListener(timerHourController);
 		manualEntryPanel.add(txtEndTime);
 		txtEndTime.setColumns(5);
 		
@@ -178,9 +184,10 @@ public class TimerView extends JFrame implements Observer{
 		manualEntryPanel.add(lblPauseDuration);
 		
 		textPauseDuration = new JTextField();
-		textPauseDuration.setEnabled(false);
+		textPauseDuration.setEnabled(true);
 		lblPauseDuration.setLabelFor(textPauseDuration);
 		textPauseDuration.setHorizontalAlignment(SwingConstants.CENTER);
+		textPauseDuration.getDocument().addDocumentListener(timerHourController);
 		manualEntryPanel.add(textPauseDuration);
 		textPauseDuration.setColumns(5);
 		
@@ -198,6 +205,17 @@ public class TimerView extends JFrame implements Observer{
 		btnSave.setActionCommand(StaticActions.ACTION_TIMER_SAVE);
 		confirmButtonPanel.add(btnSave);
 		
+		
+		JPanel errorPanel = new JPanel();
+		FlowLayout flowLayout_1 = (FlowLayout) errorPanel.getLayout();
+		contentPanel.add(errorPanel);
+		
+		lblErrorMessage = new JLabel("Error Message");
+		lblErrorMessage.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblErrorMessage.setForeground(new Color(255, 140, 0));
+		lblErrorMessage.setVisible(false);
+		errorPanel.add(lblErrorMessage);
+		
 	}
 
 	public JPanel getContentPanel() {
@@ -208,6 +226,10 @@ public class TimerView extends JFrame implements Observer{
 		this.contentPanel = contentPanel;
 	}
 	
+	public JLabel getDurationLabel() {
+		return durationLabel;
+	}
+
 	public JTextField getTxtStartTime() {
 		return txtStartTime;
 	}
@@ -255,7 +277,35 @@ public class TimerView extends JFrame implements Observer{
 	public void setHiddenTextFieldProjectID(JTextField hiddenTextFieldProjectID) {
 		this.hiddenTextFieldProjectID = hiddenTextFieldProjectID;
 	}
+		
+	public JLabel getLblErrorMessage() {
+		return lblErrorMessage;
+	}
 	
+	public void showErrorMessage(String message, long duration) {
+		lblErrorMessage.setText(message);		
+		if (!isErrorVisible()) {
+			Timer timer = new Timer();
+			TimerTask task = new TimerTask() {
+				@Override
+				public void run() {
+					lblErrorMessage.setVisible(false);
+					setErrorVisible(false);
+				}	
+			};			
+			timer.schedule(task, duration);
+		}
+		lblErrorMessage.setVisible(true);
+	}
+	
+	public boolean isErrorVisible() {
+		return errorVisible;
+	}
+
+	public void setErrorVisible(boolean errorVisible) {
+		this.errorVisible = errorVisible;
+	}
+
 	@Override
 	public void update(Observable o, Object arg) {
 		if(arg instanceof TimerModel) {
