@@ -17,7 +17,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import main.java.model.HourEntry;
-import main.java.model.Project;
 import main.java.model.Service;
 import main.java.model.StaticActions;
 import main.java.model.TimerModel;

@@ -11,5 +11,6 @@ public class StaticActions {
 	public static final String ACTION_LOAD_PROJECTS = "action_load_projects";
 	public static final String ACTION_SET_PROJECT = "action_set_project";
 	public static final String ACTION_GET_HOURLIST = "action_get_hourlist"; // Only for TestHourEntryController.java
+	public static final String ACTION_SEARCH_PROJECTS = "action_search_projects";
 	
 }
