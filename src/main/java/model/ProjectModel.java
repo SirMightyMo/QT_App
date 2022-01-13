@@ -7,28 +7,17 @@ import main.java.controller.DatabaseController;
 
 @SuppressWarnings("deprecation")
 public class ProjectModel extends Observable{
-	
-	
+		
 	private ArrayList<ArrayList<Object>> projectList;
 	private boolean projectSet;
 	
-	
-	
 	// Constructor
-	
 	public ProjectModel() {
-		super();
-		
-		
+		super();	
 	}
-	
-	
 
-
-	public Object[][] getTableModel() {
-		
-		
-		
+	// Creates Object needed for JTable
+	public Object[][] getTableModel() {	
 		this.projectList = new ArrayList<>();
 		DatabaseController db = new DatabaseController("sa", "");
 		ArrayList<Object> result = db.query("SELECT * FROM project ;");
@@ -44,14 +33,13 @@ public class ProjectModel extends Observable{
 				}
 				else projectTable[i][j] = row.get(j);	
 			}
-			// Abfangen von Customer ID
+		// TO DO Abfangen von Customer ID
 			
 		}
 		
 		return projectTable;
 		
 	}
-
 
 	public boolean isProjectSet() {
 		return projectSet;
