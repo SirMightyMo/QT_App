@@ -6,6 +6,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import main.java.controller.DatabaseController;
+import main.java.controller.ProjectController;
 import main.java.controller.TestHourEntryController;
 import main.java.controller.TimerHourController;
 
@@ -27,5 +28,6 @@ public class MainMethod {
 		
 		// Generate TimerHourController; TODO: replace with dashboard later
 		new TimerHourController();
+		new ProjectController();
 	}
 }
