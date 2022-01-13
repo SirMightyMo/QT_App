@@ -7,6 +7,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="src/main/resources/lib/h2-2.0.202.jar"/>
-	<classpathentry kind="lib" path="E:/Projekte/Java/QT_App/QT_App/src/main/resources/lib/flatlaf-2.0.jar"/>
+	<classpathentry kind="lib" path="src/main/resources/lib/flatlaf-2.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
