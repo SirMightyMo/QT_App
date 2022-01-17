@@ -23,6 +23,10 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -35,6 +39,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import javax.swing.JComboBox;
 import javax.swing.JTabbedPane;
+import javax.swing.JCheckBox;
 
 @SuppressWarnings("deprecation")
 public class ProjectView extends JFrame implements Observer{
@@ -45,10 +50,13 @@ public class ProjectView extends JFrame implements Observer{
 	private JTextField textFieldTo;
 	private TableRowSorter<TableModel> sorter;
 	
-	JComboBox comboBoxProject = new JComboBox();
+	private JComboBox comboBoxProject = new JComboBox();
 	private JTextField textFieldProjectName;
 	private JTextField textFieldClient;
+	private JTextField textFieldStartDate;
 	private JTextField textFieldEndDate;
+	private JCheckBox chckbxActive;
+	//private 
 	
 	/**
 	 * Create Frame
@@ -297,17 +305,18 @@ public class ProjectView extends JFrame implements Observer{
 		sl_panel_input_form.putConstraint(SpringLayout.EAST, textFieldClient, 0, SpringLayout.EAST, textFieldProjectName);
 		panel_input_form.add(textFieldClient);
 		textFieldClient.setColumns(10);
-		final JTextField textFieldStartDate = new JTextField(20);
+		
+		
+		textFieldStartDate = new JTextField(20);
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, textFieldStartDate, -3, SpringLayout.NORTH, lblNewLabel_20);
 		sl_panel_input_form.putConstraint(SpringLayout.WEST, textFieldStartDate, 0, SpringLayout.WEST, textFieldProjectName);
-		
+		panel_input_form.add(textFieldStartDate);
 		
 		JButton btnSetStartDate = new JButton("...");
 		sl_panel_input_form.putConstraint(SpringLayout.EAST, textFieldStartDate, -6, SpringLayout.WEST, btnSetStartDate);
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, btnSetStartDate, -4, SpringLayout.NORTH, lblNewLabel_20);
 		sl_panel_input_form.putConstraint(SpringLayout.WEST, btnSetStartDate, -33, SpringLayout.EAST, textFieldProjectName);
 		sl_panel_input_form.putConstraint(SpringLayout.EAST, btnSetStartDate, 0, SpringLayout.EAST, textFieldProjectName);
-		panel_input_form.add(textFieldStartDate);
 		panel_input_form.add(btnSetStartDate);
 		
 		textFieldEndDate = new JTextField(20);
@@ -325,10 +334,18 @@ public class ProjectView extends JFrame implements Observer{
 		
 		
 		//Save Button
-		JButton btnNewButton = new JButton("Speichern");
-		sl_panel_input_form.putConstraint(SpringLayout.NORTH, btnNewButton, 50, SpringLayout.SOUTH, textFieldEndDate);
-		sl_panel_input_form.putConstraint(SpringLayout.WEST, btnNewButton, 116, SpringLayout.WEST, panel_input_form);
-		panel_input_form.add(btnNewButton);
+		JButton btnSaveProject = new JButton("Speichern");
+		sl_panel_input_form.putConstraint(SpringLayout.NORTH, btnSaveProject, 43, SpringLayout.SOUTH, textFieldEndDate);
+		sl_panel_input_form.putConstraint(SpringLayout.WEST, btnSaveProject, 0, SpringLayout.WEST, textFieldProjectName);
+		btnSaveProject.addActionListener(projectController);
+		btnSaveProject.setActionCommand(StaticActions.ACTION_SAVE_PROJECT);
+		panel_input_form.add(btnSaveProject);
+		
+		// active checkbox
+		chckbxActive = new JCheckBox("active");
+		sl_panel_input_form.putConstraint(SpringLayout.NORTH, chckbxActive, 18, SpringLayout.SOUTH, lblNewLabel_21);
+		sl_panel_input_form.putConstraint(SpringLayout.WEST, chckbxActive, 0, SpringLayout.WEST, lblNewLabel_18);
+		panel_input_form.add(chckbxActive);
 		
 		// Date Popup
 		final JFrame popupFrame = new JFrame();
@@ -339,6 +356,7 @@ public class ProjectView extends JFrame implements Observer{
 				System.out.print(textFieldStartDate.getText());
 			}
 		});
+		
 		btnSetEndDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				textFieldEndDate.setText(new DatePicker(popupFrame).setPickedDate());
@@ -384,6 +402,49 @@ public class ProjectView extends JFrame implements Observer{
 	
 	public void setProjectTable(JTable table) {
 		this.table = table;
+	}
+	
+	public String getNewProjectName(){
+		return textFieldProjectName.getText();
+	}
+	
+	// TO DO Try Catch
+	public Date getNewStartDate(){
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		java.sql.Date startDate = new Date(System.currentTimeMillis());
+		java.util.Date inputStartDate;
+		try {
+			inputStartDate = format.parse(textFieldStartDate.getText());
+		} catch (ParseException e) {
+			inputStartDate = new Date(System.currentTimeMillis());
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		startDate.setTime(inputStartDate.getTime());
+		return startDate;
+	}
+	
+	public Date getNewEndDate(){
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		java.sql.Date endDate = new Date(System.currentTimeMillis());
+		java.util.Date inputEndDate;
+		try {
+			inputEndDate =  format.parse(textFieldEndDate.getText());
+		} catch (ParseException e) {
+			inputEndDate = new Date(System.currentTimeMillis());
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		endDate.setTime(inputEndDate.getTime());
+		return endDate;
+	}
+	
+	public boolean getNewProjectStat() {
+		return chckbxActive.isSelected();
+	}
+	
+	public int getClientID() {
+		return 1;
 	}
 	
 	public void filterProjects(String text) {

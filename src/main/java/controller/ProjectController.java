@@ -2,6 +2,8 @@ package main.java.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import javax.swing.JTable;
@@ -48,6 +50,30 @@ public class ProjectController implements ActionListener {
 		projectView.filterProjects(projectView.getComboBox().getSelectedItem().toString());
 	}
 	
+	public void actionSaveProject() {
+		
+		String projectName;
+		Date startDate;
+		Date endDate;
+		boolean active;
+		int customerID;
+		
+		projectName = projectView.getNewProjectName();
+		startDate = projectView.getNewStartDate();
+		endDate = projectView.getNewEndDate();
+		active = projectView.getNewProjectStat();
+		customerID = projectView.getClientID();
+		
+		DatabaseController db = new DatabaseController("sa", "");
+		db.insert("INSERT INTO project(name,start_date,end_date,active,c_id) VALUES("
+				+ "'" + projectName + "',"
+				+ "'" + startDate + "',"
+				+ "'" + endDate + "',"
+				+ "'" + active + "',"
+				+ "'" + customerID + "')");
+		
+	}
+	
 	// ActionListener method
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -60,6 +86,9 @@ public class ProjectController implements ActionListener {
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SEARCH_PROJECTS)) {
 			actionSearchProjects();
+		}
+		if (event.equalsIgnoreCase(StaticActions.ACTION_SAVE_PROJECT)) {
+			actionSaveProject();
 		}
 		
 
