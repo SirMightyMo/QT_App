@@ -3,6 +3,7 @@ package main.java;
 import main.java.controller.DatabaseController;
 import main.java.controller.TestHourEntryController;
 import main.java.controller.TimerHourController;
+import.main.java.controller.LoginController;
 
 public class MainMethod {
 
@@ -10,5 +11,6 @@ public class MainMethod {
 		DatabaseController dbc = new DatabaseController("sa", "");
 		dbc.initializeDB();
 		new TimerHourController();
+		new LoginController();
 	}
 }
