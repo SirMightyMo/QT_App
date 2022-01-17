@@ -6,9 +6,8 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import main.java.controller.DatabaseController;
+import main.java.controller.DashboardController;
 import main.java.controller.ProjectController;
-import main.java.controller.TestHourEntryController;
-import main.java.controller.TimerHourController;
 
 public class MainMethod {
 
@@ -18,16 +17,15 @@ public class MainMethod {
 		dbc.initializeDB();
 		
 		// Set look and feel (FlatLaf Theme)
-		FlatLightLaf.setup();
+		FlatDarkLaf.setup();
 			// customize components with change of properties (see: https://www.formdev.com/flatlaf/customizing/)
-		UIManager.setLookAndFeel(new FlatDarkLaf());
 		UIManager.put( "Button.arc", 999 );
 		UIManager.put( "Component.arc", 999 );
 		UIManager.put( "ProgressBar.arc", 999 );
 		UIManager.put( "TextComponent.arc", 999 );
 		
 		// Generate TimerHourController; TODO: replace with dashboard later
-		new TimerHourController();
+		new DashboardController();
 		new ProjectController();
 	}
 }

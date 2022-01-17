@@ -39,9 +39,7 @@ public class TimerHourController implements ActionListener, DocumentListener {
 	private TimerView timerView;
 	private HourEntry hourEntry;
 	
-	
 	private LocalDateTime timeNow;
-	private ArrayList<String> projectList;
 
 	// Constructor
 	@SuppressWarnings("deprecation")
