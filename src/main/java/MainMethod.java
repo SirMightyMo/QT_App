@@ -6,19 +6,19 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import main.java.controller.DatabaseController;
-<<<<<<< HEAD
+
 import main.java.controller.DashboardController;
 import main.java.controller.ProjectController;
-=======
+
 import main.java.controller.TestHourEntryController;
 import main.java.controller.TimerHourController;
 import main.java.controller.LoginController;
->>>>>>> 9f3ff4f6396d7917afd5a75a58f3646609395e86
+
 
 public class MainMethod {
 
 	public static void main(String[] args) throws Exception {
-<<<<<<< HEAD
+
 		// Initialize database
 		DatabaseController dbc = new DatabaseController("sa", "");
 		dbc.initializeDB();
@@ -34,12 +34,8 @@ public class MainMethod {
 		// Generate TimerHourController; TODO: replace with dashboard later
 		new DashboardController();
 		new ProjectController();
-=======
 		new LoginController();
-		DatabaseController dbc = new DatabaseController("sa", "");
-		dbc.initializeDB();
 		new TimerHourController();
 		
->>>>>>> 9f3ff4f6396d7917afd5a75a58f3646609395e86
 	}
 }
