@@ -167,7 +167,7 @@ public class TimerModel extends Observable{
 		}
 	}
 	
-	public void retrieveProjects() {
+	public void retrieveProjects() { // TODO: Retrieve only those projects, where p_id is assigned to u_id
 		this.projectList = new ArrayList<>();
 		DatabaseController db = new DatabaseController("sa", "");
 		ArrayList<Object> result = db.query("SELECT p_id, name FROM project WHERE active = TRUE;");

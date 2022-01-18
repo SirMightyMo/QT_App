@@ -1,11 +1,10 @@
 package main.java.model;
-import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Observable;
 
 @SuppressWarnings("deprecation")
-public class HourEntry {
+public class HourEntry extends Observable{
 	
 	private String date;
 	private long sessionTimeInSeconds;
