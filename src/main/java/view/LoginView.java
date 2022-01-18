@@ -1,5 +1,6 @@
-import javax.swing.JFrame;
+package main.java.model;
 
+import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Panel;

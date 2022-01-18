@@ -1,3 +1,4 @@
+package main.java.model;
 import javax.swing.JFrame;
 
 import java.util.Arrays;
