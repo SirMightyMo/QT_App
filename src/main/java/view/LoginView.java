@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 
 
-public class LoginView extends JFrame {
+final class LoginView extends JFrame {
 	
 	private JLabel usernameLabel;
 	private JLabel passwordLabel;
@@ -66,7 +66,7 @@ public class LoginView extends JFrame {
 		this.setTitle("Login");
 		this.add(panel);
 		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-		this.setSize(500,500);
+		this.pack();
 		this.setVisible(true);
 		
 	}

@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 
 
-public class RegistrationView extends JFrame {
+final class RegistrationView extends JFrame {
 	
 	private JLabel usernameLabel;
 	private JLabel passwordLabel;
@@ -80,14 +80,14 @@ public class RegistrationView extends JFrame {
 		passwordLabel = new JLabel("Password:");
 		panel.add(passwordLabel);
 		
-		passwordInputField = new JPasswordField("P1sswort", 20);
+		passwordInputField = new JPasswordField(20);
 		passwordInputField.setBounds(100, 20, 165, 25);
 		panel.add(passwordInputField);
 		
 		passwordConfirmLabel = new JLabel("Repeat your password to confirm:");
 		panel.add(passwordConfirmLabel);
 		
-		passwordConfirmInputField = new JPasswordField("P1sswort", 20);
+		passwordConfirmInputField = new JPasswordField(20);
 		passwordConfirmInputField.setBounds(100, 20, 165, 25);
 		panel.add(passwordConfirmInputField);
 		
@@ -118,13 +118,15 @@ public class RegistrationView extends JFrame {
 		registerButton = new JButton("Register");
 		panelThree.add(registerButton);
 		
+		this.errorMessage = new JLabel();
 		
 		
 		this.setTitle("Register");
-		this.setLayout(new GridLayout(3,1));
+		this.setLayout(new GridLayout(4,1));
 		this.add(panel);
 		this.add(panelTwo);
 		this.add(panelThree);
+		this.add(errorMessage);
 		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);
@@ -136,9 +138,17 @@ public class RegistrationView extends JFrame {
 		this.questions = questions;
 	}
 	
+	public String getEmailInput() {
+		return this.emailInputField.getText();
+	}
 	
+	public String getEmailConfirmInput() {
+		return this.emailConfirmInputField.getText();
+	}
 	
-	
+	public String getSecurityAnswer() {
+		return this.securityAnswerInputField.getText();
+	}
 	
 	//from LoginView:
 	
@@ -169,14 +179,15 @@ public class RegistrationView extends JFrame {
 	
 	public void setErrorMessage(String msg) {
 		
-		this.errorMessage = new JLabel(msg);
+		this.errorMessage.setText(msg);
 		this.errorMessage.setForeground(Color.red);
-		this.panel.add(errorMessage);
+		this.errorMessage.setVisible(true);
 		SwingUtilities.updateComponentTreeUI(this);
 	}
 	
 	public void deleteErrorMessage() {
-		this.panel.remove(errorMessage);
+		this.errorMessage.setVisible(false);
+		
 	}
 
 }

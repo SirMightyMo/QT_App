@@ -1,4 +1,4 @@
 
-public class RegistrationModel {
+final class RegistrationModel {
 
 }

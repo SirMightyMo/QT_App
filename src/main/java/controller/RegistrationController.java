@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -20,7 +21,7 @@ public class RegistrationController implements ActionListener{
 	
 	private void init() {
 		view.getLoginButton().addActionListener(e -> 
-			new LoginController()			
+			this.login()	
 		);
 		view.getRegisterButton().addActionListener(e->
 			this.registration()
@@ -34,18 +35,50 @@ public class RegistrationController implements ActionListener{
 		if (view.getErrorMessage() != null) {
 			view.deleteErrorMessage();
 		}
-		if(checkPassword(view.getPasswordInput(), view.getPasswordConfirmInput()) && )
+		if(checkUsername() && checkEmail() && checkPassword() &&  checkSecurityQuestion()) {
+			System.out.println("Success");
+		}
+		
 		
 		return true;
 	}
 	
+	private boolean checkUsername() {
+		if (!view.getUsernameInput().isEmpty()) {
+			return true;
+		}
+		else {
+			System.out.println("username is empty");
+			view.setErrorMessage("Choose a username!");
+			return false;
+		}
+	}
 	
 	
-	
-	private boolean checkPassword(char[] passwordInput, char[] passwordConfirm) {
+	private boolean checkEmail() {
 		
+		String emailIn = view.getEmailInput();
+		String emailConfirm = view.getEmailConfirmInput();
 		
-		if (Arrays.equals(passwordInput, passwordConfirm)) {			
+		if (emailIn.equals(emailConfirm) && !emailIn.isEmpty()) {
+			return true;
+		}
+		
+		else {
+			System.out.println("Emails arent equal");
+			view.setErrorMessage("Wrong E-Mail!");
+			return false;
+		}
+		
+	}
+	
+	
+	private boolean checkPassword() {
+		
+		char[] pwIn = this.view.getPasswordInput();
+		char[] pwConfirm = this.view.getPasswordConfirmInput();
+		
+		if (Arrays.equals(pwIn, pwConfirm) &&  pwIn.length != 0) {			
 			return true;
 		}
 		else{
@@ -55,9 +88,24 @@ public class RegistrationController implements ActionListener{
 		}
 	}
 	
+	private boolean checkSecurityQuestion() {
+		
+		String answer = view.getSecurityAnswer();
+		
+		if (!answer.isEmpty()) {
+			return true;
+		}
+		else {
+			view.setErrorMessage("Choose a security-question and answer it!");
+			return false;
+		}
+		
+	}
 	
 	private void login() {
 		System.out.println("sie werden eingeloggt");
+		new LoginController();
+		this.view.dispose();
 	}
 	
 	private void registration() {

@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 
 
 
-public class LoginModel {
+final class LoginModel {
 	
 	private String usernameInput;
 	private String savedUsername;

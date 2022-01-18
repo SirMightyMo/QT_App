@@ -2,7 +2,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 
-public class LoginController implements ActionListener{
+final class LoginController implements ActionListener{
 	
 	private LoginView view;
 	private LoginModel model;
@@ -76,6 +76,8 @@ public class LoginController implements ActionListener{
 	
 	private void registration() {
 		System.out.println("sie werden weitergeleitet");
+		RegistrationController r = new RegistrationController();
+		this.view.dispose();
 	}
 	
 	
