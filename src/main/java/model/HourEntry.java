@@ -1,11 +1,10 @@
 package main.java.model;
-import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Observable;
 
 @SuppressWarnings("deprecation")
-public class HourEntry {
+public class HourEntry extends Observable{
 	
 	private String date;
 	private long sessionTimeInSeconds;
@@ -24,10 +23,9 @@ public class HourEntry {
 	
 	
 	// Constructor
-	public HourEntry(String date, LocalDateTime startTime) {
+	public HourEntry(String date) {
 		super();
 		this.date = date;
-		this.startTime = startTime;
 	}
 
 	// Getter/Setter
@@ -44,18 +42,30 @@ public class HourEntry {
 	}
 
 	public void setSessionTimeInSeconds() {
-		long duration = Duration.between(startTime, endTime).getSeconds() - pauseTimeInSeconds;
-		this.sessionTimeInSeconds = duration;
-		setSessionTimeInMinutes();
+		if (startTime != null && endTime != null) {
+			long duration = Duration.between(startTime, endTime).getSeconds() - pauseTimeInSeconds;
+			this.sessionTimeInSeconds = duration;
+			setSessionTimeInMinutes();			
+		}
 	}
 
 	public long getPauseTimeInSeconds() {
 		return pauseTimeInSeconds;
 	}
 
+	// Automatic setter, when pauseStart & pausEnd are defined (Timer is used); adds up pauses in one session
 	public void setPauseTimeInSeconds() {
-		long duration = Duration.between(pauseStart, pauseEnd).getSeconds();
-		this.pauseTimeInSeconds += duration;
+		if (pauseStart != null && pauseEnd != null) {
+			long duration = Duration.between(pauseStart, pauseEnd).getSeconds();
+			this.pauseTimeInSeconds += duration;
+			setPauseTimeInMinutes();
+			setSessionTimeInSeconds();
+		}
+	}
+	
+	// Manual setter for manually edited textfield; overwrites existing pauseTimeInSeconds
+	public void setPauseTimeInSeconds(long duration) {
+		this.pauseTimeInSeconds = duration;
 		setPauseTimeInMinutes();
 	}
 
@@ -89,10 +99,12 @@ public class HourEntry {
 
 	public void setEndTime(LocalDateTime endTime) {
 		if (pauseStart != null && pauseEnd == null) {
-			this.pauseEnd = endTime;
+			setPauseEnd(endTime);
 		}
 		this.endTime = endTime;
-		this.setSessionTimeInSeconds();
+		if (endTime != null) {
+			this.setSessionTimeInSeconds();			
+		}
 	}
 
 	public LocalDateTime getPauseStart() {
@@ -109,8 +121,9 @@ public class HourEntry {
 
 	public void setPauseEnd(LocalDateTime pauseEnd) {
 		this.pauseEnd = pauseEnd;
-		if (pauseEnd != null) {
-			this.setPauseTimeInSeconds();			
+		if (pauseStart != null && pauseEnd != null) {
+			this.setPauseTimeInSeconds();
+			System.out.println();
 		}
 	}
 
@@ -155,8 +168,8 @@ public class HourEntry {
 	}
 	
 	public String pauseMinutesToFormattedString() {
-		int hours = Math.round((float) pauseTimeInMinutes / 60);
-		int minutes = Math.round((pauseTimeInMinutes / 60 - hours) * 60);
+		int hours = (int) pauseTimeInMinutes / 60;
+		int minutes = (int) pauseTimeInMinutes % 60;
 		String hourString = Integer.toString(hours);
 		String minuteString = Integer.toString(hours);
 		if (minutes < 10) {
