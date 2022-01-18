@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
+import main.java.view.RegistrationView;
+import main.java.model.RegistrationModel;
 
-public class RegistrationController implements ActionListener{
+public final class RegistrationController implements ActionListener{
 	
 	private RegistrationView view;
 	private RegistrationModel model;

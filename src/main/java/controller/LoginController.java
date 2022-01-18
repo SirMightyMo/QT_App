@@ -3,8 +3,10 @@ package main.java.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
+import main.java.view.LoginView;
+import main.java.model.LoginModel;
 
-final class LoginController implements ActionListener{
+public final class LoginController implements ActionListener{
 	
 	private LoginView view;
 	private LoginModel model;

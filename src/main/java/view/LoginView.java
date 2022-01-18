@@ -1,4 +1,4 @@
-package main.java.model;
+package main.java.view;
 
 import javax.swing.JFrame;
 import java.awt.Color;
@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 
 
-final class LoginView extends JFrame {
+public final class LoginView extends JFrame {
 	
 	private JLabel usernameLabel;
 	private JLabel passwordLabel;

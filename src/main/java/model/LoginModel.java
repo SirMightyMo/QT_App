@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 
 
 
-final class LoginModel {
+public final class LoginModel {
 	
 	private String usernameInput;
 	private String savedUsername;

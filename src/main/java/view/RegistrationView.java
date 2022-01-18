@@ -1,4 +1,4 @@
-package main.java.model;
+package main.java.view;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;
@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 
 
-final class RegistrationView extends JFrame {
+public final class RegistrationView extends JFrame {
 	
 	private JLabel usernameLabel;
 	private JLabel passwordLabel;

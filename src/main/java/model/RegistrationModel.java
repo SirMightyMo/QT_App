@@ -1,5 +1,5 @@
 package main.java.model;
 
-final class RegistrationModel {
+public final class RegistrationModel {
 
 }

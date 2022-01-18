@@ -8,9 +8,10 @@ import main.java.controller.LoginController;
 public class MainMethod {
 
 	public static void main(String[] args) throws Exception {
+		new LoginController();
 		DatabaseController dbc = new DatabaseController("sa", "");
 		dbc.initializeDB();
 		new TimerHourController();
-		new LoginController();
+		
 	}
 }
