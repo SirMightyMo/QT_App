@@ -34,6 +34,7 @@ public class MainMethod {
 		new DashboardController();
 		new ProjectController();
 		new LoginController();
-
+		new TimerHourController();
+		
 	}
 }
