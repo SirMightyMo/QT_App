@@ -186,7 +186,7 @@ public class DatabaseController {
 	}
 	
 	public void initializeDB() {
-		if(executeSQLScript("./src/main/resources/data/createTables.sql") == 0 /*&& executeSQLScript("./src/main/resources/data/insertDummyData.sql") == 0*/) { // If dummy-data needed, remove inline comment
+		if(executeSQLScript("./src/main/resources/data/createTables.sql") == 0 && executeSQLScript("./src/main/resources/data/insertDummyData.sql") == 0) { // If dummy-data needed, remove inline comment
 			System.out.println("Database successfully initialized");
 		}
 	}
