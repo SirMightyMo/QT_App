@@ -45,6 +45,7 @@ import javax.swing.JCheckBox;
 public class ProjectView extends JFrame implements Observer{
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane; // Container
+	JTabbedPane tabbedPane;
 	private JTable table;
 	private JTextField textFieldFrom;
 	private JTextField textFieldTo;
@@ -75,7 +76,7 @@ public class ProjectView extends JFrame implements Observer{
 		contentPane.setLayout(springLayoutContentPane);
 
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		springLayoutContentPane.putConstraint(SpringLayout.NORTH, tabbedPane, 10, SpringLayout.NORTH, contentPane);
 		springLayoutContentPane.putConstraint(SpringLayout.WEST, tabbedPane, 10, SpringLayout.WEST, contentPane);
 		springLayoutContentPane.putConstraint(SpringLayout.SOUTH, tabbedPane, -15, SpringLayout.SOUTH, contentPane);
@@ -420,17 +421,15 @@ public class ProjectView extends JFrame implements Observer{
 		return textFieldProjectName.getText();
 	}
 	
-	// TO DO Try Catch
 	public Date getNewStartDate(){
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		java.sql.Date startDate = new Date(System.currentTimeMillis());
 		java.util.Date inputStartDate;
 		try {
 			inputStartDate = format.parse(textFieldStartDate.getText());
-		} catch (ParseException e) {
+		} catch (ParseException e) { 	// start date set to actual date in case nothing was entered 
 			inputStartDate = new Date(System.currentTimeMillis());
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		startDate.setTime(inputStartDate.getTime());
 		return startDate;
@@ -442,10 +441,9 @@ public class ProjectView extends JFrame implements Observer{
 		java.util.Date inputEndDate;
 		try {
 			inputEndDate =  format.parse(textFieldEndDate.getText());
-		} catch (ParseException e) {
+		} catch (ParseException e) { // end date set to actual date in case nothing was entered 
 			inputEndDate = new Date(System.currentTimeMillis());
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		endDate.setTime(inputEndDate.getTime());
 		return endDate;
@@ -456,11 +454,11 @@ public class ProjectView extends JFrame implements Observer{
 	}
 	
 	public int getClientID() {
+		// TO DO get client id
 		return 1;
 	}
 	
 	public void filterProjects(String text) {
-        System.out.println("filter set");
 		if(text.length() == 0) {
            sorter.setRowFilter(null);
         } else {
@@ -470,7 +468,6 @@ public class ProjectView extends JFrame implements Observer{
                  System.out.println("Bad regex pattern");
            }
          }
-		System.out.println("filter end");
 	}
 	@Override
 	public void update(Observable o, Object arg) {
@@ -508,5 +505,10 @@ public class ProjectView extends JFrame implements Observer{
 		sorter.setSortKeys(sortKeys);
 		sorter.sort();
 		table.setRowSorter(sorter);
+		
+		
+	}
+	public void setTab(int i) {
+		tabbedPane.setSelectedIndex(i);
 	}
 }

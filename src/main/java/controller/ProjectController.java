@@ -74,6 +74,8 @@ public class ProjectController implements ActionListener {
 				+ "'" + endDate + "',"
 				+ "'" + active + "',"
 				+ "'" + customerID + "')");
+		projectView.updateTable(this);
+		projectView.setTab(0);
 		
 	}
 	
