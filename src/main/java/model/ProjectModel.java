@@ -10,6 +10,7 @@ public class ProjectModel extends Observable{
 		
 	private ArrayList<ArrayList<Object>> projectList;
 	private boolean projectSet;
+	private Object[][] projectTable;
 	
 	// Constructor
 	public ProjectModel() {
@@ -21,8 +22,8 @@ public class ProjectModel extends Observable{
 		this.projectList = new ArrayList<>();
 		DatabaseController db = new DatabaseController("sa", "");
 		ArrayList<Object> result = db.query("SELECT * FROM project ;");
-		Object[][] projectTable = new Object[result.size()][7];
-		for (int i = 0; i < result.size()-1; i++) {
+		projectTable = new Object[result.size()][7];
+		for (int i = 0; i < result.size(); i++) {
 			for (int j = 0; j < 7; j++) {
 				ArrayList<Object> row = (ArrayList<Object>) result.get(i);
 				if(j == 4) {
@@ -30,6 +31,13 @@ public class ProjectModel extends Observable{
 						projectTable[i][j] = "begonnen";
 					}
 					else projectTable[i][j] = "abgeschlossen";
+				}
+				else if(j==5){
+					int customerID = (int) row.get(j);
+					ArrayList<Object> resultCID = db.query("SELECT * FROM customer WHERE c_id ='"+customerID+"' ;");
+					ArrayList<Object> row2 = (ArrayList<Object>) resultCID.get(0);
+					projectTable[i][j] = row2.get(1).toString();
+					
 				}
 				else projectTable[i][j] = row.get(j);	
 			}
@@ -59,7 +67,7 @@ public class ProjectModel extends Observable{
 	public void retrieveProjects() {
 		this.projectList = new ArrayList<>();
 		DatabaseController db = new DatabaseController("sa", "");
-		ArrayList<Object> result = db.query("SELECT p_id, name FROM project WHERE active = TRUE;");
+		ArrayList<Object> result = db.query("SELECT p_id, name FROM project;");
 		result.forEach(entry -> {
 			ArrayList<Object> row = (ArrayList<Object>) entry;
 			this.projectList.add(row);

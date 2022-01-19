@@ -114,6 +114,8 @@ public class ProjectView extends JFrame implements Observer{
 		panel_project_overview.add(scrollPaneTable);
 		// create table
 		table = new JTable();
+		updateTable(projectController);
+		/*
 		table.setModel(new DefaultTableModel(projectController.getTableModel(),
 			new String[] {
 				"#", "Projektname", "Start", "Ende", "Status", "Dauer", "Kunde"
@@ -136,7 +138,7 @@ public class ProjectView extends JFrame implements Observer{
 		sorter.setSortKeys(sortKeys);
 		sorter.sort();
 		table.setRowSorter(sorter);
-		
+		*/
 		scrollPaneTable.setViewportView(table);
 		
 		// Projects Label
@@ -356,6 +358,16 @@ public class ProjectView extends JFrame implements Observer{
 				System.out.print(textFieldStartDate.getText());
 			}
 		});
+		comboBoxProject.addActionListener(projectController);
+		comboBoxProject.setActionCommand(StaticActions.ACTION_SET_PROJECT);
+		
+		// Reset project table
+		JButton btnResetProjects = new JButton("\u21BB");
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, btnResetProjects, 0, SpringLayout.NORTH, lblTimeFrame);
+		sl_panel_project_overview.putConstraint(SpringLayout.EAST, btnResetProjects, -7, SpringLayout.WEST, btnSearchButton);
+		btnResetProjects.addActionListener(projectController);
+		btnResetProjects.setActionCommand(StaticActions.ACTION_RESET_PROJECTS);
+		panel_project_overview.add(btnResetProjects);
 		
 		btnSetEndDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -448,7 +460,8 @@ public class ProjectView extends JFrame implements Observer{
 	}
 	
 	public void filterProjects(String text) {
-        if(text.length() == 0) {
+        System.out.println("filter set");
+		if(text.length() == 0) {
            sorter.setRowFilter(null);
         } else {
            try {
@@ -457,6 +470,7 @@ public class ProjectView extends JFrame implements Observer{
                  System.out.println("Bad regex pattern");
            }
          }
+		System.out.println("filter end");
 	}
 	@Override
 	public void update(Observable o, Object arg) {
@@ -469,5 +483,30 @@ public class ProjectView extends JFrame implements Observer{
 		this.comboBoxProject.setModel(new DefaultComboBoxModel(projectNames.toArray()));
 		System.out.println("Projects loaded into FilterView.");
 		}
+	}
+	public void updateTable(Object arg) {
+		if(arg instanceof ProjectController) {
+			
+		table.setModel(new DefaultTableModel(((ProjectController) arg).getTableModel(),
+				new String[] {
+						"#", "Projektname", "Start", "Ende", "Status", "Kunde", "Dauer"
+					}
+						
+				));
+		table.getColumnModel().getColumn(0).setPreferredWidth(8);
+		table.getColumnModel().getColumn(1).setPreferredWidth(41);
+		table.getColumnModel().getColumn(2).setPreferredWidth(44);
+		table.getColumnModel().getColumn(4).setPreferredWidth(52);
+		table.getColumnModel().getColumn(5).setPreferredWidth(115);
+		table.setAutoCreateRowSorter(true);
+		System.out.println("Update project View");
+	}
+		sorter = new TableRowSorter<>(table.getModel());	
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>();	 
+		int columnIndexToSort = 0;
+		sortKeys.add(new RowSorter.SortKey(columnIndexToSort, SortOrder.ASCENDING));
+		sorter.setSortKeys(sortKeys);
+		sorter.sort();
+		table.setRowSorter(sorter);
 	}
 }
