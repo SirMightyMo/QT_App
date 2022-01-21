@@ -45,13 +45,16 @@ public class ProjectController implements ActionListener {
 		return projectModel.getTableModel();
 	}
 	
+	public void actionResetProjects() {
+		projectView.updateTable(this);
+	}
+	
 	public void actionSearchProjects() {
-		//System.out.println(filterView.getComboBox().getItemAt(0).toString());
+		//System.out.println(projectView.getComboBox().getItemAt(0).toString());
 		projectView.filterProjects(projectView.getComboBox().getSelectedItem().toString());
 	}
 	
 	public void actionSaveProject() {
-		
 		String projectName;
 		Date startDate;
 		Date endDate;
@@ -71,6 +74,8 @@ public class ProjectController implements ActionListener {
 				+ "'" + endDate + "',"
 				+ "'" + active + "',"
 				+ "'" + customerID + "')");
+		projectView.updateTable(this);
+		projectView.setTab(0);
 		
 	}
 	
@@ -89,6 +94,9 @@ public class ProjectController implements ActionListener {
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SAVE_PROJECT)) {
 			actionSaveProject();
+		}
+		if (event.equalsIgnoreCase(StaticActions.ACTION_RESET_PROJECTS)) {
+			actionResetProjects();
 		}
 		
 

@@ -45,6 +45,7 @@ import javax.swing.JCheckBox;
 public class ProjectView extends JFrame implements Observer{
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane; // Container
+	JTabbedPane tabbedPane;
 	private JTable table;
 	private JTextField textFieldFrom;
 	private JTextField textFieldTo;
@@ -75,7 +76,7 @@ public class ProjectView extends JFrame implements Observer{
 		contentPane.setLayout(springLayoutContentPane);
 
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		springLayoutContentPane.putConstraint(SpringLayout.NORTH, tabbedPane, 10, SpringLayout.NORTH, contentPane);
 		springLayoutContentPane.putConstraint(SpringLayout.WEST, tabbedPane, 10, SpringLayout.WEST, contentPane);
 		springLayoutContentPane.putConstraint(SpringLayout.SOUTH, tabbedPane, -15, SpringLayout.SOUTH, contentPane);
@@ -114,6 +115,8 @@ public class ProjectView extends JFrame implements Observer{
 		panel_project_overview.add(scrollPaneTable);
 		// create table
 		table = new JTable();
+		updateTable(projectController);
+		/*
 		table.setModel(new DefaultTableModel(projectController.getTableModel(),
 			new String[] {
 				"#", "Projektname", "Start", "Ende", "Status", "Dauer", "Kunde"
@@ -136,7 +139,7 @@ public class ProjectView extends JFrame implements Observer{
 		sorter.setSortKeys(sortKeys);
 		sorter.sort();
 		table.setRowSorter(sorter);
-		
+		*/
 		scrollPaneTable.setViewportView(table);
 		
 		// Projects Label
@@ -356,6 +359,16 @@ public class ProjectView extends JFrame implements Observer{
 				System.out.print(textFieldStartDate.getText());
 			}
 		});
+		comboBoxProject.addActionListener(projectController);
+		comboBoxProject.setActionCommand(StaticActions.ACTION_SET_PROJECT);
+		
+		// Reset project table
+		JButton btnResetProjects = new JButton("\u21BB");
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, btnResetProjects, 0, SpringLayout.NORTH, lblTimeFrame);
+		sl_panel_project_overview.putConstraint(SpringLayout.EAST, btnResetProjects, -7, SpringLayout.WEST, btnSearchButton);
+		btnResetProjects.addActionListener(projectController);
+		btnResetProjects.setActionCommand(StaticActions.ACTION_RESET_PROJECTS);
+		panel_project_overview.add(btnResetProjects);
 		
 		btnSetEndDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -408,17 +421,15 @@ public class ProjectView extends JFrame implements Observer{
 		return textFieldProjectName.getText();
 	}
 	
-	// TO DO Try Catch
 	public Date getNewStartDate(){
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		java.sql.Date startDate = new Date(System.currentTimeMillis());
 		java.util.Date inputStartDate;
 		try {
 			inputStartDate = format.parse(textFieldStartDate.getText());
-		} catch (ParseException e) {
+		} catch (ParseException e) { 	// start date set to actual date in case nothing was entered 
 			inputStartDate = new Date(System.currentTimeMillis());
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		startDate.setTime(inputStartDate.getTime());
 		return startDate;
@@ -430,10 +441,9 @@ public class ProjectView extends JFrame implements Observer{
 		java.util.Date inputEndDate;
 		try {
 			inputEndDate =  format.parse(textFieldEndDate.getText());
-		} catch (ParseException e) {
+		} catch (ParseException e) { // end date set to actual date in case nothing was entered 
 			inputEndDate = new Date(System.currentTimeMillis());
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		endDate.setTime(inputEndDate.getTime());
 		return endDate;
@@ -444,11 +454,12 @@ public class ProjectView extends JFrame implements Observer{
 	}
 	
 	public int getClientID() {
+		// TO DO get client id
 		return 1;
 	}
 	
 	public void filterProjects(String text) {
-        if(text.length() == 0) {
+		if(text.length() == 0) {
            sorter.setRowFilter(null);
         } else {
            try {
@@ -469,5 +480,35 @@ public class ProjectView extends JFrame implements Observer{
 		this.comboBoxProject.setModel(new DefaultComboBoxModel(projectNames.toArray()));
 		System.out.println("Projects loaded into FilterView.");
 		}
+	}
+	public void updateTable(Object arg) {
+		if(arg instanceof ProjectController) {
+			
+		table.setModel(new DefaultTableModel(((ProjectController) arg).getTableModel(),
+				new String[] {
+						"#", "Projektname", "Start", "Ende", "Status", "Kunde", "Dauer"
+					}
+						
+				));
+		table.getColumnModel().getColumn(0).setPreferredWidth(8);
+		table.getColumnModel().getColumn(1).setPreferredWidth(41);
+		table.getColumnModel().getColumn(2).setPreferredWidth(44);
+		table.getColumnModel().getColumn(4).setPreferredWidth(52);
+		table.getColumnModel().getColumn(5).setPreferredWidth(115);
+		table.setAutoCreateRowSorter(true);
+		System.out.println("Update project View");
+	}
+		sorter = new TableRowSorter<>(table.getModel());	
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>();	 
+		int columnIndexToSort = 0;
+		sortKeys.add(new RowSorter.SortKey(columnIndexToSort, SortOrder.ASCENDING));
+		sorter.setSortKeys(sortKeys);
+		sorter.sort();
+		table.setRowSorter(sorter);
+		
+		
+	}
+	public void setTab(int i) {
+		tabbedPane.setSelectedIndex(i);
 	}
 }
