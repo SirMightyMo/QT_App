@@ -11,9 +11,11 @@ public final class RegistrationController implements ActionListener{
 	
 	private RegistrationView view;
 	private RegistrationModel model;
+	private DatabaseController dbc;
 	
-	public RegistrationController() {
+	public RegistrationController(DatabaseController dbc) {
 		
+		this.dbc = dbc;
 		this.view = new RegistrationView();
 		this.model = new RegistrationModel();
 		 
@@ -108,7 +110,7 @@ public final class RegistrationController implements ActionListener{
 	
 	private void login() {
 		System.out.println("sie werden eingeloggt");
-		new LoginController();
+		new LoginController(this.dbc);
 		this.view.dispose();
 	}
 	

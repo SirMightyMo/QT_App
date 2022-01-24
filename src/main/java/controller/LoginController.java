@@ -2,6 +2,7 @@ package main.java.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import main.java.view.LoginView;
 import main.java.model.LoginModel;
@@ -10,11 +11,13 @@ public final class LoginController implements ActionListener{
 	
 	private LoginView view;
 	private LoginModel model;
+	private DatabaseController dbc;
 	
-	public LoginController() {
+	public LoginController(DatabaseController dbc) {
 		
+		this.dbc = dbc;
 		this.view = new LoginView();
-		this.model = new LoginModel();
+		this.model = new LoginModel(dbc);
 		 
 		this.init();
 		
@@ -39,25 +42,33 @@ public final class LoginController implements ActionListener{
 			view.deleteErrorMessage();
 		}
 		model.updateUserInput(view.getUsernameInput(), view.getPasswordInput());
-		checkUserName(model.getUsernameInput(), model.getSavedUsername());
-		model.zeroLocals();
+		
+		this.checkUserName(model.getUsernameInput(), model.getSavedUsernames());
+		
+		//model.zeroLocals();
 		
 		
 	}
 	
 	
-	private void checkUserName(String usernameInput, String savedUsername) {
-		if (usernameInput.trim().equals(savedUsername)) {
-			
-			
-			this.checkPassword(model.getPasswordInput(), model.getSavedPassword());
+	private void checkUserName(String usernameInput, ArrayList<String> savedUsernames) {
+		
+		System.out.println(savedUsernames);
+		System.out.println(usernameInput);
+
+		if(savedUsernames.contains(usernameInput.trim())) {
+			model.setCorrectUserName(usernameInput.trim());
+			//this.checkPassword(model.getPasswordInput(), model.getSavedPassword());
+
 		}
+		
 		else {
-			
+				
 			view.setErrorMessage("Wrong Username");
-			
+				
 			System.out.println("wrong username");
 		}
+		
 	}
 	
 	private void checkPassword(char[] passwordInput, char[] savedPassword) {
@@ -83,7 +94,7 @@ public final class LoginController implements ActionListener{
 	
 	private void registration() {
 		System.out.println("sie werden weitergeleitet");
-		RegistrationController r = new RegistrationController();
+		RegistrationController r = new RegistrationController(this.dbc);
 		this.view.dispose();
 	}
 	

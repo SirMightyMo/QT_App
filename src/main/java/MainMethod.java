@@ -20,7 +20,7 @@ public class MainMethod {
 
 		// Initialize database
 		DatabaseController dbc = new DatabaseController("sa", "");
-		dbc.initializeDB();
+		//dbc.initializeDB();
 		
 		// Set look and feel (FlatLaf Theme)
 		FlatDarkLaf.setup();
@@ -32,7 +32,7 @@ public class MainMethod {
 		
 		// Generate TimerHourController; TODO: replace with dashboard later
 		
-		new LoginController();
+		new LoginController(dbc);
 		
 		
 		
