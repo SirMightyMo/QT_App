@@ -14,15 +14,14 @@ import main.java.model.TimerModel;
 import main.java.view.DashboardView;
 import main.java.view.TimerView;
 
-public class DashboardController implements ActionListener, DocumentListener{
-	
+public class DashboardController implements ActionListener, DocumentListener {
+
 	private TimerModel timerModel;
 	private DashboardModel dashboardModel;
 	private DashboardView dashboardView;
 	private TimerView timerView;
 	private HourEntry hourEntry;
-	
-	
+
 	private LocalDateTime timeNow;
 	private ArrayList<String> projectList;
 
@@ -31,33 +30,33 @@ public class DashboardController implements ActionListener, DocumentListener{
 	public DashboardController() {
 		this.dashboardModel = new DashboardModel();
 		this.dashboardView = new DashboardView(this);
-		
+
 		this.dashboardModel.addObserver(this.dashboardView);
 		this.dashboardView.setVisible(true);
 	}
-	
+
 	@Override
 	public void insertUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void changedUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public TimerModel getTimerModel() {

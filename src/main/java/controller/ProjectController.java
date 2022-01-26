@@ -15,77 +15,71 @@ import main.java.view.ProjectView;
 import main.java.view.ProjectView;
 
 public class ProjectController implements ActionListener {
-	
+
 	private ProjectModel projectModel;
 	private ProjectView projectView;
 
-	//Constructor
+	// Constructor
 	@SuppressWarnings("deprecation")
 	public ProjectController() {
 		this.projectModel = new ProjectModel();
 		this.projectView = new ProjectView(this);
-		
+
 		this.projectModel.addObserver(this.projectView);
 		this.projectView.setVisible(true);
-		
+
 		projectModel.retrieveProjects();
-		
+
 		actionLoadProjects();
-		
 	}
 
 	public void actionLoadProjects() {
 		this.projectModel.setProjectSet(false);
-		this.projectModel.retrieveProjects();	
-		
+		this.projectModel.retrieveProjects();
+
 	}
 
 	public Object[][] getTableModel() {
 		// TODO Auto-generated method stub
 		return projectModel.getTableModel();
 	}
-	
+
 	public void actionResetProjects() {
 		projectView.updateTable(this);
 	}
-	
+
 	public void actionSearchProjects() {
-		//System.out.println(projectView.getComboBox().getItemAt(0).toString());
+		// System.out.println(projectView.getComboBox().getItemAt(0).toString());
 		projectView.filterProjects(projectView.getComboBox().getSelectedItem().toString());
 	}
-	
+
 	public void actionSaveProject() {
 		String projectName;
 		Date startDate;
 		Date endDate;
 		boolean active;
 		int customerID;
-		
+
 		projectName = projectView.getNewProjectName();
 		startDate = projectView.getNewStartDate();
 		endDate = projectView.getNewEndDate();
 		active = projectView.getNewProjectStat();
 		customerID = projectView.getClientID();
-		
+
 		DatabaseController db = new DatabaseController("sa", "");
-		db.insert("INSERT INTO project(name,start_date,end_date,active,c_id) VALUES("
-				+ "'" + projectName + "',"
-				+ "'" + startDate + "',"
-				+ "'" + endDate + "',"
-				+ "'" + active + "',"
-				+ "'" + customerID + "')");
+		db.insert("INSERT INTO project(name,start_date,end_date,active,c_id) VALUES(" + "'" + projectName + "'," + "'"
+				+ startDate + "'," + "'" + endDate + "'," + "'" + active + "'," + "'" + customerID + "')");
 		projectView.updateTable(this);
 		projectView.setTab(0);
-		
+
 	}
-	
+
 	// ActionListener method
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String event = e.getActionCommand();
 		System.out.println("ACTION: " + event.toString()); // For debugging
-		
-		
+
 		if (event.equalsIgnoreCase(StaticActions.ACTION_LOAD_PROJECTS)) {
 			actionLoadProjects();
 		}
@@ -98,10 +92,5 @@ public class ProjectController implements ActionListener {
 		if (event.equalsIgnoreCase(StaticActions.ACTION_RESET_PROJECTS)) {
 			actionResetProjects();
 		}
-		
-
-		
 	}
-	
 }
-
