@@ -9,6 +9,7 @@ import main.java.controller.DashboardController;
 import main.java.controller.ProjectController;
 import main.java.controller.TestHourEntryController;
 import main.java.controller.TimerHourController;
+import main.java.view.TimerView;
 import main.java.controller.LoginController;
 
 public class MainMethod {
@@ -16,8 +17,8 @@ public class MainMethod {
 	public static void main(String[] args) throws Exception {
 
 		// Initialize database
-		DatabaseController dbc = new DatabaseController("sa", "");
-		dbc.initializeDB();
+//		DatabaseController dbc = new DatabaseController("sa", "");
+//		dbc.initializeDB();
 
 		// Set look and feel (FlatLaf Theme)
 		FlatDarkLaf.setup();
@@ -29,9 +30,9 @@ public class MainMethod {
 		UIManager.put("TextComponent.arc", 999);
 
 		// Generate TimerHourController; TODO: replace with dashboard later
-		new DashboardController();
-		new ProjectController();
-		new LoginController();
+//		new DashboardController();
+//		new ProjectController();
+//		new LoginController();
 		new TimerHourController();
 
 	}
