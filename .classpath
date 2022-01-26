@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="src/main/resources/lib/h2-2.0.202.jar"/>
 	<classpathentry kind="lib" path="src/main/resources/lib/flatlaf-2.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="lib" path="H:/OneDrive/Arbeit/OwnCloud/Semester 4/SE/JavaProject/Git/QT_App/src/main/resources/lib/assertj-core-3.22.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
