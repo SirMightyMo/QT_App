@@ -32,48 +32,40 @@ import javax.swing.BoxLayout;
 
 @SuppressWarnings("deprecation")
 public class TestHourEntryView extends JFrame implements Observer {
-	
+
 	JFrame frame;
 	DefaultTableModel tableModel;
-    
-	public TestHourEntryView(TestHourEntryController controller){    
+
+	public TestHourEntryView(TestHourEntryController controller) {
 		frame = new JFrame();
 
-	    String columnNames[] = {"ID", "DATE", "USER", "PROJECT", "SERVICE", "START", "END", "COMMENT", "DURATION", "PAUSE"};  // id, date, user, project, service, start, end, comment, durationInSeconds, pauseInSeconds       
-	    tableModel = new DefaultTableModel(columnNames, 0);
-	    JTable table = new JTable(tableModel);    
-	    table.setBounds(30,40,200,300);          
-	    JScrollPane scrollPane = new JScrollPane(table);    
-	    frame.getContentPane().add(scrollPane);          
-	    
-	    JButton btnNewButton = new JButton("Aktualisieren");
-	    btnNewButton.addActionListener(controller);
-	    btnNewButton.setActionCommand(StaticActions.ACTION_GET_HOURLIST); // Defined in Class StaticActions
-	    scrollPane.setRowHeaderView(btnNewButton);
-	
-	 		
-	    
-	 	
-	    
-	    frame.setSize(1000,400);    
-	    frame.setVisible(true);
-	    
-	    
-	}     
+		String columnNames[] = { "ID", "DATE", "USER", "PROJECT", "SERVICE", "START", "END", "COMMENT", "DURATION",
+				"PAUSE" }; // id, date, user, project, service, start, end, comment, durationInSeconds,
+							// pauseInSeconds
+		tableModel = new DefaultTableModel(columnNames, 0);
+		JTable table = new JTable(tableModel);
+		table.setBounds(30, 40, 200, 300);
+		JScrollPane scrollPane = new JScrollPane(table);
+		frame.getContentPane().add(scrollPane);
 
-	
-	
-	
+		JButton btnNewButton = new JButton("Aktualisieren");
+		btnNewButton.addActionListener(controller);
+		btnNewButton.setActionCommand(StaticActions.ACTION_GET_HOURLIST); // Defined in Class StaticActions
+		scrollPane.setRowHeaderView(btnNewButton);
+
+		frame.setSize(1000, 400);
+		frame.setVisible(true);
+
+	}
+
 	@Override
 	public void update(Observable o, Object arg) {
 		System.out.println("Trying to update TestHourEntryView");
 		System.out.println(arg.getClass());
-		if(arg instanceof TestHourEntryModel) {
-			tableModel.addRow(((TestHourEntryModel)arg).getData());
+		if (arg instanceof TestHourEntryModel) {
+			tableModel.addRow(((TestHourEntryModel) arg).getData());
 			System.out.println("HourEntry-View updated");
 		}
 	}
-	
-	
 
 }
