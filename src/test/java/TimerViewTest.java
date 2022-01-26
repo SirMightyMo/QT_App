@@ -11,9 +11,12 @@ import main.java.view.TimerView;
 
 import static org.assertj.core.api.Assertions.*;
 
+//import static org.assertj.swing.launcher.ApplicationLauncher.application;
+//import static org.assertj.swing.finder.WindowFinder.findFrame;
 class TimerViewTest {
 
-	TimerView tv;
+	private TimerView tv;
+//	private FrameFixture window;
 
 	@BeforeEach
 	void init() {
@@ -41,8 +44,10 @@ class TimerViewTest {
 	}
 
 	@Test
-	void testAssertJ() {
+	void testViewElements() {
 		// test if assertJ works
 		assertThat(tv.getTitle().equals("QualityTime"));
+		
+		
 	}
 }
