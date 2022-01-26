@@ -26,7 +26,6 @@ public final class LoginView extends JFrame {
 	private JPanel panel;
 
 	public LoginView() {
-
 		init();
 	}
 
@@ -36,23 +35,29 @@ public final class LoginView extends JFrame {
 		panel.setLayout(new GridLayout(4, 1));
 
 		usernameLabel = new JLabel("Username:");
+		usernameLabel.setName("usernameLabel");
 		panel.add(usernameLabel);
 
 		usernameInputField = new JTextField(20);
+		usernameInputField.setName("usernameInputField");
 		usernameInputField.setBounds(100, 20, 165, 25);
 		panel.add(usernameInputField);
 
 		passwordLabel = new JLabel("Password:");
+		passwordLabel.setName("passwordLabel");
 		panel.add(passwordLabel);
 
 		passwordInputField = new JPasswordField("P1sswort", 20);
+		passwordInputField.setName("passwordInputField");
 		passwordInputField.setBounds(100, 20, 165, 25);
 		panel.add(passwordInputField);
 
 		loginButton = new JButton("Login");
+		loginButton.setName("loginButton");
 		panel.add(loginButton);
 
 		registerButton = new JButton("Register");
+		registerButton.setName("registerButton");
 		panel.add(registerButton);
 
 		this.setTitle("Login");
@@ -60,7 +65,6 @@ public final class LoginView extends JFrame {
 		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);
-
 	}
 
 	public String getUsernameInput() {
@@ -77,7 +81,6 @@ public final class LoginView extends JFrame {
 	}
 
 	public void setErrorMessage(String msg) {
-
 		this.errorMessage = new JLabel(msg);
 		this.errorMessage.setForeground(Color.red);
 		this.panel.add(errorMessage);
