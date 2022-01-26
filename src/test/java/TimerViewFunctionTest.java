@@ -1,31 +1,22 @@
 package test.java;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.concurrent.TimeUnit;
-import javax.swing.UIManager;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.formdev.flatlaf.FlatDarkLaf;
+
 import main.java.controller.TimerHourController;
 import main.java.view.TimerView;
 
-import static org.assertj.core.api.Assertions.*;
-
-import org.assertj.swing.junit.dependency.*;
-import org.assertj.swing.fixture.FrameFixture;
-class TimerViewTest {
+class TimerViewFunctionTest {
 
 	private TimerView tv;
-	private FrameFixture window;
-
+	
 	@BeforeEach
 	void init() {
-		FlatDarkLaf.setup();
 		tv = new TimerView(new TimerHourController());
-		UIManager.put("Button.arc", 999);
-		UIManager.put("Component.arc", 999);
-		UIManager.put("ProgressBar.arc", 999);
-		UIManager.put("TextComponent.arc", 999);
 	}
 
 	@Test
@@ -41,13 +32,5 @@ class TimerViewTest {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Test
-	void testViewElements() {
-		// test if assertJ works
-		assertThat(tv.getTitle().equals("QualityTime"));
-		
-		
 	}
 }
