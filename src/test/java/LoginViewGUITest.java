@@ -14,7 +14,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 
 import main.java.view.LoginView;
 
-class LoginViewTest {
+class LoginViewGUITest {
 
 	private FrameFixture window;
 

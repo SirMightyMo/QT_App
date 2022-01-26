@@ -31,9 +31,9 @@ public class MainMethod {
 
 		// Generate TimerHourController; TODO: replace with dashboard later
 //		new DashboardController();
-//		new ProjectController();
-		new LoginController();
-//		new TimerHourController();
+		new ProjectController();
+//		new LoginController();
+		new TimerHourController();
 
 	}
 }

@@ -72,7 +72,6 @@ public final class LoginView extends JFrame {
 	}
 
 	public char[] getPasswordInput() {
-
 		return this.passwordInputField.getPassword();
 	}
 
