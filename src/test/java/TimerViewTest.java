@@ -11,12 +11,12 @@ import main.java.view.TimerView;
 
 import static org.assertj.core.api.Assertions.*;
 
-//import static org.assertj.swing.launcher.ApplicationLauncher.application;
-//import static org.assertj.swing.finder.WindowFinder.findFrame;
+import org.assertj.swing.junit.dependency.*;
+import org.assertj.swing.fixture.FrameFixture;
 class TimerViewTest {
 
 	private TimerView tv;
-//	private FrameFixture window;
+	private FrameFixture window;
 
 	@BeforeEach
 	void init() {
