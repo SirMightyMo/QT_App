@@ -30,7 +30,6 @@ class TimerViewGUITest {
 	@BeforeEach
 	public void setUp() {
 		DatabaseController dbc = new DatabaseController("sa", "");
-		dbc.initializeDB();
 		FlatDarkLaf.setup();
 		TimerView frame = GuiActionRunner.execute(() -> new TimerView(new TimerHourController()));
 		window = new FrameFixture(frame);

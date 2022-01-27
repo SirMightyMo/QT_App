@@ -27,6 +27,7 @@ class TimerViewFunctionTest {
 	@Test
 	void testShowErrorMessage_ValidParameters() {
 		tv.showErrorMessage("Wo soll dieses Label zu sehen sein?", 100000);
+		System.out.println(tv.isErrorVisible());
 		try {
 			TimeUnit.SECONDS.sleep(2);
 		} catch (InterruptedException e) {
