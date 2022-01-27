@@ -9,6 +9,7 @@ import main.java.controller.DashboardController;
 import main.java.controller.ProjectController;
 import main.java.controller.TestHourEntryController;
 import main.java.controller.TimerHourController;
+import main.java.view.TimerView;
 import main.java.controller.LoginController;
 
 public class MainMethod {

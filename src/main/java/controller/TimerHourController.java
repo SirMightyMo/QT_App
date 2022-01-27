@@ -46,7 +46,6 @@ public class TimerHourController implements ActionListener, DocumentListener {
 	public TimerHourController() {
 		this.timerModel = new TimerModel();
 		this.timerView = new TimerView(this);
-
 		this.timerModel.addObserver(this.timerView);
 		this.timerView.setVisible(true);
 

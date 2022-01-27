@@ -76,11 +76,13 @@ public class TimerView extends JFrame implements Observer {
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
 		JPanel projectPanel = new JPanel();
+		projectPanel.setName("projectPanel");
 		contentPanel.add(projectPanel);
 		projectPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		projectPanel.setBackground(new Color(31, 32, 33));
 
 		JLabel lblProject = new JLabel("Projekt:");
+		lblProject.setName("lblProject");
 		lblProject.setHorizontalAlignment(SwingConstants.CENTER);
 		projectPanel.add(lblProject);
 
@@ -93,6 +95,7 @@ public class TimerView extends JFrame implements Observer {
 		projectPanel.add(comboBox);
 
 		JButton btnLoadProjects = new JButton("\u21BB");
+		btnLoadProjects.setName("btnLoadProjects");
 		btnLoadProjects.addActionListener(timerHourController);
 		btnLoadProjects.setActionCommand(StaticActions.ACTION_LOAD_PROJECTS);
 		projectPanel.add(btnLoadProjects);
@@ -111,11 +114,13 @@ public class TimerView extends JFrame implements Observer {
 
 		// Timer Label
 		JLabel timerLabel = new JLabel("Dauer: ");
+		lblProject.setName("timerLabel");
 		durationPanel.add(timerLabel);
 		timerLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		durationPanel.add(durationLabel);
 
 		// Duration Label
+		durationLabel.setName("durationLabel");
 		durationLabel.setBounds(55, 5, 258, 83);
 		durationLabel.setFont(new Font("Adam", Font.PLAIN, 78));
 		durationLabel.setForeground(Color.WHITE);
@@ -127,6 +132,7 @@ public class TimerView extends JFrame implements Observer {
 
 		// Button start
 		JButton btnStart = new JButton("");
+		btnStart.setName("btnStart");
 		btnStart.setIcon(new ImageIcon(TimerView.class.getResource("/main/resources/img/icons/play.gif")));
 		btnStart.addActionListener(timerHourController);
 		btnStart.setActionCommand(StaticActions.ACTION_TIMER_START); // Defined in Class StaticActions
@@ -134,6 +140,7 @@ public class TimerView extends JFrame implements Observer {
 
 		// Button pause
 		JButton btnPause = new JButton("");
+		btnPause.setName("btnPause");
 		btnPause.setIcon(new ImageIcon(TimerView.class.getResource("/main/resources/img/icons/pause.gif")));
 		btnPause.addActionListener(timerHourController);
 		btnPause.setActionCommand(StaticActions.ACTION_TIMER_PAUSE);
@@ -141,6 +148,7 @@ public class TimerView extends JFrame implements Observer {
 
 		// Button stop
 		JButton btnStop = new JButton("");
+		btnStop.setName("btnStop");
 		btnStop.setIcon(new ImageIcon(TimerView.class.getResource("/main/resources/img/icons/stop.gif")));
 		btnStop.addActionListener(timerHourController);
 		btnStop.setActionCommand(StaticActions.ACTION_TIMER_STOP);
@@ -184,6 +192,7 @@ public class TimerView extends JFrame implements Observer {
 		lblComment.setLabelFor(textFieldComment);
 
 		textFieldComment = new JTextField();
+		textFieldComment.setName("textFieldComment");
 		panel.add(textFieldComment);
 		textFieldComment.setAlignmentX(Component.LEFT_ALIGNMENT);
 		textFieldComment.setPreferredSize(new Dimension(300, 20));
@@ -207,12 +216,16 @@ public class TimerView extends JFrame implements Observer {
 		FlowLayout flowLayout = (FlowLayout) confirmButtonPanel.getLayout();
 		contentPanel.add(confirmButtonPanel);
 
+		//Reset Button
 		JButton btnReset = new JButton("Reset");
+		btnReset.setName("btnReset");
 		btnReset.addActionListener(timerHourController);
 		btnReset.setActionCommand(StaticActions.ACTION_TIMER_RESET);
 		confirmButtonPanel.add(btnReset);
 
+		//Save Button
 		JButton btnSave = new JButton("Sichern");
+		btnSave.setName("btnSave");
 		btnSave.addActionListener(timerHourController);
 		btnSave.setActionCommand(StaticActions.ACTION_TIMER_SAVE);
 		confirmButtonPanel.add(btnSave);
