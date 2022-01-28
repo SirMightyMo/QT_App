@@ -30,10 +30,10 @@ public class MainMethod {
 		UIManager.put("TextComponent.arc", 999);
 
 		// Generate TimerHourController; TODO: replace with dashboard later
-		new DashboardController();
+//		new DashboardController();
 		new ProjectController();
-		new LoginController();
-		new TimerHourController();
+//		new LoginController();
+//		new TimerHourController();
 
 	}
 }

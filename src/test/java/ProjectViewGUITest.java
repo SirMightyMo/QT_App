@@ -61,6 +61,11 @@ class ProjectViewGUITest {
 		window.button("btnSetStartDate_1_1").requireVisible();
 	}
 	
+	void testInsertText() {
+		window.textBox("usernameInputField").enterText("Testuser");
+		window.textBox("passwordInputField").enterText("abc");
+	}
+	
 	@Test
 	void testElementsNewProject_Visible() {
 		window.tabbedPane("tabbedPane_panel_new_project").click();
