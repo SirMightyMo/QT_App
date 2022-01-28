@@ -3,10 +3,15 @@ package main.java.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
+
+import javax.swing.event.DocumentEvent;
+
+import main.java.view.IView;
 import main.java.view.LoginView;
+import main.java.model.IModel;
 import main.java.model.LoginModel;
 
-public final class LoginController implements ActionListener {
+public final class LoginController implements IController {
 
 	private LoginView view;
 	private LoginModel model;
@@ -67,6 +72,36 @@ public final class LoginController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public IModel getModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IView getView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

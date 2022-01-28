@@ -4,6 +4,8 @@ import javax.swing.JFrame;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.Panel;
+import java.util.Observable;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -11,7 +13,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.JPasswordField;
 import javax.swing.JPanel;
 
-public final class LoginView extends JFrame {
+public final class LoginView extends JFrame implements IView {
 
 	private JLabel usernameLabel;
 	private JLabel passwordLabel;
@@ -96,5 +98,11 @@ public final class LoginView extends JFrame {
 
 	public JButton getRegisterButton() {
 		return this.registerButton;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 }

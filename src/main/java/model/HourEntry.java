@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Observable;
 
 @SuppressWarnings("deprecation")
-public class HourEntry extends Observable{
+public class HourEntry extends Observable implements IModel{
 	
 	private String date;
 	private long sessionTimeInSeconds;

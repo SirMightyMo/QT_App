@@ -15,7 +15,7 @@ import main.java.controller.DashboardHourListController;
 import main.java.controller.DashboardProjectListController;
 import main.java.controller.TimerHourController;
 
-public class DashboardView extends WindowSuperclass implements Observer{
+public class DashboardView extends WindowSuperclass implements IView{
 	
 	private static final long serialVersionUID = 1L;
 	private JFrame frame;

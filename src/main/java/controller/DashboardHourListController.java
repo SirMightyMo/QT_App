@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
 
+import main.java.model.IModel;
 import main.java.model.StaticActions;
 import main.java.view.DashboardListView;
 
 
-public class DashboardHourListController implements ControllerInterface {
+public class DashboardHourListController implements IController {
 
 	private DashboardListView view;
 	private String[] projectnames;
@@ -108,6 +109,12 @@ public class DashboardHourListController implements ControllerInterface {
 	public void changedUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public IModel getModel() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

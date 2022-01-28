@@ -9,10 +9,11 @@ import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import main.java.model.IModel;
 import main.java.model.StaticActions;
 import main.java.view.DashboardListView;
 
-public class DashboardProjectListController implements ControllerInterface {
+public class DashboardProjectListController implements IController {
 
 	private DashboardListView view;
 	private Object[][] data;
@@ -68,6 +69,12 @@ public class DashboardProjectListController implements ControllerInterface {
 	}
 	
 	@Override
+	public IModel getModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		String event = e.getActionCommand();
 		
@@ -96,6 +103,6 @@ public class DashboardProjectListController implements ControllerInterface {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
 
 }

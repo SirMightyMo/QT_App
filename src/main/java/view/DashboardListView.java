@@ -9,18 +9,17 @@ import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import main.java.controller.ControllerInterface;
-
+import main.java.controller.IController;
 import main.java.controller.LayoutManager;
 
 @SuppressWarnings("deprecation")
-public class DashboardListView implements Observer {
+public class DashboardListView implements IView {
 
-	private ControllerInterface controller;
+	private IController controller;
 	private JScrollPane scrollPane;
 	private JTable table;
 	
-	public DashboardListView(ControllerInterface controller, Object[][] data, String[] columnNames) {
+	public DashboardListView(IController controller, Object[][] data, String[] columnNames) {
 				
 		this.controller = controller;
 		

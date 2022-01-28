@@ -31,7 +31,7 @@ import javax.swing.JTable;
 import javax.swing.BoxLayout;
 
 @SuppressWarnings("deprecation")
-public class TestHourEntryView extends JFrame implements Observer {
+public class TestHourEntryView extends JFrame implements IView {
 
 	JFrame frame;
 	DefaultTableModel tableModel;

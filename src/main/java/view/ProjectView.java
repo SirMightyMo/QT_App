@@ -43,7 +43,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JCheckBox;
 
 @SuppressWarnings("deprecation")
-public class ProjectView extends JFrame implements Observer {
+public class ProjectView extends JFrame implements IView {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane; // Container
 	JTabbedPane tabbedPane;
