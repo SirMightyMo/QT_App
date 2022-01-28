@@ -53,6 +53,9 @@ public final class LoginController implements ActionListener {
 
 	private void login() {
 		System.out.println("sie werden eingeloggt");
+		new DashboardController();
+		//new ProjectController();
+		this.view.dispose();
 	}
 
 	private void registration() {
