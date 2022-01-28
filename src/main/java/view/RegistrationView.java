@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.JPasswordField;
 import javax.swing.JPanel;
+import java.awt.Rectangle;
 
 public final class RegistrationView extends JFrame {
 
@@ -95,6 +96,7 @@ public final class RegistrationView extends JFrame {
 		panelTwo.add(securityQuestionLabel, BorderLayout.NORTH);
 
 		securityQuestionPicker = new JComboBox(questions);
+		securityQuestionPicker.setBounds(100, 20, 165, 25);
 		panelTwo.add(securityQuestionPicker, BorderLayout.CENTER);
 
 		panelThree = new JPanel();
@@ -116,11 +118,11 @@ public final class RegistrationView extends JFrame {
 		this.errorMessage = new JLabel();
 
 		this.setTitle("Register");
-		this.setLayout(new GridLayout(4, 1));
-		this.add(panel);
-		this.add(panelTwo);
-		this.add(panelThree);
-		this.add(errorMessage);
+		getContentPane().setLayout(new GridLayout(4,1));
+		getContentPane().add(panel);
+		getContentPane().add(panelTwo);
+		getContentPane().add(panelThree);
+		getContentPane().add(errorMessage);
 		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);
