@@ -1,4 +1,5 @@
 package main.java.model;
+
 import javax.swing.JFrame;
 
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public final class LoginModel {
 		
 		
 	}
-	
+
 	public String getUsernameInput() {
 		return this.usernameInput;
 	}
@@ -48,7 +49,7 @@ public final class LoginModel {
 	public ArrayList<String> getSavedUsernames() {
 		return this.savedUsernames;
 	}
-	
+
 	public char[] getPasswordInput() {
 		return this.passwordInput;
 	}
@@ -66,15 +67,13 @@ public final class LoginModel {
 		});
 		return this.savedPassword;
 	}
-	
+
 	public void updateUserInput(String usrInput, char[] pswInput) {
 		this.passwordInput = pswInput;
 		this.usernameInput = usrInput;
 	}
-	
+
 	public void zeroLocals() {
 		Arrays.fill(savedPassword, '0');
-		
 	}
-
 }

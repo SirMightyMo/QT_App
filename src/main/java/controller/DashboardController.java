@@ -14,98 +14,87 @@ import main.java.model.TimerModel;
 import main.java.view.DashboardView;
 import main.java.view.TimerView;
 
-public class DashboardController implements ActionListener, DocumentListener{
-	
-	private TimerModel timerModel;
-	private DashboardModel dashboardModel;
+public class DashboardController implements ActionListener, DocumentListener {
+
+	private TimerHourController timerHourController;
+	private DashboardProjectListController dashboardProjectListController;
+	private DashboardHourListController dashboardHourListController;
 	private DashboardView dashboardView;
-	private TimerView timerView;
-	private HourEntry hourEntry;
-	
-	
-	private LocalDateTime timeNow;
-	private ArrayList<String> projectList;
 
 	// Constructor
 	@SuppressWarnings("deprecation")
 	public DashboardController() {
-		this.dashboardModel = new DashboardModel();
-		this.dashboardView = new DashboardView(this);
+		// Intanciate Controller
+		this.timerHourController = new TimerHourController();
+		this.dashboardProjectListController = new DashboardProjectListController();
+		this.dashboardHourListController = new DashboardHourListController();
 		
-		this.dashboardModel.addObserver(this.dashboardView);
+		// Instanciate own view
+		this.dashboardView = new DashboardView(this);
 		this.dashboardView.setVisible(true);
+
+		// Coordinate listeners:
+		// Lists need to be updated, when new hour entry is being saved
+		timerHourController.getTimerView().getBtnSave().addActionListener(dashboardHourListController);
+		timerHourController.getTimerView().getBtnSave().addActionListener(dashboardProjectListController);
+		
+		
 	}
-	
+
+	public TimerHourController getTimerHourController() {
+		return timerHourController;
+	}
+
+	public void setTimerHourController(TimerHourController timerHourController) {
+		this.timerHourController = timerHourController;
+	}
+
+	public DashboardProjectListController getDashboardProjectListController() {
+		return dashboardProjectListController;
+	}
+
+	public void setDashboardProjectListController(DashboardProjectListController dashboardProjectListController) {
+		this.dashboardProjectListController = dashboardProjectListController;
+	}
+
+	public DashboardHourListController getDashboardHourListController() {
+		return dashboardHourListController;
+	}
+
+	public void setDashboardHourListController(DashboardHourListController dashboardHourListController) {
+		this.dashboardHourListController = dashboardHourListController;
+	}
+
+	public DashboardView getDashboardView() {
+		return dashboardView;
+	}
+
+	public void setDashboardView(DashboardView dashboardView) {
+		this.dashboardView = dashboardView;
+	}
+
 	@Override
 	public void insertUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void changedUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-		
-	}
 
-	public TimerModel getTimerModel() {
-		return timerModel;
-	}
-
-	public void setTimerModel(TimerModel timerModel) {
-		this.timerModel = timerModel;
-	}
-
-	public TimerView getTimerView() {
-		return timerView;
-	}
-
-	public void setTimerView(TimerView timerView) {
-		this.timerView = timerView;
-	}
-
-	public HourEntry getHourEntry() {
-		return hourEntry;
-	}
-
-	public void setHourEntry(HourEntry hourEntry) {
-		this.hourEntry = hourEntry;
-	}
-
-	public LocalDateTime getTimeNow() {
-		return timeNow;
-	}
-
-	public void setTimeNow(LocalDateTime timeNow) {
-		this.timeNow = timeNow;
-	}
-
-	public DashboardModel getDashboardModel() {
-		return dashboardModel;
-	}
-
-	public void setDashboardModel(DashboardModel dashboardModel) {
-		this.dashboardModel = dashboardModel;
-	}
-
-	public ArrayList<String> getProjectList() {
-		return projectList;
-	}
-
-	public void setProjectList(ArrayList<String> projectList) {
-		this.projectList = projectList;
 	}
 
 }

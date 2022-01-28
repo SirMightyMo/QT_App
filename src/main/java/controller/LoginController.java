@@ -7,8 +7,8 @@ import java.util.Arrays;
 import main.java.view.LoginView;
 import main.java.model.LoginModel;
 
-public final class LoginController implements ActionListener{
-	
+public final class LoginController implements ActionListener {
+
 	private LoginView view;
 	private LoginModel model;
 	private DatabaseController dbc;
@@ -20,22 +20,13 @@ public final class LoginController implements ActionListener{
 		this.model = new LoginModel(dbc);
 		 
 		this.init();
-		
-		
 	}
-	
-	
+
 	private void init() {
-		view.getLoginButton().addActionListener(e -> 
-			this.securityCheck()			
-		);
-		view.getRegisterButton().addActionListener(e->
-			this.registration()
-		);
-		
+		view.getLoginButton().addActionListener(e -> this.securityCheck());
+		view.getRegisterButton().addActionListener(e -> this.registration());
 	}
-	
-	
+
 	private void securityCheck() {
 		System.out.println("SecurityCheck");
 		if (view.getErrorMessage() != null) {
@@ -70,38 +61,33 @@ public final class LoginController implements ActionListener{
 		}
 		
 	}
-	
+
 	private void checkPassword(char[] passwordInput, char[] savedPassword) {
-		
-		
-		if (Arrays.equals(passwordInput, savedPassword)) {			
+
+		if (Arrays.equals(passwordInput, savedPassword)) {
 			this.login();
-		}
-		else{
+		} else {
 			view.setErrorMessage("Password incorrect");
 			System.out.println("wrong psw");
-			
 		}
 	}
-	
-	
+
 	private void login() {
 		System.out.println("sie werden eingeloggt");
 		new DashboardController();
 		//new ProjectController();
 		this.view.dispose();
 	}
-	
+
 	private void registration() {
 		System.out.println("sie werden weitergeleitet");
 		RegistrationController r = new RegistrationController(this.dbc);
 		this.view.dispose();
 	}
-	
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 	}
 
 }

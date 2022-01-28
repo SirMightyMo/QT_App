@@ -20,8 +20,6 @@ public final class RegistrationController implements ActionListener{
 		this.model = new RegistrationModel();
 		 
 		this.init();
-		
-		
 	}
 	
 	
@@ -32,7 +30,6 @@ public final class RegistrationController implements ActionListener{
 		view.getRegisterButton().addActionListener(e->
 			this.registration()
 		);
-		
 	}
 	
 	
@@ -44,7 +41,6 @@ public final class RegistrationController implements ActionListener{
 		if(checkUsername() && checkEmail() && checkPassword() &&  checkSecurityQuestion()) {
 			System.out.println("Success");
 		}
-		
 		
 		return true;
 	}
@@ -75,7 +71,6 @@ public final class RegistrationController implements ActionListener{
 			view.setErrorMessage("Wrong E-Mail!");
 			return false;
 		}
-		
 	}
 	
 	
@@ -105,7 +100,6 @@ public final class RegistrationController implements ActionListener{
 			view.setErrorMessage("Choose a security-question and answer it!");
 			return false;
 		}
-		
 	}
 	
 	private void login() {
