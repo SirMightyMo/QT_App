@@ -7,12 +7,17 @@ import org.junit.jupiter.api.Test;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 
+import main.java.controller.DashboardController;
 import main.java.controller.DatabaseController;
+import main.java.controller.LayoutManager;
 import main.java.controller.TimerHourController;
+import main.java.view.DashboardView;
 import main.java.view.TimerView;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
+import org.assertj.swing.core.ComponentFinder;
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
@@ -29,10 +34,11 @@ class TimerViewGUITest {
 
 	@BeforeEach
 	public void setUp() {
+		new LayoutManager();
 		DatabaseController dbc = new DatabaseController("sa", "");
 		FlatDarkLaf.setup();
-		TimerView frame = GuiActionRunner.execute(() -> new TimerView(new TimerHourController()));
-		//window = new FrameFixture(frame); //TODO: Fix. TimerView no longer is JFrame
+		DashboardView frame = GuiActionRunner.execute(() -> new DashboardView(new DashboardController()));
+		window = new FrameFixture(frame); // TODO: Fix. TimerView no longer is JFrame
 		window.show(); // shows the frame to test
 	}
 
@@ -54,8 +60,8 @@ class TimerViewGUITest {
 
 	@Test
 	void testInsertComment() {
+		window.textBox("textFieldComment").requireVisible();
 		window.textBox("textFieldComment").enterText("This is a comment");
-		window.textBox("textFieldComment").deleteText();
 	}
 
 	@Test
@@ -68,27 +74,27 @@ class TimerViewGUITest {
 		JButtonFixture btnStart = window.button("btnStart");
 		assertNotNull(btnStart);
 		window.button("btnStart").click();
-		
+
 		JButtonFixture btnPause = window.button("btnPause");
 		assertNotNull(btnPause);
 		window.button("btnPause").click();
-		
+
 		JButtonFixture btnStop = window.button("btnStop");
 		assertNotNull(btnStop);
 		window.button("btnStop").click();
-		
+
 		JButtonFixture btnSave = window.button("btnSave");
 		assertNotNull(btnSave);
 		window.button("btnSave").click();
-		
+
 		JButtonFixture btnReset = window.button("btnReset");
 		assertNotNull(btnReset);
 		window.button("btnReset").click();
-		
+
 		JButtonFixture btnLoadProjects = window.button("btnLoadProjects");
 		assertNotNull(btnLoadProjects);
 		window.button("btnLoadProjects").click();
-		
+
 		JPanelFixture projectPanel = window.panel("projectPanel");
 		assertNotNull(projectPanel);
 		window.panel("projectPanel").isEnabled();
