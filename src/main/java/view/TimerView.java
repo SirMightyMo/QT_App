@@ -1,4 +1,5 @@
 package main.java.view;
+
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -42,7 +43,7 @@ import javax.swing.GroupLayout.Alignment;
 import java.awt.BorderLayout;
 
 @SuppressWarnings("deprecation")
-public class TimerView extends JFrame implements Observer{
+public class TimerView implements Observer {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPanel; // Container
 
@@ -54,35 +55,31 @@ public class TimerView extends JFrame implements Observer{
 	private JTextField textPauseDuration;
 	private JTextField hiddenTextFieldProjectID;
 	private JLabel lblErrorMessage;
+	private JButton btnSave;
 	private boolean errorVisible;
 
-	
 	/**
 	 * Create Frame
 	 */
-	public TimerView(TimerHourController timerHourController) {	
-		setFont(new Font("Open Sans ExtraBold", Font.PLAIN, 12));
-		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit().getImage(TimerView.class.getResource("/main/resources/img/icons/qtproject_placeholder.gif")));
-		setTitle("Quality Time");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 354, 600); // x, y, width, height
+	public TimerView(TimerHourController timerHourController) {
+		//setFont(new Font("Open Sans ExtraBold", Font.PLAIN, 12));
 		contentPanel = new JPanel();
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5)); // top, left, bottom, right
 		contentPanel.setBounds(0, 0, 1850, 1080);
-		setContentPane(contentPanel);
-		contentPanel.setBackground(new Color(31,32,33));
+		contentPanel.setBackground(new Color(31, 32, 33));
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-		
+
 		JPanel projectPanel = new JPanel();
+		projectPanel.setName("projectPanel");
 		contentPanel.add(projectPanel);
 		projectPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		projectPanel.setBackground(new Color(31,32,33));
-		
+		projectPanel.setBackground(new Color(31, 32, 33));
+
 		JLabel lblProject = new JLabel("Projekt:");
+		lblProject.setName("lblProject");
 		lblProject.setHorizontalAlignment(SwingConstants.CENTER);
 		projectPanel.add(lblProject);
-		
+
 		// Project List
 		comboBox.setPreferredSize(new Dimension(200, 20));
 		lblProject.setLabelFor(comboBox);
@@ -90,68 +87,75 @@ public class TimerView extends JFrame implements Observer{
 		comboBox.addActionListener(timerHourController);
 		comboBox.setActionCommand(StaticActions.ACTION_SET_PROJECT);
 		projectPanel.add(comboBox);
-		
+
 		JButton btnLoadProjects = new JButton("\u21BB");
+		btnLoadProjects.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 14));
+		btnLoadProjects.setName("btnLoadProjects");
 		btnLoadProjects.addActionListener(timerHourController);
 		btnLoadProjects.setActionCommand(StaticActions.ACTION_LOAD_PROJECTS);
 		projectPanel.add(btnLoadProjects);
-		
+
 		hiddenTextFieldProjectID = new JTextField();
-		hiddenTextFieldProjectID.setFont(new Font("Tahoma", Font.PLAIN, 5));
+		//hiddenTextFieldProjectID.setFont(new Font("Tahoma", Font.PLAIN, 5));
 		hiddenTextFieldProjectID.setHorizontalAlignment(SwingConstants.RIGHT);
 		hiddenTextFieldProjectID.setEnabled(false);
 		hiddenTextFieldProjectID.setEditable(false);
 		hiddenTextFieldProjectID.setVisible(false);
 		projectPanel.add(hiddenTextFieldProjectID);
-		
+
 		JPanel durationPanel = new JPanel();
-		durationPanel.setBackground(new Color(31,32,33));
+		durationPanel.setBackground(new Color(31, 32, 33));
 		contentPanel.add(durationPanel);
-		
-		// Timer Label
-		JLabel timerLabel = new JLabel("Dauer: ");
+
+		// Timer Label; TODO: Delete?
+		JLabel timerLabel = new JLabel("");
+		lblProject.setName("timerLabel");
 		durationPanel.add(timerLabel);
 		timerLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		durationPanel.add(durationLabel);
-		
+
 		// Duration Label
+		durationLabel.setName("durationLabel");
 		durationLabel.setBounds(55, 5, 258, 83);
 		durationLabel.setFont(new Font("Adam", Font.PLAIN, 78));
 		durationLabel.setForeground(Color.WHITE);
-		
+
 		// Pane for buttons
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setBackground(new Color(31,32,33));
+		buttonPanel.setBackground(new Color(31, 32, 33));
 		contentPanel.add(buttonPanel);
-		
+
 		// Button start
 		JButton btnStart = new JButton("");
+		btnStart.setName("btnStart");
 		btnStart.setIcon(new ImageIcon(TimerView.class.getResource("/main/resources/img/icons/play.gif")));
 		btnStart.addActionListener(timerHourController);
 		btnStart.setActionCommand(StaticActions.ACTION_TIMER_START); // Defined in Class StaticActions
 		buttonPanel.add(btnStart);
-		
+
 		// Button pause
 		JButton btnPause = new JButton("");
+		btnPause.setName("btnPause");
 		btnPause.setIcon(new ImageIcon(TimerView.class.getResource("/main/resources/img/icons/pause.gif")));
 		btnPause.addActionListener(timerHourController);
 		btnPause.setActionCommand(StaticActions.ACTION_TIMER_PAUSE);
 		buttonPanel.add(btnPause);
-		
+
 		// Button stop
 		JButton btnStop = new JButton("");
+		btnStop.setName("btnStop");
 		btnStop.setIcon(new ImageIcon(TimerView.class.getResource("/main/resources/img/icons/stop.gif")));
 		btnStop.addActionListener(timerHourController);
 		btnStop.setActionCommand(StaticActions.ACTION_TIMER_STOP);
 		buttonPanel.add(btnStop);
-		
+
 		JPanel manualEntryPanel = new JPanel();
-		manualEntryPanel.setBackground(new Color(31,32,33));
+		manualEntryPanel.setBackground(new Color(31, 32, 33));
 		contentPanel.add(manualEntryPanel);
-		
+
 		JLabel lblFrom = new JLabel("Von:");
 		manualEntryPanel.add(lblFrom);
-		
+
 		txtStartTime = new JTextField();
 		txtStartTime.setEnabled(true);
 		lblFrom.setLabelFor(txtStartTime);
@@ -160,10 +164,10 @@ public class TimerView extends JFrame implements Observer{
 		txtStartTime.getDocument().addDocumentListener(timerHourController);
 		manualEntryPanel.add(txtStartTime);
 		txtStartTime.setColumns(5);
-		
+
 		JLabel lblTo = new JLabel("Bis:");
 		manualEntryPanel.add(lblTo);
-		
+
 		txtEndTime = new JTextField();
 		txtEndTime.setEnabled(true);
 		lblTo.setLabelFor(txtEndTime);
@@ -172,27 +176,28 @@ public class TimerView extends JFrame implements Observer{
 		txtEndTime.getDocument().addDocumentListener(timerHourController);
 		manualEntryPanel.add(txtEndTime);
 		txtEndTime.setColumns(5);
-		
+
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(31,32,33));
+		panel.setBackground(new Color(31, 32, 33));
 		contentPanel.add(panel);
-		
+
 		JLabel lblComment = new JLabel("Kommentar:");
 		panel.add(lblComment);
 		lblComment.setHorizontalAlignment(SwingConstants.CENTER);
 		lblComment.setLabelFor(textFieldComment);
-		
+
 		textFieldComment = new JTextField();
+		textFieldComment.setName("textFieldComment");
 		panel.add(textFieldComment);
 		textFieldComment.setAlignmentX(Component.LEFT_ALIGNMENT);
-		textFieldComment.setPreferredSize(new Dimension(300,20));
+		textFieldComment.setPreferredSize(new Dimension(300, 20));
 		textFieldComment.setToolTipText("");
 		textFieldComment.setHorizontalAlignment(SwingConstants.LEFT);
-		textFieldComment.setColumns(25);
-		
+		textFieldComment.setColumns(20);
+
 		JLabel lblPauseDuration = new JLabel("Pause:");
 		manualEntryPanel.add(lblPauseDuration);
-		
+
 		textPauseDuration = new JTextField();
 		textPauseDuration.setEnabled(true);
 		lblPauseDuration.setLabelFor(textPauseDuration);
@@ -200,40 +205,43 @@ public class TimerView extends JFrame implements Observer{
 		textPauseDuration.getDocument().addDocumentListener(timerHourController);
 		manualEntryPanel.add(textPauseDuration);
 		textPauseDuration.setColumns(5);
-		
+
 		JPanel confirmButtonPanel = new JPanel();
-		confirmButtonPanel.setBackground(new Color(31,32,33));
+		confirmButtonPanel.setBackground(new Color(31, 32, 33));
 		FlowLayout flowLayout = (FlowLayout) confirmButtonPanel.getLayout();
 		contentPanel.add(confirmButtonPanel);
-		
+
+		//Reset Button
 		JButton btnReset = new JButton("Reset");
+		btnReset.setName("btnReset");
 		btnReset.addActionListener(timerHourController);
 		btnReset.setActionCommand(StaticActions.ACTION_TIMER_RESET);
 		confirmButtonPanel.add(btnReset);
-		
-		JButton btnSave = new JButton("Sichern");
+
+		//Save Button
+		btnSave = new JButton("Sichern");
+		btnSave.setName("btnSave");
 		btnSave.addActionListener(timerHourController);
 		btnSave.setActionCommand(StaticActions.ACTION_TIMER_SAVE);
 		confirmButtonPanel.add(btnSave);
-		
-		
+
 		JPanel errorPanel = new JPanel();
-		errorPanel.setBackground(new Color(31,32,33));
+		errorPanel.setBackground(new Color(31, 32, 33));
 		FlowLayout flowLayout_1 = (FlowLayout) errorPanel.getLayout();
 		contentPanel.add(errorPanel);
-		
+
 		lblErrorMessage = new JLabel("Error Message");
-		lblErrorMessage.setFont(new Font("Tahoma", Font.BOLD, 12));
+		//lblErrorMessage.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblErrorMessage.setForeground(new Color(255, 140, 0));
 		lblErrorMessage.setVisible(false);
 		errorPanel.add(lblErrorMessage);
-		
+
 	}
 
 	public JPanel getContentPanel() {
 		return contentPanel;
 	}
-	
+
 	public JLabel getDurationLabel() {
 		return durationLabel;
 	}
@@ -253,29 +261,33 @@ public class TimerView extends JFrame implements Observer{
 	public JTextField getTextFieldComment() {
 		return textFieldComment;
 	}
-	
+
 	public JComboBox getComboBox() {
 		return comboBox;
 	}
-	
+
 	public JTextField getHiddenTextFieldProjectID() {
 		return hiddenTextFieldProjectID;
 	}
-		
+
 	public JLabel getLblErrorMessage() {
 		return lblErrorMessage;
 	}
-	
+
+	public JButton getBtnSave() {
+		return btnSave;
+	}
+
 	public boolean isErrorVisible() {
 		return errorVisible;
 	}
-	
+
 	public void setErrorVisible(boolean errorVisible) {
 		this.errorVisible = errorVisible;
 	}
-	
+
 	public void showErrorMessage(String message, long duration) {
-		lblErrorMessage.setText(message);		
+		lblErrorMessage.setText(message);
 		if (!isErrorVisible()) {
 			Timer timer = new Timer();
 			TimerTask task = new TimerTask() {
@@ -283,26 +295,27 @@ public class TimerView extends JFrame implements Observer{
 				public void run() {
 					lblErrorMessage.setVisible(false);
 					setErrorVisible(false);
-				}	
-			};			
+				}
+			};
 			timer.schedule(task, duration);
 		}
 		lblErrorMessage.setVisible(true);
 	}
-	
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if(arg instanceof TimerModel) {
+		if (arg instanceof TimerModel) {
 			// update timer-stopwatch
 			this.durationLabel.setText(((TimerModel) arg).timerToString(true));
-			
+
 			/*
-			 * Update project list:
-			 * ProjectList from TimerModel is an ArrayList of Objects containing ArrayLists of Objects (project data).
-			 * The inner ArrayList contains the project id (index 0) and the project name (index 1).
-			 * To only display the projects names, the program is iterating over the project data and adds the names to a new ArrayList 'projectNames'.
-			 * This ArrayList is then converted to an Array and provides the needed information for the ComboBox (dropdown with selectable projects).
+			 * Update project list: ProjectList from TimerModel is an ArrayList of Objects
+			 * containing ArrayLists of Objects (project data). The inner ArrayList contains
+			 * the project id (index 0) and the project name (index 1). To only display the
+			 * projects names, the program is iterating over the project data and adds the
+			 * names to a new ArrayList 'projectNames'. This ArrayList is then converted to
+			 * an Array and provides the needed information for the ComboBox (dropdown with
+			 * selectable projects).
 			 */
 			if (!((TimerModel) arg).isTimerRunning() && !((TimerModel) arg).isProjectSet()) {
 				ArrayList<String> projectNames = new ArrayList<>();
@@ -312,8 +325,6 @@ public class TimerView extends JFrame implements Observer{
 				this.comboBox.setModel(new DefaultComboBoxModel(projectNames.toArray()));
 				System.out.println("Projects loaded into TimerView.");
 			}
-			
 		}
-		
 	}
 }

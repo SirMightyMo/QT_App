@@ -71,13 +71,14 @@ public class DatabaseController {
 		}
 	}
 
-	
 	/*
 	 * insert(String sql)
 	 * 
-	 * This method takes a String as an argument. For the method to work this String needs to be a valid SQL statement.
+	 * This method takes a String as an argument. For the method to work this String
+	 * needs to be a valid SQL statement.
 	 * 
-	 * Example: "INSERT INTO tablename(column1, column2, column3) VALUES('value1','value2','value3');"
+	 * Example:
+	 * "INSERT INTO tablename(column1, column2, column3) VALUES('value1','value2','value3');"
 	 * 
 	 */
 	public void insert(String sql) {
@@ -109,28 +110,34 @@ public class DatabaseController {
 	/*
 	 * query(String sql):
 	 * 
-	 * This method takes a String as an argument. For the method to work this String needs to be a valid SQL statement.
+	 * This method takes a String as an argument. For the method to work this String
+	 * needs to be a valid SQL statement.
 	 * 
 	 * Example: "SELECT column1, column2 FROM tablename;"
 	 * 
-	 * The method connects to the database, creates and executes the statement. The results retrieved are stored temporarily
-	 * in a ResultSet. Since the only information given is the SQL statement as a String, the method does not automatically
-	 * know how many columns are queried. Therefore it reads the meta data of the ResultSet and stores the column count in
-	 * a separate variable.
-	 * For every row contained in the ResultSet the method creates an ArrayList of Objects and adds the according values of
-	 * the row. It then adds these ArrayLists containing the complete retrieved row's data to another final ArrayList of Objects 'resultArrayList'.
+	 * The method connects to the database, creates and executes the statement. The
+	 * results retrieved are stored temporarily in a ResultSet. Since the only
+	 * information given is the SQL statement as a String, the method does not
+	 * automatically know how many columns are queried. Therefore it reads the meta
+	 * data of the ResultSet and stores the column count in a separate variable. For
+	 * every row contained in the ResultSet the method creates an ArrayList of
+	 * Objects and adds the according values of the row. It then adds these
+	 * ArrayLists containing the complete retrieved row's data to another final
+	 * ArrayList of Objects 'resultArrayList'.
 	 * 
-	 * This resultArrayList is the returned by the method.
-	 * For reading/computing the results of the inner ArrayLists, the values have to be casted to the according object type:
+	 * This resultArrayList is the returned by the method. For reading/computing the
+	 * results of the inner ArrayLists, the values have to be casted to the
+	 * according object type:
 	 * 
-	 * ArrayList<Object> result = db.query("SELECT column1, column2 FROM tablename;");
-	 * result.forEach(entry -> {
-	 *		ArrayList<Object> row = (ArrayList<Object> entry);
-	 *		// do something with row-ArrayList here	
-	 * }
+	 * ArrayList<Object> result =
+	 * db.query("SELECT column1, column2 FROM tablename;"); result.forEach(entry ->
+	 * { ArrayList<Object> row = (ArrayList<Object> entry); // do something with
+	 * row-ArrayList here }
 	 * 
-	 * "Visual Dummy-Example": ResultList( RowList(valueOfColumn1, valueOfColumn2), RowList(valueOfColumn1, valueOfColumn2), RowList(valueOfColumn1, valueOfColumn2), ... )
-	 * -> ResultList contains RowLists, that contain the values of queried columns.
+	 * "Visual Dummy-Example": ResultList( RowList(valueOfColumn1, valueOfColumn2),
+	 * RowList(valueOfColumn1, valueOfColumn2), RowList(valueOfColumn1,
+	 * valueOfColumn2), ... ) -> ResultList contains RowLists, that contain the
+	 * values of queried columns.
 	 * 
 	 */
 	public ArrayList<Object> query(String sql) {
@@ -142,15 +149,15 @@ public class DatabaseController {
 			dbConnection = DriverManager.getConnection(DB_URL, user, pass);
 			statement = dbConnection.createStatement();
 			rs = statement.executeQuery(sql);
-			
+
 			ResultSetMetaData rsmd = rs.getMetaData(); // get info about ResultSet
 			int columnCount = rsmd.getColumnCount(); // find out, how many columns per row where retrieved
-			
+
 			// while there are results, compute them here
-			while (rs.next()) {				
+			while (rs.next()) {
 				// create an ArrayList for every retrieved row for storing column-values
 				ArrayList<Object> rowData = new ArrayList<>();
-				
+
 				// for every column retrieved, add column-value to row-ArrayList;
 				for (int column = 1; column <= columnCount; column++) {
 					rowData.add(rs.getObject(column));
@@ -158,35 +165,37 @@ public class DatabaseController {
 				// add row to result-ArrayList
 				resultArrayList.add(rowData);
 			}
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (rs != null) 
+				if (rs != null)
 					rs.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			try {
-				if (statement != null) 
+				if (statement != null)
 					statement.close();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}
 		try {
-			dbConnection.close();			
+			dbConnection.close();
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 		return resultArrayList;
 	}
-	
+
 	public void initializeDB() {
-		if(executeSQLScript("./src/main/resources/data/createTables.sql") == 0 && executeSQLScript("./src/main/resources/data/insertDummyData.sql") == 0) { // If dummy-data needed, remove inline comment
+		if (executeSQLScript("./src/main/resources/data/createTables.sql") == 0
+				/*&& executeSQLScript("./src/main/resources/data/insertDummyData.sql") == 0*/) { // If dummy-data needed,
+																								// remove inline comment
 			System.out.println("Database successfully initialized");
 		}
 	}
@@ -214,7 +223,7 @@ public class DatabaseController {
 			statement.close();
 			bReader.close();
 			dbConnection.close();
-			
+
 			System.out.println("SQL-Script " + scriptFilePath + " executed successfully");
 		} catch (Exception e) {
 			System.out.println("Problem executing SQL Script");

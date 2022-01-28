@@ -66,8 +66,7 @@ public class DatePicker {
 	public void displayDate() {
 		for (int x = 7; x < button.length; x++)
 			button[x].setText("");
-		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
-				"MMMM yyyy");
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMMM yyyy");
 		java.util.Calendar cal = java.util.Calendar.getInstance();
 		cal.set(year, month, 1);
 		int dayOfWeek = cal.get(java.util.Calendar.DAY_OF_WEEK);
@@ -81,8 +80,7 @@ public class DatePicker {
 	public String setPickedDate() {
 		if (day.equals(""))
 			return day;
-		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat(
-				"dd-MM-yyyy");
+		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd-MM-yyyy");
 		java.util.Calendar cal = java.util.Calendar.getInstance();
 		cal.set(year, month, Integer.parseInt(day));
 		return sdf.format(cal.getTime());

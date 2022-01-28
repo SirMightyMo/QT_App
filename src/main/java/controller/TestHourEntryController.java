@@ -34,7 +34,6 @@ public class TestHourEntryController implements ActionListener {
 			
 			ResultSet rs = null;
 		
-				
 			Statement statement;
 			try {
 				System.out.println("Trying to query data...");
@@ -48,9 +47,6 @@ public class TestHourEntryController implements ActionListener {
 			} catch (SQLException e2) {
 				e2.printStackTrace();
 			}
-	
 		}
-		
 	}
-
 }
