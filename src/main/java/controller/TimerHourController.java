@@ -23,6 +23,7 @@ import main.java.model.TimerModel;
 import main.java.model.User;
 import main.java.view.TimerView;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
@@ -47,7 +48,6 @@ public class TimerHourController implements ActionListener, DocumentListener {
 		this.timerModel = new TimerModel();
 		this.timerView = new TimerView(this);
 		this.timerModel.addObserver(this.timerView);
-		this.timerView.setVisible(true);
 
 		actionLoadProjects();
 	}
@@ -113,6 +113,7 @@ public class TimerHourController implements ActionListener, DocumentListener {
 			return;
 		}
 		this.timerModel.startTimer();
+		this.timerView.getDurationLabel().setForeground(new Color(50,205,50));
 	}
 
 	public void actionStopTimer() {
@@ -126,6 +127,7 @@ public class TimerHourController implements ActionListener, DocumentListener {
 			}
 			this.timerView.getTextPauseDuration().setText(this.hourEntry.pauseMinutesToFormattedString());
 		}
+		this.timerView.getDurationLabel().setForeground(new Color(220,20,60));
 	}
 
 	public void actionPauseTimer() {
@@ -136,6 +138,7 @@ public class TimerHourController implements ActionListener, DocumentListener {
 			setTimeNow();
 			this.timerModel.pauseTimer();
 			this.hourEntry.setPauseStart(timeNow);
+			this.timerView.getDurationLabel().setForeground(Color.ORANGE);
 		}
 	}
 
@@ -386,6 +389,7 @@ public class TimerHourController implements ActionListener, DocumentListener {
 		this.timerView.getTxtEndTime().setText("");
 		this.timerView.getTextPauseDuration().setText("");
 		this.timerView.getLblErrorMessage().setText("");
+		this.timerView.getDurationLabel().setForeground(Color.WHITE);
 		this.hourEntry = null;
 	}
 
