@@ -25,7 +25,30 @@ hs_err_pid*
 # H2 db-files
 *db.*
 
-# eclipse project file
+##############################
+## Eclipse
+##############################
 .settings/
+bin/
+tmp/
+.metadata
 .classpath
 .project
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.loadpath
+.factorypath
+
+##############################
+## Visual Studio Code
+##############################
+.vscode/
+.code-workspace
+
+##############################
+## OS X
+##############################
+.DS_Store
