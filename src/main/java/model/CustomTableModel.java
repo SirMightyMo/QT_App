@@ -1,16 +1,23 @@
 package main.java.model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumnModel;
 
 public class CustomTableModel extends AbstractTableModel implements IModel {
 
 	private static final long serialVersionUID = 1L;
 	
+	private TableColumnModel columns;
 	private Object[][] data;
 	private String[] columnNames;
-	
-	public CustomTableModel() {
+	private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 		
+	public CustomTableModel(String[] columnNames) {
+		this.columnNames = columnNames;
 	}
 	
 	public CustomTableModel(Object[][] data, String[] columnNames) {
@@ -24,6 +31,7 @@ public class CustomTableModel extends AbstractTableModel implements IModel {
 
 	public void setData(Object[][] data) {
 		this.data = data;
+		fireTableDataChanged();
 	}
 
 	public String[] getColumnNames() {
@@ -33,6 +41,19 @@ public class CustomTableModel extends AbstractTableModel implements IModel {
 	public void setColumnNames(String[] columnNames) {
 		this.columnNames = columnNames;
 	}
+	
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+        support.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        support.removePropertyChangeListener(listener);
+    }
+    
+    @Override
+    public void addTableModelListener(TableModelListener l) {
+        listenerList.add(TableModelListener.class, l);
+    }
 
 	@Override
 	public int getRowCount() {

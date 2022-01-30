@@ -4,30 +4,40 @@ import java.awt.event.ActionEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import main.java.model.CustomTableModel;
 import main.java.model.IModel;
 import main.java.model.StaticActions;
 import main.java.view.DashboardListView;
+import main.java.view.IView;
 
 public class DashboardProjectListController implements IController {
 
 	private DashboardListView view;
-	private Object[][] data;
-	private String[] columnNames = {
-			"Name",
-			"Start",
-			"Ende",
-			"Status",
-			"Arbeiszeit"
-	};
+	private CustomTableModel tableData;
 	
 	public DashboardProjectListController() {
-		queryData();
-		this.view = new DashboardListView(this, data, columnNames);
+		this.tableData = new CustomTableModel(new String[] {
+				"Datum",
+				"Projekt",
+				"Start",
+				"Ende",
+				"Dauer"
+			});
+			this.view = new DashboardListView(this, tableData);
+			queryData();
+			this.view = new DashboardListView(this, tableData); // Give view tabledata for creating JTable
+			tableData.addTableModelListener(this.view.getTable()); // add JTable as listener for data changes
+			int columnCount = view.getTable().getColumnModel().getColumnCount(); // get columncount for following for-loop
+			for (int i = 0; i < columnCount; i++) {
+				view.getTable().getColumnModel().getColumn(i).setHeaderValue(tableData.getColumnNames()[i]); // set headers manually, since columnames dont refresh?
+			}
 	}
 	
 	public void queryData() {
@@ -57,21 +67,11 @@ public class DashboardProjectListController implements IController {
 				resultArray[i][j] = value;
 			}
 		}
-		this.data = resultArray;
+		this.tableData.setData(resultArray);
 	}
-	
-	public Object[][] getData() {
-		return data;
-	}
-	
+		
 	public DashboardListView getView() {
-		return view;
-	}
-	
-	@Override
-	public IModel getModel() {
-		// TODO Auto-generated method stub
-		return null;
+		return (DashboardListView) view;
 	}
 	
 	@Override
@@ -80,8 +80,14 @@ public class DashboardProjectListController implements IController {
 		
 		// When hour entry is being saved, retrieve new list data
 		if (event.equalsIgnoreCase(StaticActions.ACTION_TIMER_SAVE)) {
-			queryData();
-			System.out.println("ProjectList refreshed.");
+			Timer timer = new Timer();
+			TimerTask task = new TimerTask() {
+				@Override
+				public void run() {
+					queryData();
+				}
+			};
+			timer.schedule(task, 1000);
 		}
 		
 	}
@@ -102,6 +108,11 @@ public class DashboardProjectListController implements IController {
 	public void changedUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	@Override
+	public CustomTableModel getModel() {
+		return tableData;
 	}
 
 

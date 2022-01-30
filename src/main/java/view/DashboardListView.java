@@ -3,7 +3,6 @@ package main.java.view;
 
 import java.awt.Color;
 import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
@@ -11,19 +10,21 @@ import javax.swing.JTable;
 
 import main.java.controller.IController;
 import main.java.controller.LayoutManager;
+import main.java.model.CustomTableModel;
 
 @SuppressWarnings("deprecation")
 public class DashboardListView implements IView {
 
 	private IController controller;
-	private JScrollPane scrollPane;
 	private JTable table;
+	private JScrollPane scrollPane;
 	
-	public DashboardListView(IController controller, Object[][] data, String[] columnNames) {
+	public DashboardListView(IController controller, CustomTableModel tableModel) {
 				
 		this.controller = controller;
+		this.table = new JTable(tableModel);
+		table.getColumnModel();
 		
-		table = new JTable(data, columnNames);
 		table.setFillsViewportHeight(true);
 		table.setFont(LayoutManager.getFont("dinNeuzeitGrotesk_regular").deriveFont(16.0f));
 		table.setBackground(new Color(31,32,33));
@@ -46,10 +47,12 @@ public class DashboardListView implements IView {
 		return scrollPane;
 	}
 
+	public JTable getTable() {
+		return table;
+	}
 	
-	public void setTableAndRefresh(JTable table) {
+	public void setTable(JTable table) {
 		this.table = table;
-		scrollPane = new JScrollPane(table);
 	}
 	
 	@Override
