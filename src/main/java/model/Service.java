@@ -1,5 +1,5 @@
 package main.java.model;
 
-public class Service {
+public class Service implements IModel{
 
 }

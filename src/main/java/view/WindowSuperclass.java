@@ -14,7 +14,7 @@ import java.awt.Toolkit;
 import java.io.InputStream;
 import java.io.IOException;
 
-public abstract class WindowSuperclass extends JFrame {
+public abstract class WindowSuperclass extends JFrame implements IView {
 
 	/*
 	 * This superclass should be used for all settings

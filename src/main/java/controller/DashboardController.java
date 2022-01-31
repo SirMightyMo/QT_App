@@ -10,11 +10,13 @@ import javax.swing.event.DocumentListener;
 
 import main.java.model.DashboardModel;
 import main.java.model.HourEntry;
+import main.java.model.IModel;
 import main.java.model.TimerModel;
 import main.java.view.DashboardView;
+import main.java.view.IView;
 import main.java.view.TimerView;
 
-public class DashboardController implements ActionListener, DocumentListener {
+public class DashboardController implements IController {
 
 	private TimerHourController timerHourController;
 	private DashboardProjectListController dashboardProjectListController;
@@ -71,6 +73,18 @@ public class DashboardController implements ActionListener, DocumentListener {
 
 	public void setDashboardView(DashboardView dashboardView) {
 		this.dashboardView = dashboardView;
+	}
+	
+	@Override
+	public IModel getModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IView getView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-public final class LoginModel {
+public final class LoginModel implements IModel {
 
 	private String usernameInput;
 	private String savedUsername;

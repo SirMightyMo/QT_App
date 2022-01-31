@@ -1,11 +1,17 @@
 package main.java.controller;
 
+import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class DatabaseController {
+import javax.swing.event.DocumentEvent;
+
+import main.java.model.IModel;
+import main.java.view.IView;
+
+public class DatabaseController implements IController {
 
 	private final String JDBC_DRIVER = "org.h2.Driver";
 	private final String DB_URL = "jdbc:h2:./src/main/resources/data/db"; // relative path
@@ -285,5 +291,41 @@ public class DatabaseController {
 			return 1;
 		}
 		return 0;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public IModel getModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IView getView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -2,6 +2,7 @@ package main.java.controller;
 
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.event.ActionEvent;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,10 +11,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.UIManager;
+import javax.swing.event.DocumentEvent;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 
-public class LayoutManager {
+import main.java.model.IModel;
+import main.java.view.IView;
+
+public class LayoutManager implements IController {
 
 	Font dinNeuzeitGrotesk_regular;
 	
@@ -97,5 +102,41 @@ public class LayoutManager {
 			}
 		}
 		return result;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public IModel getModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IView getView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

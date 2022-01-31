@@ -4,7 +4,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.event.DocumentListener;
 
-public interface ControllerInterface extends ActionListener, DocumentListener {
+import main.java.model.IModel;
+import main.java.view.IView;
+
+public interface IController extends ActionListener, DocumentListener {
 
 	/*
 	 * This Interface is used to implement the Strategy Pattern (behavioral).
@@ -12,5 +15,8 @@ public interface ControllerInterface extends ActionListener, DocumentListener {
 	 * interface. That way different controllers can be used for the same
 	 * view classes.
 	 */
+	
+	public IModel getModel();
+	public IView getView();
 	
 }
