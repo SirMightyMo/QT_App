@@ -3,6 +3,7 @@ package main.java.controller;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import main.java.view.RegistrationView;
 import main.java.model.RegistrationModel;
@@ -44,8 +45,14 @@ public final class RegistrationController implements ActionListener{
 	}
 	
 	private boolean checkUsername() {
-		if (!view.getUsernameInput().isEmpty()) {
-			return true;
+		String chosenUsername = view.getUsernameInput();
+		if (!chosenUsername.isEmpty()) {
+			if (!usernameIsTaken(chosenUsername)) {
+				return true;				
+			} else {
+				view.setErrorMessage("Username already taken!");
+				return false;
+			}
 		}
 		else {
 			System.out.println("username is empty");
@@ -109,6 +116,11 @@ public final class RegistrationController implements ActionListener{
 	private void registration() {
 		System.out.println("sie werden weitergeleitet");
 		if(inputCheck());
+	}
+	
+	private boolean usernameIsTaken(String username) {
+		ArrayList<Object> result = new DatabaseController("sa", "").query("SELECT username FROM users WHERE username='" + username + "'", true);
+		return (!result.isEmpty());
 	}
 	
 	
