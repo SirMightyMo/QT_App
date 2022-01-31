@@ -6,8 +6,10 @@ public class User implements IModel{
 	private String name;
 	private String email;
 
-	public User() {
-		
+	public User(int u_id, String name, String email) {
+		this.u_id = u_id;
+		this.name = name;
+		this.email = email;
 	}
 
 	public int getU_id() {
