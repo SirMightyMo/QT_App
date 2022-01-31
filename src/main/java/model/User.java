@@ -1,14 +1,10 @@
 package main.java.model;
-
-<<<<<<< HEAD
-public class User {
 	
+public class User implements IModel{
+
 	private int u_id;
 	private String name;
 	private String email;
-=======
-public class User implements IModel{
->>>>>>> dev
 
 	public User() {
 		
