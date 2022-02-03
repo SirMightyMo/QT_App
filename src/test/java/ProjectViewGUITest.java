@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import com.formdev.flatlaf.FlatDarkLaf;
 
 import main.java.controller.ProjectController;
+import main.java.model.User;
 import main.java.view.ProjectView;
 
 class ProjectViewGUITest {
@@ -27,7 +28,7 @@ class ProjectViewGUITest {
 	@BeforeEach
 	public void setUp() {
 		FlatDarkLaf.setup();
-		ProjectView frame = GuiActionRunner.execute(() -> new ProjectView(new ProjectController()));
+		ProjectView frame = GuiActionRunner.execute(() -> new ProjectView(new ProjectController(new User(1, "Testuser", "test@test.de"))));
 		window = new FrameFixture(frame);
 		window.show(); // shows the frame to test
 	}

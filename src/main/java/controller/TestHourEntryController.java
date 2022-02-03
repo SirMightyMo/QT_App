@@ -16,6 +16,7 @@ public class TestHourEntryController implements IController {
 
 	TestHourEntryModel model;
 	TestHourEntryView view;
+	private DatabaseController db = DatabaseController.getInstance();
 	
 	@SuppressWarnings("deprecation")
 	public TestHourEntryController() {
@@ -33,7 +34,6 @@ public class TestHourEntryController implements IController {
 		
 		// Get Database Entries
 		if (event.equalsIgnoreCase(StaticActions.ACTION_GET_HOURLIST)) {
-			DatabaseController db = new DatabaseController("sa", "");
 			db.connect();
 			
 			ResultSet rs = null;

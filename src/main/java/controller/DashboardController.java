@@ -29,12 +29,12 @@ public class DashboardController implements IController {
 	@SuppressWarnings("deprecation")
 	public DashboardController(User user) {
 		// Intanciate Controller
-		this.timerHourController = new TimerHourController();
-		this.dashboardProjectListController = new DashboardProjectListController();
-		this.dashboardHourListController = new DashboardHourListController();
+		this.timerHourController = new TimerHourController(user);
+		this.dashboardProjectListController = new DashboardProjectListController(user);
+		this.dashboardHourListController = new DashboardHourListController(user);
 		
 		// Test
-		new ProjectController();
+		new ProjectController(user);
 		
 		// Instanciate own view
 		this.dashboardView = new DashboardView(this);

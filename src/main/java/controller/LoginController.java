@@ -18,10 +18,9 @@ public final class LoginController implements IController {
 
 	private LoginView view;
 	private LoginModel model;
-	private DatabaseController dbc;
+	private DatabaseController dbc = DatabaseController.getInstance();
 
 	public LoginController() {
-		this.dbc = new DatabaseController("sa", "");
 		this.view = new LoginView();
 		this.model = new LoginModel();
 		this.init();

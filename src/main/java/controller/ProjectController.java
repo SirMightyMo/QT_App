@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import main.java.model.IModel;
 import main.java.model.ProjectModel;
 import main.java.model.StaticActions;
+import main.java.model.User;
 import main.java.view.IView;
 import main.java.view.ProjectView;
 import main.java.view.ProjectView;
@@ -21,10 +22,14 @@ public class ProjectController implements IController {
 
 	private ProjectModel projectModel;
 	private ProjectView projectView;
+	private DatabaseController db = DatabaseController.getInstance();
+	private User user;
 
 	// Constructor
 	@SuppressWarnings("deprecation")
-	public ProjectController() {
+	public ProjectController(User user) {
+		this.user = user;
+		
 		this.projectModel = new ProjectModel();
 		this.projectView = new ProjectView(this);
 
@@ -69,7 +74,6 @@ public class ProjectController implements IController {
 		active = projectView.getNewProjectStat();
 		customerID = projectView.getClientID();
 
-		DatabaseController db = new DatabaseController("sa", "");
 		db.insert("INSERT INTO project(name,start_date,end_date,active,c_id) VALUES(" + "'" + projectName + "'," + "'"
 				+ startDate + "'," + "'" + endDate + "'," + "'" + active + "'," + "'" + customerID + "')");
 		projectView.updateTable(this);

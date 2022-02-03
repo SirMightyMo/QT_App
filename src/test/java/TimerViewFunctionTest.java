@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import main.java.controller.TimerHourController;
+import main.java.model.User;
 import main.java.view.TimerView;
 
 class TimerViewFunctionTest {
@@ -16,7 +17,7 @@ class TimerViewFunctionTest {
 	
 	@BeforeEach
 	void init() {
-		tv = new TimerView(new TimerHourController());
+		tv = new TimerView(new TimerHourController(new User(1, "Testuser", "test@test.de")));
 	}
 
 	@Test

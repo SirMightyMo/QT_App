@@ -43,15 +43,18 @@ public class TimerHourController implements IController {
 	private TimerModel timerModel;
 	private TimerView timerView;
 	private HourEntry hourEntry;
+	private DatabaseController db = DatabaseController.getInstance();
+	private User user;
 
 	private LocalDateTime timeNow;
 
 	// Constructor
 	@SuppressWarnings("deprecation")
-	public TimerHourController() {
+	public TimerHourController(User user) {
 		this.timerModel = new TimerModel();
 		this.timerView = new TimerView(this);
 		this.timerModel.addObserver(this.timerView);
+		this.user = user;
 
 		actionLoadProjects();
 	}
@@ -379,14 +382,12 @@ public class TimerHourController implements IController {
 		projectID = (int) this.timerModel.getProjectList().get(comboBoxIndex).get(0);
 		this.hourEntry.setProjectID(projectID);
 
-		serviceID = 1; // TODO: implement, when TimerView holds service-dropdown and ServiceModel is
-						// implemented
+		serviceID = 1; // TODO: implement, when TimerView holds service-dropdown and ServiceModel is implemented
 
-		userID = 1; // TODO: read and set, when login sets userID correctly
+		userID = user.getU_id();
 
 		// write hour entry to database only if starTime and endTime are not empty
 		if (startTime != null && endTime != null && pauseMinutesValid == true) {
-			DatabaseController db = new DatabaseController("sa", "");
 			db.insert(
 					"INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes,p_id) VALUES("
 							+ "'" + entryDate + "'," + "'" + comment + "'," + "'" + startTime + "'," + "'" + endTime
@@ -428,7 +429,6 @@ public class TimerHourController implements IController {
 		// if project was not set yet, select last used project (highest h_id)
 		if ((this.hourEntry == null || this.hourEntry.getProjectID() == 0) && !this.timerModel.isProjectSet()) {
 
-			DatabaseController db = new DatabaseController("sa", "");
 			ArrayList<Object> result = db
 					.query("SELECT p_id FROM hour_entry WHERE h_id = (SELECT MAX(h_id) FROM hour_entry);");
 					//  TODO:Check, if querying for specific user is necessary or if this table already contains

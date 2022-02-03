@@ -9,6 +9,7 @@ import com.formdev.flatlaf.FlatDarkLaf;
 
 import main.java.controller.DatabaseController;
 import main.java.controller.TimerHourController;
+import main.java.model.User;
 import main.java.view.TimerView;
 
 import static org.junit.Assert.assertNotNull;
@@ -29,9 +30,9 @@ class TimerViewGUITest {
 
 	@BeforeEach
 	public void setUp() {
-		DatabaseController dbc = new DatabaseController("sa", "");
+		DatabaseController dbc = DatabaseController.getInstance();
 		FlatDarkLaf.setup();
-		TimerView frame = GuiActionRunner.execute(() -> new TimerView(new TimerHourController()));
+		TimerView frame = GuiActionRunner.execute(() -> new TimerView(new TimerHourController(new User(1, "Testuser", "test@test.de"))));
 		//window = new FrameFixture(frame); //TODO: Fix. TimerView no longer is JFrame
 		window.show(); // shows the frame to test
 	}

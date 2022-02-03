@@ -19,13 +19,12 @@ public final class RegistrationController implements IController{
 	
 	private RegistrationView view;
 	private RegistrationModel model;
-	private DatabaseController dbc;
+	private DatabaseController dbc = DatabaseController.getInstance();
 	
 	public RegistrationController() {
 		
 		this.view = new RegistrationView();
 		this.model = new RegistrationModel();
-		this.dbc = new DatabaseController("sa", "");
 		 
 		this.init();
 	}

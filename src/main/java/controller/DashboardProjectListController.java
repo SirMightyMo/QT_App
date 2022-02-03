@@ -14,6 +14,7 @@ import javax.swing.event.DocumentListener;
 import main.java.model.CustomTableModel;
 import main.java.model.IModel;
 import main.java.model.StaticActions;
+import main.java.model.User;
 import main.java.view.DashboardListView;
 import main.java.view.IView;
 
@@ -21,8 +22,11 @@ public class DashboardProjectListController implements IController {
 
 	private DashboardListView view;
 	private CustomTableModel tableData;
+	private DatabaseController db = DatabaseController.getInstance();
+	private User user;
 	
-	public DashboardProjectListController() {
+	public DashboardProjectListController(User user) {
+		this.user = user;
 		this.tableData = new CustomTableModel(new String[] {
 				"Datum",
 				"Projekt",
@@ -41,7 +45,6 @@ public class DashboardProjectListController implements IController {
 	}
 	
 	public void queryData() {
-		DatabaseController db = new DatabaseController("sa", "");
 		ArrayList<Object> result = db.query(
 				"SELECT name, "
 				+ "start_date, "
