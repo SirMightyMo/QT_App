@@ -17,7 +17,7 @@ class TimerViewFunctionTest {
 	
 	@BeforeEach
 	void init() {
-		tv = new TimerView(new TimerHourController(new User(1, "Testuser", "test@test.de")));
+		tv = new TimerView(new TimerHourController());
 	}
 
 	@Test

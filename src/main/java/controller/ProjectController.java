@@ -23,12 +23,10 @@ public class ProjectController implements IController {
 	private ProjectModel projectModel;
 	private ProjectView projectView;
 	private DatabaseController db = DatabaseController.getInstance();
-	private User user;
 
 	// Constructor
 	@SuppressWarnings("deprecation")
-	public ProjectController(User user) {
-		this.user = user;
+	public ProjectController() {
 		
 		this.projectModel = new ProjectModel();
 		this.projectView = new ProjectView(this);

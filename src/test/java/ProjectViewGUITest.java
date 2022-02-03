@@ -28,7 +28,7 @@ class ProjectViewGUITest {
 	@BeforeEach
 	public void setUp() {
 		FlatDarkLaf.setup();
-		ProjectView frame = GuiActionRunner.execute(() -> new ProjectView(new ProjectController(new User(1, "Testuser", "test@test.de"))));
+		ProjectView frame = GuiActionRunner.execute(() -> new ProjectView(new ProjectController()));
 		window = new FrameFixture(frame);
 		window.show(); // shows the frame to test
 	}

@@ -44,17 +44,15 @@ public class TimerHourController implements IController {
 	private TimerView timerView;
 	private HourEntry hourEntry;
 	private DatabaseController db = DatabaseController.getInstance();
-	private User user;
 
 	private LocalDateTime timeNow;
 
 	// Constructor
 	@SuppressWarnings("deprecation")
-	public TimerHourController(User user) {
+	public TimerHourController() {
 		this.timerModel = new TimerModel();
 		this.timerView = new TimerView(this);
 		this.timerModel.addObserver(this.timerView);
-		this.user = user;
 
 		actionLoadProjects();
 	}
@@ -384,7 +382,7 @@ public class TimerHourController implements IController {
 
 		serviceID = 1; // TODO: implement, when TimerView holds service-dropdown and ServiceModel is implemented
 
-		userID = user.getU_id();
+		userID = User.getUser().getU_id();
 
 		// write hour entry to database only if starTime and endTime are not empty
 		if (startTime != null && endTime != null && pauseMinutesValid == true) {

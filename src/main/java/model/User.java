@@ -5,11 +5,13 @@ public class User implements IModel{
 	private int u_id;
 	private String name;
 	private String email;
+	private static User user; // hold itself
 
 	public User(int u_id, String name, String email) {
 		this.u_id = u_id;
 		this.name = name;
 		this.email = email;
+		user = this;
 	}
 
 	public int getU_id() {
@@ -34,6 +36,14 @@ public class User implements IModel{
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public static User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		User.user = user;
 	}
 	
 }

@@ -21,11 +21,9 @@ public class DashboardHourListController implements IController {
 	private DashboardListView view;
 	private CustomTableModel tableData;
 	private DatabaseController db = DatabaseController.getInstance();
-	private User user;
 	
 	
-	public DashboardHourListController(User user) {
-		this.user = user;
+	public DashboardHourListController() {
 		this.tableData = new CustomTableModel(new String[] {
 			"Datum",
 			"Projekt",

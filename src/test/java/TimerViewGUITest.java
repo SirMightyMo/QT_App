@@ -32,7 +32,7 @@ class TimerViewGUITest {
 	public void setUp() {
 		DatabaseController dbc = DatabaseController.getInstance();
 		FlatDarkLaf.setup();
-		TimerView frame = GuiActionRunner.execute(() -> new TimerView(new TimerHourController(new User(1, "Testuser", "test@test.de"))));
+		TimerView frame = GuiActionRunner.execute(() -> new TimerView(new TimerHourController()));
 		//window = new FrameFixture(frame); //TODO: Fix. TimerView no longer is JFrame
 		window.show(); // shows the frame to test
 	}
