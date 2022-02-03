@@ -49,13 +49,14 @@ public final class LoginView extends JFrame implements IView {
 		passwordLabel.setName("passwordLabel");
 		panel.add(passwordLabel);
 
-		passwordInputField = new JPasswordField("P1sswort", 20);
+		passwordInputField = new JPasswordField("", 20);
 		passwordInputField.setName("passwordInputField");
 		passwordInputField.setBounds(100, 20, 165, 25);
 		panel.add(passwordInputField);
 
 		loginButton = new JButton("Login");
 		loginButton.setName("loginButton");
+		getRootPane().setDefaultButton(loginButton);
 		panel.add(loginButton);
 
 		registerButton = new JButton("Register");
@@ -71,6 +72,10 @@ public final class LoginView extends JFrame implements IView {
 
 	public String getUsernameInput() {
 		return this.usernameInputField.getText();
+	}
+
+	public JPasswordField getPasswordInputField() {
+		return passwordInputField;
 	}
 
 	public char[] getPasswordInput() {
