@@ -31,6 +31,9 @@ public class DashboardController implements IController {
 		this.dashboardProjectListController = new DashboardProjectListController();
 		this.dashboardHourListController = new DashboardHourListController();
 		
+		// Test
+		new ProjectController();
+		
 		// Instanciate own view
 		this.dashboardView = new DashboardView(this);
 		this.dashboardView.setVisible(true);
