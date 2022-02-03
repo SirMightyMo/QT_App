@@ -10,12 +10,16 @@ import javax.swing.event.DocumentListener;
 
 import main.java.model.DashboardModel;
 import main.java.model.HourEntry;
+import main.java.model.IModel;
 import main.java.model.TimerModel;
+import main.java.model.User;
 import main.java.view.DashboardView;
+import main.java.view.IView;
 import main.java.view.TimerView;
 
-public class DashboardController implements ActionListener, DocumentListener {
+public class DashboardController implements IController {
 
+	private User user;
 	private TimerHourController timerHourController;
 	private DashboardProjectListController dashboardProjectListController;
 	private DashboardHourListController dashboardHourListController;
@@ -23,7 +27,7 @@ public class DashboardController implements ActionListener, DocumentListener {
 
 	// Constructor
 	@SuppressWarnings("deprecation")
-	public DashboardController() {
+	public DashboardController(User user) {
 		// Intanciate Controller
 		this.timerHourController = new TimerHourController();
 		this.dashboardProjectListController = new DashboardProjectListController();
@@ -32,6 +36,9 @@ public class DashboardController implements ActionListener, DocumentListener {
 		// Instanciate own view
 		this.dashboardView = new DashboardView(this);
 		this.dashboardView.setVisible(true);
+		
+		// Set logged in user
+		this.user = user;		
 
 		// Coordinate listeners:
 		// Lists need to be updated, when new hour entry is being saved
@@ -71,6 +78,18 @@ public class DashboardController implements ActionListener, DocumentListener {
 
 	public void setDashboardView(DashboardView dashboardView) {
 		this.dashboardView = dashboardView;
+	}
+	
+	@Override
+	public IModel getModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IView getView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override

@@ -12,8 +12,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.JPasswordField;
 import javax.swing.JPanel;
 import java.awt.Rectangle;
+import java.util.Observable;
 
-public final class RegistrationView extends JFrame {
+public final class RegistrationView extends JFrame implements IView {
 
 	private JLabel usernameLabel;
 	private JLabel passwordLabel;
@@ -129,6 +130,18 @@ public final class RegistrationView extends JFrame {
 
 	}
 
+	public String[] getQuestions() {
+		return questions;
+	}
+
+	public void setQuestions(String[] questions) {
+		this.questions = questions;
+	}
+
+	public JComboBox getSecurityQuestionPicker() {
+		return securityQuestionPicker;
+	}
+
 	public void setSecurityQuestions(String[] questions) {
 		this.questions = questions;
 	}
@@ -183,6 +196,12 @@ public final class RegistrationView extends JFrame {
 	public void deleteErrorMessage() {
 		this.errorMessage.setVisible(false);
 
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

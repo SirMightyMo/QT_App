@@ -6,7 +6,7 @@ import java.util.Observable;
 import main.java.controller.DatabaseController;
 
 @SuppressWarnings("deprecation")
-public class ProjectModel extends Observable {
+public class ProjectModel extends Observable implements IModel {
 
 	private ArrayList<ArrayList<Object>> projectList;
 	private boolean projectSet;

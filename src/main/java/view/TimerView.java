@@ -43,7 +43,7 @@ import javax.swing.GroupLayout.Alignment;
 import java.awt.BorderLayout;
 
 @SuppressWarnings("deprecation")
-public class TimerView implements Observer {
+public class TimerView implements IView {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPanel; // Container
 

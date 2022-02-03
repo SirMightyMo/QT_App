@@ -3,7 +3,7 @@ package main.java.model;
 import java.util.Observable;
 
 @SuppressWarnings("deprecation")
-public class TestHourEntryModel extends Observable {
+public class TestHourEntryModel extends Observable implements IModel{
 
 	String data[] = null;
 

@@ -1,6 +1,6 @@
 package main.java.model;
 
-public class StaticActions {
+public class StaticActions implements IModel{
 
 	// Timer actions
 	public static final String ACTION_TIMER_START = "action_timer_start";

@@ -17,10 +17,12 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import main.java.model.HourEntry;
+import main.java.model.IModel;
 import main.java.model.Service;
 import main.java.model.StaticActions;
 import main.java.model.TimerModel;
 import main.java.model.User;
+import main.java.view.IView;
 import main.java.view.TimerView;
 
 import java.awt.Color;
@@ -34,7 +36,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class TimerHourController implements ActionListener, DocumentListener {
+public class TimerHourController implements IController {
 
 	private TimerModel timerModel;
 	private TimerView timerView;
@@ -492,5 +494,17 @@ public class TimerHourController implements ActionListener, DocumentListener {
 	@Override
 	public void changedUpdate(DocumentEvent e) {
 		actionCalculateDurationView();
+	}
+
+	@Override
+	public IModel getModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IView getView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

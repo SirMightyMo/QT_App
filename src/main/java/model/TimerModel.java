@@ -8,7 +8,7 @@ import java.util.TimerTask;
 import main.java.controller.DatabaseController;
 
 @SuppressWarnings("deprecation")
-public class TimerModel extends Observable {
+public class TimerModel extends Observable implements IModel{
 
 	private boolean timerRunning;
 	private boolean timerPaused;
