@@ -2,26 +2,21 @@ package main.java.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.swing.AbstractAction;
 import javax.swing.event.DocumentEvent;
 
 import main.java.view.IView;
 import main.java.view.LoginView;
 import main.java.model.IModel;
 import main.java.model.LoginModel;
-import main.java.model.User;
 
 public final class LoginController implements IController {
 
 	private LoginView view;
 	private LoginModel model;
-	private DatabaseController dbc;
 
 	public LoginController() {
-		this.dbc = new DatabaseController("sa", "");
 		this.view = new LoginView();
 		this.model = new LoginModel();
 		this.init();
@@ -33,40 +28,43 @@ public final class LoginController implements IController {
 	}
 
 	private void securityCheck() {
+		System.out.println("SecurityCheck");
 		if (view.getErrorMessage() != null) {
 			view.deleteErrorMessage();
 		}
-		
-		String user = view.getUsernameInput();
-		char[] pass = view.getPasswordInput();
-		String sql = "SELECT u_id, username, email FROM users WHERE username='" + user + "' AND password='" + String.valueOf(pass) + "';"; 
-		ArrayList<Object> result = dbc.query(sql, true);
-		
-		if (result.isEmpty()) {
-			view.setErrorMessage("Login failed!");
-		} else {
-			if (view.getErrorMessage() != null) {
-				view.deleteErrorMessage();
-			}
-			
-			int u_id = (int) result.get(0);
-			String name = (String) result.get(1);
-			String email = (String) result.get(2);
-			
-			login(u_id, name, email);
-		}
-		
+		model.updateUserInput(view.getUsernameInput(), view.getPasswordInput());
+		checkUserName(model.getUsernameInput(), model.getSavedUsername());
+		model.zeroLocals();
 	}
 
-	private void login(int u_id, String name, String email) {
-		System.out.println("Sie werden eingeloggt");
-		new DashboardController(new User(u_id, name, email));
+	private void checkUserName(String usernameInput, String savedUsername) {
+		if (usernameInput.trim().equals(savedUsername)) {
+			this.checkPassword(model.getPasswordInput(), model.getSavedPassword());
+		} else {
+			view.setErrorMessage("Wrong Username");
+			System.out.println("wrong username");
+		}
+	}
+
+	private void checkPassword(char[] passwordInput, char[] savedPassword) {
+
+		if (Arrays.equals(passwordInput, savedPassword)) {
+			this.login();
+		} else {
+			view.setErrorMessage("Password incorrect");
+			System.out.println("wrong psw");
+		}
+	}
+
+	private void login() {
+		System.out.println("sie werden eingeloggt");
+		new DashboardController();
 		//new ProjectController();
 		this.view.dispose();
 	}
 
 	private void registration() {
-		System.out.println("Sie werden weitergeleitet");
+		System.out.println("sie werden weitergeleitet");
 		RegistrationController r = new RegistrationController();
 		this.view.dispose();
 	}

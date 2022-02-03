@@ -12,14 +12,12 @@ import main.java.model.DashboardModel;
 import main.java.model.HourEntry;
 import main.java.model.IModel;
 import main.java.model.TimerModel;
-import main.java.model.User;
 import main.java.view.DashboardView;
 import main.java.view.IView;
 import main.java.view.TimerView;
 
 public class DashboardController implements IController {
 
-	private User user;
 	private TimerHourController timerHourController;
 	private DashboardProjectListController dashboardProjectListController;
 	private DashboardHourListController dashboardHourListController;
@@ -27,7 +25,7 @@ public class DashboardController implements IController {
 
 	// Constructor
 	@SuppressWarnings("deprecation")
-	public DashboardController(User user) {
+	public DashboardController() {
 		// Intanciate Controller
 		this.timerHourController = new TimerHourController();
 		this.dashboardProjectListController = new DashboardProjectListController();
@@ -39,9 +37,6 @@ public class DashboardController implements IController {
 		// Instanciate own view
 		this.dashboardView = new DashboardView(this);
 		this.dashboardView.setVisible(true);
-		
-		// Set logged in user
-		this.user = user;		
 
 		// Coordinate listeners:
 		// Lists need to be updated, when new hour entry is being saved

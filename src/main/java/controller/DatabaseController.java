@@ -206,60 +206,6 @@ public class DatabaseController implements IController {
 		}
 	}
 
-	// If only one row (or one row with just one value) is expected, set flag to true.
-	// The ArrayList consists just of these value(s) (type 'Object', need to be casted)
-	// and does NOT contain another ArrayList.
-	public ArrayList<Object> query(String sql, boolean onlyOneRowExpected) {
-		if (onlyOneRowExpected) {
-			ArrayList<Object> resultArrayList = new ArrayList<>();
-			ResultSet rs = null;
-			Statement statement = null;
-			try {
-				Class.forName(JDBC_DRIVER);
-				dbConnection = DriverManager.getConnection(DB_URL, user, pass);
-				statement = dbConnection.createStatement();
-				rs = statement.executeQuery(sql);
-
-				ResultSetMetaData rsmd = rs.getMetaData(); // get info about ResultSet
-				int columnCount = rsmd.getColumnCount(); // find out, how many columns per row where retrieved
-
-				// while there are results, compute them here
-				while (rs.next()) {
-					// for every column retrieved, add column-value to row-ArrayList;
-					for (int column = 1; column <= columnCount; column++) {
-						resultArrayList.add(rs.getObject(column));
-					}
-				}
-
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					if (rs != null)
-						rs.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				try {
-					if (statement != null)
-						statement.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			try {
-				dbConnection.close();
-			} catch (SQLException e) {
-				System.out.println(e.getMessage());
-			}
-			return resultArrayList;
-		} else {
-			return query(sql);
-		}
-	}
-	
 	public int executeSQLScript(String scriptFilePath) {
 		BufferedReader bReader = null;
 		Statement statement = null;

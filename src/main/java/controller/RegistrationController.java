@@ -3,29 +3,24 @@ package main.java.controller;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.Matcher;
 
 import javax.swing.event.DocumentEvent;
 
 import main.java.view.IView;
 import main.java.view.RegistrationView;
 import main.java.model.IModel;
-import main.java.model.Regex;
 import main.java.model.RegistrationModel;
 
 public final class RegistrationController implements IController{
 	
 	private RegistrationView view;
 	private RegistrationModel model;
-	private DatabaseController dbc;
 	
 	public RegistrationController() {
 		
 		this.view = new RegistrationView();
 		this.model = new RegistrationModel();
-		this.dbc = new DatabaseController("sa", "");
 		 
 		this.init();
 	}
@@ -48,26 +43,14 @@ public final class RegistrationController implements IController{
 		}
 		if(checkUsername() && checkEmail() && checkPassword() &&  checkSecurityQuestion()) {
 			System.out.println("Success");
-			return true;
-		} else {
-			return false;
 		}
 		
+		return true;
 	}
 	
 	private boolean checkUsername() {
-		if (view.getErrorMessage() != null) {
-			view.deleteErrorMessage();
-		}
-		
-		String chosenUsername = view.getUsernameInput();
-		if (!chosenUsername.isEmpty()) {
-			if (!usernameIsTaken(chosenUsername)) {
-				return true;				
-			} else {
-				view.setErrorMessage("Username already taken!");
-				return false;
-			}
+		if (!view.getUsernameInput().isEmpty()) {
+			return true;
 		}
 		else {
 			System.out.println("username is empty");
@@ -79,14 +62,10 @@ public final class RegistrationController implements IController{
 	
 	private boolean checkEmail() {
 		
-		if (view.getErrorMessage() != null) {
-			view.deleteErrorMessage();
-		}
-		
 		String emailIn = view.getEmailInput();
 		String emailConfirm = view.getEmailConfirmInput();
 		
-		if (emailIn.equals(emailConfirm) && !emailIn.isEmpty() && validateEmail(emailIn)) {
+		if (emailIn.equals(emailConfirm) && !emailIn.isEmpty()) {
 			return true;
 		}
 		
@@ -98,12 +77,6 @@ public final class RegistrationController implements IController{
 	}
 	
 	
-	private boolean validateEmail(String email) {
-		Matcher matcher = Regex.VALID_EMAIL_ADDRESS_REGEX.matcher(email);
-        return matcher.find();
-	}
-
-
 	private boolean checkPassword() {
 		
 		char[] pwIn = this.view.getPasswordInput();
@@ -133,38 +106,14 @@ public final class RegistrationController implements IController{
 	}
 	
 	private void login() {
-		System.out.println("Login wird aufgerufen.");
+		System.out.println("sie werden eingeloggt");
 		new LoginController();
 		this.view.dispose();
 	}
 	
-	// TODO: Discuss correct use of char[] to write to db (for query, char[] needs to be converted to String)
-	// TODO: Hash Password
 	private void registration() {
-		System.out.println("Benutzer wird registriert.");
-		if(inputCheck()) {
-			String username = view.getUsernameInput();
-			char[] password = view.getPasswordInput();
-			String email = view.getEmailInput();
-			int selectedQuestion = view.getSecurityQuestionPicker().getSelectedIndex();
-			String security_question = view.getQuestions()[selectedQuestion];
-			String answer = view.getSecurityAnswer();
-			
-			dbc.insert("INSERT INTO users(username,password,email,security_question,answer)VALUES("
-					+ "'" + username + "',"
-					+ "'" + String.valueOf(password) + "',"
-					+ "'" + email + "',"
-					+ "'" + security_question + "',"
-					+ "'" + answer + "');"
-					);
-			login(); // Change View to Login
-		};
-	}
-	
-
-	private boolean usernameIsTaken(String username) {
-		ArrayList<Object> result = dbc.query("SELECT username FROM users WHERE username='" + username + "'", true);
-		return (!result.isEmpty());
+		System.out.println("sie werden weitergeleitet");
+		if(inputCheck());
 	}
 	
 	

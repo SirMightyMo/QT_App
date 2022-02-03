@@ -130,18 +130,6 @@ public final class RegistrationView extends JFrame implements IView {
 
 	}
 
-	public String[] getQuestions() {
-		return questions;
-	}
-
-	public void setQuestions(String[] questions) {
-		this.questions = questions;
-	}
-
-	public JComboBox getSecurityQuestionPicker() {
-		return securityQuestionPicker;
-	}
-
 	public void setSecurityQuestions(String[] questions) {
 		this.questions = questions;
 	}
