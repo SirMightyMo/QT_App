@@ -37,6 +37,9 @@ public class DashboardController implements IController {
 		this.dashboardView = new DashboardView(this);
 		this.dashboardView.setVisible(true);
 		
+		// Test
+		new ProjectController();
+		
 		// Set logged in user
 		this.user = user;		
 

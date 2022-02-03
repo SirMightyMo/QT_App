@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -111,7 +113,27 @@ public class TimerHourController implements IController {
 			this.hourEntry.setPauseEnd(timeNow);
 		}
 		if (this.hourEntry.getEndTime() != null) { // if timer was stopped, but not saved/resetted
-			// TODO: Hightlight TimerView save or reset button or show warning
+			// Show visual warning, to reset or save current recordings
+			if (!timerView.isButtonsHighlighted()) {				
+				Color defaultColor = timerView.getBtnSave().getBackground();
+
+				timerView.getBtnSave().setBackground(new Color(50,205,50));
+				timerView.getBtnReset().setBackground(Color.ORANGE);
+				timerView.getBtnSave().setForeground(new Color(31,32,33));
+				timerView.getBtnReset().setForeground(new Color(31,32,33));
+				timerView.setButtonsHighlighted(true);
+				Timer timer = new Timer();
+				timer.schedule(new TimerTask() {
+					@Override
+					public void run() {
+						timerView.getBtnSave().setBackground(defaultColor);
+						timerView.getBtnReset().setBackground(defaultColor);
+						timerView.getBtnSave().setForeground(Color.WHITE);
+						timerView.getBtnReset().setForeground(Color.WHITE);
+						timerView.setButtonsHighlighted(false);
+					}
+				}, 1000);
+			}
 			return;
 		}
 		this.timerModel.startTimer();
@@ -404,22 +426,9 @@ public class TimerHourController implements IController {
 
 			DatabaseController db = new DatabaseController("sa", "");
 			ArrayList<Object> result = db
-					.query("SELECT p_id FROM hour_entry WHERE h_id = (SELECT MAX(h_id) FROM hour_entry);"); // TODO:
-																											// Check, if
-																											// querying
-																											// for
-																											// specific
-																											// user is
-																											// necessary
-																											// or if
-																											// this
-																											// table
-																											// already
-																											// contains
-																											// hour
-																											// entries
-																											// of user
-																											// only
+					.query("SELECT p_id FROM hour_entry WHERE h_id = (SELECT MAX(h_id) FROM hour_entry);");
+					//  TODO:Check, if querying for specific user is necessary or if this table already contains
+					//  hour entries of user only 
 			if (!result.isEmpty()) {
 				// find out projectListIndex by looking for p_id in ArrayList projectList of
 				// timerModel
