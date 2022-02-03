@@ -17,7 +17,6 @@ import main.java.controller.TimerHourController;
 
 public class DashboardView extends WindowSuperclass implements IView{
 	
->>>>>>> 04c941b36b3dfe1291ded7e0a6911eba7e491f02
 	private static final long serialVersionUID = 1L;
 	private JFrame frame;
 

@@ -11,6 +11,7 @@ import main.java.controller.DashboardController;
 import main.java.controller.DatabaseController;
 import main.java.controller.LayoutManager;
 import main.java.controller.TimerHourController;
+import main.java.model.User;
 import main.java.view.DashboardView;
 import main.java.view.TimerView;
 
@@ -37,7 +38,7 @@ class TimerViewGUITest {
 		new LayoutManager();
 		DatabaseController dbc = new DatabaseController("sa", "");
 		FlatDarkLaf.setup();
-		DashboardView frame = GuiActionRunner.execute(() -> new DashboardView(new DashboardController()));
+		DashboardView frame = GuiActionRunner.execute(() -> new DashboardView(new DashboardController(new User(1, "Bob", "abc"))));
 		window = new FrameFixture(frame); // TODO: Fix. TimerView no longer is JFrame
 		window.show(); // shows the frame to test
 	}
