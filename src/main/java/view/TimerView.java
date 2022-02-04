@@ -56,7 +56,9 @@ public class TimerView implements IView {
 	private JTextField hiddenTextFieldProjectID;
 	private JLabel lblErrorMessage;
 	private JButton btnSave;
+	private JButton btnReset;
 	private boolean errorVisible;
+	private boolean buttonsHighlighted;
 
 	/**
 	 * Create Frame
@@ -107,7 +109,7 @@ public class TimerView implements IView {
 		durationPanel.setBackground(new Color(31, 32, 33));
 		contentPanel.add(durationPanel);
 
-		// Timer Label; TODO: Delete?
+		// Timer Label
 		JLabel timerLabel = new JLabel("");
 		lblProject.setName("timerLabel");
 		durationPanel.add(timerLabel);
@@ -212,7 +214,7 @@ public class TimerView implements IView {
 		contentPanel.add(confirmButtonPanel);
 
 		//Reset Button
-		JButton btnReset = new JButton("Reset");
+		btnReset = new JButton("Reset");
 		btnReset.setName("btnReset");
 		btnReset.addActionListener(timerHourController);
 		btnReset.setActionCommand(StaticActions.ACTION_TIMER_RESET);
@@ -277,6 +279,10 @@ public class TimerView implements IView {
 	public JButton getBtnSave() {
 		return btnSave;
 	}
+	
+	public JButton getBtnReset() {
+		return btnReset;
+	}
 
 	public boolean isErrorVisible() {
 		return errorVisible;
@@ -284,6 +290,14 @@ public class TimerView implements IView {
 
 	public void setErrorVisible(boolean errorVisible) {
 		this.errorVisible = errorVisible;
+	}
+
+	public boolean isButtonsHighlighted() {
+		return buttonsHighlighted;
+	}
+
+	public void setButtonsHighlighted(boolean buttonsHighlighted) {
+		this.buttonsHighlighted = buttonsHighlighted;
 	}
 
 	public void showErrorMessage(String message, long duration) {
