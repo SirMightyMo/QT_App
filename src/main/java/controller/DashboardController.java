@@ -23,12 +23,14 @@ public class DashboardController implements IController {
 	private DashboardProjectListController dashboardProjectListController;
 	private DashboardHourListController dashboardHourListController;
 	private DashboardView dashboardView;
+	private NewProjectController newProjectController;
 
 	// Constructor
 	@SuppressWarnings("deprecation")
 	public DashboardController() {
 		// Intanciate Controller
 		this.timerHourController = new TimerHourController();
+		this.newProjectController = new NewProjectController();
 		this.dashboardProjectListController = new DashboardProjectListController();
 		this.dashboardHourListController = new DashboardHourListController();
 		
@@ -113,6 +115,14 @@ public class DashboardController implements IController {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public NewProjectController getNewProjectController() {
+		return newProjectController;
+	}
+
+	public void setNewProjectController(NewProjectController newProjectController) {
+		this.newProjectController = newProjectController;
 	}
 
 }
