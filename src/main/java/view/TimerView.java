@@ -43,7 +43,7 @@ import javax.swing.GroupLayout.Alignment;
 import java.awt.BorderLayout;
 
 @SuppressWarnings("deprecation")
-public class TimerView extends JFrame implements Observer {
+public class TimerView implements IView {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPanel; // Container
 
@@ -55,23 +55,19 @@ public class TimerView extends JFrame implements Observer {
 	private JTextField textPauseDuration;
 	private JTextField hiddenTextFieldProjectID;
 	private JLabel lblErrorMessage;
+	private JButton btnSave;
+	private JButton btnReset;
 	private boolean errorVisible;
+	private boolean buttonsHighlighted;
 
 	/**
 	 * Create Frame
 	 */
 	public TimerView(TimerHourController timerHourController) {
-		setFont(new Font("Open Sans ExtraBold", Font.PLAIN, 12));
-		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit()
-				.getImage(TimerView.class.getResource("/main/resources/img/icons/qtproject_placeholder.gif")));
-		setTitle("Quality Time");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 354, 600); // x, y, width, height
+		//setFont(new Font("Open Sans ExtraBold", Font.PLAIN, 12));
 		contentPanel = new JPanel();
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5)); // top, left, bottom, right
 		contentPanel.setBounds(0, 0, 1850, 1080);
-		setContentPane(contentPanel);
 		contentPanel.setBackground(new Color(31, 32, 33));
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
@@ -95,13 +91,14 @@ public class TimerView extends JFrame implements Observer {
 		projectPanel.add(comboBox);
 
 		JButton btnLoadProjects = new JButton("\u21BB");
+		btnLoadProjects.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 14));
 		btnLoadProjects.setName("btnLoadProjects");
 		btnLoadProjects.addActionListener(timerHourController);
 		btnLoadProjects.setActionCommand(StaticActions.ACTION_LOAD_PROJECTS);
 		projectPanel.add(btnLoadProjects);
 
 		hiddenTextFieldProjectID = new JTextField();
-		hiddenTextFieldProjectID.setFont(new Font("Tahoma", Font.PLAIN, 5));
+		//hiddenTextFieldProjectID.setFont(new Font("Tahoma", Font.PLAIN, 5));
 		hiddenTextFieldProjectID.setHorizontalAlignment(SwingConstants.RIGHT);
 		hiddenTextFieldProjectID.setEnabled(false);
 		hiddenTextFieldProjectID.setEditable(false);
@@ -113,7 +110,7 @@ public class TimerView extends JFrame implements Observer {
 		contentPanel.add(durationPanel);
 
 		// Timer Label
-		JLabel timerLabel = new JLabel("Dauer: ");
+		JLabel timerLabel = new JLabel("");
 		lblProject.setName("timerLabel");
 		durationPanel.add(timerLabel);
 		timerLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -198,7 +195,7 @@ public class TimerView extends JFrame implements Observer {
 		textFieldComment.setPreferredSize(new Dimension(300, 20));
 		textFieldComment.setToolTipText("");
 		textFieldComment.setHorizontalAlignment(SwingConstants.LEFT);
-		textFieldComment.setColumns(25);
+		textFieldComment.setColumns(20);
 
 		JLabel lblPauseDuration = new JLabel("Pause:");
 		manualEntryPanel.add(lblPauseDuration);
@@ -217,14 +214,14 @@ public class TimerView extends JFrame implements Observer {
 		contentPanel.add(confirmButtonPanel);
 
 		//Reset Button
-		JButton btnReset = new JButton("Reset");
+		btnReset = new JButton("Reset");
 		btnReset.setName("btnReset");
 		btnReset.addActionListener(timerHourController);
 		btnReset.setActionCommand(StaticActions.ACTION_TIMER_RESET);
 		confirmButtonPanel.add(btnReset);
 
 		//Save Button
-		JButton btnSave = new JButton("Sichern");
+		btnSave = new JButton("Sichern");
 		btnSave.setName("btnSave");
 		btnSave.addActionListener(timerHourController);
 		btnSave.setActionCommand(StaticActions.ACTION_TIMER_SAVE);
@@ -236,7 +233,7 @@ public class TimerView extends JFrame implements Observer {
 		contentPanel.add(errorPanel);
 
 		lblErrorMessage = new JLabel("Error Message");
-		lblErrorMessage.setFont(new Font("Tahoma", Font.BOLD, 12));
+		//lblErrorMessage.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblErrorMessage.setForeground(new Color(255, 140, 0));
 		lblErrorMessage.setVisible(false);
 		errorPanel.add(lblErrorMessage);
@@ -279,12 +276,28 @@ public class TimerView extends JFrame implements Observer {
 		return lblErrorMessage;
 	}
 
+	public JButton getBtnSave() {
+		return btnSave;
+	}
+	
+	public JButton getBtnReset() {
+		return btnReset;
+	}
+
 	public boolean isErrorVisible() {
 		return errorVisible;
 	}
 
 	public void setErrorVisible(boolean errorVisible) {
 		this.errorVisible = errorVisible;
+	}
+
+	public boolean isButtonsHighlighted() {
+		return buttonsHighlighted;
+	}
+
+	public void setButtonsHighlighted(boolean buttonsHighlighted) {
+		this.buttonsHighlighted = buttonsHighlighted;
 	}
 
 	public void showErrorMessage(String message, long duration) {

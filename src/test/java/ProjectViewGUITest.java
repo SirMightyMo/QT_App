@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import com.formdev.flatlaf.FlatDarkLaf;
 
 import main.java.controller.ProjectController;
+import main.java.model.User;
 import main.java.view.ProjectView;
 
 class ProjectViewGUITest {

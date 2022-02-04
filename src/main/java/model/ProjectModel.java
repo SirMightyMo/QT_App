@@ -6,12 +6,13 @@ import java.util.Observable;
 import main.java.controller.DatabaseController;
 
 @SuppressWarnings("deprecation")
-public class ProjectModel extends Observable {
+public class ProjectModel extends Observable implements IModel {
 
 	private ArrayList<ArrayList<Object>> projectList;
 	private boolean projectSet;
 	private Object[][] projectTable;
-
+	private DatabaseController db = DatabaseController.getInstance();
+	
 	// Constructor
 	public ProjectModel() {
 		super();
@@ -20,7 +21,6 @@ public class ProjectModel extends Observable {
 	// Creates Object needed for JTable
 	public Object[][] getTableModel() {
 		this.projectList = new ArrayList<>();
-		DatabaseController db = new DatabaseController("sa", "");
 		ArrayList<Object> result = db.query("SELECT * FROM project ;");
 		projectTable = new Object[result.size()][7];
 		for (int i = 0; i < result.size(); i++) {
@@ -65,7 +65,6 @@ public class ProjectModel extends Observable {
 
 	public void retrieveProjects() {
 		this.projectList = new ArrayList<>();
-		DatabaseController db = new DatabaseController("sa", "");
 		ArrayList<Object> result = db.query("SELECT p_id, name FROM project;");
 		result.forEach(entry -> {
 			ArrayList<Object> row = (ArrayList<Object>) entry;

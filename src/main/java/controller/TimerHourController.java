@@ -8,6 +8,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.EventObject;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -17,12 +19,15 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import main.java.model.HourEntry;
+import main.java.model.IModel;
 import main.java.model.Service;
 import main.java.model.StaticActions;
 import main.java.model.TimerModel;
 import main.java.model.User;
+import main.java.view.IView;
 import main.java.view.TimerView;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.ByteArrayOutputStream;
@@ -33,11 +38,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class TimerHourController implements ActionListener, DocumentListener {
+public class TimerHourController implements IController {
 
 	private TimerModel timerModel;
 	private TimerView timerView;
 	private HourEntry hourEntry;
+	private DatabaseController db = DatabaseController.getInstance();
 
 	private LocalDateTime timeNow;
 
@@ -47,7 +53,6 @@ public class TimerHourController implements ActionListener, DocumentListener {
 		this.timerModel = new TimerModel();
 		this.timerView = new TimerView(this);
 		this.timerModel.addObserver(this.timerView);
-		this.timerView.setVisible(true);
 
 		actionLoadProjects();
 	}
@@ -109,10 +114,35 @@ public class TimerHourController implements ActionListener, DocumentListener {
 			this.hourEntry.setPauseEnd(timeNow);
 		}
 		if (this.hourEntry.getEndTime() != null) { // if timer was stopped, but not saved/resetted
-			// TODO: Hightlight TimerView save or reset button or show warning
+			
+			// Show visual warning, to reset or save current recordings
+			if (!timerView.isButtonsHighlighted()) {				
+				Color defaultColor = timerView.getBtnSave().getBackground();
+				
+				timerView.getBtnSave().setBackground(new Color(50,205,50));
+				timerView.getBtnReset().setBackground(Color.ORANGE);
+				timerView.getBtnSave().setForeground(new Color(31,32,33));
+				timerView.getBtnReset().setForeground(new Color(31,32,33));
+				timerView.setButtonsHighlighted(true);
+				Timer timer = new Timer();
+				timer.schedule(new TimerTask() {
+					@Override
+					public void run() {
+						timerView.getBtnSave().setBackground(defaultColor);
+						timerView.getBtnReset().setBackground(defaultColor);
+						timerView.getBtnSave().setForeground(Color.WHITE);
+						timerView.getBtnReset().setForeground(Color.WHITE);
+						timerView.setButtonsHighlighted(false);
+					}
+				}, 1000);
+			}
+			
+			
+			
 			return;
 		}
 		this.timerModel.startTimer();
+		this.timerView.getDurationLabel().setForeground(new Color(50,205,50));
 	}
 
 	public void actionStopTimer() {
@@ -126,6 +156,7 @@ public class TimerHourController implements ActionListener, DocumentListener {
 			}
 			this.timerView.getTextPauseDuration().setText(this.hourEntry.pauseMinutesToFormattedString());
 		}
+		this.timerView.getDurationLabel().setForeground(new Color(220,20,60));
 	}
 
 	public void actionPauseTimer() {
@@ -136,6 +167,7 @@ public class TimerHourController implements ActionListener, DocumentListener {
 			setTimeNow();
 			this.timerModel.pauseTimer();
 			this.hourEntry.setPauseStart(timeNow);
+			this.timerView.getDurationLabel().setForeground(Color.ORANGE);
 		}
 	}
 
@@ -348,14 +380,12 @@ public class TimerHourController implements ActionListener, DocumentListener {
 		projectID = (int) this.timerModel.getProjectList().get(comboBoxIndex).get(0);
 		this.hourEntry.setProjectID(projectID);
 
-		serviceID = 1; // TODO: implement, when TimerView holds service-dropdown and ServiceModel is
-						// implemented
+		serviceID = 1; // TODO: implement, when TimerView holds service-dropdown and ServiceModel is implemented
 
-		userID = 1; // TODO: read and set, when login sets userID correctly
+		userID = User.getUser().getU_id();
 
 		// write hour entry to database only if starTime and endTime are not empty
 		if (startTime != null && endTime != null && pauseMinutesValid == true) {
-			DatabaseController db = new DatabaseController("sa", "");
 			db.insert(
 					"INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes,p_id) VALUES("
 							+ "'" + entryDate + "'," + "'" + comment + "'," + "'" + startTime + "'," + "'" + endTime
@@ -386,6 +416,7 @@ public class TimerHourController implements ActionListener, DocumentListener {
 		this.timerView.getTxtEndTime().setText("");
 		this.timerView.getTextPauseDuration().setText("");
 		this.timerView.getLblErrorMessage().setText("");
+		this.timerView.getDurationLabel().setForeground(Color.WHITE);
 		this.hourEntry = null;
 	}
 
@@ -396,24 +427,11 @@ public class TimerHourController implements ActionListener, DocumentListener {
 		// if project was not set yet, select last used project (highest h_id)
 		if ((this.hourEntry == null || this.hourEntry.getProjectID() == 0) && !this.timerModel.isProjectSet()) {
 
-			DatabaseController db = new DatabaseController("sa", "");
 			ArrayList<Object> result = db
-					.query("SELECT p_id FROM hour_entry WHERE h_id = (SELECT MAX(h_id) FROM hour_entry);"); // TODO:
-																											// Check, if
-																											// querying
-																											// for
-																											// specific
-																											// user is
-																											// necessary
-																											// or if
-																											// this
-																											// table
-																											// already
-																											// contains
-																											// hour
-																											// entries
-																											// of user
-																											// only
+					.query("SELECT p_id FROM hour_entry WHERE h_id = (SELECT MAX(h_id) FROM hour_entry);");
+					//  TODO:Check, if querying for specific user is necessary or if this table already contains
+					//  hour entries of user only 
+			
 			if (!result.isEmpty()) {
 				// find out projectListIndex by looking for p_id in ArrayList projectList of
 				// timerModel
@@ -488,5 +506,17 @@ public class TimerHourController implements ActionListener, DocumentListener {
 	@Override
 	public void changedUpdate(DocumentEvent e) {
 		actionCalculateDurationView();
+	}
+
+	@Override
+	public IModel getModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IView getView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -4,14 +4,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.*;
 
+import javax.swing.event.DocumentEvent;
+
+import main.java.model.IModel;
 import main.java.model.StaticActions;
 import main.java.model.TestHourEntryModel;
+import main.java.view.IView;
 import main.java.view.TestHourEntryView;
 
-public class TestHourEntryController implements ActionListener {
+public class TestHourEntryController implements IController {
 
 	TestHourEntryModel model;
 	TestHourEntryView view;
+	private DatabaseController db = DatabaseController.getInstance();
 	
 	@SuppressWarnings("deprecation")
 	public TestHourEntryController() {
@@ -29,7 +34,6 @@ public class TestHourEntryController implements ActionListener {
 		
 		// Get Database Entries
 		if (event.equalsIgnoreCase(StaticActions.ACTION_GET_HOURLIST)) {
-			DatabaseController db = new DatabaseController("sa", "");
 			db.connect();
 			
 			ResultSet rs = null;
@@ -48,5 +52,35 @@ public class TestHourEntryController implements ActionListener {
 				e2.printStackTrace();
 			}
 		}
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public IModel getModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IView getView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

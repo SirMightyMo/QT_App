@@ -8,7 +8,7 @@ import java.util.TimerTask;
 import main.java.controller.DatabaseController;
 
 @SuppressWarnings("deprecation")
-public class TimerModel extends Observable {
+public class TimerModel extends Observable implements IModel{
 
 	private boolean timerRunning;
 	private boolean timerPaused;
@@ -18,6 +18,7 @@ public class TimerModel extends Observable {
 	private boolean projectSet;
 	private Timer taskTimer;
 	private ArrayList<ArrayList<Object>> projectList;
+	private DatabaseController db = DatabaseController.getInstance();
 
 	/**
 	 * Constructor
@@ -168,7 +169,6 @@ public class TimerModel extends Observable {
 
 	public void retrieveProjects() { // TODO: Retrieve only those projects, where p_id is assigned to u_id
 		this.projectList = new ArrayList<>();
-		DatabaseController db = new DatabaseController("sa", "");
 		ArrayList<Object> result = db.query("SELECT p_id, name FROM project WHERE active = TRUE;");
 		result.forEach(entry -> {
 			ArrayList<Object> row = (ArrayList<Object>) entry;

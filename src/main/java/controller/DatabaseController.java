@@ -1,11 +1,17 @@
 package main.java.controller;
 
+import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class DatabaseController {
+import javax.swing.event.DocumentEvent;
+
+import main.java.model.IModel;
+import main.java.view.IView;
+
+public class DatabaseController implements IController {
 
 	private final String JDBC_DRIVER = "org.h2.Driver";
 	private final String DB_URL = "jdbc:h2:./src/main/resources/data/db"; // relative path
@@ -13,9 +19,15 @@ public class DatabaseController {
 	private String pass;
 	private Connection dbConnection; // H2 Database // Logout: Close DB Connection
 
-	public DatabaseController(String user, String pass) {
+	public static final DatabaseController DBC = new DatabaseController("sa", "");
+	
+	private DatabaseController(String user, String pass) {
 		this.user = user;
 		this.pass = pass;
+	}
+	
+	public static DatabaseController getInstance() {
+		return DBC;
 	}
 
 	public Connection getDbConnection() {
@@ -99,11 +111,11 @@ public class DatabaseController {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			try {
-				dbConnection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+//			try {
+//				dbConnection.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
 		}
 	}
 
@@ -184,22 +196,76 @@ public class DatabaseController {
 				e.printStackTrace();
 			}
 		}
-		try {
-			dbConnection.close();
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
+//		try {
+//			dbConnection.close();
+//		} catch (SQLException e) {
+//			System.out.println(e.getMessage());
+//		}
 		return resultArrayList;
 	}
 
 	public void initializeDB() {
 		if (executeSQLScript("./src/main/resources/data/createTables.sql") == 0
-				&& executeSQLScript("./src/main/resources/data/insertDummyData.sql") == 0) { // If dummy-data needed,
+				/*&& executeSQLScript("./src/main/resources/data/insertDummyData.sql") == 0*/) { // If dummy-data needed,
 																								// remove inline comment
 			System.out.println("Database successfully initialized");
 		}
 	}
 
+	// If only one row (or one row with just one value) is expected, set flag to true.
+	// The ArrayList consists just of these value(s) (type 'Object', need to be casted)
+	// and does NOT contain another ArrayList.
+	public ArrayList<Object> query(String sql, boolean onlyOneRowExpected) {
+		if (onlyOneRowExpected) {
+			ArrayList<Object> resultArrayList = new ArrayList<>();
+			ResultSet rs = null;
+			Statement statement = null;
+			try {
+				Class.forName(JDBC_DRIVER);
+				dbConnection = DriverManager.getConnection(DB_URL, user, pass);
+				statement = dbConnection.createStatement();
+				rs = statement.executeQuery(sql);
+
+				ResultSetMetaData rsmd = rs.getMetaData(); // get info about ResultSet
+				int columnCount = rsmd.getColumnCount(); // find out, how many columns per row where retrieved
+
+				// while there are results, compute them here
+				while (rs.next()) {
+					// for every column retrieved, add column-value to row-ArrayList;
+					for (int column = 1; column <= columnCount; column++) {
+						resultArrayList.add(rs.getObject(column));
+					}
+				}
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					if (rs != null)
+						rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				try {
+					if (statement != null)
+						statement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+//			try {
+//				dbConnection.close();
+//			} catch (SQLException e) {
+//				System.out.println(e.getMessage());
+//			}
+			return resultArrayList;
+		} else {
+			return query(sql);
+		}
+	}
+	
 	public int executeSQLScript(String scriptFilePath) {
 		BufferedReader bReader = null;
 		Statement statement = null;
@@ -222,7 +288,7 @@ public class DatabaseController {
 
 			statement.close();
 			bReader.close();
-			dbConnection.close();
+			//dbConnection.close();
 
 			System.out.println("SQL-Script " + scriptFilePath + " executed successfully");
 		} catch (Exception e) {
@@ -231,5 +297,41 @@ public class DatabaseController {
 			return 1;
 		}
 		return 0;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public IModel getModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IView getView() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

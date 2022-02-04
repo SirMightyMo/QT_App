@@ -43,7 +43,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.JCheckBox;
 
 @SuppressWarnings("deprecation")
-public class ProjectView extends JFrame implements Observer {
+public class ProjectView extends JFrame implements IView {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane; // Container
 	JTabbedPane tabbedPane;
@@ -174,6 +174,7 @@ public class ProjectView extends JFrame implements Observer {
 		// refresh button projects
 		JButton btnLoadProjects = new JButton("\u21BB");
 		btnLoadProjects.setName("btnLoadProjects");
+		btnLoadProjects.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 14));
 		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, btnLoadProjects, -4, SpringLayout.NORTH,
 				lblProjects);
 		sl_panel_project_overview.putConstraint(SpringLayout.WEST, btnLoadProjects, 14, SpringLayout.EAST,
@@ -450,6 +451,7 @@ public class ProjectView extends JFrame implements Observer {
 		// Reset project table
 		JButton btnResetProjects = new JButton("\u21BB");
 		btnResetProjects.setName("btnResetProjects");
+		btnResetProjects.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 14));
 		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, btnResetProjects, 0, SpringLayout.NORTH,
 				lblTimeFrame);
 		sl_panel_project_overview.putConstraint(SpringLayout.EAST, btnResetProjects, -7, SpringLayout.WEST,
