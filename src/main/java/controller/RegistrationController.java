@@ -1,21 +1,26 @@
 package main.java.controller;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.math.BigInteger;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 import javax.swing.event.DocumentEvent;
 
-import main.java.view.IView;
-import main.java.view.RegistrationView;
+import main.java.model.Hashing;
 import main.java.model.IModel;
 import main.java.model.Regex;
 import main.java.model.RegistrationModel;
+import main.java.view.IView;
+import main.java.view.RegistrationView;
 
-public final class RegistrationController implements IController{
+public final class RegistrationController extends Hashing implements IController {
 	
 	private RegistrationView view;
 	private RegistrationModel model;
@@ -141,9 +146,16 @@ public final class RegistrationController implements IController{
 	// TODO: Hash Password
 	private void registration() {
 		System.out.println("Benutzer wird registriert.");
+		String hash = null;
 		if(inputCheck()) {
 			String username = view.getUsernameInput();
 			char[] password = view.getPasswordInput();
+			try {
+				hash = generatePasswordHash(password);
+			} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+				e.printStackTrace();
+			}
+			
 			String email = view.getEmailInput();
 			int selectedQuestion = view.getSecurityQuestionPicker().getSelectedIndex();
 			String security_question = view.getQuestions()[selectedQuestion];
@@ -151,7 +163,7 @@ public final class RegistrationController implements IController{
 			
 			dbc.insert("INSERT INTO users(username,password,email,security_question,answer)VALUES("
 					+ "'" + username + "',"
-					+ "'" + String.valueOf(password) + "',"
+					+ "'" + hash + "',"
 					+ "'" + email + "',"
 					+ "'" + security_question + "',"
 					+ "'" + answer + "');"
@@ -165,7 +177,7 @@ public final class RegistrationController implements IController{
 		ArrayList<Object> result = dbc.query("SELECT username FROM users WHERE username='" + username + "'", true);
 		return (!result.isEmpty());
 	}
-	
+		
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {

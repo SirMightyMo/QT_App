@@ -1,20 +1,20 @@
 package main.java.controller;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import javax.swing.AbstractAction;
 import javax.swing.event.DocumentEvent;
 
-import main.java.view.IView;
-import main.java.view.LoginView;
+import main.java.model.Hashing;
 import main.java.model.IModel;
 import main.java.model.LoginModel;
 import main.java.model.User;
+import main.java.view.IView;
+import main.java.view.LoginView;
 
-public final class LoginController implements IController {
+public final class LoginController extends Hashing implements IController {
 
 	private LoginView view;
 	private LoginModel model;
@@ -38,21 +38,41 @@ public final class LoginController implements IController {
 		
 		String user = view.getUsernameInput();
 		char[] pass = view.getPasswordInput();
-		String sql = "SELECT u_id, username, email FROM users WHERE username='" + user + "' AND password='" + String.valueOf(pass) + "';"; 
+		String passStr = String.valueOf(pass);
+		boolean pwMatches = false;
+		
+		try {
+			String hash = generatePasswordHash(pass);
+		} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+			e.printStackTrace();
+		}
+		
+		String sql = "SELECT u_id, username, email, password FROM users WHERE username='" + user + "';"; 
 		ArrayList<Object> result = dbc.query(sql, true);
 		
 		if (result.isEmpty()) {
-			view.setErrorMessage("Login failed!");
+			view.setErrorMessage("User does not exist!");
 		} else {
 			if (view.getErrorMessage() != null) {
 				view.deleteErrorMessage();
 			}
 			
+			// read result from database
 			int u_id = (int) result.get(0);
 			String name = (String) result.get(1);
 			String email = (String) result.get(2);
+			String hash = (String) result.get(3);
+			try {
+				pwMatches = validatePassword(passStr, hash); // check password with hash
+			} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+				e.printStackTrace();
+			}
 			
-			login(u_id, name, email);
+			if (pwMatches) {
+				login(u_id, name, email);
+			} else {
+				view.setErrorMessage("Password is incorrect!");
+			}
 		}
 		
 	}
