@@ -11,9 +11,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import main.java.controller.DashboardController;
+import main.java.controller.NewProjectController;
 import main.java.controller.DashboardHourListController;
 import main.java.controller.DashboardProjectListController;
 import main.java.controller.TimerHourController;
+import main.java.model.StaticActions;
+
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 
 public class DashboardView extends WindowSuperclass implements IView{
 	
@@ -21,6 +26,7 @@ public class DashboardView extends WindowSuperclass implements IView{
 	private JFrame frame;
 
 	private TimerHourController timerHourController;
+	private NewProjectController newProjectController;
 	private DashboardHourListController hourListController;
 	private DashboardProjectListController projectListController;
 	
@@ -28,6 +34,7 @@ public class DashboardView extends WindowSuperclass implements IView{
 	
 	public DashboardView(DashboardController dashboardController) {
 		timerHourController = dashboardController.getTimerHourController();
+		newProjectController = dashboardController.getNewProjectController();
 		hourListController = dashboardController.getDashboardHourListController();
 		projectListController = dashboardController.getDashboardProjectListController();
 		
@@ -63,41 +70,87 @@ public class DashboardView extends WindowSuperclass implements IView{
 		lblNewLabel.setForeground(Color.WHITE);
 		panel_2.add(lblNewLabel);
 		
-		JPanel panel_2_1 = new JPanel();
-		panel_2_1.setName("btnPaneDashboard");
-		panel_2_1.setBackground(new Color(31,32,33));
-		panel_2_1.setBounds(10, 177, 335, 66);
-		menuPanel.add(panel_2_1);
+		JPanel btnPaneMenuDashboard = new JPanel();
+		btnPaneMenuDashboard.setName("btnPaneDashboard");
+		btnPaneMenuDashboard.setBackground(new Color(31,32,33));
+		btnPaneMenuDashboard.setBounds(10, 177, 335, 66);
+		menuPanel.add(btnPaneMenuDashboard);
+		btnPaneMenuDashboard.setLayout(null);
 		
-		JLabel lblNewLabel_1 = new JLabel("Dashboard");
-		lblNewLabel_1.setName("navLabelDashboard");
-		lblNewLabel_1.setForeground(Color.WHITE);
-		lblNewLabel_1.setFont(dinNeuzeitGrotesk_regular.deriveFont(16.0f));
-		panel_2_1.add(lblNewLabel_1);
+		JButton btnMenuDashboard = new JButton("Dashboard\r\n");
+		btnMenuDashboard.setForeground(Color.WHITE);
+		btnMenuDashboard.setBounds(136, 0, 89, 23);
+		btnPaneMenuDashboard.add(btnMenuDashboard);
+		btnMenuDashboard.setOpaque(false);
+		btnMenuDashboard.setContentAreaFilled(false);
+		btnMenuDashboard.setBorderPainted(false);
+		btnMenuDashboard.addMouseListener(new java.awt.event.MouseAdapter() {
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+		    	btnMenuDashboard.setForeground(Color.ORANGE);
+		    }
+
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+		    	btnMenuDashboard.setForeground(Color.WHITE);
+		    }
+		});
 		
-		JPanel panel_2_2 = new JPanel();
-		panel_2_2.setName("btnPaneProjects");
-		panel_2_2.setBackground(new Color(31,32,33));
-		panel_2_2.setBounds(10, 254, 335, 66);
-		menuPanel.add(panel_2_2);
 		
-		JLabel lblNewLabel_1_1 = new JLabel("Projekte\r\n");
-		lblNewLabel_1_1.setName("navLabelProjects");
-		lblNewLabel_1_1.setForeground(Color.WHITE);
-		lblNewLabel_1_1.setFont(dinNeuzeitGrotesk_regular.deriveFont(16.0f));
-		panel_2_2.add(lblNewLabel_1_1);
 		
-		JPanel panel_2_3 = new JPanel();
-		panel_2_3.setName("btnPaneSessions");
-		panel_2_3.setBackground(new Color(31,32,33));
-		panel_2_3.setBounds(10, 331, 335, 66);
-		menuPanel.add(panel_2_3);
 		
-		JLabel lblNewLabel_1_2 = new JLabel("Sitzungen\r\n");
-		lblNewLabel_1_2.setName("navLabelSessions");
-		lblNewLabel_1_2.setForeground(Color.WHITE);
-		lblNewLabel_1_2.setFont(dinNeuzeitGrotesk_regular.deriveFont(16.0f));
-		panel_2_3.add(lblNewLabel_1_2);
+		JPanel btnPaneMenuProjects = new JPanel();
+		btnPaneMenuProjects.setName("btnPaneProjects");
+		btnPaneMenuProjects.setBackground(new Color(31,32,33));
+		btnPaneMenuProjects.setBounds(10, 254, 335, 66);
+		menuPanel.add(btnPaneMenuProjects);
+		btnPaneMenuProjects.setLayout(null);
+		
+		JButton btnMenuProjects = new JButton("Projekte");
+		btnMenuProjects.setForeground(Color.WHITE);
+		btnMenuProjects.setBackground(Color.BLACK);
+		btnMenuProjects.setBounds(141, 0, 89, 23);
+		btnPaneMenuProjects.add(btnMenuProjects);
+		btnMenuProjects.setHorizontalAlignment(SwingConstants.LEFT); 
+		btnMenuProjects.setOpaque(false);
+		btnMenuProjects.setContentAreaFilled(false);
+		btnMenuProjects.setBorderPainted(false);
+		btnMenuProjects.setActionCommand(StaticActions.ACTION_MENU_PROJECTS);
+		btnMenuProjects.addMouseListener(new java.awt.event.MouseAdapter() {
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+		    	btnMenuProjects.setForeground(Color.ORANGE);
+		    }
+
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+		    	btnMenuProjects.setForeground(Color.WHITE);
+		    }
+		});
+		
+		
+		
+		JPanel btnPaneMenuSessions = new JPanel();
+		btnPaneMenuSessions.setName("btnPaneSessions");
+		btnPaneMenuSessions.setBackground(new Color(31,32,33));
+		btnPaneMenuSessions.setBounds(10, 331, 335, 66);
+		menuPanel.add(btnPaneMenuSessions);
+		btnPaneMenuSessions.setLayout(null);
+		
+		JButton btnNewButton_2 = new JButton("Sitzungen");
+		btnNewButton_2.setForeground(Color.WHITE);
+		btnNewButton_2.setBounds(141, 0, 89, 23);
+		btnPaneMenuSessions.add(btnNewButton_2);
+		btnNewButton_2.setOpaque(false);
+		btnNewButton_2.setContentAreaFilled(false);
+		btnNewButton_2.setBorderPainted(false);
+		btnNewButton_2.setHorizontalAlignment(SwingConstants.LEFT); 
+		btnNewButton_2.addMouseListener(new java.awt.event.MouseAdapter() {
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+		    	btnNewButton_2.setForeground(Color.ORANGE);
+		    }
+
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+		    	btnNewButton_2.setForeground(Color.WHITE);
+		    }
+		});
+		
 		
 		JPanel panel_2_3_1 = new JPanel();
 		panel_2_3_1.setName("btnPaneSettings");
@@ -106,36 +159,67 @@ public class DashboardView extends WindowSuperclass implements IView{
 		menuPanel.add(panel_2_3_1);
 		panel_2_3_1.setLayout(null);
 		
-		JLabel lblNewLabel_1_3 = new JLabel("Einstellungen\r\n");
-		lblNewLabel_1_3.setName("navLabelSettings");
-		lblNewLabel_1_3.setBounds(105, 11, 138, 20);
-		lblNewLabel_1_3.setForeground(Color.WHITE);
-		lblNewLabel_1_3.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
-		panel_2_3_1.add(lblNewLabel_1_3);
+		JLabel lblEinstellungen = new JLabel("Einstellungen");
+		lblEinstellungen.setName("navLabelNavigation");
+		lblEinstellungen.setForeground(Color.WHITE);
+		lblEinstellungen.setFont(null);
+		lblEinstellungen.setBounds(111, 11, 110, 22);
+		panel_2_3_1.add(lblEinstellungen);
 		
 		JPanel panel_2_3_2 = new JPanel();
 		panel_2_3_2.setName("btnPaneAccount");
 		panel_2_3_2.setBackground(new Color(31,32,33));
 		panel_2_3_2.setBounds(10, 485, 335, 66);
 		menuPanel.add(panel_2_3_2);
+		panel_2_3_2.setLayout(null);
 		
-		JLabel lblNewLabel_1_4 = new JLabel("Account");
-		lblNewLabel_1_4.setName("navLabelAccount");
-		lblNewLabel_1_4.setForeground(Color.WHITE);
-		lblNewLabel_1_4.setFont(dinNeuzeitGrotesk_regular.deriveFont(16.0f));
-		panel_2_3_2.add(lblNewLabel_1_4);
+		JButton btnMenuAccount = new JButton("Accounteinstellungen\r\n");
+		btnMenuAccount.setForeground(Color.WHITE);
+		btnMenuAccount.setBounds(141, 1, 184, 23);
+		panel_2_3_2.add(btnMenuAccount);
+		btnMenuAccount.setOpaque(false);
+		btnMenuAccount.setContentAreaFilled(false);
+		btnMenuAccount.setBorderPainted(false);
+		btnMenuAccount.setHorizontalAlignment(SwingConstants.LEFT); 
+		btnMenuAccount.setActionCommand(StaticActions.ACTION_MENU_ACCOUNT);
+		btnMenuAccount.addMouseListener(new java.awt.event.MouseAdapter() {
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+		    	btnMenuAccount.setForeground(Color.ORANGE);
+		    }
+
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+		    	btnMenuAccount.setForeground(Color.WHITE);
+		    }
+		});
+
 		
 		JPanel panel_2_3_3 = new JPanel();
 		panel_2_3_3.setName("btnPaneLogout");
 		panel_2_3_3.setBackground(new Color(31,32,33));
 		panel_2_3_3.setBounds(10, 562, 335, 66);
 		menuPanel.add(panel_2_3_3);
+		panel_2_3_3.setLayout(null);
 		
-		JLabel lblNewLabel_1_5 = new JLabel("Logout");
-		lblNewLabel_1_5.setName("navLabelLogout");
-		lblNewLabel_1_5.setForeground(Color.WHITE);
-		lblNewLabel_1_5.setFont(dinNeuzeitGrotesk_regular.deriveFont(16.0f));
-		panel_2_3_3.add(lblNewLabel_1_5);
+		JButton btnMenuLogout = new JButton("Logout\r\n");
+		btnMenuLogout.setForeground(Color.WHITE);
+		btnMenuLogout.setBounds(141, 1, 89, 23);
+		panel_2_3_3.add(btnMenuLogout);
+		btnMenuLogout.setOpaque(false);
+		btnMenuLogout.setContentAreaFilled(false);
+		btnMenuLogout.setBorderPainted(false);
+		btnMenuLogout.setHorizontalAlignment(SwingConstants.LEFT); 
+		btnMenuLogout.setActionCommand(StaticActions.ACTION_MENU_LOGOUT);
+		btnMenuLogout.addMouseListener(new java.awt.event.MouseAdapter() {
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+		    	btnMenuLogout.setForeground(Color.ORANGE);
+		    }
+
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+		    	btnMenuLogout.setForeground(Color.WHITE);
+		    }
+		});
+		
+
 		
 		JLabel lblQualitytime = new JLabel("qualitytime\r\n");
 		lblQualitytime.setForeground(Color.WHITE);
@@ -201,6 +285,7 @@ public class DashboardView extends WindowSuperclass implements IView{
 		btnNewButton.setOpaque(false);
 		btnNewButton.setContentAreaFilled(false);
 		btnNewButton.setBorderPainted(false);
+		
 		
 		JPanel panel_4_1_1 = new JPanel();
 		panel_4_1_1.setLayout(new BoxLayout(panel_4_1_1, BoxLayout.X_AXIS));
@@ -274,12 +359,17 @@ public class DashboardView extends WindowSuperclass implements IView{
 		lblNewLabel_2_1_2_1_1.setBounds(10, 30, 75, 28);
 		upcomingPanel.add(lblNewLabel_2_1_2_1_1);
 		
+		//HIERHIERHIERHIER
+		
+		
 		JPanel newprojectPanel = new JPanel();
 		newprojectPanel.setName("dashboardNewProjectPane");
 		newprojectPanel.setLayout(null);
 		newprojectPanel.setBackground(new Color(31,32,33));
 		newprojectPanel.setBounds(1106, 778, 365, 245);
 		dashbPanel.add(newprojectPanel);
+		NewProjectView newProjectView = newProjectController.getNewProjectView();		
+		newprojectPanel.add(newProjectView.getContentPanel());
 		
 		JLabel lblNewLabel_2_1_2_2 = new JLabel("Neues Projekt anlegen");
 		lblNewLabel_2_1_2_2.setName("dashLabelNewProject");
@@ -332,5 +422,4 @@ public class DashboardView extends WindowSuperclass implements IView{
 	public void update(Observable o, Object arg) {
 		
 	}
-
 }
