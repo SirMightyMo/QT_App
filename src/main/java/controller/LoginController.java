@@ -60,7 +60,8 @@ public final class LoginController implements IController {
 
 	private void login(int u_id, String name, String email) {
 		System.out.println("Sie werden eingeloggt");
-		new DashboardController(new User(u_id, name, email));
+		//new DashboardController(new User(u_id, name, email));
+		new AppMainController(new User(u_id, name, email));
 		//new ProjectController();
 		this.view.dispose();
 	}

@@ -64,12 +64,22 @@ public class TimerView implements IView {
 	 * Create Frame
 	 */
 	public TimerView(TimerHourController timerHourController) {
+		
+		
 		//setFont(new Font("Open Sans ExtraBold", Font.PLAIN, 12));
 		contentPanel = new JPanel();
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5)); // top, left, bottom, right
 		contentPanel.setBounds(0, 0, 1850, 1080);
 		contentPanel.setBackground(new Color(31, 32, 33));
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+		
+		JPanel panel_1 = new JPanel();
+		contentPanel.add(panel_1);
+		
+		JLabel lblNewLabel_2_1_1_1 = new JLabel("Timer\r\n");
+		panel_1.add(lblNewLabel_2_1_1_1);
+		lblNewLabel_2_1_1_1.setForeground(new Color(31, 32, 33));
+		lblNewLabel_2_1_1_1.setFont(null);
 
 		JPanel projectPanel = new JPanel();
 		projectPanel.setName("projectPanel");
