@@ -40,11 +40,7 @@ public class DashboardController implements IController {
 		//new ProjectController();
 		
 		// Instanciate own view
-		//this.dashboardView = new DashboardView(this);
-		
-		//System.out.println("DB C line 45:");
-		//System.out.println(dashboardView.getContentPanelDashb());
-		//System.out.println(dashboardView);
+		this.dashboardView = new DashboardView(this);
 		//this.dashboardView.setVisible(true);
 		
 		// Set logged in user

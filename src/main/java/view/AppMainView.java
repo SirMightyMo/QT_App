@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import main.java.controller.AccountController;
 import main.java.controller.AppMainController;
 import main.java.controller.DashboardController;
 import main.java.controller.DashboardHourListController;
@@ -24,6 +25,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 
 	private static final long serialVersionUID = 1L;
 	private JFrame frame;
+	private JPanel contentPanel;
 
 	private TimerHourController timerHourController;
 	private DashboardHourListController hourListController;
@@ -31,7 +33,12 @@ public class AppMainView extends WindowSuperclass implements IView {
 	private DashboardView dashboardView;
 	private NewProjectController newProjectController;
 	private DashboardController dashboardController;
+	private AccountController accountController;
+	private AccountView accountView;
+	private DashboardView dashboardView_1;
+	private AccountView accountView_1;
 
+	
 	boolean hasclicked1=false;
 	JLabel click1label=null;
 
@@ -49,11 +56,15 @@ public class AppMainView extends WindowSuperclass implements IView {
 	public AppMainView(AppMainController appMainController) {
 		dashboardController= appMainController.getDashboardController();
 		dashboardView = dashboardController.getDashboardView();
+		accountController= appMainController.getAccountController();
+		accountView = accountController.getAccountView();
 		timerHourController = dashboardController.getTimerHourController();
 		newProjectController = dashboardController.getNewProjectController();
 		hourListController = dashboardController.getDashboardHourListController();
 		projectListController = dashboardController.getDashboardProjectListController();
-		
+		System.out.println(dashboardView);
+		System.out.println(dashboardController);
+		System.out.println(timerHourController);
 		setBounds(100, 100, 1850, 1080); // x, y, width, height
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1850, 1080);
@@ -144,22 +155,25 @@ public class AppMainView extends WindowSuperclass implements IView {
 		lblQualitytime.setBounds(10, 11, 83, 31);
 		menuPanel.add(lblQualitytime);
 		
-		JPanel contentPanel = new JPanel();
+		contentPanel = new JPanel();
 		contentPanel.setName("dashboardMainPane");
 		contentPanel.setBounds(345, 0, 1490, 1041);
 		contentPanel.setBackground(new Color(47,48,52));
 		panel_1.add(contentPanel);
 		contentPanel.setLayout(null);
 		
-		DashboardView dashboardView_1 = dashboardController.getDashboardView();	
+		dashboardView_1 = dashboardController.getDashboardView();
 		System.out.println(dashboardView_1);
-		/*
-		System.out.println(dashboardView_1.getContentPanelDashb());
+		System.out.println(dashboardView_1.getDashbPanel());
+		//System.out.println(dashboardView_1.getDashbPanel());
+		//System.out.println(dashboardView.getDashbPanel());
+		contentPanel.add(dashboardView_1.getDashbPanel());
+		//contentPanel.add(dashboardView.getDashbPanel());
 		
 		
+		setAccountView_1(accountController.getAccountView());
 		
-		contentPanel.add(dashboardView_1.getContentPanelDashb());
-*/
+		
 		JPanel btnPaneMenuDashboard = new JPanel();
 		btnPaneMenuDashboard.setName("btnPaneDashboard");
 		btnPaneMenuDashboard.setBackground(new Color(31,32,33));
@@ -172,6 +186,8 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnMenuDashboard.setBounds(136, 0, 89, 23);
 		btnPaneMenuDashboard.add(btnMenuDashboard);
 		btnMenuDashboard.setOpaque(false);
+		btnMenuDashboard.addActionListener(appMainController);
+		btnMenuDashboard.setActionCommand(StaticActions.ACTION_MENU_DASHBOARD);
 		btnMenuDashboard.setContentAreaFilled(false);
 		btnMenuDashboard.setBorderPainted(false);
 		btnMenuDashboard.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -189,6 +205,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnPaneMenuProjects.setBounds(10, 254, 335, 66);
 		menuPanel.add(btnPaneMenuProjects);
 		btnPaneMenuProjects.setLayout(null);
+
 		
 		JButton btnMenuProjects = new JButton("Projekte");
 		btnMenuProjects.setForeground(Color.WHITE);
@@ -199,6 +216,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnMenuProjects.setOpaque(false);
 		btnMenuProjects.setContentAreaFilled(false);
 		btnMenuProjects.setBorderPainted(false);
+		btnMenuProjects.addActionListener(appMainController);
 		btnMenuProjects.setActionCommand(StaticActions.ACTION_MENU_PROJECTS);
 		btnMenuProjects.addMouseListener(new java.awt.event.MouseAdapter() {
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -227,6 +245,8 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnNewButton_2.setContentAreaFilled(false);
 		btnNewButton_2.setBorderPainted(false);
 		btnNewButton_2.setHorizontalAlignment(SwingConstants.LEFT); 
+		btnNewButton_2.addActionListener(appMainController);
+		btnNewButton_2.setActionCommand(StaticActions.ACTION_MENU_SESSIONS);
 		btnNewButton_2.addMouseListener(new java.awt.event.MouseAdapter() {
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
 		    	btnNewButton_2.setForeground(Color.ORANGE);
@@ -253,6 +273,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnMenuAccount.setContentAreaFilled(false);
 		btnMenuAccount.setBorderPainted(false);
 		btnMenuAccount.setHorizontalAlignment(SwingConstants.LEFT); 
+		btnMenuAccount.addActionListener(appMainController);
 		btnMenuAccount.setActionCommand(StaticActions.ACTION_MENU_ACCOUNT);
 		btnMenuAccount.addMouseListener(new java.awt.event.MouseAdapter() {
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -264,8 +285,6 @@ public class AppMainView extends WindowSuperclass implements IView {
 		    }
 		});
 
-
-		
 		JButton btnMenuLogout = new JButton("Logout\r\n");
 		btnMenuLogout.setForeground(Color.WHITE);
 		btnMenuLogout.setBounds(141, 1, 89, 23);
@@ -274,6 +293,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnMenuLogout.setContentAreaFilled(false);
 		btnMenuLogout.setBorderPainted(false);
 		btnMenuLogout.setHorizontalAlignment(SwingConstants.LEFT); 
+		btnMenuLogout.addActionListener(appMainController);
 		btnMenuLogout.setActionCommand(StaticActions.ACTION_MENU_LOGOUT);
 		btnMenuLogout.addMouseListener(new java.awt.event.MouseAdapter() {
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -284,7 +304,6 @@ public class AppMainView extends WindowSuperclass implements IView {
 		    	btnMenuLogout.setForeground(Color.WHITE);
 		    }
 		});
-		
 	}
 	@Override
 	public void update(Observable o, Object arg) {
@@ -326,6 +345,10 @@ public class AppMainView extends WindowSuperclass implements IView {
 	public DashboardView getDashboardView() {
 		return dashboardView;
 	}
+	
+	public JFrame getFrame() {
+		return frame;
+	}
 
 	public void setDashboardView(DashboardView dashboardView) {
 		this.dashboardView = dashboardView;
@@ -339,5 +362,34 @@ public class AppMainView extends WindowSuperclass implements IView {
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-
+	public AccountController getAccountController() {
+		return accountController;
+	}
+	public void setAccountController(AccountController accountController) {
+		this.accountController = accountController;
+	}
+	public AccountView getAccountView() {
+		return accountView;
+	}
+	public void setAccountView(AccountView accountView) {
+		this.accountView = accountView;
+	}
+	public JPanel getContentPanel() {
+		return contentPanel;
+	}
+	public void setContentPanel(JPanel contentPanel) {
+		this.contentPanel = contentPanel;
+	}
+	public DashboardView getDashboardView_1() {
+		return dashboardView_1;
+	}
+	public void setDashboardView_1(DashboardView dashboardView_1) {
+		this.dashboardView_1 = dashboardView_1;
+	}
+	public AccountView getAccountView_1() {
+		return accountView_1;
+	}
+	public void setAccountView_1(AccountView accountView_1) {
+		this.accountView_1 = accountView_1;
+	}
 }

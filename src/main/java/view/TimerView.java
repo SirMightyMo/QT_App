@@ -74,11 +74,15 @@ public class TimerView implements IView {
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 		
 		JPanel panel_1 = new JPanel();
+		panel_1.setForeground(Color.WHITE);
+		panel_1.setBackground(new Color(31, 32, 33));
 		contentPanel.add(panel_1);
+		panel_1.setLayout(null);
 		
 		JLabel lblNewLabel_2_1_1_1 = new JLabel("Timer\r\n");
+		lblNewLabel_2_1_1_1.setBounds(10, 11, 226, 50);
 		panel_1.add(lblNewLabel_2_1_1_1);
-		lblNewLabel_2_1_1_1.setForeground(new Color(31, 32, 33));
+		lblNewLabel_2_1_1_1.setForeground(Color.WHITE);
 		lblNewLabel_2_1_1_1.setFont(null);
 
 		JPanel projectPanel = new JPanel();

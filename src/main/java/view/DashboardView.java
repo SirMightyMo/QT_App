@@ -25,7 +25,8 @@ public class DashboardView implements IView{
 	
 	private static final long serialVersionUID = 1L;
 	
-	private JPanel contentPanelDashb;
+	private JPanel timerPanel;
+	private JPanel dashbPanel;
 	private TimerHourController timerHourController;
 	private NewProjectController newProjectController;
 	private DashboardHourListController hourListController;
@@ -47,14 +48,11 @@ public class DashboardView implements IView{
 		//setResizable(false);
 		*/
 		
-		JPanel contentPanelDashb = new JPanel();
-		contentPanelDashb.setBounds(0, 0, 1850, 1060);
-		contentPanelDashb.setLayout(null);
-		JPanel dashbPanel = new JPanel();
+		dashbPanel = new JPanel();
 		dashbPanel.setName("dashboardMainPane");
-		dashbPanel.setBounds(345, 0, 1490, 1060);
+		dashbPanel.setBounds(0, 0, 1490, 1060);
 		dashbPanel.setBackground(new Color(47,48,52));
-		contentPanelDashb.add(dashbPanel);
+		
 		dashbPanel.setLayout(null);
 		
 		JLabel lblNewLabel_2 = new JLabel("Dashboard\r\n");
@@ -76,7 +74,7 @@ public class DashboardView implements IView{
 		lblNewLabel_2_1_9.setBounds(10, 11, 102, 24);
 		productPanel.add(lblNewLabel_2_1_9);
 		
-		JPanel timerPanel = new JPanel();
+		timerPanel = new JPanel();
 		timerPanel.setName("dashboardTimerPane");
 		timerPanel.setBackground(new Color(31,32,33));
 		timerPanel.setBounds(10, 87, 354, 600);
@@ -419,7 +417,20 @@ public class DashboardView implements IView{
 	@Override
 	public void update(Observable o, Object arg) {	
 	}
-	public JPanel getContentPanelDashb() {
-		return contentPanelDashb;
+
+	public JPanel getDashbPanel() {
+		return dashbPanel;
+	}
+
+	public void setDashbPanel(JPanel dashbPanel) {
+		this.dashbPanel = dashbPanel;
+	}
+
+	public JPanel getTimerPanel() {
+		return timerPanel;
+	}
+
+	public void setTimerPanel(JPanel timerPanel) {
+		this.timerPanel = timerPanel;
 	}
 }
