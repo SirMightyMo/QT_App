@@ -19,6 +19,7 @@ import main.java.controller.ProjectController;
 import main.java.model.ProjectModel;
 import main.java.model.StaticActions;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
@@ -43,37 +44,39 @@ import javax.swing.JTabbedPane;
 import javax.swing.JCheckBox;
 
 @SuppressWarnings("deprecation")
-public class ProjectView extends JFrame implements IView {
+public class ProjectView implements IView {
+	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane; // Container
 	JTabbedPane tabbedPane;
 	private JTable table;
-	private JTextField textFieldFrom;
-	private JTextField textFieldTo;
 	private TableRowSorter<TableModel> sorter;
-
 	private JComboBox comboBoxProject = new JComboBox();
 	private JTextField textFieldProjectName;
 	private JTextField textFieldClient;
 	private JTextField textFieldStartDate;
 	private JTextField textFieldEndDate;
+	private JTextField textFieldFrom;
+	private JTextField textFieldTo;
 	private JCheckBox chckbxActive;
-	// private
 
-	/**
-	 * Create Frame
-	 */
+
 	public ProjectView(ProjectController projectController) {
-		setFont(new Font("Open Sans ExtraBold", Font.PLAIN, 12));
+		/*setFont(new Font("Open Sans ExtraBold", Font.PLAIN, 12));
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit()
 				.getImage(TimerView.class.getResource("/main/resources/img/icons/qtproject_placeholder.gif")));
 		setTitle("Quality Time");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1000, 790); // x, y, width, height
+
+		setContentPane(contentPane);
+		*/		
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5)); // top, left, bottom, right
-		setContentPane(contentPane);
+		contentPane.setBounds(0, 0, 1490, 1060);
+		contentPane.setBackground(new Color(47,48,52));
 		SpringLayout springLayoutContentPane = new SpringLayout();
 		contentPane.setLayout(springLayoutContentPane);
 
@@ -440,7 +443,7 @@ public class ProjectView extends JFrame implements IView {
 		popupFrame.setName("popupFrame");
 		btnSetStartDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				popupFrame.setLocation(getMousePosition());
+				//popupFrame.setLocation(getMousePosition());
 				textFieldStartDate.setText(new DatePicker(popupFrame).setPickedDate());
 				System.out.print(textFieldStartDate.getText());
 			}
@@ -599,4 +602,16 @@ public class ProjectView extends JFrame implements IView {
 	public void setTab(int i) {
 		tabbedPane.setSelectedIndex(i);
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	public JPanel getContentPane() {
+		return contentPane;
+	}
+
+	public void setContentPane(JPanel contentPane) {
+		this.contentPane = contentPane;
+	}
+
 }

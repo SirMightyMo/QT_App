@@ -22,6 +22,8 @@ public class ProjectController implements IController {
 
 	private ProjectModel projectModel;
 	private ProjectView projectView;
+
+
 	private DatabaseController db = DatabaseController.getInstance();
 
 	// Constructor
@@ -32,7 +34,7 @@ public class ProjectController implements IController {
 		this.projectView = new ProjectView(this);
 
 		this.projectModel.addObserver(this.projectView);
-		this.projectView.setVisible(true);
+		//this.projectView.setVisible(true);
 
 		projectModel.retrieveProjects();
 
@@ -44,7 +46,9 @@ public class ProjectController implements IController {
 		this.projectModel.retrieveProjects();
 
 	}
-
+	public ProjectView getProjectView() {
+		return projectView;
+	}
 	public Object[][] getTableModel() {
 		// TODO Auto-generated method stub
 		return projectModel.getTableModel();
