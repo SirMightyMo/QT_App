@@ -29,7 +29,7 @@ class ProjectViewGUITest {
 	public void setUp() {
 		FlatDarkLaf.setup();
 		ProjectView frame = GuiActionRunner.execute(() -> new ProjectView(new ProjectController()));
-		window = new FrameFixture(frame);
+		//window = new FrameFixture(frame); //TODO: Fix. ProjectView is no longer JFrame
 		window.show(); // shows the frame to test
 	}
 

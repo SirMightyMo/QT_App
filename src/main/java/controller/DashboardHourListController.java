@@ -50,7 +50,8 @@ public class DashboardHourListController implements IController {
 				+ "FROM hour_entry "
 				+ "LEFT JOIN project "
 				+ "ON hour_entry.p_id = project.p_id "
-				+ "ORDER BY h_id DESC LIMIT 15;");
+				+ "WHERE u_id = " + User.getUser().getU_id()
+				+ " ORDER BY h_id DESC LIMIT 15;");
 		Object[][] resultArray = new Object[result.size()][5];
 		for (int i = 0; i < result.size(); i++) {
 			for (int j = 0; j < 5; j++) {

@@ -119,7 +119,7 @@ public class AppMainController implements IController{
 			}
 			if(visibleView=="Projects") 
 			{
-				this.appMainView.getContentPanel().remove(this.appMainView.getProjectView().getContentPane());
+				this.appMainView.getContentPanel().remove(this.appMainView.getProjectView().getProjectPanel());
 			}
 			if(visibleView=="Sessions") {
 				this.appMainView.getContentPanel().remove(this.appMainView.getSessionView().getSessionPanel());
@@ -131,7 +131,7 @@ public class AppMainController implements IController{
 
 		if (event.equalsIgnoreCase(StaticActions.ACTION_MENU_PROJECTS)) 
 		{
-			this.appMainView.getContentPanel().add(this.appMainView.getProjectView().getContentPane());
+			this.appMainView.getContentPanel().add(this.appMainView.getProjectView().getProjectPanel());
 			System.out.println(visibleView);
 			if(visibleView=="Dashboard") 
 			{
@@ -158,7 +158,7 @@ public class AppMainController implements IController{
 			}
 			if(visibleView=="Projects") 
 			{
-				this.appMainView.getContentPanel().remove(this.appMainView.getProjectView().getContentPane());
+				this.appMainView.getContentPanel().remove(this.appMainView.getProjectView().getProjectPanel());
 			}
 			if(visibleView=="AccountSettings") 
 			{
@@ -178,7 +178,7 @@ public class AppMainController implements IController{
 			}
 			if(visibleView=="Projects") 
 			{
-				this.appMainView.getContentPanel().remove(this.appMainView.getProjectView().getContentPane());
+				this.appMainView.getContentPanel().remove(this.appMainView.getProjectView().getProjectPanel());
 			}
 			if(visibleView=="Sessions") {
 				this.appMainView.getContentPanel().remove(this.appMainView.getSessionView().getSessionPanel());

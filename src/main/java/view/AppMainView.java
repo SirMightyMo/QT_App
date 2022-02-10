@@ -377,7 +377,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 	public ProjectView getProjectView() {
 		return projectView;
 	}
-	public void setProjectView(ProjectView projectView_1) {
+	public void setProjectView(ProjectView projectView) {
 		this.projectView = projectView;
 	}
 	public SessionView getSessionView() {

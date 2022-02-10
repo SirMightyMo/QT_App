@@ -48,7 +48,6 @@ public class ProjectController implements IController {
 		return projectView;
 	}
 	public Object[][] getTableModel() {
-		// TODO Auto-generated method stub
 		return projectModel.getTableModel();
 	}
 
@@ -57,8 +56,9 @@ public class ProjectController implements IController {
 	}
 
 	public void actionSearchProjects() {
-		// System.out.println(projectView.getComboBox().getItemAt(0).toString());
-		projectView.filterProjects(projectView.getComboBox().getSelectedItem().toString());
+		if (projectView.getComboBox().getItemCount() > 0) {
+			projectView.filterProjects(projectView.getComboBox().getSelectedItem().toString());			
+		}
 	}
 
 	public void actionSaveProject() {
@@ -74,8 +74,18 @@ public class ProjectController implements IController {
 		active = projectView.getNewProjectStat();
 		customerID = projectView.getClientID();
 
-		db.insert("INSERT INTO project(name,start_date,end_date,active,c_id) VALUES(" + "'" + projectName + "'," + "'"
-				+ startDate + "'," + "'" + endDate + "'," + "'" + active + "'," + "'" + customerID + "')");
+		db.insert("INSERT INTO project(name, start_date, end_date, active, c_id) VALUES(" 
+		+ "'" + projectName + "'," 
+		+ "'" + startDate + "'," 
+		+ "'" + endDate + "'," 
+		+ "'" + active + "'," 
+		+ "'" + customerID + "');");
+		
+		db.insert("INSERT INTO assign_project_user(p_id, u_id) VALUES("
+				+ "(SELECT MAX(p_id) FROM project)," 	// get newest projectID
+				+ User.getUser().getU_id() + ");");		// get User-ID
+		
+		projectModel.retrieveProjects();
 		projectView.updateTable(this);
 		projectView.setTab(0);
 
