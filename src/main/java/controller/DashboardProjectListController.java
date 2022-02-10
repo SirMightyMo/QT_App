@@ -29,8 +29,7 @@ public class DashboardProjectListController implements IController {
 				"Datum",
 				"Projekt",
 				"Start",
-				"Ende",
-				"Dauer"
+				"Ende"
 			});
 			this.view = new DashboardListView(this, tableData);
 			queryData();
@@ -44,15 +43,15 @@ public class DashboardProjectListController implements IController {
 	
 	public void queryData() {
 		ArrayList<Object> result = db.query(
-				"SELECT name, "
-				+ "start_date, "
-				+ "end_date, "
-				+ "active, "
-				+ "p_id " // TODO: duration
-				+ "FROM project ORDER BY p_id DESC LIMIT 15");
-		Object[][] resultArray = new Object[result.size()][5];
+				"SELECT name, start_date, end_date, active FROM project "
+				+ "LEFT JOIN assign_project_user "
+				+ "ON project.p_id = assign_project_user.p_id "
+				+ "WHERE u_id = " + User.getUser().getU_id()
+				+ " ORDER BY project.p_id DESC "
+				+ "LIMIT 15;");
+		Object[][] resultArray = new Object[result.size()][4];
 		for (int i = 0; i < result.size(); i++) {
-			for (int j = 0; j < 5; j++) {
+			for (int j = 0; j < 4; j++) {
 				ArrayList<Object> row = (ArrayList<Object>) result.get(i);
 				String value = row.get(j).toString();
 				if (j == 1 || j == 2) {

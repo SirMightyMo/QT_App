@@ -49,6 +49,9 @@ public class TimerView implements IView {
 
 	private JComboBox comboBox = new JComboBox(); // ComboBox for project-list
 	private JLabel durationLabel = new JLabel("00:00:00");
+	private JButton btnStart;
+	private JButton btnStop;
+	private JButton btnPause;
 	private JTextField txtStartTime;
 	private JTextField txtEndTime;
 	private JTextField textFieldComment;
@@ -128,7 +131,7 @@ public class TimerView implements IView {
 		contentPanel.add(buttonPanel);
 
 		// Button start
-		JButton btnStart = new JButton("");
+		btnStart = new JButton("");
 		btnStart.setName("btnStart");
 		btnStart.setIcon(new ImageIcon(TimerView.class.getResource("/main/resources/img/icons/play.gif")));
 		btnStart.addActionListener(timerHourController);
@@ -136,7 +139,7 @@ public class TimerView implements IView {
 		buttonPanel.add(btnStart);
 
 		// Button pause
-		JButton btnPause = new JButton("");
+		btnPause = new JButton("");
 		btnPause.setName("btnPause");
 		btnPause.setIcon(new ImageIcon(TimerView.class.getResource("/main/resources/img/icons/pause.gif")));
 		btnPause.addActionListener(timerHourController);
@@ -144,7 +147,7 @@ public class TimerView implements IView {
 		buttonPanel.add(btnPause);
 
 		// Button stop
-		JButton btnStop = new JButton("");
+		btnStop = new JButton("");
 		btnStop.setName("btnStop");
 		btnStop.setIcon(new ImageIcon(TimerView.class.getResource("/main/resources/img/icons/stop.gif")));
 		btnStop.addActionListener(timerHourController);
@@ -246,6 +249,18 @@ public class TimerView implements IView {
 
 	public JLabel getDurationLabel() {
 		return durationLabel;
+	}
+
+	public JButton getBtnStart() {
+		return btnStart;
+	}
+
+	public JButton getBtnStop() {
+		return btnStop;
+	}
+
+	public JButton getBtnPause() {
+		return btnPause;
 	}
 
 	public JTextField getTxtStartTime() {

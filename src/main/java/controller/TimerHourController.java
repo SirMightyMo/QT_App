@@ -388,10 +388,13 @@ public class TimerHourController implements IController {
 		if (startTime != null && endTime != null && pauseMinutesValid == true) {
 			db.insert(
 					"INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes,p_id) VALUES("
-							+ "'" + entryDate + "'," + "'" + comment + "'," + "'" + startTime + "'," + "'" + endTime
-							+ "'," + "'" + timeMinutes + "'," // timeMinutes means productive time (pauseMinutes is
-																// subtracted)
-							+ "'" + pauseMinutes + "'," + "'" + projectID + "')");
+							+ "'" + entryDate + "'," 
+							+ "'" + comment + "'," 
+							+ "'" + startTime + "'," 
+							+ "'" + endTime+ "'," 
+							+ "'" + timeMinutes + "'," // timeMinutes means productive time (pauseMinutes is subtracted)
+							+ "'" + pauseMinutes + "',"
+							+ "'" + projectID + "')");
 
 			actionResetTimer();
 			actionLoadProjects();
@@ -427,23 +430,18 @@ public class TimerHourController implements IController {
 		// if project was not set yet, select last used project (highest h_id)
 		if ((this.hourEntry == null || this.hourEntry.getProjectID() == 0) && !this.timerModel.isProjectSet()) {
 
-			ArrayList<Object> result = db
-					.query("SELECT p_id FROM hour_entry WHERE h_id = (SELECT MAX(h_id) FROM hour_entry);");
-					//  TODO:Check, if querying for specific user is necessary or if this table already contains
-					//  hour entries of user only 
+			ArrayList<Object> result = db.query("SELECT p_id FROM hour_entry WHERE u_id = " + User.getUser().getU_id() +" ORDER BY h_id DESC LIMIT 1;");
 			
 			if (!result.isEmpty()) {
+				activateTimeTracker();
 				// find out projectListIndex by looking for p_id in ArrayList projectList of
 				// timerModel
 				int projectListIndex = 0; // initialize variable for list index in timerView
-				int latestHourEntryProjectID = (int) ((ArrayList<Object>) result.get(0)).get(0); // get actual projectID
-																									// of latest project
-																									// used
+				// get actual projectID of latest project used:
+				int latestHourEntryProjectID = (int) ((ArrayList<Object>) result.get(0)).get(0);
 
 				// iterator through project list of timerModel for every project
 				for (ArrayList<Object> project : this.timerModel.getProjectList()) {
-					// System.out.println(this.timerModel.getProjectList().indexOf(project));
-					// System.out.println(project);
 					// if one of the projectIDs equal the projectID of the latest project used,
 					// condition is met
 					if ((int) project.get(0) == latestHourEntryProjectID) {
@@ -453,8 +451,44 @@ public class TimerHourController implements IController {
 				}
 				// set selected item to latest project
 				this.timerView.getComboBox().setSelectedIndex(projectListIndex);
+			} else { // if user has no project assigned, deactivate time-tracking
+				deactivateTimeTracker();
 			}
 		}
+	}
+
+	private void deactivateTimeTracker() {
+		timerView.getComboBox().setEnabled(false);
+		timerView.getTxtStartTime().setEnabled(false);
+		timerView.getTextPauseDuration().setEnabled(false);
+		timerView.getTxtEndTime().setEnabled(false);
+		timerView.getTextFieldComment().setEnabled(false);
+		timerView.getBtnReset().setEnabled(false);
+		timerView.getBtnSave().setEnabled(false);
+		timerView.getBtnStart().setEnabled(false);
+		timerView.getBtnPause().setEnabled(false);
+		timerView.getBtnStop().setEnabled(false);
+
+		timerView.getLblErrorMessage().setVisible(true);
+		timerView.getLblErrorMessage().setText("Please create a new project to track time for!");
+		
+	}
+	
+	private void activateTimeTracker() {
+		timerView.getComboBox().setEnabled(true);
+		timerView.getTxtStartTime().setEnabled(true);
+		timerView.getTextPauseDuration().setEnabled(true);
+		timerView.getTxtEndTime().setEnabled(true);
+		timerView.getTextFieldComment().setEnabled(true);
+		timerView.getBtnReset().setEnabled(true);
+		timerView.getBtnSave().setEnabled(true);
+		timerView.getBtnStart().setEnabled(true);
+		timerView.getBtnPause().setEnabled(true);
+		timerView.getBtnStop().setEnabled(true);
+
+		timerView.getLblErrorMessage().setVisible(false);
+		timerView.getLblErrorMessage().setText("");
+		
 	}
 
 	// ActionListener method
@@ -510,13 +544,11 @@ public class TimerHourController implements IController {
 
 	@Override
 	public IModel getModel() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public IView getView() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

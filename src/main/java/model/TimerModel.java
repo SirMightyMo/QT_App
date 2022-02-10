@@ -20,9 +20,6 @@ public class TimerModel extends Observable implements IModel{
 	private ArrayList<ArrayList<Object>> projectList;
 	private DatabaseController db = DatabaseController.getInstance();
 
-	/**
-	 * Constructor
-	 */
 	public TimerModel() {
 		super();
 		this.timerHours = 0;
@@ -30,9 +27,6 @@ public class TimerModel extends Observable implements IModel{
 		this.timerHours = 0;
 	}
 
-	/**
-	 * Getter/Setter
-	 */
 	public boolean isTimerRunning() {
 		return timerRunning;
 	}
@@ -167,16 +161,12 @@ public class TimerModel extends Observable implements IModel{
 		}
 	}
 
-	public void retrieveProjects() { // TODO: Retrieve only those projects, where p_id is assigned to u_id
+	public void retrieveProjects() {
 		this.projectList = new ArrayList<>();
-		ArrayList<Object> result = db.query("SELECT p_id, name FROM project WHERE active = TRUE;");
+		ArrayList<Object> result = db.query("SELECT project.p_id, name FROM project LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id WHERE active = TRUE AND u_id = " + User.getUser().getU_id() + ";");
 		result.forEach(entry -> {
 			ArrayList<Object> row = (ArrayList<Object>) entry;
 			this.projectList.add(row);
-
-//			row.forEach(value -> {
-//				System.out.println(value);
-//			});
 		});
 		setChanged();
 		notifyObservers(this);
