@@ -4,31 +4,21 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.event.DocumentEvent;
 
-import main.java.model.AccountModel;
 import main.java.model.IModel;
-import main.java.model.TimerModel;
-import main.java.model.User;
-import main.java.view.AccountView;
+import main.java.model.SessionModel;
 import main.java.view.IView;
-import main.java.view.TimerView;
+import main.java.view.SessionView;
 
-public class AccountController implements IController {
+public class SessionController implements IController{
 	
-	private AccountView accountView;
-	private AccountModel accountModel;
 
-	@SuppressWarnings("deprecation")
-	public AccountController() {
-		this.accountModel = new AccountModel();
-		this.accountView = new AccountView(this);
-		this.accountModel.addObserver(this.accountView);
-	}
-	public AccountView getAccountView() {
-		return accountView;
-	}
-
-	public void setAccountView(AccountView accountView) {
-		this.accountView = accountView;
+	private SessionView sessionView;
+	private SessionModel sessionModel;
+	
+	public SessionController() {
+		this.sessionModel = new SessionModel();
+		this.sessionView = new SessionView(this);
+		this.sessionModel.addObserver(this.sessionView);
 	}
 
 	@Override
@@ -66,5 +56,13 @@ public class AccountController implements IController {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	public SessionView getSessionView() {
+		return sessionView;
+	}
+
+	public void setSessionView(SessionView sessionView) {
+		this.sessionView = sessionView;
+	}
+
 	
 }

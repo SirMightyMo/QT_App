@@ -101,11 +101,20 @@ public class DashboardView implements IView{
 		JButton btnNewButton = new JButton("mehr anzeigen");
 		btnNewButton.setForeground(Color.ORANGE);
 		//btnNewButton.setFont(dinNeuzeitGrotesk_regular.deriveFont(14.0f));
-		btnNewButton.setBounds(697, 390, 104, 23);
+		btnNewButton.setBounds(631, 390, 170, 23);
 		projectPanel.add(btnNewButton);
 		btnNewButton.setOpaque(false);
 		btnNewButton.setContentAreaFilled(false);
 		btnNewButton.setBorderPainted(false);
+		btnNewButton.addMouseListener(new java.awt.event.MouseAdapter() {
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+		    	btnNewButton.setForeground(Color.WHITE);
+		    }
+
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+		    	btnNewButton.setForeground(Color.ORANGE);
+		    }
+		});
 		
 		
 		JPanel panel_4_1_1 = new JPanel();
@@ -116,29 +125,34 @@ public class DashboardView implements IView{
 		panel_4_1_1.setBounds(10, 68, 791, 314);
 		projectPanel.add(panel_4_1_1);
 		
-		
 		JPanel sessionPanel = new JPanel();
 		sessionPanel.setName("dashboardLastSessionsPane");
 		sessionPanel.setLayout(null);
 		sessionPanel.setBackground(new Color(31,32,33));
 		sessionPanel.setBounds(375, 522, 721, 507);
 		dashbPanel.add(sessionPanel);
-		
-		
+			
 		JLabel lblNewLabel_2_1_1_1 = new JLabel("Letzte Sitzungen\r\n");
 		lblNewLabel_2_1_1_1.setForeground(Color.WHITE);
-		//lblNewLabel_2_1_1_1.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		lblNewLabel_2_1_1_1.setBounds(10, 11, 102, 24);
 		sessionPanel.add(lblNewLabel_2_1_1_1);
 		
 		JButton btnNewButton_1 = new JButton("mehr anzeigen");
 		btnNewButton_1.setOpaque(false);
 		btnNewButton_1.setForeground(Color.ORANGE);
-		//btnNewButton_1.setFont(dinNeuzeitGrotesk_regular.deriveFont(14.0f));
 		btnNewButton_1.setContentAreaFilled(false);
 		btnNewButton_1.setBorderPainted(false);
-		btnNewButton_1.setBounds(607, 467, 104, 23);
+		btnNewButton_1.setBounds(541, 467, 170, 23);
 		sessionPanel.add(btnNewButton_1);
+		btnNewButton_1.addMouseListener(new java.awt.event.MouseAdapter() {
+		    public void mouseEntered(java.awt.event.MouseEvent evt) {
+		    	btnNewButton_1.setForeground(Color.WHITE);
+		    }
+
+		    public void mouseExited(java.awt.event.MouseEvent evt) {
+		    	btnNewButton_1.setForeground(Color.ORANGE);
+		    }
+		});
 		
 		JPanel panel_4_1 = new JPanel();
 		panel_4_1.setName("hourListPanel");
@@ -170,18 +184,13 @@ public class DashboardView implements IView{
 		
 		JLabel lblNewLabel_2_1_2_1 = new JLabel("Anstehende\r\n");
 		lblNewLabel_2_1_2_1.setForeground(Color.WHITE);
-		//lblNewLabel_2_1_2_1.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		lblNewLabel_2_1_2_1.setBounds(10, 11, 75, 28);
 		upcomingPanel.add(lblNewLabel_2_1_2_1);
 		
 		JLabel lblNewLabel_2_1_2_1_1 = new JLabel("Aktivit\u00E4ten");
 		lblNewLabel_2_1_2_1_1.setForeground(Color.WHITE);
-		//lblNewLabel_2_1_2_1_1.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		lblNewLabel_2_1_2_1_1.setBounds(10, 30, 75, 28);
 		upcomingPanel.add(lblNewLabel_2_1_2_1_1);
-		
-		//HIERHIERHIERHIER
-		
 		
 		JPanel newprojectPanel = new JPanel();
 		newprojectPanel.setName("dashboardNewProjectPane");
@@ -195,14 +204,12 @@ public class DashboardView implements IView{
 		JLabel lblNewLabel_2_1_2_2 = new JLabel("Neues Projekt anlegen");
 		lblNewLabel_2_1_2_2.setName("dashLabelNewProject");
 		lblNewLabel_2_1_2_2.setForeground(Color.WHITE);
-		//lblNewLabel_2_1_2_2.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		lblNewLabel_2_1_2_2.setBounds(10, 11, 135, 24);
 		newprojectPanel.add(lblNewLabel_2_1_2_2);
 		
 		JButton btnNewButton_1_1_1 = new JButton("Speichern");
 		btnNewButton_1_1_1.setOpaque(false);
 		btnNewButton_1_1_1.setForeground(Color.ORANGE);
-		//btnNewButton_1_1_1.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		btnNewButton_1_1_1.setContentAreaFilled(false);
 		btnNewButton_1_1_1.setBorderPainted(false);
 		btnNewButton_1_1_1.setBounds(132, 195, 104, 39);
@@ -210,65 +217,27 @@ public class DashboardView implements IView{
 		
 		JLabel lblNewLabel_2_1_3_1 = new JLabel("Projektname\r\n");
 		lblNewLabel_2_1_3_1.setForeground(Color.WHITE);
-		//lblNewLabel_2_1_3_1.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		lblNewLabel_2_1_3_1.setBounds(10, 57, 108, 24);
 		newprojectPanel.add(lblNewLabel_2_1_3_1);
 		
 		JLabel lblNewLabel_2_1_4_1 = new JLabel("Start");
 		lblNewLabel_2_1_4_1.setForeground(Color.WHITE);
-		//lblNewLabel_2_1_4_1.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		lblNewLabel_2_1_4_1.setBounds(10, 90, 108, 24);
 		newprojectPanel.add(lblNewLabel_2_1_4_1);
 		
 		JLabel lblNewLabel_2_1_7_1 = new JLabel("Ende");
 		lblNewLabel_2_1_7_1.setForeground(Color.WHITE);
-		//lblNewLabel_2_1_7_1.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		lblNewLabel_2_1_7_1.setBounds(48, 90, 70, 24);
 		newprojectPanel.add(lblNewLabel_2_1_7_1);
 		
 		JLabel lblNewLabel_2_1_8_1 = new JLabel("Kommentar");
 		lblNewLabel_2_1_8_1.setForeground(Color.WHITE);
-		//lblNewLabel_2_1_8_1.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		lblNewLabel_2_1_8_1.setBounds(10, 125, 108, 24);
 		newprojectPanel.add(lblNewLabel_2_1_8_1);
 	}
-		//setContentPane(panel_1);
-		/*
-		JPanel menuPanel = new JPanel();
-		menuPanel.setName("navMainPane");
-		menuPanel.setBounds(0, 0, 346, 1060);
-		menuPanel.setBackground(new Color(31,32,33));
-		panel_1.add(menuPanel);
-		menuPanel.setLayout(null);
+	
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setName("btnPaneNavigation");
-		panel_2.setBackground(new Color(31,32,33));
-		panel_2.setBounds(10, 100, 335, 66);
-		menuPanel.add(panel_2);
-		panel_2.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("Navigation");
-		lblNewLabel.setName("navLabelNavigation");
-		lblNewLabel.setBounds(105, 11, 110, 22);
-		//lblNewLabel.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
-		lblNewLabel.setForeground(Color.WHITE);
-		panel_2.add(lblNewLabel);
-		
-		JPanel btnPaneMenuDashboard = new JPanel();
-		btnPaneMenuDashboard.setName("btnPaneDashboard");
-		btnPaneMenuDashboard.setBackground(new Color(31,32,33));
-		btnPaneMenuDashboard.setBounds(10, 177, 335, 66);
-		menuPanel.add(btnPaneMenuDashboard);
-		btnPaneMenuDashboard.setLayout(null);
-		
-		JButton btnMenuDashboard = new JButton("Dashboard\r\n");
-		btnMenuDashboard.setForeground(Color.WHITE);
-		btnMenuDashboard.setBounds(136, 0, 89, 23);
-		btnPaneMenuDashboard.add(btnMenuDashboard);
-		btnMenuDashboard.setOpaque(false);
-		btnMenuDashboard.setContentAreaFilled(false);
-		btnMenuDashboard.setBorderPainted(false);
+	/*
 		btnMenuDashboard.addMouseListener(new java.awt.event.MouseAdapter() {
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
 		    	btnMenuDashboard.setForeground(Color.ORANGE);
@@ -280,135 +249,6 @@ public class DashboardView implements IView{
 		});
 		
 		
-		
-		
-		JPanel btnPaneMenuProjects = new JPanel();
-		btnPaneMenuProjects.setName("btnPaneProjects");
-		btnPaneMenuProjects.setBackground(new Color(31,32,33));
-		btnPaneMenuProjects.setBounds(10, 254, 335, 66);
-		menuPanel.add(btnPaneMenuProjects);
-		btnPaneMenuProjects.setLayout(null);
-		
-		JButton btnMenuProjects = new JButton("Projekte");
-		btnMenuProjects.setForeground(Color.WHITE);
-		btnMenuProjects.setBackground(Color.BLACK);
-		btnMenuProjects.setBounds(141, 0, 89, 23);
-		btnPaneMenuProjects.add(btnMenuProjects);
-		btnMenuProjects.setHorizontalAlignment(SwingConstants.LEFT); 
-		btnMenuProjects.setOpaque(false);
-		btnMenuProjects.setContentAreaFilled(false);
-		btnMenuProjects.setBorderPainted(false);
-		btnMenuProjects.setActionCommand(StaticActions.ACTION_MENU_PROJECTS);
-		btnMenuProjects.addMouseListener(new java.awt.event.MouseAdapter() {
-		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-		    	btnMenuProjects.setForeground(Color.ORANGE);
-		    }
-
-		    public void mouseExited(java.awt.event.MouseEvent evt) {
-		    	btnMenuProjects.setForeground(Color.WHITE);
-		    }
-		});
-		
-		
-		
-		JPanel btnPaneMenuSessions = new JPanel();
-		btnPaneMenuSessions.setName("btnPaneSessions");
-		btnPaneMenuSessions.setBackground(new Color(31,32,33));
-		btnPaneMenuSessions.setBounds(10, 331, 335, 66);
-		menuPanel.add(btnPaneMenuSessions);
-		btnPaneMenuSessions.setLayout(null);
-		
-		JButton btnNewButton_2 = new JButton("Sitzungen");
-		btnNewButton_2.setForeground(Color.WHITE);
-		btnNewButton_2.setBounds(141, 0, 89, 23);
-		btnPaneMenuSessions.add(btnNewButton_2);
-		btnNewButton_2.setOpaque(false);
-		btnNewButton_2.setContentAreaFilled(false);
-		btnNewButton_2.setBorderPainted(false);
-		btnNewButton_2.setHorizontalAlignment(SwingConstants.LEFT); 
-		btnNewButton_2.addMouseListener(new java.awt.event.MouseAdapter() {
-		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-		    	btnNewButton_2.setForeground(Color.ORANGE);
-		    }
-
-		    public void mouseExited(java.awt.event.MouseEvent evt) {
-		    	btnNewButton_2.setForeground(Color.WHITE);
-		    }
-		});
-		
-		
-		JPanel panel_2_3_1 = new JPanel();
-		panel_2_3_1.setName("btnPaneSettings");
-		panel_2_3_1.setBackground(new Color(31,32,33));
-		panel_2_3_1.setBounds(10, 408, 335, 66);
-		menuPanel.add(panel_2_3_1);
-		panel_2_3_1.setLayout(null);
-		
-		JLabel lblEinstellungen = new JLabel("Einstellungen");
-		lblEinstellungen.setName("navLabelNavigation");
-		lblEinstellungen.setForeground(Color.WHITE);
-		lblEinstellungen.setFont(null);
-		lblEinstellungen.setBounds(111, 11, 110, 22);
-		panel_2_3_1.add(lblEinstellungen);
-		
-		JPanel panel_2_3_2 = new JPanel();
-		panel_2_3_2.setName("btnPaneAccount");
-		panel_2_3_2.setBackground(new Color(31,32,33));
-		panel_2_3_2.setBounds(10, 485, 335, 66);
-		menuPanel.add(panel_2_3_2);
-		panel_2_3_2.setLayout(null);
-		
-		JButton btnMenuAccount = new JButton("Accounteinstellungen\r\n");
-		btnMenuAccount.setForeground(Color.WHITE);
-		btnMenuAccount.setBounds(141, 1, 184, 23);
-		panel_2_3_2.add(btnMenuAccount);
-		btnMenuAccount.setOpaque(false);
-		btnMenuAccount.setContentAreaFilled(false);
-		btnMenuAccount.setBorderPainted(false);
-		btnMenuAccount.setHorizontalAlignment(SwingConstants.LEFT); 
-		btnMenuAccount.setActionCommand(StaticActions.ACTION_MENU_ACCOUNT);
-		btnMenuAccount.addMouseListener(new java.awt.event.MouseAdapter() {
-		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-		    	btnMenuAccount.setForeground(Color.ORANGE);
-		    }
-
-		    public void mouseExited(java.awt.event.MouseEvent evt) {
-		    	btnMenuAccount.setForeground(Color.WHITE);
-		    }
-		});
-
-		
-		JPanel panel_2_3_3 = new JPanel();
-		panel_2_3_3.setName("btnPaneLogout");
-		panel_2_3_3.setBackground(new Color(31,32,33));
-		panel_2_3_3.setBounds(10, 562, 335, 66);
-		menuPanel.add(panel_2_3_3);
-		panel_2_3_3.setLayout(null);
-		
-		JButton btnMenuLogout = new JButton("Logout\r\n");
-		btnMenuLogout.setForeground(Color.WHITE);
-		btnMenuLogout.setBounds(141, 1, 89, 23);
-		panel_2_3_3.add(btnMenuLogout);
-		btnMenuLogout.setOpaque(false);
-		btnMenuLogout.setContentAreaFilled(false);
-		btnMenuLogout.setBorderPainted(false);
-		btnMenuLogout.setHorizontalAlignment(SwingConstants.LEFT); 
-		btnMenuLogout.setActionCommand(StaticActions.ACTION_MENU_LOGOUT);
-		btnMenuLogout.addMouseListener(new java.awt.event.MouseAdapter() {
-		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-		    	btnMenuLogout.setForeground(Color.ORANGE);
-		    }
-
-		    public void mouseExited(java.awt.event.MouseEvent evt) {
-		    	btnMenuLogout.setForeground(Color.WHITE);
-		    }
-		});
-		
-		JLabel lblQualitytime = new JLabel("qualitytime\r\n");
-		lblQualitytime.setForeground(Color.WHITE);
-		//lblQualitytime.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
-		lblQualitytime.setBounds(10, 11, 83, 31);
-		menuPanel.add(lblQualitytime);
 		*/
 		
 	public static long getSerialversionuid() {

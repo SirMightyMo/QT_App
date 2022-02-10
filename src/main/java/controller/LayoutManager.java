@@ -84,7 +84,7 @@ public class LayoutManager implements IController {
 		
 		// Set font for every component
 		for (int i = 0; i < components.length; i++) {
-			UIManager.put(components[i]+".font", dinNeuzeitGrotesk_regular.deriveFont(14.0f));
+			UIManager.put(components[i]+".font", dinNeuzeitGrotesk_regular.deriveFont(16.0f));
 			UIManager.put(components[i]+".foreground", Color.WHITE);
 		}
 		

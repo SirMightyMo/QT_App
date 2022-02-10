@@ -19,8 +19,15 @@ import main.java.controller.DashboardHourListController;
 import main.java.controller.DashboardProjectListController;
 import main.java.controller.NewProjectController;
 import main.java.controller.ProjectController;
+import main.java.controller.SessionController;
 import main.java.controller.TimerHourController;
 import main.java.model.StaticActions;
+import java.awt.FlowLayout;
+import java.awt.event.ActionListener;
+import java.awt.GridLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import java.awt.Font;
 
 public class AppMainView extends WindowSuperclass implements IView {
 
@@ -33,14 +40,16 @@ public class AppMainView extends WindowSuperclass implements IView {
 	//private DashboardProjectListController projectListController;
 	//private DashboardView dashboardView;
 	//private NewProjectController newProjectController;
+	//private AccountView accountView;
+	
 	private DashboardController dashboardController;
 	private AccountController accountController;
 	private ProjectController projectController;
-	//private AccountView accountView;
-	private DashboardView dashboardView_1;
-	private AccountView accountView_1;
-	private ProjectView projectView_1;
-
+	private SessionController sessionController;
+	private DashboardView dashboardView;
+	private AccountView accountView;
+	private ProjectView projectView;
+	private SessionView sessionView;
 	
 	boolean hasclicked1=false;
 	JLabel click1label=null;
@@ -60,7 +69,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 		dashboardController= appMainController.getDashboardController();
 		accountController= appMainController.getAccountController();
 		projectController= appMainController.getProjectController();
-		
+		sessionController= appMainController.getSessionController();
 		//dashboardView = dashboardController.getDashboardView();
 		//accountView = accountController.getAccountView();
 		//timerHourController = dashboardController.getTimerHourController();
@@ -85,77 +94,42 @@ public class AppMainView extends WindowSuperclass implements IView {
 		panel_1.add(menuPanel);
 		menuPanel.setLayout(null);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setName("btnPaneNavigation");
-		panel_2.setBackground(new Color(31,32,33));
-		panel_2.setBounds(10, 100, 335, 66);
-		menuPanel.add(panel_2);
-		panel_2.setLayout(null);
+		JPanel btnPaneMenuNavigation = new JPanel();
+		btnPaneMenuNavigation.setName("btnPaneNavigation");
+		btnPaneMenuNavigation.setBackground(new Color(31,32,33));
+		btnPaneMenuNavigation.setBounds(10, 11, 335, 66);
+		menuPanel.add(btnPaneMenuNavigation);
+		btnPaneMenuNavigation.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Navigation");
-		lblNewLabel.setName("navLabelNavigation");
-		lblNewLabel.setBounds(105, 11, 110, 22);
-		lblNewLabel.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
-		lblNewLabel.setForeground(Color.WHITE);
-		panel_2.add(lblNewLabel);
+		JLabel lblMenuLabel = new JLabel("Navigation");
+		lblMenuLabel.setBounds(108, 11, 217, 44);
+		lblMenuLabel.setName("navLabelNavigation");
+		lblMenuLabel.setFont(dinNeuzeitGrotesk_regular.deriveFont(20.0f));
+		lblMenuLabel.setForeground(Color.WHITE);
+		btnPaneMenuNavigation.add(lblMenuLabel);
 		
-		JPanel panel_2_1 = new JPanel();
-		panel_2_1.setName("btnPaneDashboard");
-		panel_2_1.setBackground(new Color(31,32,33));
-		panel_2_1.setBounds(10, 177, 335, 66);
-		menuPanel.add(panel_2_1);
 		
-		JLabel lblNewLabel_1 = new JLabel("Dashboard");
-		lblNewLabel_1.setName("navLabelDashboard");
-		lblNewLabel_1.setForeground(Color.WHITE);
-		lblNewLabel_1.setFont(dinNeuzeitGrotesk_regular.deriveFont(16.0f));
-		panel_2_1.add(lblNewLabel_1);
-		
-		JPanel panel_2_2 = new JPanel();
-		panel_2_2.setName("btnPaneProjects");
-		panel_2_2.setBackground(new Color(31,32,33));
-		panel_2_2.setBounds(10, 254, 335, 66);
-		menuPanel.add(panel_2_2);
-		
-		JLabel lblNewLabel_1_1 = new JLabel("Projekte\r\n");
-		lblNewLabel_1_1.setName("navLabelProjects");
-		lblNewLabel_1_1.setForeground(Color.WHITE);
-		lblNewLabel_1_1.setFont(dinNeuzeitGrotesk_regular.deriveFont(16.0f));
-		panel_2_2.add(lblNewLabel_1_1);
-		
-		JPanel panel_2_3 = new JPanel();
-		panel_2_3.setName("btnPaneSessions");
-		panel_2_3.setForeground(Color.WHITE);
-		panel_2_3.setBackground(new Color(31,32,33));
-		panel_2_3.setBounds(10, 331, 335, 66);
-		menuPanel.add(panel_2_3);
 		
 
-		JPanel panel_2_3_1 = new JPanel();
-		panel_2_3_1.setName("btnPaneSettings");
-		panel_2_3_1.setBackground(new Color(31,32,33));
-		panel_2_3_1.setBounds(10, 408, 335, 66);
-		menuPanel.add(panel_2_3_1);
-		panel_2_3_1.setLayout(null);
+		JPanel btnPaneMenuSettings = new JPanel();
+		btnPaneMenuSettings.setName("btnPaneSettings");
+		btnPaneMenuSettings.setBackground(new Color(31,32,33));
+		btnPaneMenuSettings.setBounds(10, 319, 335, 66);
+		menuPanel.add(btnPaneMenuSettings);
+		btnPaneMenuSettings.setLayout(null);
 		
 
-		JPanel panel_2_3_2 = new JPanel();
-		panel_2_3_2.setName("btnPaneAccount");
-		panel_2_3_2.setBackground(new Color(31,32,33));
-		panel_2_3_2.setBounds(10, 485, 335, 66);
-		menuPanel.add(panel_2_3_2);
+		JPanel btnPaneMenuAccount = new JPanel();
+		btnPaneMenuAccount.setName("btnPaneAccount");
+		btnPaneMenuAccount.setBackground(new Color(31,32,33));
+		btnPaneMenuAccount.setBounds(10, 396, 335, 66);
+		menuPanel.add(btnPaneMenuAccount);
 		
-		JPanel panel_2_3_3 = new JPanel();
-		panel_2_3_3.setName("btnPaneLogout");
-		panel_2_3_3.setBackground(new Color(31,32,33));
-		panel_2_3_3.setBounds(10, 562, 335, 66);
-		menuPanel.add(panel_2_3_3);
-
-		JLabel lblQualitytime = new JLabel("qualitytime\r\n");
-		lblQualitytime.setForeground(Color.WHITE);
-		lblQualitytime.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
-		lblQualitytime.setBounds(10, 11, 83, 31);
-		menuPanel.add(lblQualitytime);
+		JPanel btnPaneMenuLogout = new JPanel();
+		btnPaneMenuLogout.setName("btnPaneLogout");
+		btnPaneMenuLogout.setBackground(new Color(31,32,33));
+		btnPaneMenuLogout.setBounds(10, 473, 335, 66);
+		menuPanel.add(btnPaneMenuLogout);
 		
 		contentPanel = new JPanel();
 		contentPanel.setName("dashboardMainPane");
@@ -164,29 +138,28 @@ public class AppMainView extends WindowSuperclass implements IView {
 		panel_1.add(contentPanel);
 		contentPanel.setLayout(null);
 		
-		//projectView_1= 
-		dashboardView_1 = dashboardController.getDashboardView();
-		System.out.println(dashboardView_1);
-		System.out.println(dashboardView_1.getDashbPanel());
-		//System.out.println(dashboardView_1.getDashbPanel());
-		//System.out.println(dashboardView.getDashbPanel());
-		contentPanel.add(dashboardView_1.getDashbPanel());
+	
+		dashboardView = dashboardController.getDashboardView();
+
+		contentPanel.add(dashboardView.getDashbPanel());
 		//contentPanel.add(dashboardView.getDashbPanel());
-		
-		setProjectView_1(projectController.getProjectView());
-		setAccountView_1(accountController.getAccountView());
+		setSessionView(sessionController.getSessionView());
+		setProjectView(projectController.getProjectView());
+		setAccountView(accountController.getAccountView());
 		
 		
 		JPanel btnPaneMenuDashboard = new JPanel();
 		btnPaneMenuDashboard.setName("btnPaneDashboard");
 		btnPaneMenuDashboard.setBackground(new Color(31,32,33));
-		btnPaneMenuDashboard.setBounds(10, 177, 335, 66);
+		btnPaneMenuDashboard.setBounds(10, 88, 335, 66);
 		menuPanel.add(btnPaneMenuDashboard);
 		btnPaneMenuDashboard.setLayout(null);
 		
-		JButton btnMenuDashboard = new JButton("Dashboard\r\n");
+		JButton btnMenuDashboard = new JButton("\u00B7 Dashboard\r\n");
+		btnMenuDashboard.setHorizontalAlignment(SwingConstants.LEFT);
 		btnMenuDashboard.setForeground(Color.WHITE);
-		btnMenuDashboard.setBounds(136, 0, 89, 23);
+		btnMenuDashboard.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
+		btnMenuDashboard.setBounds(130, 11, 195, 44);
 		btnPaneMenuDashboard.add(btnMenuDashboard);
 		btnMenuDashboard.setOpaque(false);
 		btnMenuDashboard.addActionListener(appMainController);
@@ -205,15 +178,17 @@ public class AppMainView extends WindowSuperclass implements IView {
 		JPanel btnPaneMenuProjects = new JPanel();
 		btnPaneMenuProjects.setName("btnPaneProjects");
 		btnPaneMenuProjects.setBackground(new Color(31,32,33));
-		btnPaneMenuProjects.setBounds(10, 254, 335, 66);
+		btnPaneMenuProjects.setBounds(10, 165, 335, 66);
 		menuPanel.add(btnPaneMenuProjects);
 		btnPaneMenuProjects.setLayout(null);
 
 		
-		JButton btnMenuProjects = new JButton("Projekte");
+		JButton btnMenuProjects = new JButton("\u00B7 Projekte");
+		btnMenuProjects.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		btnMenuProjects.setForeground(Color.WHITE);
 		btnMenuProjects.setBackground(Color.BLACK);
-		btnMenuProjects.setBounds(141, 0, 89, 23);
+		btnMenuProjects.setBounds(130, 11, 195, 44);
+		
 		btnPaneMenuProjects.add(btnMenuProjects);
 		btnMenuProjects.setHorizontalAlignment(SwingConstants.LEFT); 
 		btnMenuProjects.setOpaque(false);
@@ -236,42 +211,47 @@ public class AppMainView extends WindowSuperclass implements IView {
 		JPanel btnPaneMenuSessions = new JPanel();
 		btnPaneMenuSessions.setName("btnPaneSessions");
 		btnPaneMenuSessions.setBackground(new Color(31,32,33));
-		btnPaneMenuSessions.setBounds(10, 331, 335, 66);
+		btnPaneMenuSessions.setBounds(10, 242, 335, 66);
 		menuPanel.add(btnPaneMenuSessions);
-		btnPaneMenuSessions.setLayout(null);
 		
-		JButton btnNewButton_2 = new JButton("Sitzungen");
-		btnNewButton_2.setForeground(Color.WHITE);
-		btnNewButton_2.setBounds(141, 0, 89, 23);
-		btnPaneMenuSessions.add(btnNewButton_2);
-		btnNewButton_2.setOpaque(false);
-		btnNewButton_2.setContentAreaFilled(false);
-		btnNewButton_2.setBorderPainted(false);
-		btnNewButton_2.setHorizontalAlignment(SwingConstants.LEFT); 
-		btnNewButton_2.addActionListener(appMainController);
-		btnNewButton_2.setActionCommand(StaticActions.ACTION_MENU_SESSIONS);
-		btnNewButton_2.addMouseListener(new java.awt.event.MouseAdapter() {
+		JButton btnMenuSessions = new JButton("\u00B7 Sitzungen");
+		btnMenuSessions.setBounds(130, 11, 195, 44);
+		btnMenuSessions.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
+		btnMenuSessions.setHorizontalAlignment(SwingConstants.LEFT);
+		btnPaneMenuSessions.setLayout(null);
+		btnMenuSessions.setForeground(Color.WHITE);
+		btnPaneMenuSessions.add(btnMenuSessions);
+		btnMenuSessions.setOpaque(false);
+		btnMenuSessions.setContentAreaFilled(false);
+		btnMenuSessions.setBorderPainted(false);
+		btnMenuSessions.addActionListener(appMainController);
+		btnMenuSessions.setActionCommand(StaticActions.ACTION_MENU_SESSIONS);
+		
+		btnMenuSessions.addMouseListener(new java.awt.event.MouseAdapter() {
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-		    	btnNewButton_2.setForeground(Color.ORANGE);
+		    	btnMenuSessions.setForeground(Color.ORANGE);
 		    }
 
 		    public void mouseExited(java.awt.event.MouseEvent evt) {
-		    	btnNewButton_2.setForeground(Color.WHITE);
+		    	btnMenuSessions.setForeground(Color.WHITE);
 		    }
 		});
 		
 		
 		JLabel lblEinstellungen = new JLabel("Einstellungen");
+		lblEinstellungen.setHorizontalAlignment(SwingConstants.LEFT);
 		lblEinstellungen.setName("navLabelNavigation");
 		lblEinstellungen.setForeground(Color.WHITE);
-		lblEinstellungen.setFont(null);
-		lblEinstellungen.setBounds(111, 11, 110, 22);
-		panel_2_3_1.add(lblEinstellungen);
+		lblEinstellungen.setFont(dinNeuzeitGrotesk_regular.deriveFont(20.0f));
+		lblEinstellungen.setBounds(108, 11, 217, 44);
+		btnPaneMenuSettings.add(lblEinstellungen);
+		btnPaneMenuAccount.setLayout(null);
 		
-		JButton btnMenuAccount = new JButton("Account");
+		JButton btnMenuAccount = new JButton("\u00B7 Account");
 		btnMenuAccount.setForeground(Color.WHITE);
-		btnMenuAccount.setBounds(141, 1, 184, 23);
-		panel_2_3_2.add(btnMenuAccount);
+		btnMenuAccount.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
+		btnMenuAccount.setBounds(130, 11, 195, 44);
+		btnPaneMenuAccount.add(btnMenuAccount);
 		btnMenuAccount.setOpaque(false);
 		btnMenuAccount.setContentAreaFilled(false);
 		btnMenuAccount.setBorderPainted(false);
@@ -287,11 +267,13 @@ public class AppMainView extends WindowSuperclass implements IView {
 		    	btnMenuAccount.setForeground(Color.WHITE);
 		    }
 		});
+		btnPaneMenuLogout.setLayout(null);
 
-		JButton btnMenuLogout = new JButton("Logout\r\n");
+		JButton btnMenuLogout = new JButton("\u00B7 Logout\r\n");
+		btnMenuLogout.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		btnMenuLogout.setForeground(Color.WHITE);
-		btnMenuLogout.setBounds(141, 1, 89, 23);
-		panel_2_3_3.add(btnMenuLogout);
+		btnMenuLogout.setBounds(130, 11, 195, 44);
+		btnPaneMenuLogout.add(btnMenuLogout);
 		btnMenuLogout.setOpaque(false);
 		btnMenuLogout.setContentAreaFilled(false);
 		btnMenuLogout.setBorderPainted(false);
@@ -359,17 +341,12 @@ public class AppMainView extends WindowSuperclass implements IView {
 	public DashboardController getDashboardController() {
 		return dashboardController;
 	}
-
 	public void setDashboardController(DashboardController dashboardController) {
 		this.dashboardController = dashboardController;
 	}
-
-
-	
 	public JFrame getFrame() {
 		return frame;
 	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
@@ -379,29 +356,34 @@ public class AppMainView extends WindowSuperclass implements IView {
 	public void setAccountController(AccountController accountController) {
 		this.accountController = accountController;
 	}
-
 	public JPanel getContentPanel() {
 		return contentPanel;
 	}
 	public void setContentPanel(JPanel contentPanel) {
 		this.contentPanel = contentPanel;
 	}
-	public DashboardView getDashboardView_1() {
-		return dashboardView_1;
+	public DashboardView getDashboardView() {
+		return dashboardView;
 	}
-	public void setDashboardView_1(DashboardView dashboardView_1) {
-		this.dashboardView_1 = dashboardView_1;
+	public void setDashboardView(DashboardView dashboardView_1) {
+		this.dashboardView = dashboardView_1;
 	}
-	public AccountView getAccountView_1() {
-		return accountView_1;
+	public AccountView getAccountView() {
+		return accountView;
 	}
-	public void setAccountView_1(AccountView accountView_1) {
-		this.accountView_1 = accountView_1;
+	public void setAccountView(AccountView accountView_1) {
+		this.accountView = accountView_1;
 	}
-	public ProjectView getProjectView_1() {
-		return projectView_1;
+	public ProjectView getProjectView() {
+		return projectView;
 	}
-	public void setProjectView_1(ProjectView projectView_1) {
-		this.projectView_1 = projectView_1;
+	public void setProjectView(ProjectView projectView_1) {
+		this.projectView = projectView;
+	}
+	public SessionView getSessionView() {
+		return sessionView;
+	}
+	public void setSessionView(SessionView sessionView) {
+		this.sessionView = sessionView;
 	}
 }

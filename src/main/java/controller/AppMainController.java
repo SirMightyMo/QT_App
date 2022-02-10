@@ -29,6 +29,7 @@ public class AppMainController implements IController{
 	private AccountView accountView;
 	private ProjectController projectController;
 	private ProjectView projectView;
+	private SessionController sessionController;
 	String visibleView= "Dashboard";
 	
 	boolean hasclicked1=false;
@@ -37,6 +38,7 @@ public class AppMainController implements IController{
 	// Constructor	
 	public AppMainController() {					
 		this.dashboardController = new DashboardController();
+		this.sessionController= new SessionController(); 
 		this.accountController = new AccountController();
 		this.projectController = new ProjectController();
 		this.setAppMainModel(new AppMainModel());
@@ -109,16 +111,18 @@ public class AppMainController implements IController{
 		System.out.println("ACTION: " + event.toString()); // For debugging
 		if (event.equalsIgnoreCase(StaticActions.ACTION_MENU_DASHBOARD)) 
 		{
-			System.out.println("MenuDashboardClick");
 			//appMainController.getAppMainView().remove(dashboardView.getDashbPanel());
-			this.appMainView.getContentPanel().add(this.appMainView.getDashboardView_1().getDashbPanel());
+			this.appMainView.getContentPanel().add(this.appMainView.getDashboardView().getDashbPanel());
 			if(visibleView=="AccountSettings") 
 			{
-				this.appMainView.getContentPanel().remove(this.appMainView.getAccountView_1().getAccountPanel());
+				this.appMainView.getContentPanel().remove(this.appMainView.getAccountView().getAccountPanel());
 			}
 			if(visibleView=="Projects") 
 			{
-				this.appMainView.getContentPanel().remove(this.appMainView.getProjectView_1().getContentPane());
+				this.appMainView.getContentPanel().remove(this.appMainView.getProjectView().getContentPane());
+			}
+			if(visibleView=="Sessions") {
+				this.appMainView.getContentPanel().remove(this.appMainView.getSessionView().getSessionPanel());
 			}
 			
 			this.appMainView.getContentPanel().repaint();
@@ -127,34 +131,57 @@ public class AppMainController implements IController{
 
 		if (event.equalsIgnoreCase(StaticActions.ACTION_MENU_PROJECTS)) 
 		{
-			System.out.println("MenuProjectsClick");
-			this.appMainView.getContentPanel().add(this.appMainView.getProjectView_1().getContentPane());
+			this.appMainView.getContentPanel().add(this.appMainView.getProjectView().getContentPane());
+			System.out.println(visibleView);
 			if(visibleView=="Dashboard") 
 			{
-				this.appMainView.getContentPanel().remove(this.appMainView.getDashboardView_1().getDashbPanel());
-				System.out.println("Dashboard removed");
+				this.appMainView.getContentPanel().remove(this.appMainView.getDashboardView().getDashbPanel());
+			}
+			if(visibleView=="Sessions") {
+				this.appMainView.getContentPanel().remove(this.appMainView.getSessionView().getSessionPanel());
+			}
+			{
+				this.appMainView.getContentPanel().remove(this.appMainView.getDashboardView().getDashbPanel());
 			}
 			if(visibleView=="AccountSettings") 
 			{
-				this.appMainView.getContentPanel().remove(this.appMainView.getAccountView_1().getAccountPanel());
+				this.appMainView.getContentPanel().remove(this.appMainView.getAccountView().getAccountPanel());
 			}
 			this.appMainView.getContentPanel().repaint();
 			visibleView="Projects";
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_MENU_SESSIONS)) {
-			System.out.println("MenuSessionsClick");
-		}
-
-		if (event.equalsIgnoreCase(StaticActions.ACTION_MENU_ACCOUNT)) {
-			System.out.println("MenuAccountClick");
-			this.appMainView.getContentPanel().add(this.appMainView.getAccountView_1().getAccountPanel());
+			this.appMainView.getContentPanel().add(this.appMainView.getSessionView().getSessionPanel());
 			if(visibleView=="Dashboard") 
 			{
-				this.appMainView.getContentPanel().remove(this.appMainView.getDashboardView_1().getDashbPanel());
+				this.appMainView.getContentPanel().remove(this.appMainView.getDashboardView().getDashbPanel());
 			}
 			if(visibleView=="Projects") 
 			{
-				this.appMainView.getContentPanel().remove(this.appMainView.getProjectView_1().getContentPane());
+				this.appMainView.getContentPanel().remove(this.appMainView.getProjectView().getContentPane());
+			}
+			if(visibleView=="AccountSettings") 
+			{
+				this.appMainView.getContentPanel().remove(this.appMainView.getAccountView().getAccountPanel());
+			}
+			this.appMainView.getContentPanel().repaint();
+			visibleView="Sessions";
+		}
+
+		if (event.equalsIgnoreCase(StaticActions.ACTION_MENU_ACCOUNT)) 
+		{
+			System.out.println("MenuAccountClick");
+			this.appMainView.getContentPanel().add(this.appMainView.getAccountView().getAccountPanel());
+			if(visibleView=="Dashboard") 
+			{
+				this.appMainView.getContentPanel().remove(this.appMainView.getDashboardView().getDashbPanel());
+			}
+			if(visibleView=="Projects") 
+			{
+				this.appMainView.getContentPanel().remove(this.appMainView.getProjectView().getContentPane());
+			}
+			if(visibleView=="Sessions") {
+				this.appMainView.getContentPanel().remove(this.appMainView.getSessionView().getSessionPanel());
 			}
 			this.appMainView.getContentPanel().repaint();
 			visibleView="AccountSettings";
@@ -163,7 +190,6 @@ public class AppMainController implements IController{
 
 		if (event.equalsIgnoreCase(StaticActions.ACTION_MENU_LOGOUT)) 
 		{
-			System.out.println("MenuLogoutClick");
 			this.appMainView.dispose();
 			User.setUser(null);
 			new LoginController();
@@ -226,6 +252,14 @@ public class AppMainController implements IController{
 
 	public void setProjectView(ProjectView projectView) {
 		this.projectView = projectView;
+	}
+
+	public SessionController getSessionController() {
+		return sessionController;
+	}
+
+	public void setSessionController(SessionController sessionController) {
+		this.sessionController = sessionController;
 	}
 
 }

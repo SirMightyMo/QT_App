@@ -34,8 +34,6 @@ public class ProjectController implements IController {
 		this.projectView = new ProjectView(this);
 
 		this.projectModel.addObserver(this.projectView);
-		//this.projectView.setVisible(true);
-
 		projectModel.retrieveProjects();
 
 		actionLoadProjects();
