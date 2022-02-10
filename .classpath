@@ -13,6 +13,5 @@
 	<classpathentry kind="lib" path="src/main/resources/lib/assertj-core-3.17.2.jar"/>
 	<classpathentry kind="lib" path="src/main/resources/lib/assertj-swing-3.17.1.jar"/>
 	<classpathentry kind="lib" path="src/main/resources/lib/fest-util-1.2.5.jar"/>
-	<classpathentry kind="lib" path="jgoodies-forms-1.8.0.jar" sourcepath="jgoodies-forms-1.8.0-sources.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
