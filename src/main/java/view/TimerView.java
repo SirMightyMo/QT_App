@@ -1,53 +1,35 @@
 package main.java.view;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.SpringLayout;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import main.java.controller.TimerHourController;
 import main.java.model.StaticActions;
 import main.java.model.TimerModel;
 
-import java.awt.Font;
-import java.awt.Toolkit;
-import java.net.URL;
-import java.awt.Color;
-
-import javax.swing.ImageIcon;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
-
-import java.awt.Component;
-import java.awt.Dimension;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.BorderLayout;
-
 @SuppressWarnings("deprecation")
 public class TimerView implements IView {
-	private static final long serialVersionUID = 1L;
 	private JPanel contentPanel; // Container
 
-	private JComboBox comboBox = new JComboBox(); // ComboBox for project-list
+	private JComboBox<String> comboBox = new JComboBox<String>();
 	private JLabel durationLabel = new JLabel("00:00:00");
 	private JButton btnStart;
 	private JButton btnStop;

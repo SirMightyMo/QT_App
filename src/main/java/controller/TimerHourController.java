@@ -426,14 +426,15 @@ public class TimerHourController implements IController {
 	public void actionLoadProjects() {
 		this.timerModel.setProjectSet(false);
 		this.timerModel.retrieveProjects();
-
+		activateTimeTracker();
+		
 		// if project was not set yet, select last used project (highest h_id)
 		if ((this.hourEntry == null || this.hourEntry.getProjectID() == 0) && !this.timerModel.isProjectSet()) {
 
 			ArrayList<Object> result = db.query("SELECT p_id FROM hour_entry WHERE u_id = " + User.getUser().getU_id() +" ORDER BY h_id DESC LIMIT 1;");
-			
+			System.out.println(User.getUser().getU_id());
+			System.out.println(result.isEmpty());
 			if (!result.isEmpty()) {
-				activateTimeTracker();
 				// find out projectListIndex by looking for p_id in ArrayList projectList of
 				// timerModel
 				int projectListIndex = 0; // initialize variable for list index in timerView
@@ -451,7 +452,10 @@ public class TimerHourController implements IController {
 				}
 				// set selected item to latest project
 				this.timerView.getComboBox().setSelectedIndex(projectListIndex);
-			} else { // if user has no project assigned, deactivate time-tracking
+			}
+			// check if user has projects; if not, deactivate time tracking
+			ArrayList<Object> userProjects = db.query("SELECT project.p_id FROM project LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id WHERE u_id = " + User.getUser().getU_id() + ";");
+			if (userProjects.isEmpty()) {
 				deactivateTimeTracker();
 			}
 		}
