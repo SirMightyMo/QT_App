@@ -115,6 +115,7 @@ public final class RegistrationView extends JFrame implements IView {
 
 		registerButton = new JButton("Register");
 		panelThree.add(registerButton);
+		getRootPane().setDefaultButton(registerButton);
 
 		this.errorMessage = new JLabel();
 

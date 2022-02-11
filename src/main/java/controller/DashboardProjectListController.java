@@ -7,28 +7,25 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import main.java.model.CustomTableModel;
-import main.java.model.IModel;
 import main.java.model.StaticActions;
+import main.java.model.User;
 import main.java.view.DashboardListView;
-import main.java.view.IView;
 
 public class DashboardProjectListController implements IController {
 
 	private DashboardListView view;
 	private CustomTableModel tableData;
+	private DatabaseController db = DatabaseController.getInstance();
 	
 	public DashboardProjectListController() {
 		this.tableData = new CustomTableModel(new String[] {
-				"Datum",
 				"Projekt",
 				"Start",
 				"Ende",
-				"Dauer"
+				"Status"
 			});
 			this.view = new DashboardListView(this, tableData);
 			queryData();
@@ -41,17 +38,16 @@ public class DashboardProjectListController implements IController {
 	}
 	
 	public void queryData() {
-		DatabaseController db = new DatabaseController("sa", "");
 		ArrayList<Object> result = db.query(
-				"SELECT name, "
-				+ "start_date, "
-				+ "end_date, "
-				+ "active, "
-				+ "p_id " // TODO: duration
-				+ "FROM project ORDER BY p_id DESC LIMIT 15");
-		Object[][] resultArray = new Object[result.size()][5];
+				"SELECT name, start_date, end_date, active FROM project "
+				+ "LEFT JOIN assign_project_user "
+				+ "ON project.p_id = assign_project_user.p_id "
+				+ "WHERE u_id = " + User.getUser().getU_id()
+				+ " ORDER BY project.p_id DESC "
+				+ "LIMIT 15;");
+		Object[][] resultArray = new Object[result.size()][4];
 		for (int i = 0; i < result.size(); i++) {
-			for (int j = 0; j < 5; j++) {
+			for (int j = 0; j < 4; j++) {
 				ArrayList<Object> row = (ArrayList<Object>) result.get(i);
 				String value = row.get(j).toString();
 				if (j == 1 || j == 2) {
@@ -59,7 +55,7 @@ public class DashboardProjectListController implements IController {
 							.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
 				} else if (j == 3) {
 					if (value.equalsIgnoreCase("true")) {
-						value = "begonnen";
+						value = "aktiv";
 					} else {
 						value = "abgeschlossen";
 					}

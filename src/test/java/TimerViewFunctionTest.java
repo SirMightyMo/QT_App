@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import main.java.controller.TimerHourController;
+import main.java.model.User;
 import main.java.view.TimerView;
 
 class TimerViewFunctionTest {

@@ -19,9 +19,15 @@ public class DatabaseController implements IController {
 	private String pass;
 	private Connection dbConnection; // H2 Database // Logout: Close DB Connection
 
-	public DatabaseController(String user, String pass) {
+	public static final DatabaseController DBC = new DatabaseController("sa", "");
+	
+	private DatabaseController(String user, String pass) {
 		this.user = user;
 		this.pass = pass;
+	}
+	
+	public static DatabaseController getInstance() {
+		return DBC;
 	}
 
 	public Connection getDbConnection() {
@@ -105,11 +111,11 @@ public class DatabaseController implements IController {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-			try {
-				dbConnection.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+//			try {
+//				dbConnection.close();
+//			} catch (SQLException e) {
+//				e.printStackTrace();
+//			}
 		}
 	}
 
@@ -190,11 +196,11 @@ public class DatabaseController implements IController {
 				e.printStackTrace();
 			}
 		}
-		try {
-			dbConnection.close();
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
+//		try {
+//			dbConnection.close();
+//		} catch (SQLException e) {
+//			System.out.println(e.getMessage());
+//		}
 		return resultArrayList;
 	}
 
@@ -249,11 +255,11 @@ public class DatabaseController implements IController {
 					e.printStackTrace();
 				}
 			}
-			try {
-				dbConnection.close();
-			} catch (SQLException e) {
-				System.out.println(e.getMessage());
-			}
+//			try {
+//				dbConnection.close();
+//			} catch (SQLException e) {
+//				System.out.println(e.getMessage());
+//			}
 			return resultArrayList;
 		} else {
 			return query(sql);
@@ -282,7 +288,7 @@ public class DatabaseController implements IController {
 
 			statement.close();
 			bReader.close();
-			dbConnection.close();
+			//dbConnection.close();
 
 			System.out.println("SQL-Script " + scriptFilePath + " executed successfully");
 		} catch (Exception e) {

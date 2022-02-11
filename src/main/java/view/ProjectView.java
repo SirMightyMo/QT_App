@@ -1,87 +1,86 @@
 package main.java.view;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.RowFilter;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.SpringLayout;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import main.java.controller.DatePicker;
 import main.java.controller.ProjectController;
 import main.java.model.ProjectModel;
 import main.java.model.StaticActions;
 
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.sql.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.RowFilter;
-import javax.swing.RowSorter;
-import javax.swing.SortOrder;
-import javax.swing.JScrollPane;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
-import javax.swing.JComboBox;
-import javax.swing.JTabbedPane;
-import javax.swing.JCheckBox;
-
 @SuppressWarnings("deprecation")
-public class ProjectView extends JFrame implements IView {
+public class ProjectView implements IView {
+	
 	private static final long serialVersionUID = 1L;
+	private JPanel projectPanel;
 	private JPanel contentPane; // Container
 	JTabbedPane tabbedPane;
 	private JTable table;
-	private JTextField textFieldFrom;
-	private JTextField textFieldTo;
 	private TableRowSorter<TableModel> sorter;
-
-	private JComboBox comboBoxProject = new JComboBox();
+	private JComboBox<String> comboBoxProject = new JComboBox<String>();
 	private JTextField textFieldProjectName;
 	private JTextField textFieldClient;
 	private JTextField textFieldStartDate;
 	private JTextField textFieldEndDate;
+	private JTextField textFieldFrom;
+	private JTextField textFieldTo;
 	private JCheckBox chckbxActive;
-	// private
 
-	/**
-	 * Create Frame
-	 */
-	public ProjectView(ProjectController projectController) {
-		setFont(new Font("Open Sans ExtraBold", Font.PLAIN, 12));
-		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit()
-				.getImage(TimerView.class.getResource("/main/resources/img/icons/qtproject_placeholder.gif")));
-		setTitle("Quality Time");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1000, 790); // x, y, width, height
+
+	public ProjectView(ProjectController projectController) {		
+		projectPanel = new JPanel();
+		projectPanel.setName("projectPanelMainPane");
+		projectPanel.setBounds(0, 0, 1490, 1060);
+		projectPanel.setBackground(new Color(47,48,52));
+		projectPanel.setLayout(null);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5)); // top, left, bottom, right
-		setContentPane(contentPane);
-		SpringLayout springLayoutContentPane = new SpringLayout();
-		contentPane.setLayout(springLayoutContentPane);
+		contentPane.setBounds(10, 87, 1470, 944);
+		contentPane.setBackground(new Color(31,32,33));
+		projectPanel.add(contentPane);
+		
+		JLabel lblNewLabel = new JLabel("Projekte");
+		lblNewLabel.setBounds(10, 60, 134, 24);
+		lblNewLabel.setForeground(Color.WHITE);
+		projectPanel.add(lblNewLabel);
+		contentPane.setLayout(null);
+		
+		
+		
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		springLayoutContentPane.putConstraint(SpringLayout.NORTH, tabbedPane, 10, SpringLayout.NORTH, contentPane);
-		springLayoutContentPane.putConstraint(SpringLayout.WEST, tabbedPane, 10, SpringLayout.WEST, contentPane);
-		springLayoutContentPane.putConstraint(SpringLayout.SOUTH, tabbedPane, -15, SpringLayout.SOUTH, contentPane);
-		springLayoutContentPane.putConstraint(SpringLayout.EAST, tabbedPane, 920, SpringLayout.WEST, contentPane);
+		tabbedPane.setBounds(15, 15, 910, 909);
 		contentPane.add(tabbedPane);
 
 		JPanel panel_project_overview = new JPanel();
@@ -99,16 +98,6 @@ public class ProjectView extends JFrame implements IView {
 				panel_project_overview);
 		sl_panel_project_overview.putConstraint(SpringLayout.WEST, lblHeadTitel, 2, SpringLayout.WEST,
 				panel_project_overview);
-		springLayoutContentPane.putConstraint(SpringLayout.NORTH, comboBoxProject, 6, SpringLayout.SOUTH, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.WEST, comboBoxProject, 10, SpringLayout.WEST, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.NORTH, lblHeadTitel, 38, SpringLayout.NORTH,
-				panel_project_overview);
-		springLayoutContentPane.putConstraint(SpringLayout.WEST, lblHeadTitel, 47, SpringLayout.WEST,
-				panel_project_overview);
-		springLayoutContentPane.putConstraint(SpringLayout.SOUTH, lblHeadTitel, 384, SpringLayout.NORTH,
-				panel_project_overview);
-		springLayoutContentPane.putConstraint(SpringLayout.EAST, lblHeadTitel, 918, SpringLayout.WEST,
-				panel_project_overview);
 		panel_project_overview.add(lblHeadTitel);
 		lblHeadTitel.setFont(new Font("Tahoma", Font.BOLD, 18));
 
@@ -123,33 +112,10 @@ public class ProjectView extends JFrame implements IView {
 				panel_project_overview);
 		sl_panel_project_overview.putConstraint(SpringLayout.EAST, scrollPaneTable, 895, SpringLayout.WEST,
 				panel_project_overview);
-		springLayoutContentPane.putConstraint(SpringLayout.NORTH, scrollPaneTable, 6, SpringLayout.SOUTH, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.WEST, scrollPaneTable, 10, SpringLayout.WEST, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.SOUTH, scrollPaneTable, -741, SpringLayout.SOUTH,
-				contentPane);
-		springLayoutContentPane.putConstraint(SpringLayout.EAST, scrollPaneTable, -133, SpringLayout.EAST, contentPane);
 		panel_project_overview.add(scrollPaneTable);
 		// create table
 		table = new JTable();
 		updateTable(projectController);
-		/*
-		 * table.setModel(new DefaultTableModel(projectController.getTableModel(), new
-		 * String[] { "#", "Projektname", "Start", "Ende", "Status", "Dauer", "Kunde" }
-		 * 
-		 * )); table.getColumnModel().getColumn(0).setPreferredWidth(8);
-		 * table.getColumnModel().getColumn(1).setPreferredWidth(41);
-		 * table.getColumnModel().getColumn(2).setPreferredWidth(44);
-		 * table.getColumnModel().getColumn(4).setPreferredWidth(52);
-		 * table.getColumnModel().getColumn(5).setPreferredWidth(115);
-		 * table.setAutoCreateRowSorter(true);
-		 * 
-		 * 
-		 * // Tabel sort activate sorter = new TableRowSorter<>(table.getModel());
-		 * List<RowSorter.SortKey> sortKeys = new ArrayList<>(); int columnIndexToSort =
-		 * 0; sortKeys.add(new RowSorter.SortKey(columnIndexToSort,
-		 * SortOrder.ASCENDING)); sorter.setSortKeys(sortKeys); sorter.sort();
-		 * table.setRowSorter(sorter);
-		 */
 		scrollPaneTable.setViewportView(table);
 
 		// Projects Label
@@ -158,8 +124,6 @@ public class ProjectView extends JFrame implements IView {
 		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, comboBoxProject, -3, SpringLayout.NORTH,
 				lblProjects);
 		sl_panel_project_overview.putConstraint(SpringLayout.WEST, comboBoxProject, 22, SpringLayout.EAST, lblProjects);
-		springLayoutContentPane.putConstraint(SpringLayout.NORTH, lblProjects, 6, SpringLayout.SOUTH, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.WEST, lblProjects, 10, SpringLayout.WEST, lblHeadTitel);
 		panel_project_overview.add(lblProjects);
 		panel_project_overview.add(comboBoxProject);
 
@@ -179,8 +143,6 @@ public class ProjectView extends JFrame implements IView {
 				lblProjects);
 		sl_panel_project_overview.putConstraint(SpringLayout.WEST, btnLoadProjects, 14, SpringLayout.EAST,
 				comboBoxProject);
-		springLayoutContentPane.putConstraint(SpringLayout.NORTH, btnLoadProjects, 6, SpringLayout.SOUTH, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.WEST, btnLoadProjects, 10, SpringLayout.WEST, lblHeadTitel);
 		panel_project_overview.add(btnLoadProjects);
 		btnLoadProjects.addActionListener(projectController);
 		btnLoadProjects.setActionCommand(StaticActions.ACTION_LOAD_PROJECTS);
@@ -190,8 +152,6 @@ public class ProjectView extends JFrame implements IView {
 		lblService.setName("lblService");
 		sl_panel_project_overview.putConstraint(SpringLayout.WEST, lblProjects, 0, SpringLayout.WEST, lblService);
 		sl_panel_project_overview.putConstraint(SpringLayout.SOUTH, lblProjects, -17, SpringLayout.NORTH, lblService);
-		springLayoutContentPane.putConstraint(SpringLayout.NORTH, lblService, 6, SpringLayout.SOUTH, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.WEST, lblService, 10, SpringLayout.WEST, lblHeadTitel);
 		panel_project_overview.add(lblService);
 
 		// Services DropDown
@@ -203,10 +163,6 @@ public class ProjectView extends JFrame implements IView {
 				comboBoxProject);
 		sl_panel_project_overview.putConstraint(SpringLayout.EAST, comboBoxService, 0, SpringLayout.EAST,
 				comboBoxProject);
-		springLayoutContentPane.putConstraint(SpringLayout.NORTH, comboBoxService, 6, SpringLayout.SOUTH, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.WEST, comboBoxService, 10, SpringLayout.WEST, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.EAST, comboBoxService, -85, SpringLayout.EAST,
-				comboBoxProject);
 		panel_project_overview.add(comboBoxService);
 
 		// Time Frame Label
@@ -214,8 +170,6 @@ public class ProjectView extends JFrame implements IView {
 		lblTimeFrame.setName("lblTimeFrame");
 		sl_panel_project_overview.putConstraint(SpringLayout.WEST, lblService, 0, SpringLayout.WEST, lblTimeFrame);
 		sl_panel_project_overview.putConstraint(SpringLayout.SOUTH, lblService, -20, SpringLayout.NORTH, lblTimeFrame);
-		springLayoutContentPane.putConstraint(SpringLayout.NORTH, lblTimeFrame, 6, SpringLayout.SOUTH, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.WEST, lblTimeFrame, 10, SpringLayout.WEST, lblHeadTitel);
 		panel_project_overview.add(lblTimeFrame);
 
 		// search button
@@ -227,8 +181,6 @@ public class ProjectView extends JFrame implements IView {
 				panel_project_overview);
 		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, lblTimeFrame, 4, SpringLayout.NORTH,
 				btnSearchButton);
-		springLayoutContentPane.putConstraint(SpringLayout.NORTH, btnSearchButton, 6, SpringLayout.SOUTH, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.WEST, btnSearchButton, 10, SpringLayout.WEST, lblHeadTitel);
 		panel_project_overview.add(btnSearchButton);
 		btnSearchButton.addActionListener(projectController);
 		btnSearchButton.setActionCommand(StaticActions.ACTION_SEARCH_PROJECTS);
@@ -238,8 +190,6 @@ public class ProjectView extends JFrame implements IView {
 		textFieldFrom.setName("textFieldFrom");
 		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, textFieldFrom, 1, SpringLayout.NORTH,
 				btnSearchButton);
-		springLayoutContentPane.putConstraint(SpringLayout.NORTH, textFieldFrom, 6, SpringLayout.SOUTH, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.WEST, textFieldFrom, 10, SpringLayout.WEST, lblHeadTitel);
 		panel_project_overview.add(textFieldFrom);
 		textFieldFrom.setColumns(10);
 
@@ -251,8 +201,6 @@ public class ProjectView extends JFrame implements IView {
 				panel_project_overview);
 		sl_panel_project_overview.putConstraint(SpringLayout.EAST, lblTimeFrame, -13, SpringLayout.WEST, lblFrom);
 		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, lblFrom, 4, SpringLayout.NORTH, btnSearchButton);
-		springLayoutContentPane.putConstraint(SpringLayout.NORTH, lblFrom, 6, SpringLayout.SOUTH, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.WEST, lblFrom, 10, SpringLayout.WEST, lblHeadTitel);
 		panel_project_overview.add(lblFrom);
 
 		// input end date label
@@ -260,9 +208,6 @@ public class ProjectView extends JFrame implements IView {
 		lblTo.setName("lblTo");
 		sl_panel_project_overview.putConstraint(SpringLayout.EAST, textFieldFrom, -45, SpringLayout.WEST, lblTo);
 		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, lblTo, 0, SpringLayout.NORTH, lblTimeFrame);
-		springLayoutContentPane.putConstraint(SpringLayout.NORTH, lblTo, 6, SpringLayout.SOUTH, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.WEST, lblTo, 10, SpringLayout.WEST, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.EAST, textFieldFrom, -97, SpringLayout.WEST, lblTo);
 		panel_project_overview.add(lblTo);
 
 		// input end date
@@ -273,10 +218,6 @@ public class ProjectView extends JFrame implements IView {
 		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, textFieldTo, -3, SpringLayout.NORTH, lblTimeFrame);
 		sl_panel_project_overview.putConstraint(SpringLayout.WEST, textFieldTo, 392, SpringLayout.WEST,
 				panel_project_overview);
-		springLayoutContentPane.putConstraint(SpringLayout.NORTH, textFieldTo, 6, SpringLayout.SOUTH, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.WEST, textFieldTo, 10, SpringLayout.WEST, lblHeadTitel);
-		springLayoutContentPane.putConstraint(SpringLayout.EAST, textFieldTo, -386, SpringLayout.WEST, btnSearchButton);
-		springLayoutContentPane.putConstraint(SpringLayout.EAST, comboBoxProject, -85, SpringLayout.EAST, textFieldTo);
 		panel_project_overview.add(textFieldTo);
 		textFieldTo.setColumns(10);
 
@@ -440,7 +381,7 @@ public class ProjectView extends JFrame implements IView {
 		popupFrame.setName("popupFrame");
 		btnSetStartDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
-				popupFrame.setLocation(getMousePosition());
+				//popupFrame.setLocation(getMousePosition());
 				textFieldStartDate.setText(new DatePicker(popupFrame).setPickedDate());
 				System.out.print(textFieldStartDate.getText());
 			}
@@ -485,6 +426,10 @@ public class ProjectView extends JFrame implements IView {
 		JPanel panel_service = new JPanel();
 		tabbedPane.addTab("Leistungen", null, panel_service, null);
 
+	}
+
+	public JPanel getProjectPanel() {
+		return projectPanel;
 	}
 
 	// Getter Setter
@@ -599,4 +544,16 @@ public class ProjectView extends JFrame implements IView {
 	public void setTab(int i) {
 		tabbedPane.setSelectedIndex(i);
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	public JPanel getContentPane() {
+		return contentPane;
+	}
+
+	public void setContentPane(JPanel contentPane) {
+		this.contentPane = contentPane;
+	}
+
 }

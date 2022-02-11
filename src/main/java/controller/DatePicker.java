@@ -1,14 +1,25 @@
 package main.java.controller;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.MouseInfo;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.event.DocumentEvent;
 
 import main.java.model.IModel;
 import main.java.view.IView;
 
 public class DatePicker implements IController {
+	
 	int month = java.util.Calendar.getInstance().get(java.util.Calendar.MONTH);
 	int year = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);;
 	JLabel l = new JLabel("", JLabel.CENTER);
@@ -18,16 +29,21 @@ public class DatePicker implements IController {
 
 	public DatePicker(JFrame parent) {
 		d = new JDialog();
+		d.setLocation(MouseInfo.getPointerInfo().getLocation().x, MouseInfo.getPointerInfo().getLocation().y);
 		d.setModal(true);
+		d.setResizable(false);
 		String[] header = { "Sun", "Mon", "Tue", "Wed", "Thur", "Fri", "Sat" };
 		JPanel p1 = new JPanel(new GridLayout(7, 7));
-		p1.setPreferredSize(new Dimension(430, 120));
+		p1.setPreferredSize(new Dimension(430, 140));
 
 		for (int x = 0; x < button.length; x++) {
 			final int selection = x;
 			button[x] = new JButton();
 			button[x].setFocusPainted(false);
-			button[x].setBackground(Color.white);
+			button[x].setBackground(new Color(60, 63, 65));
+			button[x].setBorder(null);
+			button[x].setForeground(Color.WHITE);
+			
 			if (x > 6)
 				button[x].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ae) {
@@ -37,7 +53,8 @@ public class DatePicker implements IController {
 				});
 			if (x < 7) {
 				button[x].setText(header[x]);
-				button[x].setForeground(Color.red);
+				button[x].setEnabled(false);
+				button[x].setForeground(Color.ORANGE);
 			}
 			p1.add(button[x]);
 		}
@@ -62,21 +79,22 @@ public class DatePicker implements IController {
 		d.add(p1, BorderLayout.CENTER);
 		d.add(p2, BorderLayout.SOUTH);
 		d.pack();
-		d.setLocationRelativeTo(parent);
 		displayDate();
 		d.setVisible(true);
 	}
 
 	public void displayDate() {
-		for (int x = 7; x < button.length; x++)
+		for (int x = 7; x < button.length; x++) {
 			button[x].setText("");
+		}
 		java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MMMM yyyy");
 		java.util.Calendar cal = java.util.Calendar.getInstance();
 		cal.set(year, month, 1);
 		int dayOfWeek = cal.get(java.util.Calendar.DAY_OF_WEEK);
 		int daysInMonth = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
-		for (int x = 6 + dayOfWeek, day = 1; day <= daysInMonth; x++, day++)
+		for (int x = 6 + dayOfWeek, day = 1; day <= daysInMonth; x++, day++) {
 			button[x].setText("" + day);
+		}
 		l.setText(sdf.format(cal.getTime()));
 		d.setTitle("Date Picker");
 	}
@@ -90,6 +108,10 @@ public class DatePicker implements IController {
 		return sdf.format(cal.getTime());
 	}
 
+	
+	
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub

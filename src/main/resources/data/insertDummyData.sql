@@ -9,7 +9,7 @@ INSERT INTO project(name,start_date,end_date,active,c_id)VALUES('Projekt 3','202
 INSERT INTO project(name,start_date,end_date,active,c_id)VALUES('Projekt 4','2021-01-16','2022-01-17','TRUE','2');
 INSERT INTO project(name,start_date,end_date,active,c_id)VALUES('Projekt 5','2021-01-16','2022-01-17','TRUE','2');
 
-INSERT INTO users(username,password,email,security_question,answer)VALUES('Bob','abc','bob@msn.com','Wie viel ist 2+2','5');
+INSERT INTO users(username,password,email,security_question,answer)VALUES('Bob','10:535afcb18e97187489e5d86bd51c7357:9fdefb7c72bf8ec0725af8e63596080ece730c2461f816a259751341cf559d776d39ae0193d8ed7cc17b3ad5d05f9c167b698178113e8df5d2f68ac604336779','bob@msn.com','Wie viel ist 2+2','5');
 
 INSERT INTO assign_project_user(p_id,u_id)VALUES('1','1');
 INSERT INTO assign_project_user(p_id,u_id)VALUES('2','1');

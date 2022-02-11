@@ -1,54 +1,43 @@
 package main.java.view;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-import javax.swing.SpringLayout;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import main.java.controller.DatePicker;
 import main.java.controller.TimerHourController;
 import main.java.model.StaticActions;
 import main.java.model.TimerModel;
 
-import java.awt.Font;
-import java.awt.Toolkit;
-import java.net.URL;
-import java.awt.Color;
-
-import javax.swing.ImageIcon;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
-
-import java.awt.Component;
-import java.awt.Dimension;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.BorderLayout;
-
 @SuppressWarnings("deprecation")
 public class TimerView implements IView {
-	private static final long serialVersionUID = 1L;
 	private JPanel contentPanel; // Container
 
-	private JComboBox comboBox = new JComboBox(); // ComboBox for project-list
+	private JComboBox<String> comboBox = new JComboBox<String>();
 	private JLabel durationLabel = new JLabel("00:00:00");
+	private JButton btnStart;
+	private JButton btnStop;
+	private JButton btnPause;
 	private JTextField txtStartTime;
 	private JTextField txtEndTime;
 	private JTextField textFieldComment;
@@ -59,6 +48,8 @@ public class TimerView implements IView {
 	private JButton btnReset;
 	private boolean errorVisible;
 	private boolean buttonsHighlighted;
+	private JTextField txtDateInput;
+	private JButton btnDatePicker;
 
 	/**
 	 * Create Frame
@@ -128,7 +119,7 @@ public class TimerView implements IView {
 		contentPanel.add(buttonPanel);
 
 		// Button start
-		JButton btnStart = new JButton("");
+		btnStart = new JButton("");
 		btnStart.setName("btnStart");
 		btnStart.setIcon(new ImageIcon(TimerView.class.getResource("/main/resources/img/icons/play.gif")));
 		btnStart.addActionListener(timerHourController);
@@ -136,7 +127,7 @@ public class TimerView implements IView {
 		buttonPanel.add(btnStart);
 
 		// Button pause
-		JButton btnPause = new JButton("");
+		btnPause = new JButton("");
 		btnPause.setName("btnPause");
 		btnPause.setIcon(new ImageIcon(TimerView.class.getResource("/main/resources/img/icons/pause.gif")));
 		btnPause.addActionListener(timerHourController);
@@ -144,12 +135,41 @@ public class TimerView implements IView {
 		buttonPanel.add(btnPause);
 
 		// Button stop
-		JButton btnStop = new JButton("");
+		btnStop = new JButton("");
 		btnStop.setName("btnStop");
 		btnStop.setIcon(new ImageIcon(TimerView.class.getResource("/main/resources/img/icons/stop.gif")));
 		btnStop.addActionListener(timerHourController);
 		btnStop.setActionCommand(StaticActions.ACTION_TIMER_STOP);
 		buttonPanel.add(btnStop);
+		
+		// Date Picker
+		JPanel datePanel = new JPanel();
+		datePanel.setBackground(new Color(31, 32, 33));
+		datePanel.setName("datePanel");
+		contentPanel.add(datePanel);
+		JLabel lblDatum = new JLabel("Datum:");
+		datePanel.add(lblDatum);
+		
+		txtDateInput = new JTextField();
+		txtDateInput.setName("txtDateInput");
+		txtDateInput.setText("");
+		txtDateInput.setHorizontalAlignment(SwingConstants.CENTER);
+		txtDateInput.setEnabled(true);
+		txtDateInput.setColumns(15);
+		txtDateInput.getDocument().addDocumentListener(timerHourController);
+		datePanel.add(txtDateInput);
+		
+		btnDatePicker = new JButton("...");
+		btnDatePicker.setName("btnDatePicker");
+		final JFrame popupFrame = new JFrame();
+		popupFrame.setName("popupFrame");
+		btnDatePicker.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				txtDateInput.setText(new DatePicker(popupFrame).setPickedDate().replace("-", "."));
+			}
+		});
+		btnDatePicker.addActionListener(timerHourController);
+		datePanel.add(btnDatePicker);
 
 		JPanel manualEntryPanel = new JPanel();
 		manualEntryPanel.setBackground(new Color(31, 32, 33));
@@ -246,6 +266,30 @@ public class TimerView implements IView {
 
 	public JLabel getDurationLabel() {
 		return durationLabel;
+	}
+
+	public JButton getBtnStart() {
+		return btnStart;
+	}
+
+	public JButton getBtnStop() {
+		return btnStop;
+	}
+
+	public JTextField getTxtDateInput() {
+		return txtDateInput;
+	}
+
+	public void setTxtDateInput(JTextField txtDateInput) {
+		this.txtDateInput = txtDateInput;
+	}
+
+	public JButton getBtnDatePicker() {
+		return btnDatePicker;
+	}
+
+	public JButton getBtnPause() {
+		return btnPause;
 	}
 
 	public JTextField getTxtStartTime() {

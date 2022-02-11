@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 import main.java.model.IModel;
 import main.java.model.ProjectModel;
 import main.java.model.StaticActions;
+import main.java.model.User;
 import main.java.view.IView;
 import main.java.view.ProjectView;
 import main.java.view.ProjectView;
@@ -22,15 +23,17 @@ public class ProjectController implements IController {
 	private ProjectModel projectModel;
 	private ProjectView projectView;
 
+
+	private DatabaseController db = DatabaseController.getInstance();
+
 	// Constructor
 	@SuppressWarnings("deprecation")
 	public ProjectController() {
+		
 		this.projectModel = new ProjectModel();
 		this.projectView = new ProjectView(this);
 
 		this.projectModel.addObserver(this.projectView);
-		this.projectView.setVisible(true);
-
 		projectModel.retrieveProjects();
 
 		actionLoadProjects();
@@ -41,9 +44,10 @@ public class ProjectController implements IController {
 		this.projectModel.retrieveProjects();
 
 	}
-
+	public ProjectView getProjectView() {
+		return projectView;
+	}
 	public Object[][] getTableModel() {
-		// TODO Auto-generated method stub
 		return projectModel.getTableModel();
 	}
 
@@ -52,8 +56,9 @@ public class ProjectController implements IController {
 	}
 
 	public void actionSearchProjects() {
-		// System.out.println(projectView.getComboBox().getItemAt(0).toString());
-		projectView.filterProjects(projectView.getComboBox().getSelectedItem().toString());
+		if (projectView.getComboBox().getItemCount() > 0) {
+			projectView.filterProjects(projectView.getComboBox().getSelectedItem().toString());			
+		}
 	}
 
 	public void actionSaveProject() {
@@ -69,9 +74,18 @@ public class ProjectController implements IController {
 		active = projectView.getNewProjectStat();
 		customerID = projectView.getClientID();
 
-		DatabaseController db = new DatabaseController("sa", "");
-		db.insert("INSERT INTO project(name,start_date,end_date,active,c_id) VALUES(" + "'" + projectName + "'," + "'"
-				+ startDate + "'," + "'" + endDate + "'," + "'" + active + "'," + "'" + customerID + "')");
+		db.insert("INSERT INTO project(name, start_date, end_date, active, c_id) VALUES(" 
+		+ "'" + projectName + "'," 
+		+ "'" + startDate + "'," 
+		+ "'" + endDate + "'," 
+		+ "'" + active + "'," 
+		+ "'" + customerID + "');");
+		
+		db.insert("INSERT INTO assign_project_user(p_id, u_id) VALUES("
+				+ "(SELECT MAX(p_id) FROM project)," 	// get newest projectID
+				+ User.getUser().getU_id() + ");");		// get User-ID
+		
+		projectModel.retrieveProjects();
 		projectView.updateTable(this);
 		projectView.setTab(0);
 

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import com.formdev.flatlaf.FlatDarkLaf;
 
 import main.java.controller.ProjectController;
+import main.java.model.User;
 import main.java.view.ProjectView;
 
 class ProjectViewGUITest {
@@ -28,7 +29,7 @@ class ProjectViewGUITest {
 	public void setUp() {
 		FlatDarkLaf.setup();
 		ProjectView frame = GuiActionRunner.execute(() -> new ProjectView(new ProjectController()));
-		window = new FrameFixture(frame);
+		//window = new FrameFixture(frame); //TODO: Fix. ProjectView is no longer JFrame
 		window.show(); // shows the frame to test
 	}
 

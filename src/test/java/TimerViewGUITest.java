@@ -7,12 +7,15 @@ import org.junit.jupiter.api.Test;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 
+import main.java.controller.AppMainController;
 import main.java.controller.DashboardController;
 import main.java.controller.DatabaseController;
 import main.java.controller.LayoutManager;
 import main.java.controller.TimerHourController;
 import main.java.model.User;
+import main.java.view.AppMainView;
 import main.java.view.DashboardView;
+
 import main.java.view.TimerView;
 
 import static org.junit.Assert.assertNotNull;
@@ -36,8 +39,9 @@ class TimerViewGUITest {
 	@BeforeEach
 	public void setUp() {
 		new LayoutManager();
+		DatabaseController dbc = DatabaseController.getInstance();
 		FlatDarkLaf.setup();
-		DashboardView frame = GuiActionRunner.execute(() -> new DashboardView(new DashboardController(new User(1, "Bob", "abc"))));
+		AppMainView frame = GuiActionRunner.execute(() -> new AppMainView(new AppMainController()));
 		window = new FrameFixture(frame); // TODO: Fix. TimerView no longer is JFrame
 		window.show(); // shows the frame to test
 	}

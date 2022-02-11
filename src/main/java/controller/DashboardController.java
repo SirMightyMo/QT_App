@@ -24,25 +24,28 @@ public class DashboardController implements IController {
 	private DashboardProjectListController dashboardProjectListController;
 	private DashboardHourListController dashboardHourListController;
 	private DashboardView dashboardView;
+	private DashboardModel dashboardModel;
+	private NewProjectController newProjectController;
 
 	// Constructor
 	@SuppressWarnings("deprecation")
-	public DashboardController(User user) {
+	public DashboardController() {
 		// Intanciate Controller
 		this.timerHourController = new TimerHourController();
+		this.newProjectController = new NewProjectController();
 		this.dashboardProjectListController = new DashboardProjectListController();
 		this.dashboardHourListController = new DashboardHourListController();
 		new ProjectController();
 		
 		// Test
-		new ProjectController();
+		//new ProjectController();
 		
 		// Instanciate own view
 		this.dashboardView = new DashboardView(this);
-		this.dashboardView.setVisible(true);
+		//this.dashboardView.setVisible(true);
 		
 		// Set logged in user
-		this.user = user;		
+		//this.user = user;		
 
 		// Coordinate listeners:
 		// Lists need to be updated, when new hour entry is being saved
@@ -118,6 +121,22 @@ public class DashboardController implements IController {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	public NewProjectController getNewProjectController() {
+		return newProjectController;
+	}
+
+	public void setNewProjectController(NewProjectController newProjectController) {
+		this.newProjectController = newProjectController;
+	}
+
+	public DashboardModel getDashboardModel() {
+		return dashboardModel;
+	}
+
+	public void setDashboardModel(DashboardModel dashboardModel) {
+		this.dashboardModel = dashboardModel;
 	}
 
 }

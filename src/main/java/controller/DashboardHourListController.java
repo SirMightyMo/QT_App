@@ -12,6 +12,7 @@ import javax.swing.event.DocumentEvent;
 
 import main.java.model.CustomTableModel;
 import main.java.model.StaticActions;
+import main.java.model.User;
 import main.java.view.DashboardListView;
 
 
@@ -19,6 +20,7 @@ public class DashboardHourListController implements IController {
 
 	private DashboardListView view;
 	private CustomTableModel tableData;
+	private DatabaseController db = DatabaseController.getInstance();
 	
 	
 	public DashboardHourListController() {
@@ -39,7 +41,6 @@ public class DashboardHourListController implements IController {
 	}
 	
 	public void queryData() {
-		DatabaseController db = new DatabaseController("sa", "");
 		ArrayList<Object> result = db.query(
 				"SELECT entry_date, "
 				+ "project.name, "
@@ -49,7 +50,8 @@ public class DashboardHourListController implements IController {
 				+ "FROM hour_entry "
 				+ "LEFT JOIN project "
 				+ "ON hour_entry.p_id = project.p_id "
-				+ "ORDER BY h_id DESC LIMIT 15;");
+				+ "WHERE u_id = " + User.getUser().getU_id()
+				+ " ORDER BY h_id DESC LIMIT 15;");
 		Object[][] resultArray = new Object[result.size()][5];
 		for (int i = 0; i < result.size(); i++) {
 			for (int j = 0; j < 5; j++) {
@@ -100,19 +102,16 @@ public class DashboardHourListController implements IController {
 
 	@Override
 	public void insertUpdate(DocumentEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void changedUpdate(DocumentEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 

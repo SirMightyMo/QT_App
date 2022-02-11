@@ -1,32 +1,28 @@
 package main.java.controller;
 
-import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 
 import javax.swing.event.DocumentEvent;
 
-import main.java.view.IView;
-import main.java.view.RegistrationView;
+import main.java.model.Hashing;
 import main.java.model.IModel;
 import main.java.model.Regex;
-import main.java.model.RegistrationModel;
+import main.java.view.IView;
+import main.java.view.RegistrationView;
 
-public final class RegistrationController implements IController{
+public final class RegistrationController extends Hashing implements IController {
 	
 	private RegistrationView view;
-	private RegistrationModel model;
-	private DatabaseController dbc;
+	private DatabaseController dbc = DatabaseController.getInstance();
 	
 	public RegistrationController() {
 		
 		this.view = new RegistrationView();
-		this.model = new RegistrationModel();
-		this.dbc = new DatabaseController("sa", "");
-		 
 		this.init();
 	}
 	
@@ -42,12 +38,10 @@ public final class RegistrationController implements IController{
 	
 	
 	private boolean inputCheck() {
-		System.out.println("SecurityCheck");
 		if (view.getErrorMessage() != null) {
 			view.deleteErrorMessage();
 		}
-		if(checkUsername() && checkEmail() && checkPassword() &&  checkSecurityQuestion()) {
-			System.out.println("Success");
+		if(checkUsername() && checkEmail() && checkPassword() && checkSecurityQuestion()) {
 			return true;
 		} else {
 			return false;
@@ -70,7 +64,6 @@ public final class RegistrationController implements IController{
 			}
 		}
 		else {
-			System.out.println("username is empty");
 			view.setErrorMessage("Choose a username!");
 			return false;
 		}
@@ -91,8 +84,7 @@ public final class RegistrationController implements IController{
 		}
 		
 		else {
-			System.out.println("Emails arent equal");
-			view.setErrorMessage("Wrong E-Mail!");
+			view.setErrorMessage("Invalid E-Mail!");
 			return false;
 		}
 	}
@@ -109,14 +101,15 @@ public final class RegistrationController implements IController{
 		char[] pwIn = this.view.getPasswordInput();
 		char[] pwConfirm = this.view.getPasswordConfirmInput();
 		
-		if (Arrays.equals(pwIn, pwConfirm) &&  pwIn.length != 0) {			
-			return true;
-		}
-		else{
-			view.setErrorMessage("Passwords are not equal");
-			System.out.println("wrong psw");
+		if (pwIn.length < 6){
+			view.setErrorMessage("Password needs at least 6 characters.");
 			return false;
 		}
+		if (!Arrays.equals(pwIn, pwConfirm)) {			
+			view.setErrorMessage("Passwords not matching.");
+			return false;
+		}
+		return true;
 	}
 	
 	private boolean checkSecurityQuestion() {
@@ -133,18 +126,21 @@ public final class RegistrationController implements IController{
 	}
 	
 	private void login() {
-		System.out.println("Login wird aufgerufen.");
 		new LoginController();
 		this.view.dispose();
 	}
 	
-	// TODO: Discuss correct use of char[] to write to db (for query, char[] needs to be converted to String)
-	// TODO: Hash Password
 	private void registration() {
-		System.out.println("Benutzer wird registriert.");
+		String hash = null;
 		if(inputCheck()) {
 			String username = view.getUsernameInput();
 			char[] password = view.getPasswordInput();
+			try {
+				hash = generatePasswordHash(password);
+			} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+				e.printStackTrace();
+			}
+			
 			String email = view.getEmailInput();
 			int selectedQuestion = view.getSecurityQuestionPicker().getSelectedIndex();
 			String security_question = view.getQuestions()[selectedQuestion];
@@ -152,7 +148,7 @@ public final class RegistrationController implements IController{
 			
 			dbc.insert("INSERT INTO users(username,password,email,security_question,answer)VALUES("
 					+ "'" + username + "',"
-					+ "'" + String.valueOf(password) + "',"
+					+ "'" + hash + "',"
 					+ "'" + email + "',"
 					+ "'" + security_question + "',"
 					+ "'" + answer + "');"
@@ -166,7 +162,7 @@ public final class RegistrationController implements IController{
 		ArrayList<Object> result = dbc.query("SELECT username FROM users WHERE username='" + username + "'", true);
 		return (!result.isEmpty());
 	}
-	
+		
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
