@@ -1,42 +1,29 @@
 package main.java.controller;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.EventObject;
-import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
 
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import main.java.model.HourEntry;
 import main.java.model.IModel;
-import main.java.model.Service;
+import main.java.model.Regex;
 import main.java.model.StaticActions;
 import main.java.model.TimerModel;
 import main.java.model.User;
 import main.java.view.IView;
 import main.java.view.TimerView;
-
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 
 public class TimerHourController implements IController {
 
@@ -46,6 +33,8 @@ public class TimerHourController implements IController {
 	private DatabaseController db = DatabaseController.getInstance();
 
 	private LocalDateTime timeNow;
+	
+	boolean dateAutomaticallySet; // for handling date-actions
 
 	// Constructor
 	@SuppressWarnings("deprecation")
@@ -98,12 +87,21 @@ public class TimerHourController implements IController {
 		this.hourEntry = new HourEntry(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE)); // date
 		this.hourEntry.setStartTime(timeNow); // startTime
 	}
+	
+	public void createHourEntry(String date) {
+		this.hourEntry = new HourEntry(date);
+	}
 
 	public void actionStartTimer() {
 		// If hour entry does not exist, create here. If it already exists and pause was
 		// not ended, end it here.
 		setTimeNow();
-		if (this.hourEntry == null) {
+		// Autofill and deactivate date field & button
+		dateAutomaticallySet = true;
+		timerView.getTxtDateInput().setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+		this.timerView.getTxtDateInput().setEnabled(false);
+		this.timerView.getBtnDatePicker().setEnabled(false);
+		if (this.hourEntry == null || this.hourEntry.getStartTime() == null) {
 			this.timerModel.stopAndResetTimer();
 			this.timerView.getTxtStartTime().setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
 			this.timerView.getTxtEndTime().setText("");
@@ -288,7 +286,22 @@ public class TimerHourController implements IController {
 		// if timer was not used (not started), hour entry was not created and needs to
 		// be done here
 		if (this.hourEntry == null) {
-			this.hourEntry = new HourEntry(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
+			String date = timerView.getTxtDateInput().getText();
+			if (date.matches("")) {
+				this.hourEntry = new HourEntry(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));				
+			} else if (validateDate(date)) {
+				String[] dateParts;
+				String dateString;
+				if (date.contains(".")) {
+					dateParts = timerView.getTxtDateInput().getText().split("\\.");			
+				} else if (date.contains("-")) {
+					dateParts = timerView.getTxtDateInput().getText().split("-");			
+				} else {
+					dateParts = timerView.getTxtDateInput().getText().split("\\/");			
+				}
+				dateString = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
+				this.hourEntry = new HourEntry(dateString);
+			}
 		}
 
 		// read entry date
@@ -387,14 +400,16 @@ public class TimerHourController implements IController {
 		// write hour entry to database only if starTime and endTime are not empty
 		if (startTime != null && endTime != null && pauseMinutesValid == true) {
 			db.insert(
-					"INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes,p_id) VALUES("
+					"INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes,p_id,s_id,u_id) VALUES("
 							+ "'" + entryDate + "'," 
 							+ "'" + comment + "'," 
 							+ "'" + startTime + "'," 
 							+ "'" + endTime+ "'," 
 							+ "'" + timeMinutes + "'," // timeMinutes means productive time (pauseMinutes is subtracted)
 							+ "'" + pauseMinutes + "',"
-							+ "'" + projectID + "')");
+							+ "'" + projectID + "',"
+							+ "'" + serviceID + "',"
+							+ "'" + userID + "');");
 
 			actionResetTimer();
 			actionLoadProjects();
@@ -415,12 +430,16 @@ public class TimerHourController implements IController {
 	public void actionResetTimer() {
 		this.timerModel.stopAndResetTimer();
 		this.timerView.getTextFieldComment().setText("");
+		this.timerView.getTxtDateInput().setText("");
+		this.timerView.getTxtDateInput().setEnabled(true);
+		this.timerView.getBtnDatePicker().setEnabled(true);
 		this.timerView.getTxtStartTime().setText("");
 		this.timerView.getTxtEndTime().setText("");
 		this.timerView.getTextPauseDuration().setText("");
 		this.timerView.getLblErrorMessage().setText("");
 		this.timerView.getDurationLabel().setForeground(Color.WHITE);
 		this.hourEntry = null;
+		dateAutomaticallySet = false;
 	}
 
 	public void actionLoadProjects() {
@@ -463,6 +482,8 @@ public class TimerHourController implements IController {
 
 	private void deactivateTimeTracker() {
 		timerView.getComboBox().setEnabled(false);
+		timerView.getTxtDateInput().setEnabled(false);
+		timerView.getBtnDatePicker().setEnabled(false);
 		timerView.getTxtStartTime().setEnabled(false);
 		timerView.getTextPauseDuration().setEnabled(false);
 		timerView.getTxtEndTime().setEnabled(false);
@@ -480,6 +501,8 @@ public class TimerHourController implements IController {
 	
 	private void activateTimeTracker() {
 		timerView.getComboBox().setEnabled(true);
+		timerView.getTxtDateInput().setEnabled(true);
+		timerView.getBtnDatePicker().setEnabled(true);
 		timerView.getTxtStartTime().setEnabled(true);
 		timerView.getTextPauseDuration().setEnabled(true);
 		timerView.getTxtEndTime().setEnabled(true);
@@ -495,6 +518,11 @@ public class TimerHourController implements IController {
 		
 	}
 
+	private boolean validateDate(String date) {
+		Matcher matcher = Regex.VALID_DATE_FORMAT_DD_MM_YYYY.matcher(date);
+        return matcher.find();
+	}
+	
 	// ActionListener method
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -503,6 +531,7 @@ public class TimerHourController implements IController {
 
 		if (event.equalsIgnoreCase(StaticActions.ACTION_TIMER_START)) {
 			actionStartTimer();
+			dateAutomaticallySet = true;
 		}
 
 		if (event.equalsIgnoreCase(StaticActions.ACTION_TIMER_PAUSE)) {
@@ -528,12 +557,26 @@ public class TimerHourController implements IController {
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SET_PROJECT)) {
 			this.timerModel.setProjectSet(true);
 		}
+		
 	}
 
 	// DocumentListener methods; events fired when content is edited
 	@Override
 	public void insertUpdate(DocumentEvent e) {
-		actionCalculateDurationView();
+		if (e.getDocument() == timerView.getTxtStartTime().getDocument() || e.getDocument() == timerView.getTxtEndTime().getDocument()) {
+			actionCalculateDurationView();
+		}
+		if (e.getDocument() == timerView.getTxtDateInput().getDocument() && !dateAutomaticallySet) {
+			if (validateDate(timerView.getTxtDateInput().getText())) {
+				String[] dateParts = timerView.getTxtDateInput().getText().split("\\.");			
+				String date = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
+				createHourEntry(date);
+			} else {
+				timerView.showErrorMessage("Invalid date format!", 3000);
+			}
+			
+			
+		}
 	}
 
 	@Override

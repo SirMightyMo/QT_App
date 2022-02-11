@@ -1,47 +1,42 @@
 package main.java.view;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.regex.PatternSyntaxException;
-
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SpringLayout;
-import javax.swing.border.EmptyBorder;
-
-import main.java.controller.DatePicker;
-import main.java.controller.ProjectController;
-import main.java.model.ProjectModel;
-import main.java.model.StaticActions;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Observable;
+import java.util.regex.PatternSyntaxException;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
-import javax.swing.JScrollPane;
+import javax.swing.SpringLayout;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import javax.swing.JComboBox;
-import javax.swing.JTabbedPane;
-import javax.swing.JCheckBox;
+
+import main.java.controller.DatePicker;
+import main.java.controller.ProjectController;
+import main.java.model.ProjectModel;
+import main.java.model.StaticActions;
 
 @SuppressWarnings("deprecation")
 public class ProjectView implements IView {
@@ -52,7 +47,7 @@ public class ProjectView implements IView {
 	JTabbedPane tabbedPane;
 	private JTable table;
 	private TableRowSorter<TableModel> sorter;
-	private JComboBox comboBoxProject = new JComboBox();
+	private JComboBox<String> comboBoxProject = new JComboBox<String>();
 	private JTextField textFieldProjectName;
 	private JTextField textFieldClient;
 	private JTextField textFieldStartDate;
@@ -62,18 +57,7 @@ public class ProjectView implements IView {
 	private JCheckBox chckbxActive;
 
 
-	public ProjectView(ProjectController projectController) {
-		/*setFont(new Font("Open Sans ExtraBold", Font.PLAIN, 12));
-		setResizable(false);
-		setIconImage(Toolkit.getDefaultToolkit()
-				.getImage(TimerView.class.getResource("/main/resources/img/icons/qtproject_placeholder.gif")));
-		setTitle("Quality Time");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1000, 790); // x, y, width, height
-
-		setContentPane(contentPane);
-		*/	
-		
+	public ProjectView(ProjectController projectController) {		
 		projectPanel = new JPanel();
 		projectPanel.setName("projectPanelMainPane");
 		projectPanel.setBounds(0, 0, 1490, 1060);
@@ -132,24 +116,6 @@ public class ProjectView implements IView {
 		// create table
 		table = new JTable();
 		updateTable(projectController);
-		/*
-		 * table.setModel(new DefaultTableModel(projectController.getTableModel(), new
-		 * String[] { "#", "Projektname", "Start", "Ende", "Status", "Dauer", "Kunde" }
-		 * 
-		 * )); table.getColumnModel().getColumn(0).setPreferredWidth(8);
-		 * table.getColumnModel().getColumn(1).setPreferredWidth(41);
-		 * table.getColumnModel().getColumn(2).setPreferredWidth(44);
-		 * table.getColumnModel().getColumn(4).setPreferredWidth(52);
-		 * table.getColumnModel().getColumn(5).setPreferredWidth(115);
-		 * table.setAutoCreateRowSorter(true);
-		 * 
-		 * 
-		 * // Tabel sort activate sorter = new TableRowSorter<>(table.getModel());
-		 * List<RowSorter.SortKey> sortKeys = new ArrayList<>(); int columnIndexToSort =
-		 * 0; sortKeys.add(new RowSorter.SortKey(columnIndexToSort,
-		 * SortOrder.ASCENDING)); sorter.setSortKeys(sortKeys); sorter.sort();
-		 * table.setRowSorter(sorter);
-		 */
 		scrollPaneTable.setViewportView(table);
 
 		// Projects Label

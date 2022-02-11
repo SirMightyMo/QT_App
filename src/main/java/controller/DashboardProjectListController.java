@@ -7,16 +7,12 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import main.java.model.CustomTableModel;
-import main.java.model.IModel;
 import main.java.model.StaticActions;
 import main.java.model.User;
 import main.java.view.DashboardListView;
-import main.java.view.IView;
 
 public class DashboardProjectListController implements IController {
 
@@ -26,10 +22,10 @@ public class DashboardProjectListController implements IController {
 	
 	public DashboardProjectListController() {
 		this.tableData = new CustomTableModel(new String[] {
-				"Datum",
 				"Projekt",
 				"Start",
-				"Ende"
+				"Ende",
+				"Status"
 			});
 			this.view = new DashboardListView(this, tableData);
 			queryData();
@@ -59,7 +55,7 @@ public class DashboardProjectListController implements IController {
 							.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
 				} else if (j == 3) {
 					if (value.equalsIgnoreCase("true")) {
-						value = "begonnen";
+						value = "aktiv";
 					} else {
 						value = "abgeschlossen";
 					}
