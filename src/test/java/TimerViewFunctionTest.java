@@ -25,13 +25,17 @@ class TimerViewFunctionTest {
 	}
 
 	@Test
-	void testShowErrorMessage_ValidParameters() {
-		tv.showErrorMessage("Wo soll dieses Label zu sehen sein?", 100000);
-		System.out.println(tv.isErrorVisible());
-		try {
-			TimeUnit.SECONDS.sleep(2);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	void testShowErrorMessageTrue() {
+		tv.setErrorVisible(true);
+		tv.showErrorMessage("XXX Error Message XXX", 5000);
+		System.out.println(tv.getLblErrorMessage().getText());
+		assertTrue(tv.isErrorVisible());
+	}
+	
+	@Test
+	void testShowErrorMessageFalse() {
+		tv.setErrorVisible(false);
+		tv.showErrorMessage("XXX Error Message XXX", 5000);
+		assertFalse(tv.isErrorVisible());
 	}
 }

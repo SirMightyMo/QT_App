@@ -38,44 +38,48 @@ class ProjectViewGUITest {
 		window.cleanUp();
 	}
 
-	@Test
-	void testElementsProjectOverview_Visible() {
-		window.label("lblProjects").requireVisible();
-		window.label("lblService").requireVisible();
-		window.label("lblTimeFrame").requireVisible();
-		window.label("lblFrom").requireVisible();
-		window.label("lblTo").requireVisible();
-		window.label("lblHeadTitel").requireVisible();
-		
-		window.panel("panel_project_overview").requireVisible();
-		
-		window.comboBox("comboBoxProject").requireVisible();
-		window.comboBox("comboBoxService").requireVisible();
-		
-		window.textBox("textFieldFrom").requireVisible();
-		window.textBox("textFieldTo").requireVisible();
-		
-		window.button("btnLoadProjects").requireVisible();
-		window.button("btnSearchButton").requireVisible();
-		window.button("btnSetStartDate_1").requireVisible();
-		window.button("btnSetStartDate_1_1").requireVisible();
-	}
+//	@Test
+//	void testElementsProjectOverview_Visible() {
+//		window.label("lblProjects").requireVisible();
+//		window.label("lblService").requireVisible();
+//		window.label("lblTimeFrame").requireVisible();
+//		window.label("lblFrom").requireVisible();
+//		window.label("lblTo").requireVisible();
+//		window.label("lblHeadTitel").requireVisible();
+//		
+//		window.panel("panel_project_overview").requireVisible();
+//		
+//		window.comboBox("comboBoxProject").requireVisible();
+//		window.comboBox("comboBoxService").requireVisible();
+//		
+//		window.textBox("textFieldFrom").requireVisible();
+//		window.textBox("textFieldTo").requireVisible();
+//		
+//		window.button("btnLoadProjects").requireVisible();
+//		window.button("btnSearchButton").requireVisible();
+//		window.button("btnSetStartDate_1").requireVisible();
+//		window.button("btnSetStartDate_1_1").requireVisible();
+//	}
 	
-	void testInsertText() {
-		window.textBox("usernameInputField").enterText("Testuser");
-		window.textBox("passwordInputField").enterText("abc");
-	}
+//	@Test
+//	void testInsertText() {
+//		window.textBox("usernameInputField").enterText("Testuser");
+//		window.textBox("passwordInputField").enterText("abc");
+//	}
 	
 	@Test
 	void testElementsNewProject_Visible() {
-		window.tabbedPane("tabbedPane_panel_new_project").click();
-		window.label("lblNewProjectHead").requireVisible();
-		window.label("lblNewLabel_18").requireVisible();
-		window.label("lblNewLabel_19").requireVisible();
-		window.label("lblNewLabel_20").requireVisible();
-		window.label("lblNewLabel_21").requireVisible();
-		window.label("lblHeadTitel").requireVisible();
-		
+		window.tabbedPane().selectTab(1);
+//		window.tabbedPane().selectTab(0);
+		window.label("lblProjects").requireVisible();
+//		window.label("lblProjects").click();
+//		window.label("lblNewProjectHead").requireVisible();
+//		window.label("lblNewLabel_18").requireVisible();
+//		window.label("lblNewLabel_19").requireVisible();
+//		window.label("lblNewLabel_20").requireVisible();
+//		window.label("lblNewLabel_21").requireVisible();
+//		window.label("lblHeadTitel").requireVisible();
+//		
 //		window.panel("panel_new_project").requireVisible();
 //		window.panel("panel_input_form").requireVisible();
 //		
@@ -85,8 +89,8 @@ class ProjectViewGUITest {
 //		window.textBox("textFieldClient").requireVisible();
 //		window.textBox("textFieldStartDate").requireVisible();
 //		window.textBox("textFieldEndDate").requireVisible();
-//		
-//		window.button("btnSetStartDate").requireVisible();
+		
+//		window.button("btnSetStartDate").click();
 //		window.button("btnSetEndDate").requireVisible();
 //		window.button("btnSaveProject").requireVisible();
 //		window.button("btnResetProjects").requireVisible();
