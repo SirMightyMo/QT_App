@@ -1,4 +1,4 @@
-package test.java;
+package test.java.view;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
