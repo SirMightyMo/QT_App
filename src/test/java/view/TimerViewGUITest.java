@@ -8,25 +8,13 @@ import org.junit.jupiter.api.Test;
 import com.formdev.flatlaf.FlatDarkLaf;
 
 import main.java.controller.AppMainController;
-import main.java.controller.DashboardController;
-import main.java.controller.DatabaseController;
 import main.java.controller.LayoutManager;
-import main.java.controller.TimerHourController;
 import main.java.model.User;
 import main.java.view.AppMainView;
-import main.java.view.DashboardView;
 
-import main.java.view.TimerView;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
-import org.assertj.swing.core.ComponentFinder;
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
-import org.assertj.swing.fixture.JButtonFixture;
-import org.assertj.swing.fixture.JPanelFixture;
 
 class TimerViewGUITest {
 	private FrameFixture window;
@@ -34,15 +22,17 @@ class TimerViewGUITest {
 	@BeforeAll
 	public static void setUpOnce() {
 		FailOnThreadViolationRepaintManager.install();
+//		DatabaseController dbc = DatabaseController.getInstance();
 	}
 
 	@BeforeEach
 	public void setUp() {
 		new LayoutManager();
-		DatabaseController dbc = DatabaseController.getInstance();
 		FlatDarkLaf.setup();
+		User.setUser(new User(1, "Bob", "bob@msn.com"));
 		AppMainView frame = GuiActionRunner.execute(() -> new AppMainView(new AppMainController()));
-		window = new FrameFixture(frame); // TODO: Fix. TimerView no longer is JFrame
+		window = new FrameFixture(frame);
+
 		window.show(); // shows the frame to test
 	}
 
@@ -53,25 +43,51 @@ class TimerViewGUITest {
 	}
 
 	@Test
-	void testAllButtons() {
-		window.button("btnStart").click();
-		window.button("btnPause").click();
-		window.button("btnStop").click();
-		window.button("btnSave").click();
-		window.button("btnReset").click();
-		window.button("btnLoadProjects").click();
+	void integrationTest() {
+		window.button("btnMenuDashboard").click();
+		window.button("btnMenuProjects").click();
+		window.button("btnStart").requireVisible();
+//		window.button("btnMenuDashboard").click();
+//		window.button("btnStart").requireVisible();
+		
+//		window.tabbedPane().selectTab(1);
+		
+//		try {
+//			TimeUnit.SECONDS.sleep(100);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		window.
+//		window.button("btnStart").click();
+//		window.textBox("textFieldCommentTimerView").requireVisible();
+//		window.textBox("textFieldCommentTimerView").enterText("IntegTest");
+//		window.button("btnStop").click();
+//		window.button("btnSaveTimerView").click();
+//		FrameFixture mainFrame = findFrame("main").using(robot());
+//		window.comboBox("comboBoxProject").click();
 	}
 
-	@Test
-	void testInsertComment() {
-		window.textBox("textFieldComment").requireVisible();
-		window.textBox("textFieldComment").enterText("Comment");
-	}
+//	@Test
+//	void testAllButtons() {
+//		window.button("btnStart").click();
+//		window.button("btnPause").click();
+//		window.button("btnStop").click();
+//		window.button("btnSave").click();
+//		window.button("btnReset").click();
+//		window.button("btnLoadProjects").click();
+//	}
 
-	@Test
-	void testProjectPanel() {
-		window.panel("projectPanel").isEnabled();
-	}
+//	@Test
+//	void testInsertComment() {
+//		window.textBox("textFieldComment").requireVisible();
+//		window.textBox("textFieldComment").enterText("Comment");
+//	}
+
+//	@Test
+//	void testProjectPanel() {
+//		window.panel("projectPanel").isEnabled();
+//	}
 
 //	@Test
 //	void testAllGuiElements() {

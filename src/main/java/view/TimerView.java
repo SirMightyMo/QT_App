@@ -40,11 +40,11 @@ public class TimerView implements IView {
 	private JButton btnPause;
 	private JTextField txtStartTime;
 	private JTextField txtEndTime;
-	private JTextField textFieldComment;
+	private JTextField textFieldCommentTimerView;
 	private JTextField textPauseDuration;
 	private JTextField hiddenTextFieldProjectID;
 	private JLabel lblErrorMessage;
-	private JButton btnSave;
+	private JButton btnSaveTimerView;
 	private JButton btnReset;
 	private boolean errorVisible;
 	private boolean buttonsHighlighted;
@@ -57,6 +57,7 @@ public class TimerView implements IView {
 	public TimerView(TimerHourController timerHourController) {
 		//setFont(new Font("Open Sans ExtraBold", Font.PLAIN, 12));
 		contentPanel = new JPanel();
+		contentPanel.setName("contentPanelTimerView");
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5)); // top, left, bottom, right
 		contentPanel.setBounds(0, 0, 1850, 1080);
 		contentPanel.setBackground(new Color(31, 32, 33));
@@ -75,6 +76,7 @@ public class TimerView implements IView {
 
 		// Project List
 		comboBox.setPreferredSize(new Dimension(200, 20));
+		comboBox.setName("comboBoxProject");
 		lblProject.setLabelFor(comboBox);
 		comboBox.setAlignmentX(0.0f);
 		comboBox.addActionListener(timerHourController);
@@ -206,16 +208,16 @@ public class TimerView implements IView {
 		JLabel lblComment = new JLabel("Kommentar:");
 		panel.add(lblComment);
 		lblComment.setHorizontalAlignment(SwingConstants.CENTER);
-		lblComment.setLabelFor(textFieldComment);
+		lblComment.setLabelFor(textFieldCommentTimerView);
 
-		textFieldComment = new JTextField();
-		textFieldComment.setName("textFieldComment");
-		panel.add(textFieldComment);
-		textFieldComment.setAlignmentX(Component.LEFT_ALIGNMENT);
-		textFieldComment.setPreferredSize(new Dimension(300, 20));
-		textFieldComment.setToolTipText("");
-		textFieldComment.setHorizontalAlignment(SwingConstants.LEFT);
-		textFieldComment.setColumns(20);
+		textFieldCommentTimerView = new JTextField();
+		textFieldCommentTimerView.setName("textFieldCommentTimerView");
+		panel.add(textFieldCommentTimerView);
+		textFieldCommentTimerView.setAlignmentX(Component.LEFT_ALIGNMENT);
+		textFieldCommentTimerView.setPreferredSize(new Dimension(300, 20));
+		textFieldCommentTimerView.setToolTipText("");
+		textFieldCommentTimerView.setHorizontalAlignment(SwingConstants.LEFT);
+		textFieldCommentTimerView.setColumns(20);
 
 		JLabel lblPauseDuration = new JLabel("Pause:");
 		manualEntryPanel.add(lblPauseDuration);
@@ -241,11 +243,11 @@ public class TimerView implements IView {
 		confirmButtonPanel.add(btnReset);
 
 		//Save Button
-		btnSave = new JButton("Sichern");
-		btnSave.setName("btnSave");
-		btnSave.addActionListener(timerHourController);
-		btnSave.setActionCommand(StaticActions.ACTION_TIMER_SAVE);
-		confirmButtonPanel.add(btnSave);
+		btnSaveTimerView = new JButton("Sichern");
+		btnSaveTimerView.setName("btnSaveTimerView");
+		btnSaveTimerView.addActionListener(timerHourController);
+		btnSaveTimerView.setActionCommand(StaticActions.ACTION_TIMER_SAVE);
+		confirmButtonPanel.add(btnSaveTimerView);
 
 		JPanel errorPanel = new JPanel();
 		errorPanel.setBackground(new Color(31, 32, 33));
@@ -305,7 +307,7 @@ public class TimerView implements IView {
 	}
 
 	public JTextField getTextFieldComment() {
-		return textFieldComment;
+		return textFieldCommentTimerView;
 	}
 
 	public JComboBox getComboBox() {
@@ -321,7 +323,7 @@ public class TimerView implements IView {
 	}
 
 	public JButton getBtnSave() {
-		return btnSave;
+		return btnSaveTimerView;
 	}
 	
 	public JButton getBtnReset() {
@@ -342,6 +344,10 @@ public class TimerView implements IView {
 
 	public void setButtonsHighlighted(boolean buttonsHighlighted) {
 		this.buttonsHighlighted = buttonsHighlighted;
+	}
+	
+	public void setTextFieldCommentTimerView(JTextField textFieldCommentTimerView) {
+		this.textFieldCommentTimerView = textFieldCommentTimerView;
 	}
 
 	public void showErrorMessage(String message, long duration) {
