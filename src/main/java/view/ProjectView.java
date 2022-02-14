@@ -64,6 +64,9 @@ public class ProjectView implements IView {
 	private JTextField textFieldZip;
 	private JTextField textFieldCity;
 	private JTextField textFieldCountry;
+	private JTextField textFieldNewService;
+	private JTextField textFieldInternalRate;
+	private JTextField textFieldExternalRate;
 
 	public ProjectView(ProjectController projectController) {
 		projectPanel = new JPanel();
@@ -441,9 +444,9 @@ public class ProjectView implements IView {
 
 		JLabel lblNewCustomer = new JLabel("Neuer Kunde:");
 		lblNewCustomer.setName("lblNewCustomer");
-		slPanelNewClient.putConstraint(SpringLayout.NORTH, lblNewProjectHead, 10, SpringLayout.NORTH,
+		slPanelNewClient.putConstraint(SpringLayout.NORTH, lblNewCustomer, 10, SpringLayout.NORTH,
 				panelNewClient);
-		slPanelNewClient.putConstraint(SpringLayout.WEST, lblNewProjectHead, 10, SpringLayout.WEST,
+		slPanelNewClient.putConstraint(SpringLayout.WEST, lblNewCustomer, 10, SpringLayout.WEST,
 				panelNewClient);
 		lblNewCustomer.setFont(new Font("Tahoma", Font.BOLD, 18));
 		panelNewClient.add(lblNewCustomer);
@@ -628,8 +631,8 @@ public class ProjectView implements IView {
 		// Save Button
 		JButton btnSaveCustomer = new JButton("Speichern");
 		btnSaveCustomer.setName("btnSaveCustomer");
-		slPanelInputFormCustomer.putConstraint(SpringLayout.NORTH, btnSaveProject, 43, SpringLayout.SOUTH, textFieldEndDate);
-		slPanelInputFormCustomer.putConstraint(SpringLayout.WEST, btnSaveProject, 0, SpringLayout.WEST,
+		slPanelInputFormCustomer.putConstraint(SpringLayout.NORTH, btnSaveCustomer, 43, SpringLayout.SOUTH, textFieldCountry);
+		slPanelInputFormCustomer.putConstraint(SpringLayout.WEST, btnSaveCustomer, 0, SpringLayout.WEST,
 				textFieldProjectName);
 		btnSaveProject.addActionListener(projectController);
 		btnSaveProject.setActionCommand(StaticActions.SAVE_CUSTOMER);
@@ -688,9 +691,88 @@ public class ProjectView implements IView {
 		///// fourth tab / service ///////
 		////////////////////////////////////
 		
-		JPanel panel_service = new JPanel();
-		tabbedPane.addTab("Leistungen", null, panel_service, null);
+		JPanel panelService = new JPanel();
+		panelService.setName("panelService");
+		tabbedPane.setName("tabbedPanePanelService"); // added
+		tabbedPane.addTab("Leistungen", null, panelService, null);
+		SpringLayout slPanelService = new SpringLayout();
+		panelService.setLayout(slPanelService);
 
+		JLabel lblServiceHead = new JLabel("Neue Leistung anlegen:");
+		lblServiceHead.setName("lblNewService");
+		slPanelService.putConstraint(SpringLayout.NORTH, lblServiceHead, 10, SpringLayout.NORTH, panelService);
+		slPanelService.putConstraint(SpringLayout.WEST, lblServiceHead, 10, SpringLayout.WEST, panelService);
+		lblServiceHead.setFont(new Font("Tahoma", Font.BOLD, 18));
+		panelService.add(lblServiceHead);
+
+		JPanel panelInputFormService = new JPanel();
+		panelInputFormService.setName("panelInputFormCustomer");
+		slPanelService.putConstraint(SpringLayout.NORTH, panelInputFormService, 80, SpringLayout.NORTH,
+				panelService);
+		slPanelService.putConstraint(SpringLayout.WEST, panelInputFormService, 150, SpringLayout.WEST,
+				panelService);
+		slPanelService.putConstraint(SpringLayout.SOUTH, panelInputFormService, -333, SpringLayout.SOUTH,
+				panelService);
+		slPanelService.putConstraint(SpringLayout.EAST, panelInputFormService, -425, SpringLayout.EAST,
+				panelService);
+		panelService.add(panelInputFormService);
+		SpringLayout slPanelInputFormService = new SpringLayout();
+		panelInputFormService.setLayout(slPanelInputFormService);
+		
+		// LABELS //
+
+		JLabel lblNewService = new JLabel("Leistung:");
+		lblNewService.setName("lblNewService");
+		slPanelInputFormService.putConstraint(SpringLayout.EAST, lblNewService, 120, SpringLayout.WEST, panelInputFormService);
+		panelInputFormService.add(lblNewService);
+
+		JLabel lblInternalRate = new JLabel("Interner Satz:");
+		lblInternalRate.setName("lblInternalRate");
+		slPanelInputFormService.putConstraint(SpringLayout.NORTH, lblInternalRate, 20, SpringLayout.SOUTH, lblNewService);
+		slPanelInputFormService.putConstraint(SpringLayout.WEST, lblNewService, 0, SpringLayout.WEST, lblInternalRate);
+		slPanelInputFormService.putConstraint(SpringLayout.WEST, lblInternalRate, 20, SpringLayout.WEST, panelInputFormService);
+		panelInputFormService.add(lblInternalRate);
+		
+		JLabel lblExternalRate = new JLabel("Externer Satz:");
+		lblExternalRate.setName("lblExternalRate");
+		slPanelInputFormService.putConstraint(SpringLayout.NORTH, lblExternalRate, 20, SpringLayout.SOUTH, lblInternalRate);
+		slPanelInputFormService.putConstraint(SpringLayout.WEST, lblInternalRate, 0, SpringLayout.WEST, lblExternalRate);
+		slPanelInputFormService.putConstraint(SpringLayout.WEST, lblExternalRate, 20, SpringLayout.WEST, panelInputFormService);
+		panelInputFormService.add(lblExternalRate);
+		
+		// TEXT FIELDS //
+
+		textFieldNewService = new JTextField();
+		textFieldNewService.setName("textFieldNewService");
+		slPanelInputFormService.putConstraint(SpringLayout.NORTH, lblNewService, 3, SpringLayout.NORTH, textFieldNewService);
+		slPanelInputFormService.putConstraint(SpringLayout.NORTH, textFieldNewService, 10, SpringLayout.NORTH, panelInputFormService);
+		slPanelInputFormService.putConstraint(SpringLayout.WEST, textFieldNewService, 144, SpringLayout.WEST, panelInputFormService);
+		slPanelInputFormService.putConstraint(SpringLayout.EAST, textFieldNewService, -10, SpringLayout.EAST, panelInputFormService);
+		panelInputFormService.add(textFieldNewService);
+		textFieldNewService.setColumns(10);
+		
+		textFieldInternalRate = new JTextField();
+		textFieldInternalRate.setName("textFieldContact");
+		slPanelInputFormService.putConstraint(SpringLayout.EAST, lblInternalRate, -24, SpringLayout.WEST, textFieldInternalRate);
+		slPanelInputFormService.putConstraint(SpringLayout.NORTH, textFieldInternalRate, 14, SpringLayout.SOUTH,
+				textFieldNewService);
+		slPanelInputFormService.putConstraint(SpringLayout.WEST, textFieldInternalRate, 144, SpringLayout.WEST, panelInputFormService);
+		slPanelInputFormService.putConstraint(SpringLayout.EAST, textFieldInternalRate, 0, SpringLayout.EAST,
+				textFieldNewService);
+		panelInputFormService.add(textFieldInternalRate);
+		textFieldInternalRate.setColumns(10);
+		
+		textFieldExternalRate = new JTextField();
+		textFieldExternalRate.setName("textFieldExternalRate");
+		slPanelInputFormService.putConstraint(SpringLayout.EAST, lblExternalRate, -24, SpringLayout.WEST, textFieldExternalRate);
+		slPanelInputFormService.putConstraint(SpringLayout.NORTH, textFieldExternalRate, 14, SpringLayout.SOUTH,
+				textFieldInternalRate);
+		slPanelInputFormService.putConstraint(SpringLayout.WEST, textFieldExternalRate, 144, SpringLayout.WEST, panelInputFormService);
+		slPanelInputFormService.putConstraint(SpringLayout.EAST, textFieldExternalRate, 0, SpringLayout.EAST,
+				textFieldInternalRate);
+		panelInputFormService.add(textFieldExternalRate);
+		textFieldExternalRate.setColumns(10);
+		
 	}
 
 	public JPanel getProjectPanel() {
