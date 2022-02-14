@@ -90,6 +90,36 @@ public class ProjectController implements IController {
 		projectView.setTab(0);
 
 	}
+	
+//	public void actionSaveCustomer() {
+//		String company;
+//		Date startDate;
+//		Date endDate;
+//		boolean active;
+//		int customerID;
+//
+//		company = projectView.getNewProjectName();
+//		startDate = projectView.getNewStartDate();
+//		endDate = projectView.getNewEndDate();
+//		active = projectView.getNewProjectStat();
+//		customerID = projectView.getClientID();
+//
+//		db.insert("INSERT INTO project(name, start_date, end_date, active, c_id) VALUES(" 
+//		+ "'" + projectName + "'," 
+//		+ "'" + startDate + "'," 
+//		+ "'" + endDate + "'," 
+//		+ "'" + active + "'," 
+//		+ "'" + customerID + "');");
+//		
+//		db.insert("INSERT INTO assign_project_user(p_id, u_id) VALUES("
+//				+ "(SELECT MAX(p_id) FROM project)," 	// get newest projectID
+//				+ User.getUser().getU_id() + ");");		// get User-ID
+//		
+//		projectModel.retrieveProjects();
+//		projectView.updateTable(this);
+//		projectView.setTab(0);
+//
+//	}
 
 	// ActionListener method
 	@Override
