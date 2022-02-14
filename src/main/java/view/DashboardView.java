@@ -242,7 +242,6 @@ public class DashboardView implements IView{
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
 		    	btnMenuDashboard.setForeground(Color.ORANGE);
 		    }
-
 		    public void mouseExited(java.awt.event.MouseEvent evt) {
 		    	btnMenuDashboard.setForeground(Color.WHITE);
 		    }

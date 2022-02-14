@@ -35,6 +35,7 @@ public class DashboardController implements IController {
 		this.newProjectController = new NewProjectController();
 		this.dashboardProjectListController = new DashboardProjectListController();
 		this.dashboardHourListController = new DashboardHourListController();
+		new ProjectController();
 		
 		// Test
 		//new ProjectController();
