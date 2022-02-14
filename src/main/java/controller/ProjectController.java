@@ -61,6 +61,9 @@ public class ProjectController implements IController {
 		}
 	}
 
+	/**
+	 * This method saves a new project to the database
+	 */
 	public void actionSaveProject() {
 		String projectName;
 		Date startDate;
@@ -90,6 +93,52 @@ public class ProjectController implements IController {
 		projectView.setTab(0);
 
 	}
+	
+	/**
+	 * This method saves a new client to the database
+	 */
+	public void actionSaveClient() {
+		String company = projectView.getTextFieldClientName();
+		String contact = projectView.getTextFieldContact();
+		String phone = projectView.getTextFieldTelephone();
+		String mobile = projectView.getTextFieldMobile();
+		String street = projectView.getTextFieldStreet();
+		String houseNumber = projectView.getTextFieldHouseNumber();
+		String city = projectView.getTextFieldCity();
+		String country = projectView.getTextFieldCountry();
+		int zip = 0;
+		
+		try {
+			zip = Integer.parseInt(projectView.getTextFieldZip());
+		} catch(NumberFormatException e) {
+			e.printStackTrace();
+		}
+
+		db.insert("INSERT INTO customer(company, contact, phone, mobile, street, house_number, zip, city, country) VALUES(" 
+		+ "'" + company + "'," 
+		+ "'" + contact + "'," 
+		+ "'" + phone + "'," 
+		+ "'" + mobile + "'," 
+		+ "'" + street + "'," 
+		+ "'" + houseNumber + "'," 
+		+ "'" + zip + "'," 
+		+ "'" + city + "'," 
+		+ "'" + country + "');");
+	}
+	
+	/**
+	 * This method saves a new service to the database
+	 */
+	public void actionSaveService() {
+		String service = projectView.getTextFieldNewService();
+		double internal_rate = Double.parseDouble(projectView.getTextFieldInternalRate().replace(',', '.'));
+		double external_rate = Double.parseDouble(projectView.getTextFieldExternalRate().replace(',', '.'));
+
+		db.insert("INSERT INTO service(name, internal_rate, external_rate) VALUES(" 
+		+ "'" + service + "'," 
+		+ "'" + internal_rate + "'," 
+		+ "'" + external_rate + "');");		
+	}
 
 	// ActionListener method
 	@Override
@@ -109,24 +158,27 @@ public class ProjectController implements IController {
 		if (event.equalsIgnoreCase(StaticActions.ACTION_RESET_PROJECTS)) {
 			actionResetProjects();
 		}
+		if (event.equalsIgnoreCase(StaticActions.ACTION_SAVE_CUSTOMER)) {
+			actionSaveClient();
+		}
+		if (event.equalsIgnoreCase(StaticActions.ACTION_SAVE_SERVICE)) {
+			actionSaveService();
+		}
 	}
 
 	@Override
 	public void insertUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void changedUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
