@@ -61,6 +61,9 @@ public class ProjectController implements IController {
 		}
 	}
 
+	/**
+	 * This method saves a new project to the database
+	 */
 	public void actionSaveProject() {
 		String projectName;
 		Date startDate;
@@ -91,12 +94,21 @@ public class ProjectController implements IController {
 
 	}
 	
-//	public void actionSaveCustomer() {
+//	/**
+//	 * This method saves a new client to the database
+//	 */
+//	public void actionSaveClient() {
 //		String company;
-//		Date startDate;
-//		Date endDate;
-//		boolean active;
-//		int customerID;
+//		String contact;
+//		String telephone;
+//		String company;
+//		String company;
+//		String company;
+//		String company;
+//		String company;
+//		String company;
+//		String company;
+//
 //
 //		company = projectView.getNewProjectName();
 //		startDate = projectView.getNewStartDate();
@@ -120,6 +132,20 @@ public class ProjectController implements IController {
 //		projectView.setTab(0);
 //
 //	}
+	
+	/**
+	 * This method saves a new service to the database
+	 */
+	public void actionSaveService() {
+		String service = projectView.getTextFieldNewService();
+		String internal_rate = projectView.getTextFieldInternalRate();
+		String external_rate = projectView.getTextFieldExternalRate();
+
+		db.insert("INSERT INTO service(name, internal_rate, external_rate) VALUES(" 
+		+ "'" + service + "'," 
+		+ "'" + internal_rate + "'," 
+		+ "'" + external_rate + "');");		
+	}
 
 	// ActionListener method
 	@Override
@@ -139,24 +165,24 @@ public class ProjectController implements IController {
 		if (event.equalsIgnoreCase(StaticActions.ACTION_RESET_PROJECTS)) {
 			actionResetProjects();
 		}
+		if (event.equalsIgnoreCase(StaticActions.ACTION_SAVE_SERVICE)) {
+			actionSaveService();
+		}
 	}
 
 	@Override
 	public void insertUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void changedUpdate(DocumentEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
