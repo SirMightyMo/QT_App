@@ -94,52 +94,45 @@ public class ProjectController implements IController {
 
 	}
 	
-//	/**
-//	 * This method saves a new client to the database
-//	 */
-//	public void actionSaveClient() {
-//		String company;
-//		String contact;
-//		String telephone;
-//		String company;
-//		String company;
-//		String company;
-//		String company;
-//		String company;
-//		String company;
-//		String company;
-//
-//
-//		company = projectView.getNewProjectName();
-//		startDate = projectView.getNewStartDate();
-//		endDate = projectView.getNewEndDate();
-//		active = projectView.getNewProjectStat();
-//		customerID = projectView.getClientID();
-//
-//		db.insert("INSERT INTO project(name, start_date, end_date, active, c_id) VALUES(" 
-//		+ "'" + projectName + "'," 
-//		+ "'" + startDate + "'," 
-//		+ "'" + endDate + "'," 
-//		+ "'" + active + "'," 
-//		+ "'" + customerID + "');");
-//		
-//		db.insert("INSERT INTO assign_project_user(p_id, u_id) VALUES("
-//				+ "(SELECT MAX(p_id) FROM project)," 	// get newest projectID
-//				+ User.getUser().getU_id() + ");");		// get User-ID
-//		
-//		projectModel.retrieveProjects();
-//		projectView.updateTable(this);
-//		projectView.setTab(0);
-//
-//	}
+	/**
+	 * This method saves a new client to the database
+	 */
+	public void actionSaveClient() {
+		String company = projectView.getTextFieldClientName();
+		String contact = projectView.getTextFieldContact();
+		String phone = projectView.getTextFieldTelephone();
+		String mobile = projectView.getTextFieldMobile();
+		String street = projectView.getTextFieldStreet();
+		String houseNumber = projectView.getTextFieldHouseNumber();
+		String city = projectView.getTextFieldCity();
+		String country = projectView.getTextFieldCountry();
+		int zip = 0;
+		
+		try {
+			zip = Integer.parseInt(projectView.getTextFieldZip());
+		} catch(NumberFormatException e) {
+			e.printStackTrace();
+		}
+
+		db.insert("INSERT INTO customer(company, contact, phone, mobile, street, house_number, zip, city, country) VALUES(" 
+		+ "'" + company + "'," 
+		+ "'" + contact + "'," 
+		+ "'" + phone + "'," 
+		+ "'" + mobile + "'," 
+		+ "'" + street + "'," 
+		+ "'" + houseNumber + "'," 
+		+ "'" + zip + "'," 
+		+ "'" + city + "'," 
+		+ "'" + country + "');");
+	}
 	
 	/**
 	 * This method saves a new service to the database
 	 */
 	public void actionSaveService() {
 		String service = projectView.getTextFieldNewService();
-		String internal_rate = projectView.getTextFieldInternalRate();
-		String external_rate = projectView.getTextFieldExternalRate();
+		double internal_rate = Double.parseDouble(projectView.getTextFieldInternalRate().replace(',', '.'));
+		double external_rate = Double.parseDouble(projectView.getTextFieldExternalRate().replace(',', '.'));
 
 		db.insert("INSERT INTO service(name, internal_rate, external_rate) VALUES(" 
 		+ "'" + service + "'," 
@@ -164,6 +157,9 @@ public class ProjectController implements IController {
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_RESET_PROJECTS)) {
 			actionResetProjects();
+		}
+		if (event.equalsIgnoreCase(StaticActions.ACTION_SAVE_CUSTOMER)) {
+			actionSaveClient();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SAVE_SERVICE)) {
 			actionSaveService();

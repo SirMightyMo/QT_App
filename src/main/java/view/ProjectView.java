@@ -649,15 +649,15 @@ public class ProjectView implements IView {
 		textFieldCountry.setColumns(10);
 
 		// Save Button
-		JButton btnSaveClient = new JButton("Speichern");
-		btnSaveClient.setName("btnSaveCustomer");
-		slPanelInputFormCustomer.putConstraint(SpringLayout.NORTH, btnSaveClient, 43, SpringLayout.SOUTH,
+		JButton btnSaveCustomer = new JButton("Speichern");
+		btnSaveCustomer.setName("btnSaveCustomer");
+		slPanelInputFormCustomer.putConstraint(SpringLayout.NORTH, btnSaveCustomer, 43, SpringLayout.SOUTH,
 				textFieldCountry);
-		slPanelInputFormCustomer.putConstraint(SpringLayout.WEST, btnSaveClient, 0, SpringLayout.WEST,
+		slPanelInputFormCustomer.putConstraint(SpringLayout.WEST, btnSaveCustomer, 0, SpringLayout.WEST,
 				textFieldProjectName);
-		btnSaveProject.addActionListener(projectController);
-		btnSaveProject.setActionCommand(StaticActions.ACTION_SAVE_CUSTOMER);
-		panelInputFormCustomer.add(btnSaveClient);
+		btnSaveCustomer.addActionListener(projectController);
+		btnSaveCustomer.setActionCommand(StaticActions.ACTION_SAVE_CUSTOMER);
+		panelInputFormCustomer.add(btnSaveCustomer);
 
 		////////////////////////////////////
 		///// fourth tab / service /////////
