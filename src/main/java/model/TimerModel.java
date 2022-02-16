@@ -15,9 +15,11 @@ public class TimerModel extends Observable implements IModel{
 	private int timerSeconds;
 	private int timerMinutes;
 	private int timerHours;
-	private boolean projectSet;
 	private Timer taskTimer;
 	private ArrayList<ArrayList<Object>> projectList;
+	private boolean projectSet;
+	private ArrayList<ArrayList<Object>> serviceList;
+	private boolean serviceSet;
 	private DatabaseController db = DatabaseController.getInstance();
 
 	public TimerModel() {
@@ -81,6 +83,22 @@ public class TimerModel extends Observable implements IModel{
 
 	public void setProjectList(ArrayList<ArrayList<Object>> projectList) {
 		this.projectList = projectList;
+	}
+
+	public ArrayList<ArrayList<Object>> getServiceList() {
+		return serviceList;
+	}
+
+	public void setServiceList(ArrayList<ArrayList<Object>> serviceList) {
+		this.serviceList = serviceList;
+	}
+
+	public boolean isServiceSet() {
+		return serviceSet;
+	}
+
+	public void setServiceSet(boolean serviceSet) {
+		this.serviceSet = serviceSet;
 	}
 
 	/**
@@ -167,6 +185,18 @@ public class TimerModel extends Observable implements IModel{
 		result.forEach(entry -> {
 			ArrayList<Object> row = (ArrayList<Object>) entry;
 			this.projectList.add(row);
+		});
+		setChanged();
+		notifyObservers(this);
+	}
+	
+	public void retrieveServices() {
+		this.serviceList = new ArrayList<>();
+		ArrayList<Object> result = db.query("SELECT s_id, name FROM service;");
+		result.forEach(entry -> {
+			System.out.println(entry);
+			ArrayList<Object> row = (ArrayList<Object>) entry;
+			this.serviceList.add(row);
 		});
 		setChanged();
 		notifyObservers(this);

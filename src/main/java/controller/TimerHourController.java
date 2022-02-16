@@ -44,6 +44,7 @@ public class TimerHourController implements IController {
 		this.timerModel.addObserver(this.timerView);
 
 		actionLoadProjects();
+		actionLoadServices();
 	}
 
 	// Getter/Setter
@@ -339,6 +340,8 @@ public class TimerHourController implements IController {
 
 		// read entry date
 		entryDate = Date.valueOf(this.hourEntry.getDate());
+		// Reorder entryDate YYYY-mm-dd to String dd-mm-YYYY for validating
+		String entryDateReversed = entryDate.toString().split("-")[2] + "-" + entryDate.toString().split("-")[1] + "-" + entryDate.toString().split("-")[0];
 
 		// read comment from textfield and set comment in hourEntry instance
 		comment = this.timerView.getTextFieldComment().getText();
@@ -419,19 +422,22 @@ public class TimerHourController implements IController {
 
 		// check index of ComboBox (project list) and get item with same index from
 		// project list in timerModel to get projectID
-		String project = this.timerView.getComboBox().getSelectedItem().toString();
+		String project = this.timerView.getProjectDropdown().getSelectedItem().toString();
 		this.hourEntry.setProjectName(project);
 
-		int comboBoxIndex = this.timerView.getComboBox().getSelectedIndex();
+		int comboBoxIndex = this.timerView.getProjectDropdown().getSelectedIndex();
 		projectID = (int) this.timerModel.getProjectList().get(comboBoxIndex).get(0);
 		this.hourEntry.setProjectID(projectID);
 
-		serviceID = 1; // TODO: implement, when TimerView holds service-dropdown and ServiceModel is implemented
+		int serviceIndex = this.timerView.getServiceDropdown().getSelectedIndex();
+		serviceID = (int) this.timerModel.getServiceList().get(serviceIndex).get(0);
+		System.out.println(serviceID);
+		//serviceID = (int) db.query("SELECT s_id FROM service WHERE name= ", true).get(0);
 
 		userID = User.getUser().getU_id();
 
 		// write hour entry to database only if starTime and endTime are not empty
-		if (startTime != null && endTime != null && pauseMinutesValid == true && validateDate(entryDate.toString())) {
+		if (startTime != null && endTime != null && pauseMinutesValid == true) {
 			db.insert(
 					"INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes,p_id,s_id,u_id) VALUES("
 							+ "'" + entryDate + "'," 
@@ -446,13 +452,11 @@ public class TimerHourController implements IController {
 
 			actionResetTimer();
 			actionLoadProjects();
+			actionLoadServices();
 		} else {
 			String errorStart = "";
 			String errorEnd = "";
 			String errorPause = "";
-			String errorDate ="";
-			if (!validateDate(entryDate.toString()))
-				errorDate = "'Datum: '";
 			if (startTime == null)
 				errorStart = "'Von:' ";
 			if (endTime == null)
@@ -500,12 +504,10 @@ public class TimerHourController implements IController {
 		this.timerModel.retrieveProjects();
 		activateTimeTracker();
 		
-		// if project was not set yet, select last used project (highest h_id)
+		// if service was not set yet, select last used service (highest h_id)
 		if ((this.hourEntry == null || this.hourEntry.getProjectID() == 0) && !this.timerModel.isProjectSet()) {
 
 			ArrayList<Object> result = db.query("SELECT p_id FROM hour_entry WHERE u_id = " + User.getUser().getU_id() +" ORDER BY h_id DESC LIMIT 1;");
-			System.out.println(User.getUser().getU_id());
-			System.out.println(result.isEmpty());
 			if (!result.isEmpty()) {
 				// find out projectListIndex by looking for p_id in ArrayList projectList of
 				// timerModel
@@ -523,11 +525,58 @@ public class TimerHourController implements IController {
 					}
 				}
 				// set selected item to latest project
-				this.timerView.getComboBox().setSelectedIndex(projectListIndex);
+				this.timerView.getProjectDropdown().setSelectedIndex(projectListIndex);
 			}
 			// check if user has projects; if not, deactivate time tracking
 			ArrayList<Object> userProjects = db.query("SELECT project.p_id FROM project LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id WHERE u_id = " + User.getUser().getU_id() + ";");
 			if (userProjects.isEmpty()) {
+				deactivateTimeTracker();
+			}
+		}
+	}
+	
+	/*
+	 * This method calls methods of timerModel to refresh its service list for
+	 * the dropdown.
+	 * The method also queries information from db to check for the service that was last
+	 * used to write an hour entry and automatically selects it.
+	 * If the service was already set manually by the user (using dropdown) it just refreshes
+	 * the service list.
+	 * 
+	 * This method also checks, if there is a service to select from. If not, the 
+	 * time tracker will be disabled.
+	 */
+	public void actionLoadServices() {
+		this.timerModel.setServiceSet(false);
+		this.timerModel.retrieveServices();
+		activateTimeTracker();
+		
+		// if project was not set yet, select last used project (highest h_id)
+		if ((this.hourEntry == null || this.hourEntry.getService() == null) && !this.timerModel.isServiceSet()) {
+
+			ArrayList<Object> result = db.query("SELECT hour_entry.s_id, service.name FROM hour_entry LEFT JOIN service ON hour_entry.s_id = service.s_id WHERE u_id = " + User.getUser().getU_id() + " ORDER BY h_id DESC LIMIT 1;");
+			if (!result.isEmpty()) {
+				// find out projectListIndex by looking for p_id in ArrayList projectList of
+				// timerModel
+				int serviceListIndex = 0; // initialize variable for list index in timerView
+				// get actual projectID of latest project used:
+				int latestHourEntryServiceID = (int) ((ArrayList<Object>) result.get(0)).get(0);
+
+				// iterator through project list of timerModel for every project
+				for (ArrayList<Object> service : this.timerModel.getServiceList()) {
+					// if one of the projectIDs equal the projectID of the latest project used,
+					// condition is met
+					if ((int) service.get(0) == latestHourEntryServiceID) {
+						serviceListIndex = this.timerModel.getServiceList().indexOf(service);
+						break;
+					}
+				}
+				// set selected item to latest project
+				this.timerView.getServiceDropdown().setSelectedIndex(serviceListIndex);
+			}
+			// check if there are services; if not, deactivate time tracking
+			ArrayList<Object> services = db.query("SELECT s_id FROM service;");
+			if (services.isEmpty()) {
 				deactivateTimeTracker();
 			}
 		}
@@ -538,7 +587,7 @@ public class TimerHourController implements IController {
 	 * to the user that no project is available for tracking time on.
 	 */
 	private void deactivateTimeTracker() {
-		timerView.getComboBox().setEnabled(false);
+		timerView.getProjectDropdown().setEnabled(false);
 		timerView.getTxtDateInput().setEnabled(false);
 		timerView.getBtnDatePicker().setEnabled(false);
 		timerView.getTxtStartTime().setEnabled(false);
@@ -560,7 +609,7 @@ public class TimerHourController implements IController {
 	 * This method activates all alements.
 	 */
 	private void activateTimeTracker() {
-		timerView.getComboBox().setEnabled(true);
+		timerView.getProjectDropdown().setEnabled(true);
 		timerView.getTxtDateInput().setEnabled(true);
 		timerView.getBtnDatePicker().setEnabled(true);
 		timerView.getTxtStartTime().setEnabled(true);
@@ -586,6 +635,7 @@ public class TimerHourController implements IController {
 	 */
 	private boolean validateDate(String date) {
 		Matcher matcher = Regex.VALID_DATE_FORMAT_DD_MM_YYYY.matcher(date);
+		System.out.println(date + " is valid: " + matcher.find());
         return matcher.find();
 	}
 	
@@ -622,6 +672,14 @@ public class TimerHourController implements IController {
 
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SET_PROJECT)) {
 			this.timerModel.setProjectSet(true);
+		}
+		
+		if (event.equalsIgnoreCase(StaticActions.ACTION_LOAD_SERVICES)) {
+			actionLoadServices();
+		}
+
+		if (event.equalsIgnoreCase(StaticActions.ACTION_SET_SERVICE)) {
+			this.timerModel.setServiceSet(true);
 		}
 		
 	}

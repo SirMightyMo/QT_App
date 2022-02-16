@@ -33,7 +33,8 @@ import main.java.model.TimerModel;
 public class TimerView implements IView {
 	private JPanel contentPanel; // Container
 
-	private JComboBox<String> comboBox = new JComboBox<String>();
+	private JComboBox<String> projectDropdown = new JComboBox<String>();
+	private JComboBox<String> serviceDropdown = new JComboBox<String>();
 	private JLabel durationLabel = new JLabel("00:00:00");
 	private JButton btnStart;
 	private JButton btnStop;
@@ -63,6 +64,7 @@ public class TimerView implements IView {
 		contentPanel.setBackground(new Color(31, 32, 33));
 		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
+		// Project
 		JPanel projectPanel = new JPanel();
 		projectPanel.setName("projectPanel");
 		contentPanel.add(projectPanel);
@@ -74,14 +76,13 @@ public class TimerView implements IView {
 		lblProject.setHorizontalAlignment(SwingConstants.CENTER);
 		projectPanel.add(lblProject);
 
-		// Project List
-		comboBox.setPreferredSize(new Dimension(200, 20));
-		comboBox.setName("comboBoxProject");
-		lblProject.setLabelFor(comboBox);
-		comboBox.setAlignmentX(0.0f);
-		comboBox.addActionListener(timerHourController);
-		comboBox.setActionCommand(StaticActions.ACTION_SET_PROJECT);
-		projectPanel.add(comboBox);
+		projectDropdown.setPreferredSize(new Dimension(200, 20));
+		projectDropdown.setName("comboBoxProject");
+		lblProject.setLabelFor(projectDropdown);
+		projectDropdown.setAlignmentX(0.0f);
+		projectDropdown.addActionListener(timerHourController);
+		projectDropdown.setActionCommand(StaticActions.ACTION_SET_PROJECT);
+		projectPanel.add(projectDropdown);
 
 		JButton btnLoadProjects = new JButton("\u21BB");
 		btnLoadProjects.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 14));
@@ -98,6 +99,33 @@ public class TimerView implements IView {
 		hiddenTextFieldProjectID.setVisible(false);
 		projectPanel.add(hiddenTextFieldProjectID);
 
+		// Service
+		JPanel servicePanel = new JPanel();
+		servicePanel.setName("servicePanel");
+		contentPanel.add(servicePanel);
+		servicePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		servicePanel.setBackground(new Color(31, 32, 33));
+
+		JLabel lblService = new JLabel("Leistung:");
+		lblService.setName("lblService");
+		lblService.setHorizontalAlignment(SwingConstants.CENTER);
+		servicePanel.add(lblService);
+
+		serviceDropdown.setPreferredSize(new Dimension(200, 20));
+		serviceDropdown.setName("serviceDropdown");
+		lblService.setLabelFor(serviceDropdown);
+		serviceDropdown.setAlignmentX(0.0f);
+		serviceDropdown.addActionListener(timerHourController);
+		serviceDropdown.setActionCommand(StaticActions.ACTION_SET_SERVICE);
+		servicePanel.add(serviceDropdown);
+
+		JButton btnLoadServices = new JButton("\u21BB");
+		btnLoadServices.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 14));
+		btnLoadServices.setName("btnLoadServices");
+		btnLoadServices.addActionListener(timerHourController);
+		btnLoadServices.setActionCommand(StaticActions.ACTION_LOAD_SERVICES);
+		servicePanel.add(btnLoadServices);
+		
 		JPanel durationPanel = new JPanel();
 		durationPanel.setBackground(new Color(31, 32, 33));
 		contentPanel.add(durationPanel);
@@ -310,8 +338,12 @@ public class TimerView implements IView {
 		return textFieldCommentTimerView;
 	}
 
-	public JComboBox getComboBox() {
-		return comboBox;
+	public JComboBox getProjectDropdown() {
+		return projectDropdown;
+	}
+	
+	public JComboBox getServiceDropdown() {
+		return serviceDropdown;
 	}
 
 	public JTextField getHiddenTextFieldProjectID() {
@@ -386,8 +418,17 @@ public class TimerView implements IView {
 				((TimerModel) arg).getProjectList().forEach(project -> {
 					projectNames.add(project.get(1).toString());
 				});
-				this.comboBox.setModel(new DefaultComboBoxModel(projectNames.toArray()));
+				this.projectDropdown.setModel(new DefaultComboBoxModel(projectNames.toArray()));
 				System.out.println("Projects loaded into TimerView.");
+			}
+			
+			if (!((TimerModel) arg).isTimerRunning() && !((TimerModel) arg).isServiceSet() && !(((TimerModel) arg).getServiceList() == null)) {
+				ArrayList<String> services = new ArrayList<>();
+				((TimerModel) arg).getServiceList().forEach(service -> {
+					services.add(service.get(1).toString());
+				});
+				this.serviceDropdown.setModel(new DefaultComboBoxModel(services.toArray()));
+				System.out.println("Services loaded into TimerView.");
 			}
 		}
 	}
