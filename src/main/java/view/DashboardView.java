@@ -13,6 +13,7 @@ import main.java.controller.DashboardHourListController;
 import main.java.controller.DashboardProjectListController;
 import main.java.controller.NewProjectController;
 import main.java.controller.TimerHourController;
+import main.java.model.StaticActions;
 
 public class DashboardView implements IView{
 	
@@ -25,6 +26,9 @@ public class DashboardView implements IView{
 	private DashboardHourListController hourListController;
 	private DashboardProjectListController projectListController;
 	
+	private JButton btnProjectShowMore;
+	private JButton btnSessionShowMore;
+	
 
 	
 	public DashboardView(DashboardController dashboardController) {
@@ -32,14 +36,6 @@ public class DashboardView implements IView{
 		newProjectController = dashboardController.getNewProjectController();
 		hourListController = dashboardController.getDashboardHourListController();
 		projectListController = dashboardController.getDashboardProjectListController();
-		/*
-		//setBounds(100, 100, 1850, 1080); // x, y, width, height
-		frame = new JFrame();
-		frame.setBounds(100, 100, 1850, 1080);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
-		//setResizable(false);
-		*/
 		
 		dashbPanel = new JPanel();
 		dashbPanel.setName("dashboardMainPane");
@@ -48,11 +44,10 @@ public class DashboardView implements IView{
 		
 		dashbPanel.setLayout(null);
 		
-		JLabel lblNewLabel_2 = new JLabel("Dashboard\r\n");
-		lblNewLabel_2.setForeground(Color.WHITE);
-		//lblNewLabel_2.setFont(dinNeuzeitGrotesk_regular.deriveFont(20.0f));
-		lblNewLabel_2.setBounds(10, 60, 76, 24);
-		dashbPanel.add(lblNewLabel_2);
+		JLabel lblDashboard = new JLabel("Dashboard\r\n");
+		lblDashboard.setForeground(Color.WHITE);
+		lblDashboard.setBounds(10, 60, 76, 24);
+		dashbPanel.add(lblDashboard);
 		
 		JPanel productPanel = new JPanel();
 		productPanel.setName("dashboardProductivityPane");
@@ -61,11 +56,10 @@ public class DashboardView implements IView{
 		dashbPanel.add(productPanel);
 		productPanel.setLayout(null);
 		
-		JLabel lblNewLabel_2_1_9 = new JLabel("Produktivit\u00E4t");
-		lblNewLabel_2_1_9.setForeground(Color.WHITE);
-	//	lblNewLabel_2_1_9.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
-		lblNewLabel_2_1_9.setBounds(10, 11, 102, 24);
-		productPanel.add(lblNewLabel_2_1_9);
+		JLabel lblProductivity = new JLabel("Produktivit\u00E4t");
+		lblProductivity.setForeground(Color.WHITE);
+		lblProductivity.setBounds(10, 11, 102, 24);
+		productPanel.add(lblProductivity);
 		
 		timerPanel = new JPanel();
 		timerPanel.setName("dashboardTimerPane");
@@ -85,38 +79,38 @@ public class DashboardView implements IView{
 		
 		dashbPanel.add(projectPanel);
 		
-		JLabel lblNewLabel_2_1_1 = new JLabel("Aktuelle Projekte\r\n");
-		lblNewLabel_2_1_1.setForeground(Color.WHITE);
-		//lblNewLabel_2_1_1.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
-		lblNewLabel_2_1_1.setBounds(10, 11, 105, 24);
-		projectPanel.add(lblNewLabel_2_1_1);
+		JLabel lblCurrentProjects = new JLabel("Aktuelle Projekte\r\n");
+		lblCurrentProjects.setForeground(Color.WHITE);
+		lblCurrentProjects.setBounds(10, 11, 105, 24);
+		projectPanel.add(lblCurrentProjects);
 		
-		JButton btnNewButton = new JButton("mehr anzeigen");
-		btnNewButton.setForeground(Color.ORANGE);
-		//btnNewButton.setFont(dinNeuzeitGrotesk_regular.deriveFont(14.0f));
-		btnNewButton.setBounds(631, 390, 170, 23);
-		projectPanel.add(btnNewButton);
-		btnNewButton.setOpaque(false);
-		btnNewButton.setContentAreaFilled(false);
-		btnNewButton.setBorderPainted(false);
-		btnNewButton.addMouseListener(new java.awt.event.MouseAdapter() {
+		btnProjectShowMore = new JButton("mehr anzeigen");
+		btnProjectShowMore.setActionCommand(StaticActions.ACTION_MENU_PROJECTS);
+		btnProjectShowMore.setName("btnProjectShowMore");
+		btnProjectShowMore.setForeground(Color.ORANGE);
+		btnProjectShowMore.setBounds(631, 390, 170, 23);
+		projectPanel.add(btnProjectShowMore);
+		btnProjectShowMore.setOpaque(false);
+		btnProjectShowMore.setContentAreaFilled(false);
+		btnProjectShowMore.setBorderPainted(false);
+		btnProjectShowMore.addMouseListener(new java.awt.event.MouseAdapter() {
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-		    	btnNewButton.setForeground(Color.WHITE);
+		    	btnProjectShowMore.setForeground(Color.WHITE);
 		    }
 
 		    public void mouseExited(java.awt.event.MouseEvent evt) {
-		    	btnNewButton.setForeground(Color.ORANGE);
+		    	btnProjectShowMore.setForeground(Color.ORANGE);
 		    }
 		});
 		
 		
-		JPanel panel_4_1_1 = new JPanel();
-		panel_4_1_1.setLayout(new BoxLayout(panel_4_1_1, BoxLayout.X_AXIS));
-		panel_4_1_1.setName("projectListPanel");
-		panel_4_1_1.add(projectListController.getView().getScrollPane());
-		panel_4_1_1.setBackground(new Color(35, 36, 38));
-		panel_4_1_1.setBounds(10, 68, 791, 314);
-		projectPanel.add(panel_4_1_1);
+		JPanel panelProjectList = new JPanel();
+		panelProjectList.setLayout(new BoxLayout(panelProjectList, BoxLayout.X_AXIS));
+		panelProjectList.setName("projectListPanel");
+		panelProjectList.add(projectListController.getView().getScrollPane());
+		panelProjectList.setBackground(new Color(35, 36, 38));
+		panelProjectList.setBounds(10, 68, 791, 314);
+		projectPanel.add(panelProjectList);
 		
 		JPanel sessionPanel = new JPanel();
 		sessionPanel.setName("dashboardLastSessionsPane");
@@ -125,35 +119,37 @@ public class DashboardView implements IView{
 		sessionPanel.setBounds(375, 522, 721, 507);
 		dashbPanel.add(sessionPanel);
 			
-		JLabel lblNewLabel_2_1_1_1 = new JLabel("Letzte Sitzungen\r\n");
-		lblNewLabel_2_1_1_1.setForeground(Color.WHITE);
-		lblNewLabel_2_1_1_1.setBounds(10, 11, 102, 24);
-		sessionPanel.add(lblNewLabel_2_1_1_1);
+		JLabel lblLastSessions = new JLabel("Letzte Sitzungen\r\n");
+		lblLastSessions.setForeground(Color.WHITE);
+		lblLastSessions.setBounds(10, 11, 102, 24);
+		sessionPanel.add(lblLastSessions);
 		
-		JButton btnNewButton_1 = new JButton("mehr anzeigen");
-		btnNewButton_1.setOpaque(false);
-		btnNewButton_1.setForeground(Color.ORANGE);
-		btnNewButton_1.setContentAreaFilled(false);
-		btnNewButton_1.setBorderPainted(false);
-		btnNewButton_1.setBounds(541, 467, 170, 23);
-		sessionPanel.add(btnNewButton_1);
-		btnNewButton_1.addMouseListener(new java.awt.event.MouseAdapter() {
+		btnSessionShowMore = new JButton("mehr anzeigen");
+		btnSessionShowMore.setActionCommand(StaticActions.ACTION_MENU_SESSIONS);
+		btnSessionShowMore.setName("btnSessionShowMore");
+		btnSessionShowMore.setOpaque(false);
+		btnSessionShowMore.setForeground(Color.ORANGE);
+		btnSessionShowMore.setContentAreaFilled(false);
+		btnSessionShowMore.setBorderPainted(false);
+		btnSessionShowMore.setBounds(541, 467, 170, 23);
+		sessionPanel.add(btnSessionShowMore);
+		btnSessionShowMore.addMouseListener(new java.awt.event.MouseAdapter() {
 		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-		    	btnNewButton_1.setForeground(Color.WHITE);
+		    	btnSessionShowMore.setForeground(Color.WHITE);
 		    }
 
 		    public void mouseExited(java.awt.event.MouseEvent evt) {
-		    	btnNewButton_1.setForeground(Color.ORANGE);
+		    	btnSessionShowMore.setForeground(Color.ORANGE);
 		    }
 		});
 		
-		JPanel panel_4_1 = new JPanel();
-		panel_4_1.setName("hourListPanel");
-		panel_4_1.setLayout(new BoxLayout(panel_4_1, BoxLayout.X_AXIS));
-		panel_4_1.add(hourListController.getView().getScrollPane());
-		panel_4_1.setBackground(new Color(35,36,38));
-		panel_4_1.setBounds(10, 68, 701, 388);
-		sessionPanel.add(panel_4_1);
+		JPanel panelHourList = new JPanel();
+		panelHourList.setName("hourListPanel");
+		panelHourList.setLayout(new BoxLayout(panelHourList, BoxLayout.X_AXIS));
+		panelHourList.add(hourListController.getView().getScrollPane());
+		panelHourList.setBackground(new Color(35,36,38));
+		panelHourList.setBounds(10, 68, 701, 388);
+		sessionPanel.add(panelHourList);
 		
 		JPanel timelinePanel = new JPanel();
 		timelinePanel.setName("dashboardTimelinePane");
@@ -162,11 +158,10 @@ public class DashboardView implements IView{
 		timelinePanel.setBounds(1106, 522, 365, 245);
 		dashbPanel.add(timelinePanel);
 		
-		JLabel lblNewLabel_2_1_2 = new JLabel("Timeline");
-		lblNewLabel_2_1_2.setForeground(Color.WHITE);
-		//lblNewLabel_2_1_2.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
-		lblNewLabel_2_1_2.setBounds(10, 11, 70, 24);
-		timelinePanel.add(lblNewLabel_2_1_2);
+		JLabel lblTimeline = new JLabel("Timeline");
+		lblTimeline.setForeground(Color.WHITE);
+		lblTimeline.setBounds(10, 11, 70, 24);
+		timelinePanel.add(lblTimeline);
 		
 		JPanel upcomingPanel = new JPanel();
 		upcomingPanel.setName("dashboardActivityPane");
@@ -175,15 +170,15 @@ public class DashboardView implements IView{
 		upcomingPanel.setBounds(1194, 87, 277, 424);
 		dashbPanel.add(upcomingPanel);
 		
-		JLabel lblNewLabel_2_1_2_1 = new JLabel("Anstehende\r\n");
-		lblNewLabel_2_1_2_1.setForeground(Color.WHITE);
-		lblNewLabel_2_1_2_1.setBounds(10, 11, 75, 28);
-		upcomingPanel.add(lblNewLabel_2_1_2_1);
+		JLabel lblUpcoming = new JLabel("Anstehende\r\n");
+		lblUpcoming.setForeground(Color.WHITE);
+		lblUpcoming.setBounds(10, 11, 75, 28);
+		upcomingPanel.add(lblUpcoming);
 		
-		JLabel lblNewLabel_2_1_2_1_1 = new JLabel("Aktivit\u00E4ten");
-		lblNewLabel_2_1_2_1_1.setForeground(Color.WHITE);
-		lblNewLabel_2_1_2_1_1.setBounds(10, 30, 75, 28);
-		upcomingPanel.add(lblNewLabel_2_1_2_1_1);
+		JLabel lblActivities = new JLabel("Aktivit\u00E4ten");
+		lblActivities.setForeground(Color.WHITE);
+		lblActivities.setBounds(10, 30, 75, 28);
+		upcomingPanel.add(lblActivities);
 		
 		JPanel newprojectPanel = new JPanel();
 		newprojectPanel.setName("dashboardNewProjectPane");
@@ -192,28 +187,13 @@ public class DashboardView implements IView{
 		newprojectPanel.setBounds(1106, 778, 365, 251);
 		dashbPanel.add(newprojectPanel);
 		NewProjectView newProjectView = newProjectController.getNewProjectView();		
-		newprojectPanel.add(newProjectView.getContentPanel());
-		
-		
+		newprojectPanel.add(newProjectView.getContentPanel());		
 	}
-	
-		
-	/*
-		btnMenuDashboard.addMouseListener(new java.awt.event.MouseAdapter() {
-		    public void mouseEntered(java.awt.event.MouseEvent evt) {
-		    	btnMenuDashboard.setForeground(Color.ORANGE);
-		    }
-		    public void mouseExited(java.awt.event.MouseEvent evt) {
-		    	btnMenuDashboard.setForeground(Color.WHITE);
-		    }
-		});
-		
-		
-		*/
 		
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
 	@Override
 	public void update(Observable o, Object arg) {	
 	}
@@ -232,5 +212,15 @@ public class DashboardView implements IView{
 
 	public void setTimerPanel(JPanel timerPanel) {
 		this.timerPanel = timerPanel;
+	}
+
+
+	public JButton getBtnProjectShowMore() {
+		return btnProjectShowMore;
+	}
+
+
+	public JButton getBtnSessionShowMore() {
+		return btnSessionShowMore;
 	}
 }

@@ -69,6 +69,7 @@ public class NewProjectController implements IController {
 		db.insert("INSERT INTO assign_project_user(p_id, u_id) VALUES("
 				+ "(SELECT MAX(p_id) FROM project)," 	// get newest projectID
 				+ User.getUser().getU_id() + ");");		// get User-ID
+		actionPerformed(new ActionEvent(this, 1, StaticActions.ACTION_NPROJECT_RESET));
 	}
 	
 	/*
@@ -169,8 +170,7 @@ public class NewProjectController implements IController {
 
 	@Override
 	public IView getView() {
-		// TODO Auto-generated method stub
-		return null;
+		return newProjectView;
 	}
 
 	@Override

@@ -44,8 +44,10 @@ public class AppMainController implements IController{
 		this.setAppMainModel(new AppMainModel());
 		this.appMainView = new AppMainView(this);
 		this.appMainView.setVisible(true);
-		//this.user = user;	
-		//this.appMainModel.addObserver(this.appMainView);
+		
+		// organize listeners
+		dashboardController.getDashboardView().getBtnProjectShowMore().addActionListener(this);
+		dashboardController.getDashboardView().getBtnSessionShowMore().addActionListener(this);
 	}
 
 	public void mouseClicked(MouseEvent me)

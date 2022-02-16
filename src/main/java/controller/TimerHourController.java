@@ -80,18 +80,33 @@ public class TimerHourController implements IController {
 	}
 
 	/**
-	 * additional methods
-	 */
-
+	 * Method creates a new hour entry with current time and date.
+	 */	
 	public void createHourEntry() {
 		this.hourEntry = new HourEntry(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE)); // date
 		this.hourEntry.setStartTime(timeNow); // startTime
 	}
 	
+	/*
+	 * Method created a new hour entry with given date (String dd-mm-YYYY).
+	 */
 	public void createHourEntry(String date) {
 		this.hourEntry = new HourEntry(date);
 	}
 
+	/*
+	 * Method starts the timer.
+	 * If the timer is running its first time, this method creates an hour entry, 
+	 * fills and disables input fields automatically: 'from', 'to', 'date'
+	 * 
+	 * If the timer was paused, it sets end time of pause in the current hout entry
+	 * and resumes the timer.
+	 * 
+	 * When trying to start a stopped timer, but the time recording has not been 
+	 * saved yet, it highlights the 'reset' and 'save' button without further action.
+	 * 
+	 * The method sets the timer duration text to color green.
+	 */
 	public void actionStartTimer() {
 		// If hour entry does not exist, create here. If it already exists and pause was
 		// not ended, end it here.
@@ -143,6 +158,11 @@ public class TimerHourController implements IController {
 		this.timerView.getDurationLabel().setForeground(new Color(50,205,50));
 	}
 
+	/*
+	 * This method stops the timer, sets the endTime in the current hour entry
+	 * and fills out the input fields with calculated information (duration, to, pause).
+	 * The method sets the timer duration text to color red.
+	 */
 	public void actionStopTimer() {
 		setTimeNow(); // set time now
 		this.timerModel.stopTimer();
@@ -157,6 +177,11 @@ public class TimerHourController implements IController {
 		this.timerView.getDurationLabel().setForeground(new Color(220,20,60));
 	}
 
+	/*
+	 * If the timer is running and not paused, this method pauses the timer, 
+	 * sets the pause start time and deletes the paus end time (sets null).
+	 * The method sets the timer duration text to color orange.
+	 */
 	public void actionPauseTimer() {
 		if (this.timerModel.isTimerRunning()) {
 			if (this.hourEntry.getPauseStart() != null) {
@@ -169,8 +194,12 @@ public class TimerHourController implements IController {
 		}
 	}
 
-	// Calculates duration from input field for setting view (not connected to hour
-	// entry)
+	/*
+	 * This method calculates the duration based on start-, end- and pause-times
+	 * and sets the duration label text.
+	 * This method is for showing information only and is not connected to the 
+	 * running hour entry.
+	 */
 	public void actionCalculateDurationView() {
 		if (!timerModel.isTimerRunning()) {
 
@@ -287,9 +316,10 @@ public class TimerHourController implements IController {
 		// be done here
 		if (this.hourEntry == null) {
 			String date = timerView.getTxtDateInput().getText();
-			if (date.matches("")) {
-				this.hourEntry = new HourEntry(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));				
-			} else if (validateDate(date)) {
+			// if (date.matches("")) {
+			//	this.hourEntry = new HourEntry(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));				
+			//}
+			if (validateDate(date)) {
 				String[] dateParts;
 				String dateString;
 				if (date.contains(".")) {
@@ -301,6 +331,9 @@ public class TimerHourController implements IController {
 				}
 				dateString = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
 				this.hourEntry = new HourEntry(dateString);
+			} else {
+				timerView.showErrorMessage("Invalid or empty date!", 3000);
+				return;
 			}
 		}
 
@@ -398,7 +431,7 @@ public class TimerHourController implements IController {
 		userID = User.getUser().getU_id();
 
 		// write hour entry to database only if starTime and endTime are not empty
-		if (startTime != null && endTime != null && pauseMinutesValid == true) {
+		if (startTime != null && endTime != null && pauseMinutesValid == true && validateDate(entryDate.toString())) {
 			db.insert(
 					"INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes,p_id,s_id,u_id) VALUES("
 							+ "'" + entryDate + "'," 
@@ -417,6 +450,9 @@ public class TimerHourController implements IController {
 			String errorStart = "";
 			String errorEnd = "";
 			String errorPause = "";
+			String errorDate ="";
+			if (!validateDate(entryDate.toString()))
+				errorDate = "'Datum: '";
 			if (startTime == null)
 				errorStart = "'Von:' ";
 			if (endTime == null)
@@ -427,11 +463,17 @@ public class TimerHourController implements IController {
 		}
 	}
 
+	/*
+	 * This method calls the stopAndResetTimer method of the timerModel.
+	 * It then resets all texts and colors of the visible swing elements to
+	 * its default values.
+	 */
 	public void actionResetTimer() {
 		this.timerModel.stopAndResetTimer();
 		this.timerView.getTextFieldComment().setText("");
 		this.timerView.getTxtDateInput().setText("");
 		this.timerView.getTxtDateInput().setEnabled(true);
+		timerView.getTxtDateInput().setBackground(new Color(70, 73, 75));
 		this.timerView.getBtnDatePicker().setEnabled(true);
 		this.timerView.getTxtStartTime().setText("");
 		this.timerView.getTxtEndTime().setText("");
@@ -442,6 +484,17 @@ public class TimerHourController implements IController {
 		dateAutomaticallySet = false;
 	}
 
+	/*
+	 * This method calls methods of timerModel to refresh its project list for
+	 * the dropdown.
+	 * The method also queries information from db to check for the project that was last
+	 * used to write an hour entry and automatically selects it.
+	 * If the project was already set manually by the user (using dropdown) it just refreshes
+	 * the project list.
+	 * 
+	 * This method also checks, if the user already has a project assigned. If not, the 
+	 * time tracker will be disabled.
+	 */
 	public void actionLoadProjects() {
 		this.timerModel.setProjectSet(false);
 		this.timerModel.retrieveProjects();
@@ -480,6 +533,10 @@ public class TimerHourController implements IController {
 		}
 	}
 
+	/*
+	 * This method disables all elements and shows an error message
+	 * to the user that no project is available for tracking time on.
+	 */
 	private void deactivateTimeTracker() {
 		timerView.getComboBox().setEnabled(false);
 		timerView.getTxtDateInput().setEnabled(false);
@@ -499,6 +556,9 @@ public class TimerHourController implements IController {
 		
 	}
 	
+	/*
+	 * This method activates all alements.
+	 */
 	private void activateTimeTracker() {
 		timerView.getComboBox().setEnabled(true);
 		timerView.getTxtDateInput().setEnabled(true);
@@ -518,6 +578,12 @@ public class TimerHourController implements IController {
 		
 	}
 
+	/*
+	 * This method validates the date format put into the 
+	 * textfield. 
+	 * The corresponding regular expression is defined in class "Regex"
+	 * and allows dd-mm-YYYY, dd.mm.YYYY, dd/mm/YYYY.
+	 */
 	private boolean validateDate(String date) {
 		Matcher matcher = Regex.VALID_DATE_FORMAT_DD_MM_YYYY.matcher(date);
         return matcher.find();
@@ -571,11 +637,11 @@ public class TimerHourController implements IController {
 				String[] dateParts = timerView.getTxtDateInput().getText().split("\\.");			
 				String date = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
 				createHourEntry(date);
+				timerView.getTxtDateInput().setBackground(new Color(70, 73, 75));
 			} else {
+				timerView.getTxtDateInput().setBackground(new Color(175,25,65));
 				timerView.showErrorMessage("Invalid date format!", 3000);
 			}
-			
-			
 		}
 	}
 

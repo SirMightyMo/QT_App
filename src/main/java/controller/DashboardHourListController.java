@@ -8,7 +8,10 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.JLabel;
+import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import main.java.model.CustomTableModel;
 import main.java.model.StaticActions;
@@ -27,6 +30,7 @@ public class DashboardHourListController implements IController {
 		this.tableData = new CustomTableModel(new String[] {
 			"Datum",
 			"Projekt",
+			"Leistung",
 			"Start",
 			"Ende",
 			"Dauer"
@@ -38,37 +42,56 @@ public class DashboardHourListController implements IController {
 		for (int i = 0; i < columnCount; i++) {
 			view.getTable().getColumnModel().getColumn(i).setHeaderValue(tableData.getColumnNames()[i]); // set headers manually, since columnames dont refresh?
 		}
+		// Set column/cell properties (here, because one view-class is used for different views)
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		leftRenderer.setHorizontalAlignment(JLabel.LEFT);
+		rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+		view.getTable().setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		view.getTable().getColumnModel().getColumn(0).setPreferredWidth(80);
+		view.getTable().getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
+		view.getTable().getColumnModel().getColumn(1).setPreferredWidth(240);
+		view.getTable().getColumnModel().getColumn(1).setCellRenderer(leftRenderer);
+		view.getTable().getColumnModel().getColumn(2).setPreferredWidth(120);
+		view.getTable().getColumnModel().getColumn(2).setCellRenderer(leftRenderer);
+		view.getTable().getColumnModel().getColumn(3).setPreferredWidth(120);
+		view.getTable().getColumnModel().getColumn(3).setCellRenderer(rightRenderer);
+		view.getTable().getColumnModel().getColumn(4).setPreferredWidth(120);
+		view.getTable().getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+		view.getTable().getColumnModel().getColumn(5).setPreferredWidth(70);
+		view.getTable().getColumnModel().getColumn(5).setCellRenderer(rightRenderer);
 	}
 	
 	public void queryData() {
 		ArrayList<Object> result = db.query(
-				"SELECT entry_date, "
-				+ "project.name, "
-				+ "start_time, "
-				+ "end_time, "
-				+ "time_minutes "
+				"SELECT entry_date, project.name, service.name, start_time, end_time, time_minutes "
 				+ "FROM hour_entry "
+				+ "LEFT JOIN service "
+				+ "ON hour_entry.s_id = service.s_id "
 				+ "LEFT JOIN project "
 				+ "ON hour_entry.p_id = project.p_id "
 				+ "WHERE u_id = " + User.getUser().getU_id()
-				+ " ORDER BY h_id DESC LIMIT 15;");
-		Object[][] resultArray = new Object[result.size()][5];
+				+ " ORDER BY h_id "
+				+ "DESC LIMIT 15;");
+		Object[][] resultArray = new Object[result.size()][6];
 		for (int i = 0; i < result.size(); i++) {
-			for (int j = 0; j < 5; j++) {
+			for (int j = 0; j < 6; j++) {
 				ArrayList<Object> row = (ArrayList<Object>) result.get(i);
 				String value = row.get(j).toString();
 				if (j == 0) {
 					value = LocalDate.parse(value)
 							.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-				} else if (j == 2 || j == 3) {				
+				} else if (j == 3 || j == 4) {				
 					String[] split = value.split("\\.");
 					value = split[0] + ".000";
 					value = LocalDateTime.parse(value, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
 							.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
-				} else if (j == 4) {
+				} else if (j == 5) {
 					String hours = (Integer.parseInt(value) / 60)+"";
 					String minutes = (Integer.parseInt(value) % 60)+"";
-					value = ("00" + hours).substring(hours.length()) + ":" + ("00" + minutes).substring(minutes.length());
+					value = ("00" + hours).substring(hours.length()) + ":" + ("00" + minutes).substring(minutes.length()) + " h";
 				}
 				resultArray[i][j] = value;
 			}
