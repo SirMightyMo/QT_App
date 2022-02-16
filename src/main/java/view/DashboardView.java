@@ -1,25 +1,18 @@
 package main.java.view;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import main.java.controller.DashboardController;
-import main.java.controller.NewProjectController;
 import main.java.controller.DashboardHourListController;
 import main.java.controller.DashboardProjectListController;
+import main.java.controller.NewProjectController;
 import main.java.controller.TimerHourController;
-import main.java.model.StaticActions;
-
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 
 public class DashboardView implements IView{
 	
@@ -201,39 +194,7 @@ public class DashboardView implements IView{
 		NewProjectView newProjectView = newProjectController.getNewProjectView();		
 		newprojectPanel.add(newProjectView.getContentPanel());
 		
-		JLabel lblNewLabel_2_1_2_2 = new JLabel("Neues Projekt anlegen");
-		lblNewLabel_2_1_2_2.setName("dashLabelNewProject");
-		lblNewLabel_2_1_2_2.setForeground(Color.WHITE);
-		lblNewLabel_2_1_2_2.setBounds(10, 11, 135, 24);
-		newprojectPanel.add(lblNewLabel_2_1_2_2);
 		
-		JButton btnNewButton_1_1_1 = new JButton("Speichern");
-		btnNewButton_1_1_1.setOpaque(false);
-		btnNewButton_1_1_1.setForeground(Color.ORANGE);
-		btnNewButton_1_1_1.setContentAreaFilled(false);
-		btnNewButton_1_1_1.setBorderPainted(false);
-		btnNewButton_1_1_1.setBounds(132, 195, 104, 39);
-		newprojectPanel.add(btnNewButton_1_1_1);
-		
-		JLabel lblNewLabel_2_1_3_1 = new JLabel("Projektname\r\n");
-		lblNewLabel_2_1_3_1.setForeground(Color.WHITE);
-		lblNewLabel_2_1_3_1.setBounds(10, 57, 108, 24);
-		newprojectPanel.add(lblNewLabel_2_1_3_1);
-		
-		JLabel lblNewLabel_2_1_4_1 = new JLabel("Start");
-		lblNewLabel_2_1_4_1.setForeground(Color.WHITE);
-		lblNewLabel_2_1_4_1.setBounds(10, 90, 108, 24);
-		newprojectPanel.add(lblNewLabel_2_1_4_1);
-		
-		JLabel lblNewLabel_2_1_7_1 = new JLabel("Ende");
-		lblNewLabel_2_1_7_1.setForeground(Color.WHITE);
-		lblNewLabel_2_1_7_1.setBounds(48, 90, 70, 24);
-		newprojectPanel.add(lblNewLabel_2_1_7_1);
-		
-		JLabel lblNewLabel_2_1_8_1 = new JLabel("Kommentar");
-		lblNewLabel_2_1_8_1.setForeground(Color.WHITE);
-		lblNewLabel_2_1_8_1.setBounds(10, 125, 108, 24);
-		newprojectPanel.add(lblNewLabel_2_1_8_1);
 	}
 	
 		

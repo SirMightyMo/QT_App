@@ -25,6 +25,9 @@ public class StaticActions implements IModel {
 	public static final String ACTION_MENU_ACCOUNT = "action_menu_account";
 	public static final String ACTION_MENU_LOGOUT = "action_menu_logout";
 	
+	public static final String ACTION_NPROJECT_SAVE = "action_nproject_save";
+	public static final String ACTION_NPROJECT_RESET = "action_nproject_reset";
+	
 	
 
 }
