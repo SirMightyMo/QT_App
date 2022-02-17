@@ -156,7 +156,6 @@ public final class RegistrationController extends Hashing implements IController
 			login(); // Change View to Login
 		};
 	}
-	
 
 	private boolean usernameIsTaken(String username) {
 		ArrayList<Object> result = dbc.query("SELECT username FROM users WHERE username='" + username + "'", true);
@@ -168,7 +167,6 @@ public final class RegistrationController extends Hashing implements IController
 	public void actionPerformed(ActionEvent e) {
 		
 	}
-
 
 	@Override
 	public void insertUpdate(DocumentEvent e) {

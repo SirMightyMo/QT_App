@@ -118,8 +118,6 @@ public class DashboardHourListController implements IController {
 				}
 			};
 			timer.schedule(task, 1000);
-			
-			
 		}
 	}
 

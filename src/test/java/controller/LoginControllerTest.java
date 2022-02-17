@@ -7,19 +7,24 @@ import org.junit.jupiter.api.Test;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 
-import main.java.controller.AppMainController;
 import main.java.controller.LayoutManager;
+import main.java.controller.LoginController;
 import main.java.model.User;
 
-class AppMainControllerTest {
-	AppMainController amc;
+class LoginControllerTest {
 
-	@Test
-	void constructorTest() {
+	LoginController lc;
+	
+	@BeforeEach
+	void setUp() throws Exception {
 		new LayoutManager();
 		FlatDarkLaf.setup();
 		User.setUser(new User(1, "Bob", "bob@msn.com"));
-		amc = new AppMainController();
-		assertNotNull(amc);
+		lc = new LoginController();
+	}
+
+	@Test
+	void testConstructor() {
+		assertNotNull(lc);
 	}
 }
