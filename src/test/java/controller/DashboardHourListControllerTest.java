@@ -8,18 +8,24 @@ import org.junit.jupiter.api.Test;
 import com.formdev.flatlaf.FlatDarkLaf;
 
 import main.java.controller.DashboardController;
+import main.java.controller.DashboardHourListController;
 import main.java.controller.LayoutManager;
 import main.java.model.User;
 
-class DashboardControllerTest {
-	DashboardController dc;
+class DashboardHourListControllerTest {
+	DashboardHourListController dhlc;
 
-	@Test
-	void constructorTest() {
+	@BeforeEach
+	void setUp() throws Exception {
 		new LayoutManager();
 		FlatDarkLaf.setup();
 		User.setUser(new User(1, "Bob", "bob@msn.com"));
-		dc = new DashboardController();
-		assertNotNull(dc);
+		dhlc = new DashboardHourListController();
+	}
+	
+	@Test
+	void testQueryData() {
+		assertNotNull(dhlc);
+		dhlc.queryData();
 	}
 }
