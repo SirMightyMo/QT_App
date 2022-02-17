@@ -141,7 +141,7 @@ public class NewProjectController implements IController {
 		
 		Date startDate = getStartDate();
 		Date endDate = getEndDate();
-		boolean startBeforeEnd = startDate.before(endDate);
+		boolean startBeforeEnd = (startDate.before(endDate) || startDate.equals(endDate));
 		
 		if (!name.equals("") && !start.equals("...") && !end.equals("...") && startBeforeEnd) {
 			newProjectView.getTextFieldProjectname().setBackground(new Color(70, 73, 75));
