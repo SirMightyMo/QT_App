@@ -422,7 +422,7 @@ public class TimerView implements IView {
 				System.out.println("Projects loaded into TimerView.");
 			}
 			
-			if (!((TimerModel) arg).isTimerRunning() && !((TimerModel) arg).isServiceSet() && !(((TimerModel) arg).getServiceList() == null)) {
+			if (!((TimerModel) arg).isTimerRunning() && !((TimerModel) arg).isServiceSet() && ((TimerModel) arg).getServiceList() != null) {
 				ArrayList<String> services = new ArrayList<>();
 				((TimerModel) arg).getServiceList().forEach(service -> {
 					services.add(service.get(1).toString());

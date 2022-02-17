@@ -117,7 +117,7 @@ public class NewProjectView implements IView {
 			public void mouseClicked(MouseEvent e) {
 				final JFrame popupFrame = new JFrame();
 				popupFrame.setName("popupFrame");
-				txtStartTime.setText(new DatePicker(popupFrame).setPickedDate());
+				txtStartTime.setText(new DatePicker(popupFrame).setPickedDate().replace("-", "."));
 				if (txtStartTime.getText().equals("")) {
 					txtStartTime.setText("...");
 				}
