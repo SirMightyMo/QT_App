@@ -99,14 +99,14 @@ public class ProjectView implements IView {
 
 		JPanel panel_project_overview = new JPanel();
 		panel_project_overview.setName("panel_project_overview");
-		tabbedPane.addTab("Projekt ï¿½bersicht", null, panel_project_overview, null);
+		tabbedPane.addTab("Projektübersicht", null, panel_project_overview, null);
 		SpringLayout sl_panel_project_overview = new SpringLayout();
 		sl_panel_project_overview.putConstraint(SpringLayout.EAST, comboBoxProject, -434, SpringLayout.EAST,
 				panel_project_overview);
 		panel_project_overview.setLayout(sl_panel_project_overview);
 
 		// Titel Label
-		JLabel lblHeadTitel = new JLabel("Projekt ï¿½bersicht");
+		JLabel lblHeadTitel = new JLabel("Projektübersicht");
 		lblHeadTitel.setName("lblHeadTitel");
 		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, lblHeadTitel, 10, SpringLayout.NORTH,
 				panel_project_overview);
@@ -502,7 +502,7 @@ public class ProjectView implements IView {
 				panelInputFormCustomer);
 		panelInputFormCustomer.add(lblMobile);
 
-		JLabel lblStreet = new JLabel("StraÃŸe:");
+		JLabel lblStreet = new JLabel("Straße:");
 		lblStreet.setName("lblStreet");
 		slPanelInputFormCustomer.putConstraint(SpringLayout.NORTH, lblStreet, 20, SpringLayout.SOUTH, lblMobile);
 		slPanelInputFormCustomer.putConstraint(SpringLayout.WEST, lblMobile, 0, SpringLayout.WEST, lblStreet);
