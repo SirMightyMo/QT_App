@@ -63,6 +63,7 @@ public class ProjectController implements IController {
 
 	/**
 	 * This method saves a new project to the database
+	 * @author Mo
 	 */
 	public void actionSaveProject() {
 		String projectName;
@@ -96,8 +97,10 @@ public class ProjectController implements IController {
 	
 	/**
 	 * This method saves a new client to the database
+	 * @author kevin
 	 */
 	public void actionSaveClient() {
+		
 		String company = projectView.getTextFieldClientName();
 		String contact = projectView.getTextFieldContact();
 		String phone = projectView.getTextFieldTelephone();
@@ -106,14 +109,61 @@ public class ProjectController implements IController {
 		String houseNumber = projectView.getTextFieldHouseNumber();
 		String city = projectView.getTextFieldCity();
 		String country = projectView.getTextFieldCountry();
-		int zip = 0;
+		String zip = projectView.getTextFieldZip();
+		
+		projectView.setLblErrorVisible(false);
 		
 		try {
-			zip = Integer.parseInt(projectView.getTextFieldZip());
-		} catch(NumberFormatException e) {
+			if (Integer.parseInt(zip) > 99999 || Integer.parseInt(zip) < 0) {
+				projectView.showErrorMessage(projectView.getLblErrorClient(), "PLZ bitte im Format 00000 bis 99999 eingeben", 5000);
+				return;
+			}
+		} catch (NumberFormatException e) {
+			projectView.showErrorMessage(projectView.getLblErrorClient(), "PLZ bitte als Zahl im Format 00000 bis 99999 eingeben", 5000);
 			e.printStackTrace();
+			return;
 		}
-
+		
+		if (company.length() > 50) {
+			projectView.showErrorMessage(projectView.getLblErrorClient(), "Firmenname zu lang, max. 50 Zeichen", 5000);
+			return;
+		}
+		
+		if (contact.length() > 50) {
+			projectView.showErrorMessage(projectView.getLblErrorClient(), "Ansprechpartner zu lang, max. 50 Zeichen", 5000);
+			return;
+		}
+		
+		if (phone.length() > 30) {
+			projectView.showErrorMessage(projectView.getLblErrorClient(), "Telefon zu lang, max. 30 Zeichen", 5000);
+			return;
+		}
+		
+		if (mobile.length() > 30) {
+			projectView.showErrorMessage(projectView.getLblErrorClient(), "Handy zu lang, max. 30 Zeichen", 5000);
+			return;
+		}
+		
+		if (street.length() > 50) {
+			projectView.showErrorMessage(projectView.getLblErrorClient(), "Handy zu lang, max. 50 Zeichen", 5000);
+			return;
+		}
+		
+		if (houseNumber.length() > 30) {
+			projectView.showErrorMessage(projectView.getLblErrorClient(), "Hausnummer zu lang, max. 20 Zeichen", 5000);
+			return;
+		}
+		
+		if (city.length() > 30) {
+			projectView.showErrorMessage(projectView.getLblErrorClient(), "Ort zu lang, max. 50 Zeichen", 5000);
+			return;
+		}
+		
+		if (country.length() > 30) {
+			projectView.showErrorMessage(projectView.getLblErrorClient(), "Land zu lang, max. 50 Zeichen", 5000);
+			return;
+		}
+				
 		db.insert("INSERT INTO customer(company, contact, phone, mobile, street, house_number, zip, city, country) VALUES(" 
 		+ "'" + company + "'," 
 		+ "'" + contact + "'," 
@@ -128,11 +178,30 @@ public class ProjectController implements IController {
 	
 	/**
 	 * This method saves a new service to the database
+	 * @author kevin
 	 */
 	public void actionSaveService() {
-		String service = projectView.getTextFieldNewService();
-		double internal_rate = Double.parseDouble(projectView.getTextFieldInternalRate().replace(',', '.'));
-		double external_rate = Double.parseDouble(projectView.getTextFieldExternalRate().replace(',', '.'));
+		
+		String service;
+		double internal_rate;
+		double external_rate;
+		
+		try {
+			internal_rate = Double.parseDouble(projectView.getTextFieldInternalRate().replace(',', '.'));
+			external_rate = Double.parseDouble(projectView.getTextFieldExternalRate().replace(',', '.'));
+		} catch (NumberFormatException e) {
+			projectView.showErrorMessage(projectView.getLblErrorService(), "Interner- und externer Satz muss eine Zahl sein", 5000);
+			e.printStackTrace();
+			return;
+		}
+		
+		service = projectView.getTextFieldNewService();
+		
+		if (service.length() > 255) {
+			projectView.showErrorMessage(projectView.getLblErrorService(), "Servicename zu lang, max. 255 Zeichen", 5000);
+			return;
+		}
+		
 
 		db.insert("INSERT INTO service(name, internal_rate, external_rate) VALUES(" 
 		+ "'" + service + "'," 
