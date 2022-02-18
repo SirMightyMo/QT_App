@@ -12,9 +12,9 @@ import org.junit.jupiter.api.Test;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 
-import main.java.view.LoginView;
+import main.java.view.RegistrationView;
 
-class LoginViewGUITest {
+class RegistrationViewGUITest {
 
 	private FrameFixture window;
 
@@ -26,7 +26,7 @@ class LoginViewGUITest {
 	@BeforeEach
 	public void setUp() {
 		FlatDarkLaf.setup();
-		LoginView frame = GuiActionRunner.execute(() -> new LoginView());
+		RegistrationView frame = GuiActionRunner.execute(() -> new RegistrationView());
 		window = new FrameFixture(frame);
 		window.show(); // shows the frame to test
 	}
@@ -38,25 +38,44 @@ class LoginViewGUITest {
 	}
 	
 	@Test
-	void testLoginElements_Visible() {
+	void testRegistrationElements_Visible() {
 		window.label("usernameLabel").requireVisible();
+		window.label("emailLabel").requireVisible();
+		window.label("emailConfirmLabel").requireVisible();
 		window.label("passwordLabel").requireVisible();
+		window.label("passwordConfirmLabel").requireVisible();
+		window.label("securityQuestionLabel").requireVisible();
+		window.label("securityAnswerLabel").requireVisible();
+		
 		window.textBox("usernameInputField").requireVisible();
 		window.textBox("passwordInputField").requireVisible();
+		window.textBox("emailInputField").requireVisible();
+		window.textBox("emailConfirmInputField").requireVisible();
+		window.textBox("securityAnswerInputField").requireVisible();
+		
 		window.button("loginButton").requireVisible();
 		window.button("registerButton").requireVisible();
 	}
 	
 	@Test
-	void testLoginElements_Clickable() {
+	void testRegistrationElements_Clickable() {
 		window.button("loginButton").click();
 		window.button("registerButton").click();
+		window.comboBox("securityQuestionPicker").click();
 	}
 	
 	@Test
 	void testInsertComment() {
+		window.textBox("usernameInputField").requireEmpty();
 		window.textBox("usernameInputField").enterText("Testuser");
-		window.textBox("passwordInputField").enterText("abc");
+		window.textBox("passwordInputField").requireEmpty();
+		window.textBox("passwordInputField").enterText("Testpw");
+		window.textBox("emailInputField").requireEmpty();
+		window.textBox("emailInputField").enterText("42@fortytwo.com");
+		window.textBox("emailConfirmInputField").requireEmpty();
+		window.textBox("emailConfirmInputField").enterText("42@fortytwo.com");
+		window.textBox("securityAnswerInputField").requireEmpty();
+		window.textBox("securityAnswerInputField").enterText("Pelikan");
 	}
 	
 	@Test
