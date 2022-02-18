@@ -42,7 +42,7 @@ public class User implements IModel{
 		return user;
 	}
 
-	public void setUser(User user) {
+	public static void setUser(User user) {
 		User.user = user;
 	}
 	

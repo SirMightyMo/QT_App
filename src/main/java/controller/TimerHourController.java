@@ -1,42 +1,30 @@
 package main.java.controller;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.EventObject;
-import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
 
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import main.java.model.HourEntry;
 import main.java.model.IModel;
-import main.java.model.Service;
+import main.java.model.Regex;
 import main.java.model.StaticActions;
 import main.java.model.TimerModel;
 import main.java.model.User;
 import main.java.view.IView;
 import main.java.view.TimerView;
-
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 
 public class TimerHourController implements IController {
 
@@ -46,6 +34,8 @@ public class TimerHourController implements IController {
 	private DatabaseController db = DatabaseController.getInstance();
 
 	private LocalDateTime timeNow;
+	
+	boolean dateAutomaticallySet; // for handling date-actions
 
 	// Constructor
 	@SuppressWarnings("deprecation")
@@ -55,6 +45,7 @@ public class TimerHourController implements IController {
 		this.timerModel.addObserver(this.timerView);
 
 		actionLoadProjects();
+		actionLoadServices();
 	}
 
 	// Getter/Setter
@@ -91,19 +82,43 @@ public class TimerHourController implements IController {
 	}
 
 	/**
-	 * additional methods
-	 */
-
+	 * Method creates a new hour entry with current time and date.
+	 */	
 	public void createHourEntry() {
 		this.hourEntry = new HourEntry(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE)); // date
 		this.hourEntry.setStartTime(timeNow); // startTime
 	}
+	
+	/*
+	 * Method created a new hour entry with given date (String dd-mm-YYYY).
+	 */
+	public void createHourEntry(String date) {
+		this.hourEntry = new HourEntry(date);
+	}
 
+	/*
+	 * Method starts the timer.
+	 * If the timer is running its first time, this method creates an hour entry, 
+	 * fills and disables input fields automatically: 'from', 'to', 'date'
+	 * 
+	 * If the timer was paused, it sets end time of pause in the current hout entry
+	 * and resumes the timer.
+	 * 
+	 * When trying to start a stopped timer, but the time recording has not been 
+	 * saved yet, it highlights the 'reset' and 'save' button without further action.
+	 * 
+	 * The method sets the timer duration text to color green.
+	 */
 	public void actionStartTimer() {
 		// If hour entry does not exist, create here. If it already exists and pause was
 		// not ended, end it here.
 		setTimeNow();
-		if (this.hourEntry == null) {
+		// Autofill and deactivate date field & button
+		dateAutomaticallySet = true;
+		timerView.getTxtDateInput().setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+		this.timerView.getTxtDateInput().setEnabled(false);
+		this.timerView.getBtnDatePicker().setEnabled(false);
+		if (this.hourEntry == null || this.hourEntry.getStartTime() == null) {
 			this.timerModel.stopAndResetTimer();
 			this.timerView.getTxtStartTime().setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
 			this.timerView.getTxtEndTime().setText("");
@@ -124,8 +139,9 @@ public class TimerHourController implements IController {
 				timerView.getBtnSave().setForeground(new Color(31,32,33));
 				timerView.getBtnReset().setForeground(new Color(31,32,33));
 				timerView.setButtonsHighlighted(true);
-				Timer timer = new Timer();
-				timer.schedule(new TimerTask() {
+				
+				ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+				executorService.schedule(new Runnable() {
 					@Override
 					public void run() {
 						timerView.getBtnSave().setBackground(defaultColor);
@@ -134,7 +150,7 @@ public class TimerHourController implements IController {
 						timerView.getBtnReset().setForeground(Color.WHITE);
 						timerView.setButtonsHighlighted(false);
 					}
-				}, 1000);
+				}, 1, TimeUnit.SECONDS);
 			}
 			
 			
@@ -145,6 +161,11 @@ public class TimerHourController implements IController {
 		this.timerView.getDurationLabel().setForeground(new Color(50,205,50));
 	}
 
+	/*
+	 * This method stops the timer, sets the endTime in the current hour entry
+	 * and fills out the input fields with calculated information (duration, to, pause).
+	 * The method sets the timer duration text to color red.
+	 */
 	public void actionStopTimer() {
 		setTimeNow(); // set time now
 		this.timerModel.stopTimer();
@@ -159,6 +180,11 @@ public class TimerHourController implements IController {
 		this.timerView.getDurationLabel().setForeground(new Color(220,20,60));
 	}
 
+	/*
+	 * If the timer is running and not paused, this method pauses the timer, 
+	 * sets the pause start time and deletes the paus end time (sets null).
+	 * The method sets the timer duration text to color orange.
+	 */
 	public void actionPauseTimer() {
 		if (this.timerModel.isTimerRunning()) {
 			if (this.hourEntry.getPauseStart() != null) {
@@ -171,8 +197,12 @@ public class TimerHourController implements IController {
 		}
 	}
 
-	// Calculates duration from input field for setting view (not connected to hour
-	// entry)
+	/*
+	 * This method calculates the duration based on start-, end- and pause-times
+	 * and sets the duration label text.
+	 * This method is for showing information only and is not connected to the 
+	 * running hour entry.
+	 */
 	public void actionCalculateDurationView() {
 		if (!timerModel.isTimerRunning()) {
 
@@ -288,11 +318,32 @@ public class TimerHourController implements IController {
 		// if timer was not used (not started), hour entry was not created and needs to
 		// be done here
 		if (this.hourEntry == null) {
-			this.hourEntry = new HourEntry(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));
+			String date = timerView.getTxtDateInput().getText();
+			// if (date.matches("")) {
+			//	this.hourEntry = new HourEntry(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));				
+			//}
+			if (validateDate(date)) {
+				String[] dateParts;
+				String dateString;
+				if (date.contains(".")) {
+					dateParts = timerView.getTxtDateInput().getText().split("\\.");			
+				} else if (date.contains("-")) {
+					dateParts = timerView.getTxtDateInput().getText().split("-");			
+				} else {
+					dateParts = timerView.getTxtDateInput().getText().split("\\/");			
+				}
+				dateString = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
+				this.hourEntry = new HourEntry(dateString);
+			} else {
+				timerView.showErrorMessage("Invalid or empty date!", 3000);
+				return;
+			}
 		}
 
 		// read entry date
 		entryDate = Date.valueOf(this.hourEntry.getDate());
+		// Reorder entryDate YYYY-mm-dd to String dd-mm-YYYY for validating
+		String entryDateReversed = entryDate.toString().split("-")[2] + "-" + entryDate.toString().split("-")[1] + "-" + entryDate.toString().split("-")[0];
 
 		// read comment from textfield and set comment in hourEntry instance
 		comment = this.timerView.getTextFieldComment().getText();
@@ -373,28 +424,37 @@ public class TimerHourController implements IController {
 
 		// check index of ComboBox (project list) and get item with same index from
 		// project list in timerModel to get projectID
-		String project = this.timerView.getComboBox().getSelectedItem().toString();
+		String project = this.timerView.getProjectDropdown().getSelectedItem().toString();
 		this.hourEntry.setProjectName(project);
 
-		int comboBoxIndex = this.timerView.getComboBox().getSelectedIndex();
+		int comboBoxIndex = this.timerView.getProjectDropdown().getSelectedIndex();
 		projectID = (int) this.timerModel.getProjectList().get(comboBoxIndex).get(0);
 		this.hourEntry.setProjectID(projectID);
 
-		serviceID = 1; // TODO: implement, when TimerView holds service-dropdown and ServiceModel is implemented
+		int serviceIndex = this.timerView.getServiceDropdown().getSelectedIndex();
+		serviceID = (int) this.timerModel.getServiceList().get(serviceIndex).get(0);
+		System.out.println(serviceID);
+		//serviceID = (int) db.query("SELECT s_id FROM service WHERE name= ", true).get(0);
 
 		userID = User.getUser().getU_id();
 
 		// write hour entry to database only if starTime and endTime are not empty
 		if (startTime != null && endTime != null && pauseMinutesValid == true) {
 			db.insert(
-					"INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes,p_id) VALUES("
-							+ "'" + entryDate + "'," + "'" + comment + "'," + "'" + startTime + "'," + "'" + endTime
-							+ "'," + "'" + timeMinutes + "'," // timeMinutes means productive time (pauseMinutes is
-																// subtracted)
-							+ "'" + pauseMinutes + "'," + "'" + projectID + "')");
+					"INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes,p_id,s_id,u_id) VALUES("
+							+ "'" + entryDate + "'," 
+							+ "'" + comment + "'," 
+							+ "'" + startTime + "'," 
+							+ "'" + endTime+ "'," 
+							+ "'" + timeMinutes + "'," // timeMinutes means productive time (pauseMinutes is subtracted)
+							+ "'" + pauseMinutes + "',"
+							+ "'" + projectID + "',"
+							+ "'" + serviceID + "',"
+							+ "'" + userID + "');");
 
 			actionResetTimer();
 			actionLoadProjects();
+			actionLoadServices();
 		} else {
 			String errorStart = "";
 			String errorEnd = "";
@@ -409,41 +469,56 @@ public class TimerHourController implements IController {
 		}
 	}
 
+	/*
+	 * This method calls the stopAndResetTimer method of the timerModel.
+	 * It then resets all texts and colors of the visible swing elements to
+	 * its default values.
+	 */
 	public void actionResetTimer() {
 		this.timerModel.stopAndResetTimer();
 		this.timerView.getTextFieldComment().setText("");
+		this.timerView.getTxtDateInput().setText("");
+		this.timerView.getTxtDateInput().setEnabled(true);
+		timerView.getTxtDateInput().setBackground(new Color(70, 73, 75));
+		this.timerView.getBtnDatePicker().setEnabled(true);
 		this.timerView.getTxtStartTime().setText("");
 		this.timerView.getTxtEndTime().setText("");
 		this.timerView.getTextPauseDuration().setText("");
 		this.timerView.getLblErrorMessage().setText("");
 		this.timerView.getDurationLabel().setForeground(Color.WHITE);
 		this.hourEntry = null;
+		dateAutomaticallySet = false;
 	}
 
+	/*
+	 * This method calls methods of timerModel to refresh its project list for
+	 * the dropdown.
+	 * The method also queries information from db to check for the project that was last
+	 * used to write an hour entry and automatically selects it.
+	 * If the project was already set manually by the user (using dropdown) it just refreshes
+	 * the project list.
+	 * 
+	 * This method also checks, if the user already has a project assigned. If not, the 
+	 * time tracker will be disabled.
+	 */
 	public void actionLoadProjects() {
 		this.timerModel.setProjectSet(false);
 		this.timerModel.retrieveProjects();
-
-		// if project was not set yet, select last used project (highest h_id)
+		activateTimeTracker();
+		
+		// if service was not set yet, select last used service (highest h_id)
 		if ((this.hourEntry == null || this.hourEntry.getProjectID() == 0) && !this.timerModel.isProjectSet()) {
 
-			ArrayList<Object> result = db
-					.query("SELECT p_id FROM hour_entry WHERE h_id = (SELECT MAX(h_id) FROM hour_entry);");
-					//  TODO:Check, if querying for specific user is necessary or if this table already contains
-					//  hour entries of user only 
-			
+			ArrayList<Object> result = db.query("SELECT p_id FROM hour_entry WHERE u_id = " + User.getUser().getU_id() +" ORDER BY h_id DESC LIMIT 1;");
 			if (!result.isEmpty()) {
 				// find out projectListIndex by looking for p_id in ArrayList projectList of
 				// timerModel
 				int projectListIndex = 0; // initialize variable for list index in timerView
-				int latestHourEntryProjectID = (int) ((ArrayList<Object>) result.get(0)).get(0); // get actual projectID
-																									// of latest project
-																									// used
+				// get actual projectID of latest project used:
+				int latestHourEntryProjectID = (int) ((ArrayList<Object>) result.get(0)).get(0);
 
 				// iterator through project list of timerModel for every project
 				for (ArrayList<Object> project : this.timerModel.getProjectList()) {
-					// System.out.println(this.timerModel.getProjectList().indexOf(project));
-					// System.out.println(project);
 					// if one of the projectIDs equal the projectID of the latest project used,
 					// condition is met
 					if ((int) project.get(0) == latestHourEntryProjectID) {
@@ -452,11 +527,120 @@ public class TimerHourController implements IController {
 					}
 				}
 				// set selected item to latest project
-				this.timerView.getComboBox().setSelectedIndex(projectListIndex);
+				this.timerView.getProjectDropdown().setSelectedIndex(projectListIndex);
+			}
+			// check if user has projects; if not, deactivate time tracking
+			ArrayList<Object> userProjects = db.query("SELECT project.p_id FROM project LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id WHERE u_id = " + User.getUser().getU_id() + ";");
+			if (userProjects.isEmpty()) {
+				deactivateTimeTracker();
+			}
+		}
+	}
+	
+	/*
+	 * This method calls methods of timerModel to refresh its service list for
+	 * the dropdown.
+	 * The method also queries information from db to check for the service that was last
+	 * used to write an hour entry and automatically selects it.
+	 * If the service was already set manually by the user (using dropdown) it just refreshes
+	 * the service list.
+	 * 
+	 * This method also checks, if there is a service to select from. If not, the 
+	 * time tracker will be disabled.
+	 */
+	public void actionLoadServices() {
+		this.timerModel.setServiceSet(false);
+		this.timerModel.retrieveServices();
+		activateTimeTracker();
+		
+		// if project was not set yet, select last used project (highest h_id)
+		if ((this.hourEntry == null || this.hourEntry.getService() == null) && !this.timerModel.isServiceSet()) {
+
+			ArrayList<Object> result = db.query("SELECT hour_entry.s_id, service.name FROM hour_entry LEFT JOIN service ON hour_entry.s_id = service.s_id WHERE u_id = " + User.getUser().getU_id() + " ORDER BY h_id DESC LIMIT 1;");
+			if (!result.isEmpty()) {
+				// find out projectListIndex by looking for p_id in ArrayList projectList of
+				// timerModel
+				int serviceListIndex = 0; // initialize variable for list index in timerView
+				// get actual projectID of latest project used:
+				int latestHourEntryServiceID = (int) ((ArrayList<Object>) result.get(0)).get(0);
+
+				// iterator through project list of timerModel for every project
+				for (ArrayList<Object> service : this.timerModel.getServiceList()) {
+					// if one of the projectIDs equal the projectID of the latest project used,
+					// condition is met
+					if ((int) service.get(0) == latestHourEntryServiceID) {
+						serviceListIndex = this.timerModel.getServiceList().indexOf(service);
+						break;
+					}
+				}
+				// set selected item to latest project
+				this.timerView.getServiceDropdown().setSelectedIndex(serviceListIndex);
+			}
+			// check if there are services; if not, deactivate time tracking
+			ArrayList<Object> services = db.query("SELECT s_id FROM service;");
+			if (services.isEmpty()) {
+				deactivateTimeTracker();
 			}
 		}
 	}
 
+	/*
+	 * This method disables all elements and shows an error message
+	 * to the user that no project is available for tracking time on.
+	 */
+	private void deactivateTimeTracker() {
+		timerView.getProjectDropdown().setEnabled(false);
+		timerView.getTxtDateInput().setEnabled(false);
+		timerView.getBtnDatePicker().setEnabled(false);
+		timerView.getTxtStartTime().setEnabled(false);
+		timerView.getTextPauseDuration().setEnabled(false);
+		timerView.getTxtEndTime().setEnabled(false);
+		timerView.getTextFieldComment().setEnabled(false);
+		timerView.getBtnReset().setEnabled(false);
+		timerView.getBtnSave().setEnabled(false);
+		timerView.getBtnStart().setEnabled(false);
+		timerView.getBtnPause().setEnabled(false);
+		timerView.getBtnStop().setEnabled(false);
+
+		timerView.getLblErrorMessage().setVisible(true);
+		timerView.getLblErrorMessage().setText("Please create a new project to track time for!");
+		
+	}
+	
+	/*
+	 * This method activates all alements.
+	 */
+	private void activateTimeTracker() {
+		timerView.getProjectDropdown().setEnabled(true);
+		timerView.getTxtDateInput().setEnabled(true);
+		timerView.getBtnDatePicker().setEnabled(true);
+		timerView.getTxtStartTime().setEnabled(true);
+		timerView.getTextPauseDuration().setEnabled(true);
+		timerView.getTxtEndTime().setEnabled(true);
+		timerView.getTextFieldComment().setEnabled(true);
+		timerView.getBtnReset().setEnabled(true);
+		timerView.getBtnSave().setEnabled(true);
+		timerView.getBtnStart().setEnabled(true);
+		timerView.getBtnPause().setEnabled(true);
+		timerView.getBtnStop().setEnabled(true);
+
+		timerView.getLblErrorMessage().setVisible(false);
+		timerView.getLblErrorMessage().setText("");
+		
+	}
+
+	/*
+	 * This method validates the date format put into the 
+	 * textfield. 
+	 * The corresponding regular expression is defined in class "Regex"
+	 * and allows dd-mm-YYYY, dd.mm.YYYY, dd/mm/YYYY.
+	 */
+	private boolean validateDate(String date) {
+		Matcher matcher = Regex.VALID_DATE_FORMAT_DD_MM_YYYY.matcher(date);
+		System.out.println(date + " is valid: " + matcher.find());
+        return matcher.find();
+	}
+	
 	// ActionListener method
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -465,6 +649,7 @@ public class TimerHourController implements IController {
 
 		if (event.equalsIgnoreCase(StaticActions.ACTION_TIMER_START)) {
 			actionStartTimer();
+			dateAutomaticallySet = true;
 		}
 
 		if (event.equalsIgnoreCase(StaticActions.ACTION_TIMER_PAUSE)) {
@@ -490,12 +675,34 @@ public class TimerHourController implements IController {
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SET_PROJECT)) {
 			this.timerModel.setProjectSet(true);
 		}
+		
+		if (event.equalsIgnoreCase(StaticActions.ACTION_LOAD_SERVICES)) {
+			actionLoadServices();
+		}
+
+		if (event.equalsIgnoreCase(StaticActions.ACTION_SET_SERVICE)) {
+			this.timerModel.setServiceSet(true);
+		}
+		
 	}
 
 	// DocumentListener methods; events fired when content is edited
 	@Override
 	public void insertUpdate(DocumentEvent e) {
-		actionCalculateDurationView();
+		if (e.getDocument() == timerView.getTxtStartTime().getDocument() || e.getDocument() == timerView.getTxtEndTime().getDocument()) {
+			actionCalculateDurationView();
+		}
+		if (e.getDocument() == timerView.getTxtDateInput().getDocument() && !dateAutomaticallySet) {
+			if (validateDate(timerView.getTxtDateInput().getText())) {
+				String[] dateParts = timerView.getTxtDateInput().getText().split("\\.");			
+				String date = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
+				createHourEntry(date);
+				timerView.getTxtDateInput().setBackground(new Color(70, 73, 75));
+			} else {
+				timerView.getTxtDateInput().setBackground(new Color(175,25,65));
+				timerView.showErrorMessage("Invalid date format!", 3000);
+			}
+		}
 	}
 
 	@Override
@@ -510,13 +717,11 @@ public class TimerHourController implements IController {
 
 	@Override
 	public IModel getModel() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public IView getView() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

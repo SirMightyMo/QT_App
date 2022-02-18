@@ -15,14 +15,13 @@ public class TimerModel extends Observable implements IModel{
 	private int timerSeconds;
 	private int timerMinutes;
 	private int timerHours;
-	private boolean projectSet;
 	private Timer taskTimer;
 	private ArrayList<ArrayList<Object>> projectList;
+	private boolean projectSet;
+	private ArrayList<ArrayList<Object>> serviceList;
+	private boolean serviceSet;
 	private DatabaseController db = DatabaseController.getInstance();
 
-	/**
-	 * Constructor
-	 */
 	public TimerModel() {
 		super();
 		this.timerHours = 0;
@@ -30,9 +29,6 @@ public class TimerModel extends Observable implements IModel{
 		this.timerHours = 0;
 	}
 
-	/**
-	 * Getter/Setter
-	 */
 	public boolean isTimerRunning() {
 		return timerRunning;
 	}
@@ -87,6 +83,22 @@ public class TimerModel extends Observable implements IModel{
 
 	public void setProjectList(ArrayList<ArrayList<Object>> projectList) {
 		this.projectList = projectList;
+	}
+
+	public ArrayList<ArrayList<Object>> getServiceList() {
+		return serviceList;
+	}
+
+	public void setServiceList(ArrayList<ArrayList<Object>> serviceList) {
+		this.serviceList = serviceList;
+	}
+
+	public boolean isServiceSet() {
+		return serviceSet;
+	}
+
+	public void setServiceSet(boolean serviceSet) {
+		this.serviceSet = serviceSet;
 	}
 
 	/**
@@ -167,16 +179,24 @@ public class TimerModel extends Observable implements IModel{
 		}
 	}
 
-	public void retrieveProjects() { // TODO: Retrieve only those projects, where p_id is assigned to u_id
+	public void retrieveProjects() {
 		this.projectList = new ArrayList<>();
-		ArrayList<Object> result = db.query("SELECT p_id, name FROM project WHERE active = TRUE;");
+		ArrayList<Object> result = db.query("SELECT project.p_id, name FROM project LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id WHERE active = TRUE AND u_id = " + User.getUser().getU_id() + ";");
 		result.forEach(entry -> {
 			ArrayList<Object> row = (ArrayList<Object>) entry;
 			this.projectList.add(row);
-
-//			row.forEach(value -> {
-//				System.out.println(value);
-//			});
+		});
+		setChanged();
+		notifyObservers(this);
+	}
+	
+	public void retrieveServices() {
+		this.serviceList = new ArrayList<>();
+		ArrayList<Object> result = db.query("SELECT s_id, name FROM service;");
+		result.forEach(entry -> {
+			System.out.println(entry);
+			ArrayList<Object> row = (ArrayList<Object>) entry;
+			this.serviceList.add(row);
 		});
 		setChanged();
 		notifyObservers(this);

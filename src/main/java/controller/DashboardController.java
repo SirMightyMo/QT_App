@@ -1,21 +1,15 @@
 package main.java.controller;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import main.java.model.DashboardModel;
-import main.java.model.HourEntry;
 import main.java.model.IModel;
-import main.java.model.TimerModel;
 import main.java.model.User;
 import main.java.view.DashboardView;
 import main.java.view.IView;
-import main.java.view.TimerView;
+import main.java.view.NewProjectView;
 
 public class DashboardController implements IController {
 
@@ -23,6 +17,7 @@ public class DashboardController implements IController {
 	private DashboardProjectListController dashboardProjectListController;
 	private DashboardHourListController dashboardHourListController;
 	private DashboardView dashboardView;
+	private DashboardModel dashboardModel;
 	private NewProjectController newProjectController;
 
 	// Constructor
@@ -33,19 +28,16 @@ public class DashboardController implements IController {
 		this.newProjectController = new NewProjectController();
 		this.dashboardProjectListController = new DashboardProjectListController();
 		this.dashboardHourListController = new DashboardHourListController();
-		
-		// Test
 		new ProjectController();
 		
 		// Instanciate own view
 		this.dashboardView = new DashboardView(this);
-		this.dashboardView.setVisible(true);	
 
 		// Coordinate listeners:
 		// Lists need to be updated, when new hour entry is being saved
 		timerHourController.getTimerView().getBtnSave().addActionListener(dashboardHourListController);
 		timerHourController.getTimerView().getBtnSave().addActionListener(dashboardProjectListController);
-		
+		((NewProjectView) newProjectController.getView()).getBtnSave().addActionListener(dashboardProjectListController);
 		
 	}
 
@@ -123,6 +115,14 @@ public class DashboardController implements IController {
 
 	public void setNewProjectController(NewProjectController newProjectController) {
 		this.newProjectController = newProjectController;
+	}
+
+	public DashboardModel getDashboardModel() {
+		return dashboardModel;
+	}
+
+	public void setDashboardModel(DashboardModel dashboardModel) {
+		this.dashboardModel = dashboardModel;
 	}
 
 }

@@ -24,10 +24,14 @@ public abstract class WindowSuperclass extends JFrame implements IView {
 	 * automatically inherit all setted options.
 	 */
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Font dinNeuzeitGrotesk_regular;
 	
 	public WindowSuperclass() {
-		
+		super();
 		// Load & register font
 	    InputStream is = WindowSuperclass.class.getResourceAsStream("/main/resources/font/DINNeuzeitGrotesk-BoldCond-Regular.ttf");
 		try {

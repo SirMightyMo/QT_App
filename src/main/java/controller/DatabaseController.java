@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 import javax.swing.event.DocumentEvent;
 
+import org.h2.jdbc.JdbcSQLSyntaxErrorException;
+
 import main.java.model.IModel;
 import main.java.view.IView;
 
@@ -204,12 +206,21 @@ public class DatabaseController implements IController {
 		return resultArrayList;
 	}
 
-	public void initializeDB() {
+	/**
+	 * Creates tables from createTables.sql and
+	 * inserts DummyData from insertDummyData.sql
+	 * @return 0 if database successfully initialized, 1 if something bad happened
+	 * 
+	 * @author kevin
+	 */
+	public int initializeDB() {
 		if (executeSQLScript("./src/main/resources/data/createTables.sql") == 0
-				/*&& executeSQLScript("./src/main/resources/data/insertDummyData.sql") == 0*/) { // If dummy-data needed,
+				&& executeSQLScript("./src/main/resources/data/insertDummyData.sql") == 0) { // If dummy-data needed,
 																								// remove inline comment
 			System.out.println("Database successfully initialized");
-		}
+			return 0;
+		} else 
+			return 1;
 	}
 
 	// If only one row (or one row with just one value) is expected, set flag to true.
@@ -265,6 +276,13 @@ public class DatabaseController implements IController {
 			return query(sql);
 		}
 	}
+	
+	/**
+	 * Executes an SQL Script
+	 * @author kevin
+	 * @param scriptFilePath
+	 * @return 0 if successful, 1 if problem executing SQL Script
+	 */
 	
 	public int executeSQLScript(String scriptFilePath) {
 		BufferedReader bReader = null;

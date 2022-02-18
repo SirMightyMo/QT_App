@@ -80,7 +80,7 @@ public final class LoginController extends Hashing implements IController {
 	private void login(int u_id, String name, String email) {
 		System.out.println("Sie werden eingeloggt");
 		new User(u_id, name, email);
-		new DashboardController();
+		new AppMainController();
 		this.view.dispose();
 	}
 

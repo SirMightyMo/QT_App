@@ -10,14 +10,9 @@ import main.java.view.NewProjectView;
 	@SuppressWarnings("deprecation")	
 public class NewProjectModel extends Observable implements IModel {
 	
-		private boolean timerRunning;
-		private boolean timerPaused;
-		private int timerSeconds;
-		private int timerMinutes;
-		private int timerHours;
-		private boolean projectSet;
-		private Timer taskTimer;
-		private ArrayList<ArrayList<Object>> projectList;
+		private ArrayList<ArrayList<Object>> clientList;
+
+		private DatabaseController db = DatabaseController.getInstance();
 
 		/**
 		 * Constructor
@@ -25,10 +20,24 @@ public class NewProjectModel extends Observable implements IModel {
 		public NewProjectModel() {
 			super();
 		}
+		
+		public ArrayList<ArrayList<Object>> getClientList() {
+			return clientList;
+		}
+		
+		public void setClientList(ArrayList<ArrayList<Object>> clientList) {
+			this.clientList = clientList;
+		}
 
-		public void addObserver(NewProjectView newProjectView) {
-			// TODO Auto-generated method stub
-			
+		public void retrieveClients() {
+			this.clientList = new ArrayList<>();
+			ArrayList<Object> result = db.query("SELECT c_id, company FROM customer;");
+			result.forEach(entry -> {
+				ArrayList<Object> row = (ArrayList<Object>) entry;
+				this.clientList.add(row);
+			});
+			setChanged();
+			notifyObservers(this);
 		}
 
 }

@@ -21,7 +21,7 @@ public class ProjectModel extends Observable implements IModel {
 	// Creates Object needed for JTable
 	public Object[][] getTableModel() {
 		this.projectList = new ArrayList<>();
-		ArrayList<Object> result = db.query("SELECT * FROM project ;");
+		ArrayList<Object> result = db.query("SELECT * FROM project LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id WHERE u_id = " + User.getUser().getU_id() + ";");
 		projectTable = new Object[result.size()][7];
 		for (int i = 0; i < result.size(); i++) {
 			for (int j = 0; j < 7; j++) {
@@ -65,14 +65,10 @@ public class ProjectModel extends Observable implements IModel {
 
 	public void retrieveProjects() {
 		this.projectList = new ArrayList<>();
-		ArrayList<Object> result = db.query("SELECT p_id, name FROM project;");
+		ArrayList<Object> result = db.query("SELECT project.p_id, name FROM project LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id WHERE u_id = " + User.getUser().getU_id() + ";");
 		result.forEach(entry -> {
 			ArrayList<Object> row = (ArrayList<Object>) entry;
 			this.projectList.add(row);
-
-			// row.forEach(value -> {
-			// System.out.println(value);
-			// });
 		});
 		setChanged();
 		notifyObservers(this);

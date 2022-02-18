@@ -56,64 +56,82 @@ public final class RegistrationView extends JFrame implements IView {
 		panel.setLayout(new GridLayout(5, 2));
 
 		usernameLabel = new JLabel("Username:");
+		usernameLabel.setName("usernameLabel");
 		panel.add(usernameLabel);
 
 		usernameInputField = new JTextField(20);
+		usernameInputField.setName("usernameInputField");
 		usernameInputField.setBounds(100, 20, 165, 25);
 		panel.add(usernameInputField);
 
 		emailLabel = new JLabel("E-Mail:");
+		emailLabel.setName("emailLabel");
 		panel.add(emailLabel);
 
 		emailInputField = new JTextField(20);
+		emailInputField.setName("emailInputField");
 		emailInputField.setBounds(100, 20, 165, 25);
 		panel.add(emailInputField);
 
 		emailConfirmLabel = new JLabel("Repeat your E-Mail to confirm:");
+		emailConfirmLabel.setName("emailConfirmLabel");
 		panel.add(emailConfirmLabel);
 
 		emailConfirmInputField = new JTextField(20);
+		emailConfirmInputField.setName("emailConfirmInputField");
 		emailConfirmInputField.setBounds(100, 20, 165, 25);
 		panel.add(emailConfirmInputField);
 
 		passwordLabel = new JLabel("Password:");
+		passwordLabel.setName("passwordLabel");
 		panel.add(passwordLabel);
 
 		passwordInputField = new JPasswordField(20);
+		passwordInputField.setName("passwordInputField");
 		passwordInputField.setBounds(100, 20, 165, 25);
 		panel.add(passwordInputField);
 
 		passwordConfirmLabel = new JLabel("Repeat your password to confirm:");
+		passwordConfirmLabel.setName("passwordConfirmLabel");
 		panel.add(passwordConfirmLabel);
 
 		passwordConfirmInputField = new JPasswordField(20);
+		passwordConfirmInputField.setName("passwordConfirmInputField");
 		passwordConfirmInputField.setBounds(100, 20, 165, 25);
 		panel.add(passwordConfirmInputField);
 
 		panelTwo = new JPanel();
+		panelTwo.setName("panelTwo");
 		panelTwo.setLayout(new BorderLayout());
 
 		securityQuestionLabel = new JLabel("Choose your secure Question:");
+		securityQuestionLabel.setName("securityQuestionLabel");
 		panelTwo.add(securityQuestionLabel, BorderLayout.NORTH);
 
 		securityQuestionPicker = new JComboBox(questions);
+		securityQuestionPicker.setName("securityQuestionPicker");
 		securityQuestionPicker.setBounds(100, 20, 165, 25);
 		panelTwo.add(securityQuestionPicker, BorderLayout.CENTER);
 
 		panelThree = new JPanel();
+		panelThree.setName("panelThree");
 		panelThree.setLayout(new GridLayout(2, 2));
 
 		securityAnswerLabel = new JLabel("Your answer:");
+		securityAnswerLabel.setName("securityAnswerLabel");
 		panelThree.add(securityAnswerLabel);
 
 		securityAnswerInputField = new JTextField(20);
+		securityAnswerInputField.setName("securityAnswerInputField");
 		securityAnswerInputField.setBounds(100, 20, 165, 25);
 		panelThree.add(securityAnswerInputField);
 
 		loginButton = new JButton("Switch to Login");
+		loginButton.setName("loginButton");
 		panelThree.add(loginButton);
 
 		registerButton = new JButton("Register");
+		registerButton.setName("registerButton");
 		panelThree.add(registerButton);
 		getRootPane().setDefaultButton(registerButton);
 

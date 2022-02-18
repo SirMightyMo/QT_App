@@ -1,4 +1,4 @@
-package test.java;
+package test.java.view;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,8 +40,6 @@ class LoginViewGUITest {
 	@Test
 	void testLoginElements_Visible() {
 		window.label("usernameLabel").requireVisible();
-		window.label("passwordLabel").requireVisible();
-		window.label("passwordLabel").requireVisible();
 		window.label("passwordLabel").requireVisible();
 		window.textBox("usernameInputField").requireVisible();
 		window.textBox("passwordInputField").requireVisible();
