@@ -63,10 +63,10 @@ public class ProjectController implements IController {
 
 	/**
 	 * This method saves a new project to the database
-	 * @author Mo
 	 */
 	public void actionSaveProject() {
 		String projectName;
+		String customer;
 		Date startDate;
 		Date endDate;
 		boolean active;
@@ -77,6 +77,11 @@ public class ProjectController implements IController {
 		endDate = projectView.getNewEndDate();
 		active = projectView.getNewProjectStat();
 		customerID = projectView.getClientID();
+		
+		if (projectName.length() > 255) {
+			projectView.showErrorMessage(projectView.getLblErrorProject(), "Projektname darf maximal 255 Zeichen lang sein!", 5000);
+			return;
+		}
 
 		db.insert("INSERT INTO project(name, start_date, end_date, active, c_id) VALUES(" 
 		+ "'" + projectName + "'," 
@@ -92,7 +97,6 @@ public class ProjectController implements IController {
 		projectModel.retrieveProjects();
 		projectView.updateTable(this);
 		projectView.setTab(0);
-
 	}
 	
 	/**
@@ -110,8 +114,6 @@ public class ProjectController implements IController {
 		String city = projectView.getTextFieldCity();
 		String country = projectView.getTextFieldCountry();
 		String zip = projectView.getTextFieldZip();
-		
-		projectView.setLblErrorVisible(false);
 		
 		try {
 			if (Integer.parseInt(zip) > 99999 || Integer.parseInt(zip) < 0) {
