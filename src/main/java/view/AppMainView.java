@@ -52,6 +52,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 		projectController = appMainController.getProjectController();
 		sessionController = appMainController.getSessionController();
 		setBounds(100, 100, 1850, 1080); // x, y, width, height
+		setLocationRelativeTo(null); // Center Frame
 		setResizable(false);
 
 		JPanel panel_1 = new JPanel();

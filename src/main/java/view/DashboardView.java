@@ -67,8 +67,8 @@ public class DashboardView implements IView{
 		timerPanel.setBounds(10, 87, 354, 600);
 		dashbPanel.add(timerPanel);
 		TimerView timerView_1 = timerHourController.getTimerView();		
+		timerPanel.setLayout(null);
 		timerPanel.add(timerView_1.getContentPanel());
-		timerPanel.setLayout(new BoxLayout(timerPanel, BoxLayout.X_AXIS));
 
 
 		JPanel projectPanel = new JPanel();
