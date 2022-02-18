@@ -72,8 +72,13 @@ public class ProjectView implements IView {
 	private JTextField textFieldExternalRate;
 	private JLabel lblErrorClient;
 	private JLabel lblErrorService;
+	private JLabel lblErrorProject;
+	private ProjectController projectController;
+
 
 	public ProjectView(ProjectController projectController) {
+		this.projectController = projectController;
+		
 		projectPanel = new JPanel();
 		projectPanel.setName("projectPanelMainPane");
 		projectPanel.setBounds(0, 0, 1490, 1060);
@@ -327,6 +332,16 @@ public class ProjectView implements IView {
 		sl_panel_input_form.putConstraint(SpringLayout.EAST, lblNewLabel_21, -210, SpringLayout.EAST, panel_input_form);
 		panel_input_form.add(lblNewLabel_21);
 
+		// Error Label
+		lblErrorProject = new JLabel();
+		lblErrorProject.setName("lblErrorProject");
+		lblErrorProject.setForeground(new Color(255, 140, 0));
+		lblErrorProject.setVisible(false);
+		sl_panel_input_form.putConstraint(SpringLayout.NORTH, lblErrorProject, 21, SpringLayout.SOUTH, lblNewLabel_21);
+		sl_panel_input_form.putConstraint(SpringLayout.WEST, lblErrorProject, 150, SpringLayout.WEST, panel_input_form);
+		sl_panel_input_form.putConstraint(SpringLayout.EAST, lblErrorProject, 100, SpringLayout.EAST, panel_input_form);
+		panel_input_form.add(lblErrorProject);
+		
 		textFieldClient = new JTextField();
 		textFieldClient.setName("textFieldClient");
 		sl_panel_input_form.putConstraint(SpringLayout.EAST, lblNewLabel_19, -24, SpringLayout.WEST, textFieldClient);
@@ -360,10 +375,8 @@ public class ProjectView implements IView {
 		textFieldEndDate = new JTextField(20);
 		textFieldEndDate.setName("textFieldEndDate");
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, textFieldEndDate, -3, SpringLayout.NORTH, lblNewLabel_21);
-		sl_panel_input_form.putConstraint(SpringLayout.WEST, textFieldEndDate, 0, SpringLayout.WEST,
-				textFieldProjectName);
-		sl_panel_input_form.putConstraint(SpringLayout.EAST, textFieldEndDate, 0, SpringLayout.EAST,
-				textFieldStartDate);
+		sl_panel_input_form.putConstraint(SpringLayout.WEST, textFieldEndDate, 0, SpringLayout.WEST, textFieldProjectName);
+		sl_panel_input_form.putConstraint(SpringLayout.EAST, textFieldEndDate, 0, SpringLayout.EAST, textFieldStartDate);
 		panel_input_form.add(textFieldEndDate);
 
 		JButton btnSetEndDate = new JButton("...");
@@ -383,7 +396,7 @@ public class ProjectView implements IView {
 		btnSaveProject.addActionListener(projectController);
 		btnSaveProject.setActionCommand(StaticActions.ACTION_SAVE_PROJECT);
 		panel_input_form.add(btnSaveProject);
-
+		
 		// active checkbox
 		chckbxActive = new JCheckBox("active");
 		chckbxActive.setName("chckbxActive");
@@ -432,11 +445,174 @@ public class ProjectView implements IView {
 				textFieldTo.setText(new DatePicker(popupFrame).setPickedDate());
 			}
 		});
-
+		
 		////////////////////////////////////
 		///// third tab / new client ///////
 		////////////////////////////////////
 
+		createTab3();
+
+		////////////////////////////////////
+		///// fourth tab / service /////////
+		////////////////////////////////////
+
+		createTab4();
+
+	}
+
+	// Getter Setter
+	public JPanel getProjectPanel() {
+		return projectPanel;
+	}
+
+	public JComboBox getComboBox() {
+		return comboBoxProject;
+	}
+
+	public void setComboBox(JComboBox comboBox) {
+		this.comboBoxProject = comboBox;
+	}
+
+	public JTable getProjectTable() {
+		JTable table = this.table;
+		return table;
+	}
+
+	public void setProjectTable(JTable table) {
+		this.table = table;
+	}
+
+	public String getNewProjectName() {
+		return textFieldProjectName.getText();
+	}
+
+	// Added Getters and Setters (Kevin)
+	
+	public boolean getLblErrorVisible() {
+		return lblErrorClient.isVisible();
+	}
+
+	public JLabel getLblErrorProject() {
+		return lblErrorProject;
+	}
+
+	public JLabel getLblErrorClient() {
+		return lblErrorClient;
+	}
+
+	public void setLblErrorClient(JLabel lblErrorClient) {
+		this.lblErrorClient = lblErrorClient;
+	}
+
+	public JLabel getLblErrorService() {
+		return lblErrorService;
+	}
+
+	public void setLblErrorVisible(boolean b) {
+		lblErrorClient.setVisible(b);
+	}
+
+	public String getTextFieldClientName() {
+		return textFieldClientName.getText();
+	}
+
+	public String getTextFieldContact() {
+		return textFieldContact.getText();
+	}
+
+	public String getTextFieldTelephone() {
+		return textFieldTelephone.getText();
+	}
+
+	public String getTextFieldMobile() {
+		return textFieldMobile.getText();
+	}
+
+	public String getTextFieldStreet() {
+		return textFieldStreet.getText();
+	}
+
+	public String getTextFieldHouseNumber() {
+		return textFieldHouseNumber.getText();
+	}
+
+	public String getTextFieldZip() {
+		return textFieldZip.getText();
+	}
+
+	public String getTextFieldCity() {
+		return textFieldCity.getText();
+	}
+
+	public String getTextFieldCountry() {
+		return textFieldCountry.getText();
+	}
+
+	public String getTextFieldNewService() {
+		return textFieldNewService.getText();
+	}
+
+	public String getTextFieldInternalRate() {
+		return textFieldInternalRate.getText();
+	}
+
+	public String getTextFieldExternalRate() {
+		return textFieldExternalRate.getText();
+	}
+
+	public void setTextFieldEndDate(JTextField textFieldEndDate) {
+		this.textFieldEndDate = textFieldEndDate;
+	}
+
+	public void setTextFieldClientName(JTextField textFieldClientName) {
+		this.textFieldClientName = textFieldClientName;
+	}
+
+	public void setTextFieldContact(JTextField textFieldContact) {
+		this.textFieldContact = textFieldContact;
+	}
+
+	public void setTextFieldTelephone(JTextField textFieldTelephone) {
+		this.textFieldTelephone = textFieldTelephone;
+	}
+
+	public void setTextFieldMobile(JTextField textFieldMobile) {
+		this.textFieldMobile = textFieldMobile;
+	}
+
+	public void setTextFieldStreet(JTextField textFieldStreet) {
+		this.textFieldStreet = textFieldStreet;
+	}
+
+	public void setTextFieldHouseNumber(JTextField textFieldHouseNumber) {
+		this.textFieldHouseNumber = textFieldHouseNumber;
+	}
+
+	public void setTextFieldZip(JTextField textFieldZip) {
+		this.textFieldZip = textFieldZip;
+	}
+
+	public void setTextFieldCity(JTextField textFieldCity) {
+		this.textFieldCity = textFieldCity;
+	}
+
+	public void setTextFieldCountry(JTextField textFieldCountry) {
+		this.textFieldCountry = textFieldCountry;
+	}
+
+	public void setTextFieldNewService(JTextField textFieldNewService) {
+		this.textFieldNewService = textFieldNewService;
+	}
+
+	public void setTextFieldInternalRate(JTextField textFieldInternalRate) {
+		this.textFieldInternalRate = textFieldInternalRate;
+	}
+
+	public void setTextFieldExternalRate(JTextField textFieldExternalRate) {
+		this.textFieldExternalRate = textFieldExternalRate;
+	}
+
+	private void createTab3() {
 		// HEAD //
 
 		JPanel panelNewClient = new JPanel();
@@ -541,7 +717,7 @@ public class ProjectView implements IView {
 		slPanelInputFormCustomer.putConstraint(SpringLayout.WEST, lblCountry, 20, SpringLayout.WEST,
 				panelInputFormCustomer);
 		panelInputFormCustomer.add(lblCountry);
-		
+
 		lblErrorClient = new JLabel();
 		lblErrorClient.setName("lblErrorClient");
 		lblErrorClient.setForeground(new Color(255, 140, 0));
@@ -551,9 +727,6 @@ public class ProjectView implements IView {
 		slPanelInputFormCustomer.putConstraint(SpringLayout.WEST, lblErrorClient, 20, SpringLayout.WEST,
 				panelInputFormCustomer);
 		panelInputFormCustomer.add(lblErrorClient);
-
-		
-		
 
 		// TEXT FIELDS //
 
@@ -666,8 +839,6 @@ public class ProjectView implements IView {
 				textFieldCity);
 		panelInputFormCustomer.add(textFieldCountry);
 		textFieldCountry.setColumns(10);
-		
-		
 
 		// Save Button
 		JButton btnSaveCustomer = new JButton("Speichern");
@@ -679,13 +850,11 @@ public class ProjectView implements IView {
 		btnSaveCustomer.addActionListener(projectController);
 		btnSaveCustomer.setActionCommand(StaticActions.ACTION_SAVE_CUSTOMER);
 		panelInputFormCustomer.add(btnSaveCustomer);
+	}
 
-		////////////////////////////////////
-		///// fourth tab / service /////////
-		////////////////////////////////////
+	private void createTab4() {
 
 		// HEAD //
-
 		JPanel panelService = new JPanel();
 		panelService.setName("panelService");
 		tabbedPane.setName("tabbedPanePanelService"); // added
@@ -711,7 +880,6 @@ public class ProjectView implements IView {
 		panelInputFormService.setLayout(slPanelInputFormService);
 
 		// LABELS //
-
 		JLabel lblNewService = new JLabel("Leistung:");
 		lblNewService.setName("lblNewService");
 		slPanelInputFormService.putConstraint(SpringLayout.EAST, lblNewService, 120, SpringLayout.WEST,
@@ -736,19 +904,21 @@ public class ProjectView implements IView {
 		slPanelInputFormService.putConstraint(SpringLayout.WEST, lblExternalRate, 20, SpringLayout.WEST,
 				panelInputFormService);
 		panelInputFormService.add(lblExternalRate);
-		
+
+		// ErrorLabel
 		lblErrorService = new JLabel();
 		lblErrorService.setName("lblErrorService");
 		lblErrorService.setForeground(new Color(255, 140, 0));
 		lblErrorService.setVisible(false);
-		slPanelInputFormService.putConstraint(SpringLayout.NORTH, lblErrorService, 20, SpringLayout.SOUTH, lblExternalRate);
-		slPanelInputFormService.putConstraint(SpringLayout.WEST, lblExternalRate, 0, SpringLayout.WEST, lblErrorService);
+		slPanelInputFormService.putConstraint(SpringLayout.NORTH, lblErrorService, 20, SpringLayout.SOUTH,
+				lblExternalRate);
+		slPanelInputFormService.putConstraint(SpringLayout.WEST, lblExternalRate, 0, SpringLayout.WEST,
+				lblErrorService);
 		slPanelInputFormService.putConstraint(SpringLayout.WEST, lblErrorService, 20, SpringLayout.WEST,
 				panelInputFormService);
 		panelInputFormService.add(lblErrorService);
 
 		// TEXT FIELDS //
-
 		textFieldNewService = new JTextField();
 		textFieldNewService.setName("textFieldNewService");
 		slPanelInputFormService.putConstraint(SpringLayout.NORTH, lblNewService, 3, SpringLayout.NORTH,
@@ -800,55 +970,6 @@ public class ProjectView implements IView {
 		btnSaveService.addActionListener(projectController);
 		btnSaveService.setActionCommand(StaticActions.ACTION_SAVE_SERVICE);
 		panelInputFormService.add(btnSaveService);
-
-	}
-
-	// Getter Setter
-	public JPanel getProjectPanel() {
-		return projectPanel;
-	}
-
-	public JComboBox getComboBox() {
-		return comboBoxProject;
-	}
-
-	public void setComboBox(JComboBox comboBox) {
-		this.comboBoxProject = comboBox;
-	}
-
-	public JTable getProjectTable() {
-		JTable table = this.table;
-		return table;
-	}
-
-	public void setProjectTable(JTable table) {
-		this.table = table;
-	}
-
-	public String getNewProjectName() {
-		return textFieldProjectName.getText();
-	}
-
-	// Added Getters and Setters (Kevin)
-	
-	public boolean getLblErrorVisible() {
-		return lblErrorClient.isVisible();
-	}
-	
-	public JLabel getLblErrorClient() {
-		return lblErrorClient;
-	}
-
-	public void setLblErrorClient(JLabel lblErrorClient) {
-		this.lblErrorClient = lblErrorClient;
-	}
-
-	public JLabel getLblErrorService() {
-		return lblErrorService;
-	}
-
-	public void setLblErrorVisible(boolean b) {
-		lblErrorClient.setVisible(b);
 	}
 
 	/**
@@ -872,106 +993,6 @@ public class ProjectView implements IView {
 			timer.schedule(task, duration);
 		}
 		lbl.setVisible(true);
-	}
-	
-	public String getTextFieldClientName() {
-		return textFieldClientName.getText();
-	}
-
-	public String getTextFieldContact() {
-		return textFieldContact.getText();
-	}
-
-	public String getTextFieldTelephone() {
-		return textFieldTelephone.getText();
-	}
-
-	public String getTextFieldMobile() {
-		return textFieldMobile.getText();
-	}
-
-	public String getTextFieldStreet() {
-		return textFieldStreet.getText();
-	}
-
-	public String getTextFieldHouseNumber() {
-		return textFieldHouseNumber.getText();
-	}
-
-	public String getTextFieldZip() {
-		return textFieldZip.getText();
-	}
-
-	public String getTextFieldCity() {
-		return textFieldCity.getText();
-	}
-
-	public String getTextFieldCountry() {
-		return textFieldCountry.getText();
-	}
-
-	public String getTextFieldNewService() {
-		return textFieldNewService.getText();
-	}
-
-	public String getTextFieldInternalRate() {
-		return textFieldInternalRate.getText();
-	}
-
-	public String getTextFieldExternalRate() {
-		return textFieldExternalRate.getText();
-	}
-
-	public void setTextFieldEndDate(JTextField textFieldEndDate) {
-		this.textFieldEndDate = textFieldEndDate;
-	}
-
-	public void setTextFieldClientName(JTextField textFieldClientName) {
-		this.textFieldClientName = textFieldClientName;
-	}
-
-	public void setTextFieldContact(JTextField textFieldContact) {
-		this.textFieldContact = textFieldContact;
-	}
-
-	public void setTextFieldTelephone(JTextField textFieldTelephone) {
-		this.textFieldTelephone = textFieldTelephone;
-	}
-
-	public void setTextFieldMobile(JTextField textFieldMobile) {
-		this.textFieldMobile = textFieldMobile;
-	}
-
-	public void setTextFieldStreet(JTextField textFieldStreet) {
-		this.textFieldStreet = textFieldStreet;
-	}
-
-	public void setTextFieldHouseNumber(JTextField textFieldHouseNumber) {
-		this.textFieldHouseNumber = textFieldHouseNumber;
-	}
-
-	public void setTextFieldZip(JTextField textFieldZip) {
-		this.textFieldZip = textFieldZip;
-	}
-
-	public void setTextFieldCity(JTextField textFieldCity) {
-		this.textFieldCity = textFieldCity;
-	}
-
-	public void setTextFieldCountry(JTextField textFieldCountry) {
-		this.textFieldCountry = textFieldCountry;
-	}
-
-	public void setTextFieldNewService(JTextField textFieldNewService) {
-		this.textFieldNewService = textFieldNewService;
-	}
-
-	public void setTextFieldInternalRate(JTextField textFieldInternalRate) {
-		this.textFieldInternalRate = textFieldInternalRate;
-	}
-
-	public void setTextFieldExternalRate(JTextField textFieldExternalRate) {
-		this.textFieldExternalRate = textFieldExternalRate;
 	}
 
 	public Date getNewStartDate() {
