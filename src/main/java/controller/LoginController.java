@@ -51,7 +51,7 @@ public final class LoginController extends Hashing implements IController {
 		ArrayList<Object> result = dbc.query(sql, true);
 		
 		if (result.isEmpty()) {
-			view.setErrorMessage("User does not exist!");
+			view.setErrorMessage("Ungültiger Benutzername");
 		} else {
 			if (view.getErrorMessage() != null) {
 				view.deleteErrorMessage();
@@ -71,7 +71,7 @@ public final class LoginController extends Hashing implements IController {
 			if (pwMatches) {
 				login(u_id, name, email);
 			} else {
-				view.setErrorMessage("Password is incorrect!");
+				view.setErrorMessage("Passwort ist korrekt");
 			}
 		}
 		

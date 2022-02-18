@@ -300,7 +300,7 @@ public final class RegistrationView extends WindowSuperclass implements IView {
 	public void setErrorMessage(String msg) {
 
 		this.errorMessage.setText(msg);
-		this.errorMessage.setForeground(Color.red);
+		this.errorMessage.setForeground(new Color(255, 140, 0));
 		this.errorMessage.setVisible(true);
 		SwingUtilities.updateComponentTreeUI(this);
 	}
