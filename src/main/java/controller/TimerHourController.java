@@ -10,8 +10,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 
 import javax.swing.event.DocumentEvent;
@@ -138,8 +139,9 @@ public class TimerHourController implements IController {
 				timerView.getBtnSave().setForeground(new Color(31,32,33));
 				timerView.getBtnReset().setForeground(new Color(31,32,33));
 				timerView.setButtonsHighlighted(true);
-				Timer timer = new Timer();
-				timer.schedule(new TimerTask() {
+				
+				ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+				executorService.schedule(new Runnable() {
 					@Override
 					public void run() {
 						timerView.getBtnSave().setBackground(defaultColor);
@@ -148,7 +150,7 @@ public class TimerHourController implements IController {
 						timerView.getBtnReset().setForeground(Color.WHITE);
 						timerView.setButtonsHighlighted(false);
 					}
-				}, 1000);
+				}, 1, TimeUnit.SECONDS);
 			}
 			
 			

@@ -12,6 +12,9 @@ import main.java.controller.LayoutManager;
 import main.java.model.User;
 import main.java.view.AppMainView;
 
+import java.awt.Dimension;
+import java.util.concurrent.TimeUnit;
+
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
@@ -28,12 +31,11 @@ class TimerViewGUITest {
 	@BeforeEach
 	public void setUp() {
 		new LayoutManager();
-		FlatDarkLaf.setup();
 		User.setUser(new User(1, "Bob", "bob@msn.com"));
-		AppMainView frame = GuiActionRunner.execute(() -> new AppMainView(new AppMainController()));
+		AppMainView frame = GuiActionRunner.execute(() -> new AppMainController().getAppMainView());
 		window = new FrameFixture(frame);
 
-		window.show(); // shows the frame to test
+		window.show(new Dimension(1850, 1080)); // shows the frame to test in needed Dimension (see AppMainView Class)
 	}
 
 	@AfterEach
@@ -46,7 +48,25 @@ class TimerViewGUITest {
 	void integrationTest() {
 		window.button("btnMenuDashboard").click();
 		window.button("btnMenuProjects").click();
-		window.button("btnStart").requireVisible();
+		window.button("btnMenuSessions").click();
+		window.button("btnMenuDashboard").click();
+		window.button("btnStart").click();
+		window.button("btnStop").click();
+		window.button("btnSave").click();
+		window.button("btnMenuProjects").click();
+		window.tabbedPane().selectTab(1);
+		window.tabbedPane().selectTab(2);
+		window.tabbedPane().selectTab(3);
+		window.tabbedPane().selectTab(0);
+		window.button("btnMenuSessions").click();
+		window.tabbedPane().selectTab(1);
+		window.tabbedPane().selectTab(0);
+		
+
+		
+		
+		
+		//window.button("btnStart").requireVisible();
 //		window.button("btnMenuDashboard").click();
 //		window.button("btnStart").requireVisible();
 		

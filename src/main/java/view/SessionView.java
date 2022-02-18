@@ -453,6 +453,7 @@ public class SessionView implements IView {
 
 		// Reset project table
 		JButton btnResetFilter = new JButton("Reset");
+		btnResetFilter.setName("btnResetFilter");
 		sl_panelHourEntryOverview.putConstraint(SpringLayout.NORTH, btnResetFilter, 0, SpringLayout.NORTH,
 				btnApplyFilter);
 		sl_panelHourEntryOverview.putConstraint(SpringLayout.EAST, btnResetFilter, -10, SpringLayout.WEST,

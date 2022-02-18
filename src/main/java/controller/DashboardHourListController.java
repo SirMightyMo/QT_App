@@ -5,8 +5,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -24,7 +25,7 @@ public class DashboardHourListController implements IController {
 	private DashboardListView view;
 	private CustomTableModel tableData;
 	private DatabaseController db = DatabaseController.getInstance();
-	
+	Runnable runQueryData = () -> queryData();
 	
 	public DashboardHourListController() {
 		this.tableData = new CustomTableModel(new String[] {
@@ -110,14 +111,8 @@ public class DashboardHourListController implements IController {
 		
 		// When hour entry is being saved, retrieve new list data after one second
 		if (event.equalsIgnoreCase(StaticActions.ACTION_TIMER_SAVE)) {
-			Timer timer = new Timer();
-			TimerTask task = new TimerTask() {
-				@Override
-				public void run() {
-					queryData();
-				}
-			};
-			timer.schedule(task, 1000);
+			ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+			executorService.schedule(runQueryData, 1, TimeUnit.SECONDS);
 		}
 	}
 

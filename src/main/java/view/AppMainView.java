@@ -1,13 +1,10 @@
 package main.java.view;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
 import java.util.Observable;
-import java.util.Observer;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -15,33 +12,14 @@ import javax.swing.SwingConstants;
 import main.java.controller.AccountController;
 import main.java.controller.AppMainController;
 import main.java.controller.DashboardController;
-import main.java.controller.DashboardHourListController;
-import main.java.controller.DashboardProjectListController;
-import main.java.controller.NewProjectController;
 import main.java.controller.ProjectController;
 import main.java.controller.SessionController;
-import main.java.controller.TimerHourController;
 import main.java.model.StaticActions;
-import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
-import java.awt.GridLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.Font;
 
 public class AppMainView extends WindowSuperclass implements IView {
 
 	private static final long serialVersionUID = 1L;
-	private JFrame frame;
 	private JPanel contentPanel;
-
-	// private TimerHourController timerHourController;
-	// private DashboardHourListController hourListController;
-	// private DashboardProjectListController projectListController;
-	// private DashboardView dashboardView;
-	// private NewProjectController newProjectController;
-	// private AccountView accountView;
-
 	private DashboardController dashboardController;
 	private AccountController accountController;
 	private ProjectController projectController;
@@ -68,21 +46,12 @@ public class AppMainView extends WindowSuperclass implements IView {
 	 * Initialize the contents of the frame.
 	 */
 	public AppMainView(AppMainController appMainController) {
+		super();
 		dashboardController = appMainController.getDashboardController();
 		accountController = appMainController.getAccountController();
 		projectController = appMainController.getProjectController();
 		sessionController = appMainController.getSessionController();
-		// dashboardView = dashboardController.getDashboardView();
-		// accountView = accountController.getAccountView();
-		// timerHourController = dashboardController.getTimerHourController();
-		// newProjectController = dashboardController.getNewProjectController();
-		// hourListController = dashboardController.getDashboardHourListController();
-		// projectListController =
-		// dashboardController.getDashboardProjectListController();
 		setBounds(100, 100, 1850, 1080); // x, y, width, height
-		frame = new JFrame();
-		frame.setBounds(100, 100, 1850, 1080);
-		frame.getContentPane().setLayout(null);
 		setResizable(false);
 
 		JPanel panel_1 = new JPanel();
@@ -142,7 +111,6 @@ public class AppMainView extends WindowSuperclass implements IView {
 		dashboardView = dashboardController.getDashboardView();
 
 		contentPanel.add(dashboardView.getDashbPanel());
-		// contentPanel.add(dashboardView.getDashbPanel());
 		setSessionView(sessionController.getSessionView());
 		setProjectView(projectController.getProjectView());
 		setAccountView(accountController.getAccountView());
@@ -214,6 +182,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 		menuPanel.add(btnPaneMenuSessions);
 
 		JButton btnMenuSessions = new JButton("\u00B7 Sitzungen");
+		btnMenuSessions.setName("btnMenuSessions");
 		btnMenuSessions.setBounds(130, 11, 195, 44);
 		btnMenuSessions.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		btnMenuSessions.setHorizontalAlignment(SwingConstants.LEFT);
@@ -268,6 +237,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnPaneMenuLogout.setLayout(null);
 
 		JButton btnMenuLogout = new JButton("\u00B7 Logout\r\n");
+		btnMenuLogout.setName("btnMenuLogout");
 		btnMenuLogout.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		btnMenuLogout.setForeground(Color.WHITE);
 		btnMenuLogout.setBounds(130, 11, 195, 44);
@@ -294,34 +264,6 @@ public class AppMainView extends WindowSuperclass implements IView {
 
 	}
 
-	/*
-	 * public DashboardHourListController getHourListController() { return
-	 * hourListController; }
-	 * 
-	 * public void setHourListController(DashboardHourListController
-	 * hourListController) { this.hourListController = hourListController; }
-	 * 
-	 * public TimerHourController getTimerHourController() { return
-	 * timerHourController; }
-	 * 
-	 * public void setTimerHourController(TimerHourController timerHourController) {
-	 * this.timerHourController = timerHourController; }
-	 * 
-	 * public DashboardProjectListController getProjectListController() { return
-	 * projectListController; }
-	 * 
-	 * public void setProjectListController(DashboardProjectListController
-	 * projectListController) { this.projectListController = projectListController;
-	 * } public DashboardView getDashboardView() { return dashboardView; }
-	 * 
-	 * public void setDashboardView(DashboardView dashboardView) {
-	 * this.dashboardView = dashboardView; } public NewProjectController
-	 * getNewProjectController() { return newProjectController; } public void
-	 * setNewProjectController(NewProjectController newProjectController) {
-	 * this.newProjectController = newProjectController; } public AccountView
-	 * getAccountView() { return accountView; } public void
-	 * setAccountView(AccountView accountView) { this.accountView = accountView; }
-	 */
 	public DashboardController getDashboardController() {
 		return dashboardController;
 	}
@@ -330,9 +272,9 @@ public class AppMainView extends WindowSuperclass implements IView {
 		this.dashboardController = dashboardController;
 	}
 
-	public JFrame getFrame() {
-		return frame;
-	}
+//	public JFrame getFrame() {
+//		return frame;
+//	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;

@@ -88,6 +88,7 @@ public class ProjectView implements IView {
 		contentPane.setLayout(null);
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setName("projectViewTabbedPane");
 		tabbedPane.setBounds(15, 15, 910, 909);
 		contentPane.add(tabbedPane);
 
