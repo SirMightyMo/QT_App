@@ -11,6 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.DefaultComboBoxModel;
@@ -67,6 +70,8 @@ public class ProjectView implements IView {
 	private JTextField textFieldNewService;
 	private JTextField textFieldInternalRate;
 	private JTextField textFieldExternalRate;
+	private JLabel lblErrorClient;
+	private JLabel lblErrorService;
 
 	public ProjectView(ProjectController projectController) {
 		projectPanel = new JPanel();
@@ -93,14 +98,14 @@ public class ProjectView implements IView {
 
 		JPanel panel_project_overview = new JPanel();
 		panel_project_overview.setName("panel_project_overview");
-		tabbedPane.addTab("Projekt Übersicht", null, panel_project_overview, null);
+		tabbedPane.addTab("Projekt ï¿½bersicht", null, panel_project_overview, null);
 		SpringLayout sl_panel_project_overview = new SpringLayout();
 		sl_panel_project_overview.putConstraint(SpringLayout.EAST, comboBoxProject, -434, SpringLayout.EAST,
 				panel_project_overview);
 		panel_project_overview.setLayout(sl_panel_project_overview);
 
 		// Titel Label
-		JLabel lblHeadTitel = new JLabel("Projekt Übersicht");
+		JLabel lblHeadTitel = new JLabel("Projekt ï¿½bersicht");
 		lblHeadTitel.setName("lblHeadTitel");
 		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, lblHeadTitel, 10, SpringLayout.NORTH,
 				panel_project_overview);
@@ -496,7 +501,7 @@ public class ProjectView implements IView {
 				panelInputFormCustomer);
 		panelInputFormCustomer.add(lblMobile);
 
-		JLabel lblStreet = new JLabel("Straße:");
+		JLabel lblStreet = new JLabel("StraÃŸe:");
 		lblStreet.setName("lblStreet");
 		slPanelInputFormCustomer.putConstraint(SpringLayout.NORTH, lblStreet, 20, SpringLayout.SOUTH, lblMobile);
 		slPanelInputFormCustomer.putConstraint(SpringLayout.WEST, lblMobile, 0, SpringLayout.WEST, lblStreet);
@@ -535,6 +540,19 @@ public class ProjectView implements IView {
 		slPanelInputFormCustomer.putConstraint(SpringLayout.WEST, lblCountry, 20, SpringLayout.WEST,
 				panelInputFormCustomer);
 		panelInputFormCustomer.add(lblCountry);
+		
+		lblErrorClient = new JLabel();
+		lblErrorClient.setName("lblErrorClient");
+		lblErrorClient.setForeground(new Color(255, 140, 0));
+		lblErrorClient.setVisible(false);
+		slPanelInputFormCustomer.putConstraint(SpringLayout.NORTH, lblErrorClient, 20, SpringLayout.SOUTH, lblCountry);
+		slPanelInputFormCustomer.putConstraint(SpringLayout.WEST, lblCountry, 0, SpringLayout.WEST, lblErrorClient);
+		slPanelInputFormCustomer.putConstraint(SpringLayout.WEST, lblErrorClient, 20, SpringLayout.WEST,
+				panelInputFormCustomer);
+		panelInputFormCustomer.add(lblErrorClient);
+
+		
+		
 
 		// TEXT FIELDS //
 
@@ -647,6 +665,8 @@ public class ProjectView implements IView {
 				textFieldCity);
 		panelInputFormCustomer.add(textFieldCountry);
 		textFieldCountry.setColumns(10);
+		
+		
 
 		// Save Button
 		JButton btnSaveCustomer = new JButton("Speichern");
@@ -715,6 +735,16 @@ public class ProjectView implements IView {
 		slPanelInputFormService.putConstraint(SpringLayout.WEST, lblExternalRate, 20, SpringLayout.WEST,
 				panelInputFormService);
 		panelInputFormService.add(lblExternalRate);
+		
+		lblErrorService = new JLabel();
+		lblErrorService.setName("lblErrorService");
+		lblErrorService.setForeground(new Color(255, 140, 0));
+		lblErrorService.setVisible(false);
+		slPanelInputFormService.putConstraint(SpringLayout.NORTH, lblErrorService, 20, SpringLayout.SOUTH, lblExternalRate);
+		slPanelInputFormService.putConstraint(SpringLayout.WEST, lblExternalRate, 0, SpringLayout.WEST, lblErrorService);
+		slPanelInputFormService.putConstraint(SpringLayout.WEST, lblErrorService, 20, SpringLayout.WEST,
+				panelInputFormService);
+		panelInputFormService.add(lblErrorService);
 
 		// TEXT FIELDS //
 
@@ -799,6 +829,50 @@ public class ProjectView implements IView {
 	}
 
 	// Added Getters and Setters (Kevin)
+	
+	public boolean getLblErrorVisible() {
+		return lblErrorClient.isVisible();
+	}
+	
+	public JLabel getLblErrorClient() {
+		return lblErrorClient;
+	}
+
+	public void setLblErrorClient(JLabel lblErrorClient) {
+		this.lblErrorClient = lblErrorClient;
+	}
+
+	public JLabel getLblErrorService() {
+		return lblErrorService;
+	}
+
+	public void setLblErrorVisible(boolean b) {
+		lblErrorClient.setVisible(b);
+	}
+
+	/**
+	 * Displays an error Label for wrong inputs
+	 * @author kevin
+	 * @param lbl: label that will be modified
+	 * @param message: error message that will be shown
+	 * @param duration: duration in milliseconds
+	 */
+	public void showErrorMessage(JLabel lbl, String message, long duration) {
+		lbl.setText(message);
+		if (!getLblErrorVisible()) {
+			Timer timer = new Timer();
+			TimerTask task = new TimerTask() {
+				@Override
+				public void run() {
+					lbl.setVisible(false);
+					setLblErrorVisible(false);
+				}
+			};
+			timer.schedule(task, duration);
+		}
+		lbl.setVisible(true);
+	}
+	
 	public String getTextFieldClientName() {
 		return textFieldClientName.getText();
 	}
