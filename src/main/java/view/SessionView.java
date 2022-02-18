@@ -6,12 +6,12 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-import java.util.regex.PatternSyntaxException;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -23,12 +23,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
@@ -36,7 +35,6 @@ import main.java.controller.DatePicker;
 import main.java.controller.SessionController;
 import main.java.model.SessionModel;
 import main.java.model.StaticActions;
-import javax.swing.SwingConstants;
 
 public class SessionView implements IView {
 
@@ -60,6 +58,22 @@ public class SessionView implements IView {
 	private JTextField textFieldComment;
 
 
+	public class DateCellRenderer extends DefaultTableCellRenderer{
+
+		private static final long serialVersionUID = 1L;
+
+		public java.awt.Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
+			super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			if (value instanceof java.util.Date) {
+				// Use SimpleDateFormat class to get a formatted String from Date object.
+				DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm"); 
+				String strDate = dateFormat.format(value) + " Uhr";
+				this.setText(strDate);
+			}
+			return this;
+		}
+	}
+	
 	public SessionView(SessionController sessionController) {
 		sessionPanel = new JPanel();
 		sessionPanel.setName("dashboardMainPane");
@@ -125,11 +139,15 @@ public class SessionView implements IView {
 		}
 		scrollPaneTable.setViewportView(table);
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
-		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		DefaultTableCellRenderer leftRenderer = new DefaultTableCellRenderer();
 		leftRenderer.setHorizontalAlignment(JLabel.LEFT);
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
 		rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+		DefaultTableCellRenderer dateRenderer = new DateCellRenderer();
+		dateRenderer.setHorizontalAlignment(JLabel.RIGHT);
+		
+		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.setAutoCreateRowSorter(true);
 		table.getColumnModel().getColumn(0).setPreferredWidth(80);
@@ -141,9 +159,9 @@ public class SessionView implements IView {
 		table.getColumnModel().getColumn(3).setPreferredWidth(240);
 		table.getColumnModel().getColumn(3).setCellRenderer(leftRenderer);
 		table.getColumnModel().getColumn(4).setPreferredWidth(120);
-		table.getColumnModel().getColumn(4).setCellRenderer(rightRenderer);
+		table.getColumnModel().getColumn(4).setCellRenderer(dateRenderer);
 		table.getColumnModel().getColumn(5).setPreferredWidth(120);
-		table.getColumnModel().getColumn(5).setCellRenderer(rightRenderer);
+		table.getColumnModel().getColumn(5).setCellRenderer(dateRenderer);
 		table.getColumnModel().getColumn(6).setPreferredWidth(70);
 		table.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
 		sorter = new TableRowSorter<>(table.getModel());
@@ -446,7 +464,6 @@ public class SessionView implements IView {
 		btnSetEntryDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				textFieldDate.setText(new DatePicker(popupFrame).setPickedDate().replace("-", "."));
-				System.out.print(textFieldDate.getText());
 			}
 		});
 		
@@ -632,4 +649,5 @@ public class SessionView implements IView {
 	public void setContentPane(JPanel contentPane) {
 		this.sessionPanel = contentPane;
 	}
+	
 }

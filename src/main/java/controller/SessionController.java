@@ -4,18 +4,15 @@ import java.awt.event.ActionEvent;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.swing.RowFilter;
 import javax.swing.RowFilter.ComparisonType;
-import javax.swing.RowSorter;
-import javax.swing.SortOrder;
 import javax.swing.event.DocumentEvent;
-import javax.swing.table.TableRowSorter;
 
 import main.java.model.CustomTableModel;
 import main.java.model.IModel;
@@ -69,24 +66,39 @@ public class SessionController implements IController {
 				+ " ORDER BY h_id "
 				+ "DESC LIMIT 15;");
 		Object[][] resultArray = new Object[result.size()][7];
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		formatter.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
+		
 		for (int i = 0; i < result.size(); i++) {
 			for (int j = 0; j < 7; j++) {
 				ArrayList<Object> row = (ArrayList<Object>) result.get(i);
 				String value = row.get(j).toString();
-				if (j == 0) {
-					value = LocalDate.parse(value)
-							.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-				} else if (j == 4 || j == 5) {				
+				// If column is for start or end time
+				if (j == 4 || j == 5) {				
 					String[] split = value.split("\\.");
 					value = split[0] + ".000";
-					value = LocalDateTime.parse(value, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"))
-							.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")) + " Uhr";
-				} else if (j == 6) {
-					String hours = (Integer.parseInt(value) / 60)+"";
-					String minutes = (Integer.parseInt(value) % 60)+"";
-					value = ("00" + hours).substring(hours.length()) + ":" + ("00" + minutes).substring(minutes.length()) + " h";
+					java.util.Date date = null;
+					try {
+						date = formatter.parse(value);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+							//.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")) + " Uhr";
+					
+					//LocalDateTime localDateTime = LocalDateTime.parse(value, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS"));
+					resultArray[i][j] = date;
+				// else just convert to String 
+				} else {
+					if (j == 0) {
+						value = LocalDate.parse(value)
+								.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+					} else if (j == 6) {
+						String hours = (Integer.parseInt(value) / 60)+"";
+						String minutes = (Integer.parseInt(value) % 60)+"";
+						value = ("00" + hours).substring(hours.length()) + ":" + ("00" + minutes).substring(minutes.length()) + " h";
+					}
+					resultArray[i][j] = value;
 				}
-				resultArray[i][j] = value;
 			}
 		}
 		this.tableData.setData(resultArray);		
@@ -118,8 +130,13 @@ public class SessionController implements IController {
 		String serviceFilter = "";
 		String startFilter = sessionView.getTextFieldFrom().getText();
 		String endFilter = sessionView.getTextFieldTo().getText();
+		
+		System.out.println(startFilter);
+		System.out.println(endFilter);
+		
 		List<RowFilter<Object,Object>> filters = new ArrayList<RowFilter<Object,Object>>();
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-YYYY");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		formatter.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
 		
 		if (sessionView.getComboBoxProject().getItemCount() > 0) {
 			projectFilter = sessionView.getComboBoxProject().getSelectedItem().toString();
@@ -141,7 +158,7 @@ public class SessionController implements IController {
 		}
 		if (!startFilter.equals("")) {
 			String start = startFilter.split(" ",1)[0].replace(".", "-");
-			Date startDate = null;
+			java.util.Date startDate = null;
 			try {
 				startDate = formatter.parse(start);
 				System.out.println("Filter from: " + startDate);
@@ -152,8 +169,9 @@ public class SessionController implements IController {
 				filters.add(RowFilter.dateFilter(ComparisonType.AFTER, startDate, 4));			
 		}
 		if (!endFilter.equals("")) {
-			String end = startFilter.split(" ",1)[0].replace(".", "-");
-			Date endDate = null;
+			String end = endFilter.split(" ",1)[0].replace(".", "-");
+			java.util.Date endDate = null;
+			System.out.println(end);
 			try {
 				endDate = formatter.parse(end);
 				System.out.println("Filter to: " + endDate);
@@ -161,7 +179,8 @@ public class SessionController implements IController {
 				System.out.println("Error while parsing Date: " + end);
 			}
 			if (endDate != null)
-				filters.add(RowFilter.dateFilter(ComparisonType.AFTER, endDate, 5));				
+				endDate = new Date(endDate.getTime() + (1000 * 60 * 60 * 24)); // add one day, so it is included
+				filters.add(RowFilter.dateFilter(ComparisonType.BEFORE, endDate, 5));
 		}
 		
 		
@@ -201,6 +220,8 @@ public class SessionController implements IController {
 			actionLoadClients();
 			queryData();
 			sessionView.getSorter().setRowFilter(null);
+			sessionView.getTextFieldFrom().setText("");
+			sessionView.getTextFieldTo().setText("");
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_SET_PROJECT)) {
 			this.sessionModel.setProjectSet(true);
