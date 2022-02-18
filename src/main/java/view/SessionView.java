@@ -94,7 +94,7 @@ public class SessionView implements IView {
 		panelHourEntryOverview.setLayout(sl_panelHourEntryOverview);
 
 		// Titel Label
-		JLabel lblSessionOverviewHeadline = new JLabel("Session \u00DCbersicht");
+		JLabel lblSessionOverviewHeadline = new JLabel("Sessionübersicht");
 		sl_panelHourEntryOverview.putConstraint(SpringLayout.WEST, lblSessionOverviewHeadline, 10, SpringLayout.WEST,
 				panelHourEntryOverview);
 		lblSessionOverviewHeadline.setName("lblHeadTitel");

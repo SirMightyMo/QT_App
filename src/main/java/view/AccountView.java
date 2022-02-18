@@ -56,7 +56,7 @@ public class AccountView implements IView {
 		lblNewLabel_1_2_2.setBounds(0, 0, 260, 31);
 		panel.add(lblNewLabel_1_2_2);
 		
-		JLabel lblNewLabel_2 = new JLabel("W\u00E4hlen sie die Art von Benachrichtigungen, die sie erhalten m\u00F6chten:");
+		JLabel lblNewLabel_2 = new JLabel("Wählen sie die Art von Benachrichtigungen, die sie erhalten möchten:");
 		lblNewLabel_2.setBounds(0, 30, 400, 31);
 		panel.add(lblNewLabel_2);
 		
@@ -72,7 +72,7 @@ public class AccountView implements IView {
 		chckbxNewCheckBox.setOpaque(false);
 		chckbxNewCheckBox.setContentAreaFilled(false);
 		
-		JCheckBox chckbxNewCheckBox_4 = new JCheckBox("Passwort \u00C4nderungen");
+		JCheckBox chckbxNewCheckBox_4 = new JCheckBox("Passwortänderungen");
 		chckbxNewCheckBox_4.setBounds(10, 171, 210, 31);
 		panel.add(chckbxNewCheckBox_4);
 		chckbxNewCheckBox_4.setOpaque(false);
@@ -96,7 +96,7 @@ public class AccountView implements IView {
 		panel_1.setBounds(30, 252, 457, 247);
 		accountPanel1.add(panel_1);
 		
-		JLabel lblNewLabel_1_2_1_3 = new JLabel("Passwort \u00E4ndern");
+		JLabel lblNewLabel_1_2_1_3 = new JLabel("Passwort ändern");
 		lblNewLabel_1_2_1_3.setBounds(0, 0, 420, 31);
 		panel_1.add(lblNewLabel_1_2_1_3);
 		
@@ -133,11 +133,11 @@ public class AccountView implements IView {
 		panel_1_1.setBounds(497, 252, 457, 247);
 		accountPanel1.add(panel_1_1);
 		
-		JLabel lblNewLabel_1_2_1_2 = new JLabel("Sicherheitsfrage \u00E4ndern");
+		JLabel lblNewLabel_1_2_1_2 = new JLabel("Sicherheitsfrage ändern");
 		lblNewLabel_1_2_1_2.setBounds(0, 0, 420, 31);
 		panel_1_1.add(lblNewLabel_1_2_1_2);
 		
-		JLabel lblNewLabel_1_2_1_1_2_1 = new JLabel("Sicherheitsfrage w\u00E4hlen");
+		JLabel lblNewLabel_1_2_1_1_2_1 = new JLabel("Sicherheitsfrage wählen");
 		lblNewLabel_1_2_1_1_2_1.setBounds(10, 60, 150, 31);
 		panel_1_1.add(lblNewLabel_1_2_1_1_2_1);
 		
@@ -197,7 +197,7 @@ public class AccountView implements IView {
 		panel_1_1_1.setBounds(30, 835, 457, 65);
 		accountPanel1.add(panel_1_1_1);
 		
-		JButton btnNewButton = new JButton("\u00C4nderungen verwerfen");
+		JButton btnNewButton = new JButton("Änderungen verwerfen");
 		btnNewButton.setBounds(40, 11, 170, 36);
 		panel_1_1_1.add(btnNewButton);
 		btnNewButton.setContentAreaFilled(false);
@@ -212,7 +212,7 @@ public class AccountView implements IView {
 		});
 		
 		
-		JButton btnnderungenSpeichern = new JButton("\u00C4nderungen speichern");
+		JButton btnnderungenSpeichern = new JButton("Änderungen speichern");
 		btnnderungenSpeichern.setBounds(242, 11, 170, 36);
 		panel_1_1_1.add(btnnderungenSpeichern);
 		btnnderungenSpeichern.setContentAreaFilled(false);

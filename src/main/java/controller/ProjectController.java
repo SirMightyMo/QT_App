@@ -149,17 +149,17 @@ public class ProjectController implements IController {
 			return;
 		}
 		
-		if (houseNumber.length() > 30) {
+		if (houseNumber.length() > 20) {
 			projectView.showErrorMessage(projectView.getLblErrorClient(), "Hausnummer zu lang, max. 20 Zeichen", 5000);
 			return;
 		}
 		
-		if (city.length() > 30) {
+		if (city.length() > 50) {
 			projectView.showErrorMessage(projectView.getLblErrorClient(), "Ort zu lang, max. 50 Zeichen", 5000);
 			return;
 		}
 		
-		if (country.length() > 30) {
+		if (country.length() > 50) {
 			projectView.showErrorMessage(projectView.getLblErrorClient(), "Land zu lang, max. 50 Zeichen", 5000);
 			return;
 		}

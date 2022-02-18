@@ -175,7 +175,7 @@ public class DashboardView implements IView{
 		lblUpcoming.setBounds(10, 11, 75, 28);
 		upcomingPanel.add(lblUpcoming);
 		
-		JLabel lblActivities = new JLabel("Aktivit\u00E4ten");
+		JLabel lblActivities = new JLabel("Aktivitäten");
 		lblActivities.setForeground(Color.WHITE);
 		lblActivities.setBounds(10, 30, 75, 28);
 		upcomingPanel.add(lblActivities);

@@ -46,21 +46,23 @@ class TimerViewGUITest {
 
 	@Test
 	void integrationTest() {
-		window.button("btnMenuDashboard").click();
 		window.button("btnMenuProjects").click();
-		window.button("btnMenuSessions").click();
-		window.button("btnMenuDashboard").click();
-		window.button("btnStart").click();
-		window.button("btnStop").click();
-		window.button("btnSave").click();
-		window.button("btnMenuProjects").click();
-		window.tabbedPane().selectTab(1);
-		window.tabbedPane().selectTab(2);
 		window.tabbedPane().selectTab(3);
-		window.tabbedPane().selectTab(0);
-		window.button("btnMenuSessions").click();
-		window.tabbedPane().selectTab(1);
-		window.tabbedPane().selectTab(0);
+		window.textBox("textFieldNewService").enterText("abc");
+//		window.button("btnMenuProjects").click();
+//		window.button("btnMenuSessions").click();
+//		window.button("btnMenuDashboard").click();
+//		window.button("btnStart").click();
+//		window.button("btnStop").click();
+//		window.button("btnSave").click();
+//		window.button("btnMenuProjects").click();
+//		window.tabbedPane().selectTab(1);
+//		window.tabbedPane().selectTab(2);
+//		window.tabbedPane().selectTab(3);
+//		window.tabbedPane().selectTab(0);
+//		window.button("btnMenuSessions").click();
+//		window.tabbedPane().selectTab(1);
+//		window.tabbedPane().selectTab(0);
 		
 
 		
