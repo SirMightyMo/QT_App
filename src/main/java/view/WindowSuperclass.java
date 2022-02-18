@@ -42,7 +42,7 @@ public abstract class WindowSuperclass extends JFrame implements IView {
 		
 		setFont(dinNeuzeitGrotesk_regular.deriveFont(12.0f));
 		setIconImage(Toolkit.getDefaultToolkit()
-				.getImage(TimerView.class.getResource("/main/resources/img/icons/qtproject_placeholder.gif")));
+				.getImage(TimerView.class.getResource("/main/resources/img/icons/tracker.gif")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //TODO: Set to hide when application final, and overwrite main window
 		
 	}

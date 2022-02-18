@@ -59,12 +59,12 @@ public final class RegistrationController extends Hashing implements IController
 			if (!usernameIsTaken(chosenUsername)) {
 				return true;				
 			} else {
-				view.setErrorMessage("Username already taken!");
+				view.setErrorMessage("Benutzername bereits vergeben");
 				return false;
 			}
 		}
 		else {
-			view.setErrorMessage("Choose a username!");
+			view.setErrorMessage("Benutzername darf nicht leer sein");
 			return false;
 		}
 	}
@@ -84,7 +84,7 @@ public final class RegistrationController extends Hashing implements IController
 		}
 		
 		else {
-			view.setErrorMessage("Invalid E-Mail!");
+			view.setErrorMessage("Ungültige E-Mailadresse");
 			return false;
 		}
 	}
@@ -102,11 +102,11 @@ public final class RegistrationController extends Hashing implements IController
 		char[] pwConfirm = this.view.getPasswordConfirmInput();
 		
 		if (pwIn.length < 6){
-			view.setErrorMessage("Password needs at least 6 characters.");
+			view.setErrorMessage("Passwort muss mind. 6 Zeichen lang sein");
 			return false;
 		}
 		if (!Arrays.equals(pwIn, pwConfirm)) {			
-			view.setErrorMessage("Passwords not matching.");
+			view.setErrorMessage("Passwörter stimmen nicht überein");
 			return false;
 		}
 		return true;
@@ -120,7 +120,7 @@ public final class RegistrationController extends Hashing implements IController
 			return true;
 		}
 		else {
-			view.setErrorMessage("Choose a security-question and answer it!");
+			view.setErrorMessage("Keine Sicherheitsfrage gewählt");
 			return false;
 		}
 	}
