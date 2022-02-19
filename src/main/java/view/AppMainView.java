@@ -222,6 +222,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnPaneMenuAccount.setLayout(null);
 
 		JButton btnMenuAccount = new JButton("Account");
+		btnMenuAccount.setName("btnMenuAccount");
 		btnMenuAccount.setIcon(LayoutManager.getImageIcon(LayoutManager.ICON_ACCOUNT, 20, 20));
 		btnMenuAccount.setForeground(Color.WHITE);
 		btnMenuAccount.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));

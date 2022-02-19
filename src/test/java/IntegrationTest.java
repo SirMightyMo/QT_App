@@ -120,7 +120,16 @@ class IntegrationTest {
 	void testProjects_CreateNewClient_InvalidZip() {
 		window.button("btnMenuProjects").click();
 		window.tabbedPane().selectTab(2);
-		window.textBox("textFieldClientName").doubleClick().enterText("Anonymous Company");
+		window.textBox("textFieldClientName").setText("");
+		window.textBox("textFieldContact").setText("");
+		window.textBox("textFieldTelephone").setText("");
+		window.textBox("textFieldMobile").setText("");
+		window.textBox("textFieldStreet").setText("");
+		window.textBox("textFieldHouseNumber").setText("");
+		window.textBox("textFieldZip").setText("");
+		window.textBox("textFieldCity").setText("");
+		window.textBox("textFieldCountry").setText("");
+		window.textBox("textFieldClientName").click().enterText("The New Company");
 		window.textBox("textFieldContact").enterText("Mister X");
 		window.textBox("textFieldTelephone").enterText("0405554444");
 		window.textBox("textFieldMobile").enterText("0172444889998");
@@ -182,7 +191,6 @@ class IntegrationTest {
 		window.textBox("textFieldClient").enterText("Apple");
 		window.textBox("textFieldStartDate").setText("03-03-2020");
 		window.textBox("textFieldEndDate").setText("04-04-2030");
-		window.checkBox("chckbxActive").click();
 		window.button("btnSaveProject").click();
 	}
 
@@ -343,7 +351,6 @@ class IntegrationTest {
 		window.label("lblNewLabel_19").requireVisible();
 		window.label("lblNewLabel_20").requireVisible();
 		window.label("lblNewLabel_21").requireVisible();
-		window.checkBox("chckbxActive").requireVisible();
 		window.textBox("textFieldProjectName").requireVisible();
 		window.textBox("textFieldClient").requireVisible();
 		window.textBox("textFieldStartDate").requireVisible();

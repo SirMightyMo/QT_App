@@ -499,7 +499,7 @@ public class SessionView implements IView {
 		textFieldPause.setHorizontalAlignment(SwingConstants.CENTER);
 		sl_panel_input_form.putConstraint(SpringLayout.EAST, lblPause, -5, SpringLayout.WEST, textFieldPause);
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, textFieldPause, 0, SpringLayout.NORTH, textFieldEnd);
-		textFieldPause.setName("textFieldEndDateNZ");
+		textFieldPause.setName("textFieldPause");
 		panel_input_form.add(textFieldPause);
 		
 		JLabel lblComment = new JLabel("Kommentar:");
