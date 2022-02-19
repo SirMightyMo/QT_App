@@ -328,4 +328,8 @@ public class AppMainView extends WindowSuperclass implements IView {
 	public void setSessionView(SessionView sessionView) {
 		this.sessionView = sessionView;
 	}
+	
+	public void setFrameToLeftUpperCorner(){
+		setLocation(0, 0);
+	}
 }

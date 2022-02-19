@@ -11,6 +11,7 @@ import main.java.model.User;
 import main.java.view.AppMainView;
 
 import java.awt.Dimension;
+import java.awt.Robot;
 import java.util.concurrent.TimeUnit;
 
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
@@ -20,9 +21,9 @@ import org.assertj.swing.fixture.FrameFixture;
 /**
  * This class tests the application as a whole. For testing purposes<br>
  * a robot is created, that simulates user inputs in different scenarios.<br>
+ * 
  * @author kevin
  */
-
 class IntegrationTest {
 	private FrameFixture window;
 
@@ -38,6 +39,7 @@ class IntegrationTest {
 		AppMainView frame = GuiActionRunner.execute(() -> new AppMainController().getAppMainView());
 		window = new FrameFixture(frame);
 		window.show(new Dimension(1850, 1080)); // shows the frame to test in needed Dimension (see AppMainView Class)
+		frame.setFrameToLeftUpperCorner();
 	}
 
 	@AfterEach
@@ -48,10 +50,138 @@ class IntegrationTest {
 
 	@Test
 	void integrationTest() {
-		testAllElementsVisible_true(); // Test if all elements are visible
-		testTimer_scenario1();
+//		testAllElementsVisible_true(); // Test if all elements are visible
+//		testTimer_scenario1();
+//		testTimer_scenario2();
+//		testDashboard_CreateProjectFromDashboard();
+//		testProjects_CreateProjectFromProjects();
+//		testProjects_CreateNewClient_ValidInputs();
+		testProjects_CreateNewClient_InvalidZip();
 	}
-	
+
+	/**
+	 * Following steps happen in this scenario:<br>
+	 * 1 Enter a client name (too long)<br>
+	 * 2 Enter a contact<br>
+	 * 3 Enter phone<br>
+	 * 4 Enter mobile<br>
+	 * 5 Enter street<br>
+	 * 6 Enter house number<br>
+	 * 7 Enter zip<br>
+	 * 8 Enter city<br>
+	 * 9 Enter country<br>
+	 * 10 save
+	 * 
+	 * @author kevin
+	 */
+	void testProjects_CreateNewClient_InvalidZip() {
+		window.button("btnMenuProjects").click();
+		window.tabbedPane().selectTab(2);
+		window.textBox("textFieldClientName").doubleClick().enterText("Anonymous Company");
+		window.textBox("textFieldContact").enterText("Mister X");
+		window.textBox("textFieldTelephone").enterText("0405554444");
+		window.textBox("textFieldMobile").enterText("0172444889998");
+		window.textBox("textFieldStreet").enterText("Anonyme Straße");
+		window.textBox("textFieldHouseNumber").enterText("100A");
+		window.textBox("textFieldZip").enterText("D-12345");
+		window.textBox("textFieldCity").enterText("Anonymous Town");
+		window.textBox("textFieldCountry").enterText("Deutschland");
+		window.button("btnSaveCustomer").click();
+		window.textBox("textFieldZip").setText("").enterText("12345");
+		window.button("btnSaveCustomer").click();
+	}
+
+	/**
+	 * Following steps happen in this scenario:<br>
+	 * 1 Enter a client name<br>
+	 * 2 Enter a contact<br>
+	 * 3 Enter phone<br>
+	 * 4 Enter mobile<br>
+	 * 5 Enter street<br>
+	 * 6 Enter house number<br>
+	 * 7 Enter zip<br>
+	 * 8 Enter city<br>
+	 * 9 Enter country<br>
+	 * 10 save
+	 * 
+	 * @author kevin
+	 */
+	void testProjects_CreateNewClient_ValidInputs() {
+		window.button("btnMenuProjects").click();
+		window.tabbedPane().selectTab(2);
+		window.textBox("textFieldClientName").enterText("Anonymous Company");
+		window.textBox("textFieldContact").enterText("Mister X");
+		window.textBox("textFieldTelephone").enterText("0405554444");
+		window.textBox("textFieldMobile").enterText("0172444889998");
+		window.textBox("textFieldStreet").enterText("Anonyme Straße");
+		window.textBox("textFieldHouseNumber").enterText("100A");
+		window.textBox("textFieldZip").enterText("12345");
+		window.textBox("textFieldCity").enterText("Anonymous Town");
+		window.textBox("textFieldCountry").enterText("Deutschland");
+		window.button("btnSaveCustomer").click();
+	}
+
+	/**
+	 * Following steps happen in this scenario:<br>
+	 * 1 Enter a project name<br>
+	 * 2 Select a client<br>
+	 * 3 Set the start date<br>
+	 * 4 Set the end date<br>
+	 * 5 Set project active<br>
+	 * 6 Save new project<br>
+	 * 
+	 * @author kevin
+	 */
+	void testProjects_CreateProjectFromProjects() {
+		window.button("btnMenuProjects").click();
+		window.tabbedPane().selectTab(1);
+		window.textBox("textFieldProjectName").enterText("Bytecode Velocity");
+		window.textBox("textFieldClient").enterText("Apple");
+		window.textBox("textFieldStartDate").setText("03-03-2020");
+		window.textBox("textFieldEndDate").setText("04-04-2030");
+		window.checkBox("chckbxActive").click();
+		window.button("btnSaveProject").click();
+	}
+
+	/**
+	 * Following steps happen in this scenario:<br>
+	 * 1 Enter a project name<br>
+	 * 2 Select a client<br>
+	 * 3 Set the start date<br>
+	 * 4 Set the end date<br>
+	 * 5 Save new project<br>
+	 * 
+	 * @author kevin
+	 */
+	void testDashboard_CreateProjectFromDashboard() {
+		window.button("btnMenuDashboard").click();
+		window.moveToFront();
+		window.textBox("textFieldProjectname").enterText("Runtime Terror");
+		window.comboBox("dropDownClient").selectItem("Apple");
+		window.textBox("txtStartTimeNPV").setText("01-01-2021");
+		window.textBox("txtEndTimeNPV").setText("02-02-2022");
+		window.button("btnSaveNPV").click();
+	}
+
+	/**
+	 * Following steps happen in this scenario:<br>
+	 * 1 Select a service<br>
+	 * 2 Select a project<br>
+	 * 3 Start timer<br>
+	 * 4 Stop timer<br>
+	 * 5 Reset
+	 * 
+	 * @author kevin
+	 */
+	void testTimer_scenario2() {
+		window.button("btnMenuDashboard").click();
+		window.comboBox("serviceDropdown").click().selectItem("Frontend Design");
+		window.comboBox("comboBoxProject").click().selectItem("Projekt 2");
+		window.button("btnStart").click();
+		window.button("btnStop").click();
+		window.button("btnReset").click();
+	}
+
 	/**
 	 * Following steps happen in this scenario:<br>
 	 * 1 Select a project<br>
@@ -60,10 +190,11 @@ class IntegrationTest {
 	 * 4 Pause timer<br>
 	 * 5 Stop timer<br>
 	 * 6 Enter a comment<br>
-	 * 7 Save entry 
+	 * 7 Save entry
+	 * 
 	 * @author kevin
 	 */
-	private void testTimer_scenario1() {
+	void testTimer_scenario1() {
 		window.button("btnMenuDashboard").click();
 		window.comboBox("comboBoxProject").click().selectItem("Projekt 1");
 		window.comboBox("serviceDropdown").click().selectItem("Backend Stuff");
@@ -74,6 +205,11 @@ class IntegrationTest {
 		window.button("btnSaveTimerView").click();
 	}
 
+	/**
+	 * Tests if all elements are visible.
+	 * 
+	 * @author kevin
+	 */
 	void testAllElementsVisible_true() {
 		//////////////////////////////////////////////////////
 		///////////////////// Dashboard /////////////////////
@@ -135,13 +271,14 @@ class IntegrationTest {
 		window.label("lblCurrentProjects").requireVisible();
 		window.button("btnSaveNPV").requireVisible();
 		window.button("btnLoadProjectsNPV").requireVisible();
-		
+
 		//////////////////////////////////////////////////////
 		///////////////////// Projekte //////////////////////
 		////////////////////////////////////////////////////
-		
+
 		// Projektübersicht (Tab 1)
 		window.button("btnMenuProjects").click();
+		window.tabbedPane().selectTab(0);
 		window.label("lblProjects").requireVisible();
 		window.comboBox("comboBoxProject").requireVisible();
 		window.button("btnLoadProjects").requireVisible();
@@ -155,7 +292,7 @@ class IntegrationTest {
 		window.button("btnSetStartDate_1").requireVisible();
 		window.button("btnSetStartDate_1").requireVisible();
 		window.panel("panel_project_overview").requireVisible();
-		
+
 		// Neues Projekt (Tab 2)
 		window.tabbedPane().selectTab(1);
 		window.label("lblNewProjectHead").requireVisible();
@@ -163,14 +300,13 @@ class IntegrationTest {
 		window.label("lblNewLabel_19").requireVisible();
 		window.label("lblNewLabel_20").requireVisible();
 		window.label("lblNewLabel_21").requireVisible();
-		window.panel("panel_new_project").requireVisible();
-		window.panel("panel_input_form").requireVisible();
 		window.checkBox("chckbxActive").requireVisible();
 		window.textBox("textFieldProjectName").requireVisible();
 		window.textBox("textFieldClient").requireVisible();
 		window.textBox("textFieldStartDate").requireVisible();
 		window.textBox("textFieldEndDate").requireVisible();
-		
+		window.button("btnSaveProject").requireVisible();
+
 		// Neuer Kunde (Tab 3)
 		window.tabbedPane().selectTab(2);
 		window.label("lblNewCustomer").requireVisible();
@@ -193,7 +329,7 @@ class IntegrationTest {
 		window.textBox("textFieldCity").requireVisible();
 		window.textBox("textFieldCountry").requireVisible();
 		window.button("btnSaveCustomer").requireVisible();
-		
+
 		// Neue Leistung (Tab 4)
 		window.tabbedPane().selectTab(3);
 		window.label("lblServiceHead").requireVisible();
@@ -204,11 +340,11 @@ class IntegrationTest {
 		window.textBox("textFieldInternalRate").requireVisible();
 		window.textBox("textFieldExternalRate").requireVisible();
 		window.button("btnSaveService").requireVisible();
-		
+
 		//////////////////////////////////////////////////////
 		///////////////////// Sitzungen /////////////////////
 		////////////////////////////////////////////////////
-		
+
 		// Tab 1
 		window.button("btnMenuSessions").click();
 		window.label("lblHeadTitel").requireVisible();
@@ -227,7 +363,7 @@ class IntegrationTest {
 		window.textBox("textFieldTo").requireVisible();
 		window.button("btnSetStartDate").requireVisible();
 		window.button("btnSetEndDate").requireVisible();
-		
+
 		// Tab 2
 		window.tabbedPane().selectTab(1);
 		window.label("lblNewHourEntryHeadline").requireVisible();
@@ -248,7 +384,7 @@ class IntegrationTest {
 		window.textBox("textFieldPause").requireVisible();
 		window.label("lblCommentNZ").requireVisible();
 		window.textBox("textFieldCommentNZ").requireVisible();
-		
+
 		//////////////////////////////////////////////////////
 		///////////////////// Account ///////////////////////
 		////////////////////////////////////////////////////
@@ -280,7 +416,7 @@ class IntegrationTest {
 		window.label("lblNewLabel_1_1_1").requireVisible();
 		window.label("lblNewLabel_1_2").requireVisible();
 		window.button("btnNewButton").requireVisible();
-		
+
 	}
 
 }
