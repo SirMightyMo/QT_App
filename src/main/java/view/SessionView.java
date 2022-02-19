@@ -41,10 +41,10 @@ import main.java.model.StaticActions;
 
 public class SessionView implements IView {
 
-	private JPanel sessionPanel;
 	private static final long serialVersionUID = 1L;
-	private JPanel contentPane; // Container
-	JTabbedPane tabbedPane;
+	private JPanel sessionPanel;
+	private JPanel panel_input_form;
+	private JTabbedPane tabbedPane;
 	private JTable table;
 	private TableRowSorter<TableModel> sorter;
 	private JComboBox<String> comboBoxProject = new JComboBox<String>();
@@ -61,6 +61,7 @@ public class SessionView implements IView {
 	private JTextField textFieldComment;
 	private JLabel lblErrorMessageNewEntry;
 	private JButton btnSaveEntry;
+	private JButton btnResetEntry;
 	private JButton btnEditEntry;
 	private JButton btnDeleteEntry;
 
@@ -72,7 +73,7 @@ public class SessionView implements IView {
 			super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 			if (value instanceof java.util.Date) {
 				// Use SimpleDateFormat class to get a formatted String from Date object.
-				DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy hh:mm"); 
+				DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm"); 
 				String strDate = dateFormat.format(value) + " Uhr";
 				this.setText(strDate);
 			}
@@ -175,8 +176,10 @@ public class SessionView implements IView {
 		table.getColumnModel().getColumn(6).setCellRenderer(dateRenderer);
 		table.getColumnModel().getColumn(7).setPreferredWidth(120);
 		table.getColumnModel().getColumn(7).setCellRenderer(dateRenderer);
-		table.getColumnModel().getColumn(8).setPreferredWidth(70);
+		table.getColumnModel().getColumn(8).setPreferredWidth(50);
 		table.getColumnModel().getColumn(8).setCellRenderer(rightRenderer);
+		table.getColumnModel().getColumn(9).setPreferredWidth(50);
+		table.getColumnModel().getColumn(9).setCellRenderer(rightRenderer);
 		sorter = new TableRowSorter<>(table.getModel());
 		sortTableDescendingDate();
 		table.setRowSorter(sorter);
@@ -191,9 +194,6 @@ public class SessionView implements IView {
 			    		btnDeleteEntry.setVisible(false);
 			    		btnEditEntry.setVisible(false);
 			    	}
-//			      int row = target.getSelectedRow();
-//			      int column = target.getSelectedColumn();
-			     // do some stuff
 			    }
 			  }
 		});
@@ -362,10 +362,10 @@ public class SessionView implements IView {
 		lblNewHourEntryHeadline.setFont(new Font("Tahoma", Font.BOLD, 18));
 		panelNewHourEntry.add(lblNewHourEntryHeadline);
 
-		JPanel panel_input_form = new JPanel();
+		panel_input_form = new JPanel();
 		slPanelNewHourEntry.putConstraint(SpringLayout.EAST, panel_input_form, -850, SpringLayout.EAST,
 				panelNewHourEntry);
-		panel_input_form.setPreferredSize(new Dimension(350, 10));
+		panel_input_form.setPreferredSize(new Dimension(400, 500));
 		panel_input_form.setName("panel_input_form");
 		slPanelNewHourEntry.putConstraint(SpringLayout.NORTH, panel_input_form, 80, SpringLayout.NORTH,
 				panelNewHourEntry);
@@ -382,8 +382,6 @@ public class SessionView implements IView {
 		panel_input_form.add(lblProject);
 
 		dropDownProjectName = new JComboBox<String>();
-		sl_panel_input_form.putConstraint(SpringLayout.WEST, dropDownProjectName, 73, SpringLayout.WEST,
-				panel_input_form);
 		dropDownProjectName.setName("dropDownProjectName");
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, lblProject, 3, SpringLayout.NORTH,
 				dropDownProjectName);
@@ -468,11 +466,12 @@ public class SessionView implements IView {
 		btnSaveEntry.setActionCommand(StaticActions.ACTION_SESSION_NEW_SAVE);
 		panel_input_form.add(btnSaveEntry);
 		
-		JButton btnResetEntry = new JButton("Reset");
+		btnResetEntry = new JButton("Reset");
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, btnResetEntry, 0, SpringLayout.NORTH, btnSaveEntry);
 		sl_panel_input_form.putConstraint(SpringLayout.EAST, btnResetEntry, -10, SpringLayout.WEST, btnSaveEntry);
 		btnResetEntry.setName("btnResetInputFields");
-		btnResetEntry.setActionCommand(StaticActions.ACTION_SESSION_OVERVIEW_RESET);
+		btnResetEntry.addActionListener(sessionController);
+		btnResetEntry.setActionCommand(StaticActions.ACTION_SESSION_NEW_RESET);
 		panel_input_form.add(btnResetEntry);
 		
 		JLabel lblEnd = new JLabel("Bis:");
@@ -509,6 +508,8 @@ public class SessionView implements IView {
 		panel_input_form.add(lblComment);
 		
 		textFieldComment = new JTextField(20);
+		sl_panel_input_form.putConstraint(SpringLayout.WEST, dropDownProjectName, 0, SpringLayout.WEST,
+				textFieldComment);
 		sl_panel_input_form.putConstraint(SpringLayout.EAST, textFieldComment, -10, SpringLayout.EAST, panel_input_form);
 		sl_panel_input_form.putConstraint(SpringLayout.WEST, textFieldStart, 0, SpringLayout.WEST,
 				textFieldComment);
@@ -585,6 +586,10 @@ public class SessionView implements IView {
 	this.sessionPanel = sessionPanel;
 	}
 	
+	public JPanel getPanelInputForm() {
+		return panel_input_form;
+	}
+
 	public JComboBox<String> getComboBoxProject() {
 		return comboBoxProject;
 	}
@@ -607,6 +612,14 @@ public class SessionView implements IView {
 
 	public void setComboBoxClient(JComboBox<String> comboBox) {
 		this.comboBoxClient = comboBox;
+	}
+
+	public JComboBox<String> getDropDownProjectName() {
+		return dropDownProjectName;
+	}
+
+	public JComboBox<String> getDropDownService() {
+		return dropDownService;
 	}
 
 	public TableRowSorter<TableModel> getSorter() {
@@ -714,10 +727,14 @@ public class SessionView implements IView {
 		return btnSaveEntry;
 	}
 
+	public JButton getBtnResetEntry() {
+		return btnResetEntry;
+	}
+
 	@Override
 	public void update(Observable o, Object arg) {
 
-		if (arg instanceof SessionModel) {
+		if (arg instanceof SessionModel && ((SessionModel) arg).getProjectList() != null) {
 			ArrayList<String> projectNames = new ArrayList<>();
 			projectNames.add(""); // Empty entry for filtering "nothing"
 			((SessionModel) arg).getProjectList().forEach(project -> {

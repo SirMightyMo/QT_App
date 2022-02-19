@@ -19,7 +19,7 @@ public class StaticActions implements IModel {
 	public static final String ACTION_SAVE_CUSTOMER = "action_save_customer";
 	public static final String ACTION_SAVE_SERVICE = "action_save_service";
 	
-	public static final String ACTION_SESSION_OVERVIEW_RESET = "action_sessionoverview_reset";
+	public static final String ACTION_SESSION_OVERVIEW_RESET = "action_session_overview_reset";
 	public static final String ACTION_SESSION_OVERVIEW_LOAD = "action_session_load";
 	public static final String ACTION_SESSION_OVERVIEW_SEARCH = "action_session_search";
 	public static final String ACTION_SESSION_OVERVIEW_SET_PROJECT = "action_session_overview_set_project";
@@ -30,6 +30,9 @@ public class StaticActions implements IModel {
 	public static final String ACTION_SESSION_NEW_SET_PROJECT = "action_session_new_set_project";
 	public static final String ACTION_SESSION_NEW_SET_SERVICE = "action_session_new_set_service";
 	public static final String ACTION_SESSION_NEW_SAVE = "action_session_save";
+	public static final String ACTION_SESSION_NEW_RESET = "action_session_overview_reset";
+	public static final String ACTION_SESSION_EDIT_SAVE = "action_session_edit_save";
+	public static final String ACTION_SESSION_EDIT_ABORT = "action_session_edit_abort";
 
 	public static final String ACTION_MENU_DASHBOARD = "action_menu_dashboard";
 	public static final String ACTION_MENU_PROJECTS = "action_menu_projects";
