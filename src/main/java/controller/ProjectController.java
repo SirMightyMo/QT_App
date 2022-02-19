@@ -132,13 +132,20 @@ public class ProjectController implements IController {
 		String customer;
 		Date startDate;
 		Date endDate;
+		Date today;
 		boolean active;
 		int customerID;
 
 		projectName = projectView.getNewProjectName();
 		startDate = projectView.getNewStartDate();
 		endDate = projectView.getNewEndDate();
-		active = projectView.getNewProjectStat();
+        today = new java.sql.Date(System.currentTimeMillis());
+		if(startDate.before(today) && endDate.after(today)) {
+			active = true;
+		}
+		else {
+			active = false;
+		}
 		customerID = projectView.getClientID();
 		
 		if (projectName.length() > 255) {

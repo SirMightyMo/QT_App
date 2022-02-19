@@ -78,6 +78,7 @@ public class ProjectView implements IView {
 	private JLabel lblErrorService;
 	private JLabel lblErrorProject;
 	private ProjectController projectController;
+	private DefaultTableCellRenderer dateRenderer;
 
 	public class DateCellRenderer extends DefaultTableCellRenderer{
 
@@ -161,7 +162,7 @@ public class ProjectView implements IView {
 		updateTable(projectController);
 		scrollPaneTable.setViewportView(table);
 
-		DefaultTableCellRenderer dateRenderer = new DateCellRenderer();
+		dateRenderer = new DateCellRenderer();
 		dateRenderer.setHorizontalAlignment(JLabel.CENTER);
 		
 		table.getColumnModel().getColumn(2).setPreferredWidth(120);
@@ -1115,6 +1116,10 @@ public class ProjectView implements IView {
 			table.getColumnModel().getColumn(4).setPreferredWidth(52);
 			table.getColumnModel().getColumn(5).setPreferredWidth(115);
 			table.setAutoCreateRowSorter(true);
+			
+
+			table.getColumnModel().getColumn(2).setCellRenderer(dateRenderer);
+			table.getColumnModel().getColumn(3).setCellRenderer(dateRenderer);
 			System.out.println("Update project View");
 		}
 		sorter = new TableRowSorter<>(table.getModel());
