@@ -440,7 +440,7 @@ public class TimerHourController implements IController {
 
 		// write hour entry to database only if starTime and endTime are not empty
 		if (startTime != null && endTime != null && pauseMinutesValid == true) {
-			db.insert(
+			db.run(
 					"INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes,p_id,s_id,u_id) VALUES("
 							+ "'" + entryDate + "'," 
 							+ "'" + comment + "'," 

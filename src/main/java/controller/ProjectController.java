@@ -153,14 +153,14 @@ public class ProjectController implements IController {
 			return;
 		}
 
-		db.insert("INSERT INTO project(name, start_date, end_date, active, c_id) VALUES(" 
+		db.run("INSERT INTO project(name, start_date, end_date, active, c_id) VALUES(" 
 		+ "'" + projectName + "'," 
 		+ "'" + startDate + "'," 
 		+ "'" + endDate + "'," 
 		+ "'" + active + "'," 
 		+ "'" + customerID + "');");
 		
-		db.insert("INSERT INTO assign_project_user(p_id, u_id) VALUES("
+		db.run("INSERT INTO assign_project_user(p_id, u_id) VALUES("
 				+ "(SELECT MAX(p_id) FROM project)," 	// get newest projectID
 				+ User.getUser().getU_id() + ");");		// get User-ID
 		
@@ -236,7 +236,7 @@ public class ProjectController implements IController {
 			return;
 		}
 				
-		db.insert("INSERT INTO customer(company, contact, phone, mobile, street, house_number, zip, city, country) VALUES(" 
+		db.run("INSERT INTO customer(company, contact, phone, mobile, street, house_number, zip, city, country) VALUES(" 
 		+ "'" + company + "'," 
 		+ "'" + contact + "'," 
 		+ "'" + phone + "'," 
@@ -275,7 +275,7 @@ public class ProjectController implements IController {
 		}
 		
 
-		db.insert("INSERT INTO service(name, internal_rate, external_rate) VALUES(" 
+		db.run("INSERT INTO service(name, internal_rate, external_rate) VALUES(" 
 		+ "'" + service + "'," 
 		+ "'" + internal_rate + "'," 
 		+ "'" + external_rate + "');");		

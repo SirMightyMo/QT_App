@@ -95,7 +95,7 @@ public class DatabaseController implements IController {
 	 * "INSERT INTO tablename(column1, column2, column3) VALUES('value1','value2','value3');"
 	 * 
 	 */
-	public void insert(String sql) {
+	public void run(String sql) {
 		Statement statement = null;
 		try {
 			Class.forName(JDBC_DRIVER);
@@ -113,11 +113,6 @@ public class DatabaseController implements IController {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-//			try {
-//				dbConnection.close();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
 		}
 	}
 
@@ -198,11 +193,6 @@ public class DatabaseController implements IController {
 				e.printStackTrace();
 			}
 		}
-//		try {
-//			dbConnection.close();
-//		} catch (SQLException e) {
-//			System.out.println(e.getMessage());
-//		}
 		return resultArrayList;
 	}
 
@@ -266,11 +256,6 @@ public class DatabaseController implements IController {
 					e.printStackTrace();
 				}
 			}
-//			try {
-//				dbConnection.close();
-//			} catch (SQLException e) {
-//				System.out.println(e.getMessage());
-//			}
 			return resultArrayList;
 		} else {
 			return query(sql);
@@ -306,8 +291,6 @@ public class DatabaseController implements IController {
 
 			statement.close();
 			bReader.close();
-			//dbConnection.close();
-
 			System.out.println("SQL-Script " + scriptFilePath + " executed successfully");
 		} catch (Exception e) {
 			System.out.println("Problem executing SQL Script");

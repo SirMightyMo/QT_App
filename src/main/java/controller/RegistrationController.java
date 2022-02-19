@@ -135,7 +135,7 @@ public final class RegistrationController extends Hashing implements IController
 			String security_question = view.getQuestions()[selectedQuestion];
 			String answer = view.getSecurityAnswer();
 
-			dbc.insert("INSERT INTO users(username,password,email,security_question,answer)VALUES("
+			dbc.run("INSERT INTO users(username,password,email,security_question,answer)VALUES("
 					+ "'" + username + "',"
 					+ "'" + hash + "',"
 					+ "'" + email + "',"
