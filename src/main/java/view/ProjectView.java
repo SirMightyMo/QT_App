@@ -204,7 +204,7 @@ public class ProjectView implements IView {
 		panel_project_overview.add(lblClient);
 
 		// Client DropDown
-		JComboBox comboBoxClient = new JComboBox<String>();
+		comboBoxClient = new JComboBox<String>();
 		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, lblClient, 4, SpringLayout.NORTH, comboBoxClient);
 		sl_panel_project_overview.putConstraint(SpringLayout.EAST, lblClient, -50, SpringLayout.WEST, comboBoxClient);
 		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, comboBoxClient, 10, SpringLayout.SOUTH, comboBoxProject);
