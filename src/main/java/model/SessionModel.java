@@ -81,7 +81,6 @@ public class SessionModel extends Observable implements IModel {
 				+ "LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id " + "WHERE u_id = "
 				+ User.getUser().getU_id() + ";");
 		result.forEach(entry -> {
-			System.out.println(entry);
 			ArrayList<Object> row = (ArrayList<Object>) entry;
 			this.projectList.add(row);
 		});
@@ -97,7 +96,6 @@ public class SessionModel extends Observable implements IModel {
 		this.serviceList = new ArrayList<>();
 		ArrayList<Object> result = db.query("SELECT s_id, name FROM service;");
 		result.forEach(entry -> {
-			System.out.println(entry);
 			ArrayList<Object> row = (ArrayList<Object>) entry;
 			this.serviceList.add(row);
 		});
@@ -116,7 +114,6 @@ public class SessionModel extends Observable implements IModel {
 						+ "LEFT JOIN assign_project_user ON assign_project_user.p_id = project.p_id "
 						+ "WHERE assign_project_user.u_id = " + User.getUser().getU_id() + " GROUP BY customer.c_id;");
 		result.forEach(entry -> {
-			System.out.println(entry);
 			ArrayList<Object> row = (ArrayList<Object>) entry;
 			this.clientList.add(row);
 		});
