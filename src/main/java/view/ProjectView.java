@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.SpringLayout;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
@@ -38,7 +40,9 @@ import javax.swing.table.TableRowSorter;
 import main.java.controller.DatePicker;
 import main.java.controller.ProjectController;
 import main.java.model.ProjectModel;
+import main.java.model.SessionModel;
 import main.java.model.StaticActions;
+import main.java.view.SessionView.DateCellRenderer;
 
 @SuppressWarnings("deprecation")
 public class ProjectView implements IView {
@@ -50,6 +54,7 @@ public class ProjectView implements IView {
 	private JTable table;
 	private TableRowSorter<TableModel> sorter;
 	private JComboBox<String> comboBoxProject = new JComboBox<String>();
+	private JComboBox<String> comboBoxClient = new JComboBox<String>();
 	private JTextField textFieldProjectName;
 	private JTextField textFieldClient;
 	private JTextField textFieldStartDate;
@@ -74,7 +79,22 @@ public class ProjectView implements IView {
 	private JLabel lblErrorProject;
 	private ProjectController projectController;
 
+	public class DateCellRenderer extends DefaultTableCellRenderer{
 
+		private static final long serialVersionUID = 1L;
+
+		public java.awt.Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
+			super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			if (value instanceof java.util.Date) {
+				// Use SimpleDateFormat class to get a formatted String from Date object.
+				DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy"); 
+				String strDate = dateFormat.format(value);
+				this.setText(strDate);
+			}
+			return this;
+		}
+	}
+	
 	public ProjectView(ProjectController projectController) {
 		this.projectController = projectController;
 		
@@ -109,6 +129,10 @@ public class ProjectView implements IView {
 				panel_project_overview);
 		panel_project_overview.setLayout(sl_panel_project_overview);
 
+		////////////////////////////////////
+		/// First Tab / project overview ///
+		////////////////////////////////////
+		
 		// Titel Label
 		JLabel lblHeadTitel = new JLabel("Projektübersicht");
 		lblHeadTitel.setName("lblHeadTitel");
@@ -131,11 +155,21 @@ public class ProjectView implements IView {
 		sl_panel_project_overview.putConstraint(SpringLayout.EAST, scrollPaneTable, 895, SpringLayout.WEST,
 				panel_project_overview);
 		panel_project_overview.add(scrollPaneTable);
+		
 		// create table
 		table = new JTable();
 		updateTable(projectController);
 		scrollPaneTable.setViewportView(table);
 
+		DefaultTableCellRenderer dateRenderer = new DateCellRenderer();
+		dateRenderer.setHorizontalAlignment(JLabel.CENTER);
+		
+		table.getColumnModel().getColumn(2).setPreferredWidth(120);
+		table.getColumnModel().getColumn(2).setCellRenderer(dateRenderer);
+		table.getColumnModel().getColumn(3).setPreferredWidth(120);
+		table.getColumnModel().getColumn(3).setCellRenderer(dateRenderer);
+		
+		
 		// Projects Label
 		JLabel lblProjects = new JLabel("Projekt Name:");
 		lblProjects.setName("lblProjects");
@@ -165,29 +199,30 @@ public class ProjectView implements IView {
 		btnLoadProjects.addActionListener(projectController);
 		btnLoadProjects.setActionCommand(StaticActions.ACTION_LOAD_PROJECTS);
 
-		// Services Label
-		JLabel lblService = new JLabel("Leistung:");
-		lblService.setName("lblService");
-		sl_panel_project_overview.putConstraint(SpringLayout.WEST, lblProjects, 0, SpringLayout.WEST, lblService);
-		sl_panel_project_overview.putConstraint(SpringLayout.SOUTH, lblProjects, -17, SpringLayout.NORTH, lblService);
-		panel_project_overview.add(lblService);
+		// Client Label
+		JLabel lblClient = new JLabel("Kunde:");
+		lblClient.setName("lblService");
+		sl_panel_project_overview.putConstraint(SpringLayout.WEST, lblProjects, 0, SpringLayout.WEST, lblClient);
+		sl_panel_project_overview.putConstraint(SpringLayout.SOUTH, lblProjects, -17, SpringLayout.NORTH, lblClient);
+		panel_project_overview.add(lblClient);
 
-		// Services DropDown
-		JComboBox comboBoxService = new JComboBox();
-		comboBoxService.setName("comboBoxService");
-		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, comboBoxService, -4, SpringLayout.NORTH,
-				lblService);
-		sl_panel_project_overview.putConstraint(SpringLayout.WEST, comboBoxService, 0, SpringLayout.WEST,
+		// Client DropDown
+		JComboBox comboBoxClient = new JComboBox<String>();
+		comboBoxClient.setName("comboBoxService");
+		comboBoxClient.setActionCommand(StaticActions.ACTION_PROJECT_SET_CLIENT);
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, comboBoxClient, -4, SpringLayout.NORTH,
+				lblClient);
+		sl_panel_project_overview.putConstraint(SpringLayout.WEST, comboBoxClient, 0, SpringLayout.WEST,
 				comboBoxProject);
-		sl_panel_project_overview.putConstraint(SpringLayout.EAST, comboBoxService, 0, SpringLayout.EAST,
+		sl_panel_project_overview.putConstraint(SpringLayout.EAST, comboBoxClient, 0, SpringLayout.EAST,
 				comboBoxProject);
-		panel_project_overview.add(comboBoxService);
+		panel_project_overview.add(comboBoxClient);
 
 		// Time Frame Label
 		JLabel lblTimeFrame = new JLabel("Zeitraum:");
 		lblTimeFrame.setName("lblTimeFrame");
-		sl_panel_project_overview.putConstraint(SpringLayout.WEST, lblService, 0, SpringLayout.WEST, lblTimeFrame);
-		sl_panel_project_overview.putConstraint(SpringLayout.SOUTH, lblService, -20, SpringLayout.NORTH, lblTimeFrame);
+		sl_panel_project_overview.putConstraint(SpringLayout.WEST, lblClient, 0, SpringLayout.WEST, lblTimeFrame);
+		sl_panel_project_overview.putConstraint(SpringLayout.SOUTH, lblClient, -20, SpringLayout.NORTH, lblTimeFrame);
 		panel_project_overview.add(lblTimeFrame);
 
 		// search button
@@ -1048,11 +1083,22 @@ public class ProjectView implements IView {
 
 		if (arg instanceof ProjectModel) {
 			ArrayList<String> projectNames = new ArrayList<>();
+			projectNames.add("");
 			((ProjectModel) arg).getProjectList().forEach(project -> {
 				projectNames.add(project.get(1).toString());
 			});
 			this.comboBoxProject.setModel(new DefaultComboBoxModel(projectNames.toArray()));
-			System.out.println("Projects loaded into FilterView.");
+			System.out.println("Projects loaded into ProjectView.");
+		}
+		if (arg instanceof ProjectModel && ((ProjectModel) arg).getClientList() != null) {
+			ArrayList<String> clientNames = new ArrayList<>();
+			clientNames.add(""); // Empty entry for filtering "nothing"
+			((ProjectModel) arg).getClientList().forEach(client -> {
+				clientNames.add(client.get(1).toString());
+				//System.out.println(clientNames);
+			});
+			this.comboBoxClient.setModel(new DefaultComboBoxModel(clientNames.toArray()));
+			System.out.println("Client loaded into Project View");
 		}
 	}
 
@@ -1060,7 +1106,7 @@ public class ProjectView implements IView {
 		if (arg instanceof ProjectController) {
 
 			table.setModel(new DefaultTableModel(((ProjectController) arg).getTableModel(),
-					new String[] { "#", "Projektname", "Start", "Ende", "Status", "Kunde", "Dauer" }
+					new String[] { "#", "Projektname", "Start", "Ende", "Status", "Kunde"}
 
 			));
 			table.getColumnModel().getColumn(0).setPreferredWidth(8);
@@ -1095,6 +1141,35 @@ public class ProjectView implements IView {
 
 	public void setContentPane(JPanel contentPane) {
 		this.contentPane = contentPane;
+	}
+
+	public JTextField getTextFieldFrom() {
+		return textFieldFrom;
+	}
+
+	public JTextField getTextFieldTo() {
+		return textFieldTo;
+	}
+	
+	public JComboBox<String> getComboBoxClient() {
+		return comboBoxClient;
+	}
+
+	public void setComboBoxClient(JComboBox<String> comboBox) {
+		this.comboBoxClient = comboBox;
+	}
+
+	public TableRowSorter<TableModel> getSorter() {
+		return sorter;
+	}
+
+	public void setSorter(TableRowSorter<TableModel> sorter) {
+		this.sorter = sorter;
+	}
+
+	public JTable getHourEntryTable() {
+		JTable table = this.table;
+		return table;
 	}
 
 }

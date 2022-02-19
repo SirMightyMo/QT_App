@@ -10,7 +10,7 @@ public class MainMethod {
 
 		// Initialize database
 		DatabaseController dbc = DatabaseController.getInstance();
-//		dbc.initializeDB();
+		//dbc.initializeDB();
 		
 		// Load layout settings
 		new LayoutManager();
