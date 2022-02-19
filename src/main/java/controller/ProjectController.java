@@ -2,7 +2,14 @@ package main.java.controller;
 
 import java.awt.event.ActionEvent;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TimeZone;
 
+import javax.swing.RowFilter;
+import javax.swing.RowFilter.ComparisonType;
 import javax.swing.event.DocumentEvent;
 
 import main.java.model.IModel;
@@ -29,8 +36,9 @@ public class ProjectController implements IController {
 
 		this.projectModel.addObserver(this.projectView);
 		projectModel.retrieveProjects();
-
+		projectModel.retrieveClients();
 		actionLoadProjects();
+		actionLoadClients();
 	}
 
 	public void actionLoadProjects() {
@@ -48,12 +56,73 @@ public class ProjectController implements IController {
 	public void actionResetProjects() {
 		projectView.updateTable(this);
 	}
+	public void actionLoadClients() {
+		this.projectModel.setClientSet(false);
+		this.projectModel.retrieveClients();
+	}
 
 	public void actionSearchProjects() {
+		String projectFilter = "";
+		String clientFilter = "";
+		String serviceFilter = "";
+		String startFilter = projectView.getTextFieldFrom().getText();
+		String endFilter = projectView.getTextFieldTo().getText();
+
+		System.out.println(startFilter);
+		System.out.println(endFilter);
+
+		List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		formatter.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
+		
 		if (projectView.getComboBox().getItemCount() > 0) {
-			projectView.filterProjects(projectView.getComboBox().getSelectedItem().toString());			
+			projectFilter = projectView.getComboBox().getSelectedItem().toString();
+			if (!projectFilter.equals("")) {
+				filters.add(RowFilter.regexFilter("^" + projectFilter + "$", 1));
+			}
 		}
+		if (projectView.getComboBoxClient().getItemCount() > 0) {
+			clientFilter = projectView.getComboBoxClient().getSelectedItem().toString();
+			if (!clientFilter.equals("")) {
+				filters.add(RowFilter.regexFilter("^" + clientFilter + "$"));
+			}
+		}
+		if (!startFilter.equals("")) {
+			String start = startFilter.split(" ", 1)[0].replace(".", "-");
+			java.util.Date startDate = null;
+			try {
+				startDate = formatter.parse(start);
+				System.out.println("Filter from: " + startDate);
+			} catch (ParseException e) {
+				System.out.println("Error while parsing Date: " + start);
+			}
+			if (startDate != null)
+				startDate = new Date(startDate.getTime() - (1000 * 60 * 60 * 24));
+				filters.add(RowFilter.dateFilter(ComparisonType.AFTER, startDate, 2));
+		}
+		if (!endFilter.equals("")) {
+			String end = endFilter.split(" ", 1)[0].replace(".", "-");
+			java.util.Date endDate = null;
+			System.out.println(end);
+			try {
+				endDate = formatter.parse(end);
+				System.out.println("Filter to: " + endDate);
+			} catch (ParseException e) {
+				System.out.println("Error while parsing Date: " + end);
+			}
+			if (endDate != null)
+				endDate = new Date(endDate.getTime() + (1000 * 60 * 60 * 24)); // add one day, so it is included
+			filters.add(RowFilter.dateFilter(ComparisonType.BEFORE, endDate, 3));
+		}
+
+		if (filters.size() > 0) {
+			projectView.getSorter().setRowFilter(RowFilter.andFilter(filters));
+		} else {
+			projectView.getSorter().setRowFilter(null);
+		}
+
 	}
+	
 
 	/**
 	 * This method saves a new project to the database
@@ -63,13 +132,20 @@ public class ProjectController implements IController {
 		String customer;
 		Date startDate;
 		Date endDate;
+		Date today;
 		boolean active;
 		int customerID;
 
 		projectName = projectView.getNewProjectName();
 		startDate = projectView.getNewStartDate();
 		endDate = projectView.getNewEndDate();
-		active = projectView.getNewProjectStat();
+        today = new java.sql.Date(System.currentTimeMillis());
+		if(startDate.before(today) && endDate.after(today)) {
+			active = true;
+		}
+		else {
+			active = false;
+		}
 		customerID = projectView.getClientID();
 		
 		if (projectName.length() > 255) {
@@ -205,6 +281,7 @@ public class ProjectController implements IController {
 		+ "'" + external_rate + "');");		
 	}
 
+	
 	// ActionListener method
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -213,6 +290,7 @@ public class ProjectController implements IController {
 
 		if (event.equalsIgnoreCase(StaticActions.ACTION_LOAD_PROJECTS)) {
 			actionLoadProjects();
+			actionLoadClients();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SEARCH_PROJECTS)) {
 			actionSearchProjects();
