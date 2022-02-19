@@ -85,7 +85,7 @@ public class DatabaseController implements IController {
 		}
 	}
 
-	/*
+	/**
 	 * insert(String sql)
 	 * 
 	 * This method takes a String as an argument. For the method to work this String
@@ -121,7 +121,7 @@ public class DatabaseController implements IController {
 		}
 	}
 
-	/*
+	/**
 	 * query(String sql):
 	 * 
 	 * This method takes a String as an argument. For the method to work this String
@@ -319,37 +319,31 @@ public class DatabaseController implements IController {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void insertUpdate(DocumentEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void changedUpdate(DocumentEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public IModel getModel() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public IView getView() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

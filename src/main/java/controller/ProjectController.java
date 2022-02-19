@@ -1,21 +1,15 @@
 package main.java.controller;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Date;
-import java.text.ParseException;
-import java.util.ArrayList;
 
-import javax.swing.JTable;
 import javax.swing.event.DocumentEvent;
-import javax.swing.table.DefaultTableModel;
 
 import main.java.model.IModel;
 import main.java.model.ProjectModel;
 import main.java.model.StaticActions;
 import main.java.model.User;
 import main.java.view.IView;
-import main.java.view.ProjectView;
 import main.java.view.ProjectView;
 
 public class ProjectController implements IController {

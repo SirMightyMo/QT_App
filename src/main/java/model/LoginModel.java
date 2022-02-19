@@ -1,11 +1,6 @@
 package main.java.model;
 
-import javax.swing.JFrame;
-
 import java.util.Arrays;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
 
 public final class LoginModel implements IModel {
 

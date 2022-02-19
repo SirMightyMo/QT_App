@@ -1,6 +1,6 @@
 package main.java.model;
-	
-public class User implements IModel{
+
+public class User implements IModel {
 
 	private int u_id;
 	private String name;
@@ -45,5 +45,5 @@ public class User implements IModel{
 	public static void setUser(User user) {
 		User.user = user;
 	}
-	
+
 }

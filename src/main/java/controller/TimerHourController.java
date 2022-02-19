@@ -89,14 +89,14 @@ public class TimerHourController implements IController {
 		this.hourEntry.setStartTime(timeNow); // startTime
 	}
 	
-	/*
+	/**
 	 * Method created a new hour entry with given date (String dd-mm-YYYY).
 	 */
 	public void createHourEntry(String date) {
 		this.hourEntry = new HourEntry(date);
 	}
 
-	/*
+	/**
 	 * Method starts the timer.
 	 * If the timer is running its first time, this method creates an hour entry, 
 	 * fills and disables input fields automatically: 'from', 'to', 'date'
@@ -161,7 +161,7 @@ public class TimerHourController implements IController {
 		this.timerView.getDurationLabel().setForeground(new Color(50,205,50));
 	}
 
-	/*
+	/**
 	 * This method stops the timer, sets the endTime in the current hour entry
 	 * and fills out the input fields with calculated information (duration, to, pause).
 	 * The method sets the timer duration text to color red.
@@ -197,7 +197,7 @@ public class TimerHourController implements IController {
 		}
 	}
 
-	/*
+	/**
 	 * This method calculates the duration based on start-, end- and pause-times
 	 * and sets the duration label text.
 	 * This method is for showing information only and is not connected to the 
@@ -271,7 +271,7 @@ public class TimerHourController implements IController {
 		}
 	}
 
-	/*
+	/**
 	 * actionSaveTimer()
 	 * 
 	 * Calls method 'actionStopTimer()' which stops the timer and writes all entries
@@ -490,7 +490,7 @@ public class TimerHourController implements IController {
 		dateAutomaticallySet = false;
 	}
 
-	/*
+	/**
 	 * This method calls methods of timerModel to refresh its project list for
 	 * the dropdown.
 	 * The method also queries information from db to check for the project that was last
@@ -537,7 +537,7 @@ public class TimerHourController implements IController {
 		}
 	}
 	
-	/*
+	/**
 	 * This method calls methods of timerModel to refresh its service list for
 	 * the dropdown.
 	 * The method also queries information from db to check for the service that was last
@@ -584,7 +584,7 @@ public class TimerHourController implements IController {
 		}
 	}
 
-	/*
+	/**
 	 * This method disables all elements and shows an error message
 	 * to the user that no project is available for tracking time on.
 	 */
@@ -607,7 +607,7 @@ public class TimerHourController implements IController {
 		
 	}
 	
-	/*
+	/**
 	 * This method activates all alements.
 	 */
 	private void activateTimeTracker() {
@@ -629,7 +629,7 @@ public class TimerHourController implements IController {
 		
 	}
 
-	/*
+	/**
 	 * This method validates the date format put into the 
 	 * textfield. 
 	 * The corresponding regular expression is defined in class "Regex"

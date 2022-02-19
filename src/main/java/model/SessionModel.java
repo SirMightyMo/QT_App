@@ -16,7 +16,7 @@ public class SessionModel extends Observable implements IModel {
 	private boolean clientSet;
 
 	private DatabaseController db = DatabaseController.getInstance();
-	
+
 	// Constructor
 	public SessionModel() {
 		super();
@@ -29,7 +29,7 @@ public class SessionModel extends Observable implements IModel {
 	public void setProjectSet(boolean projectSet) {
 		this.projectSet = projectSet;
 	}
-	
+
 	public boolean isServiceSet() {
 		return serviceSet;
 	}
@@ -37,7 +37,7 @@ public class SessionModel extends Observable implements IModel {
 	public void setServiceSet(boolean serviceSet) {
 		this.serviceSet = serviceSet;
 	}
-	
+
 	public boolean isClientSet() {
 		return clientSet;
 	}
@@ -53,7 +53,7 @@ public class SessionModel extends Observable implements IModel {
 	public void setProjectList(ArrayList<ArrayList<Object>> projectList) {
 		this.projectList = projectList;
 	}
-	
+
 	public ArrayList<ArrayList<Object>> getServiceList() {
 		return serviceList;
 	}
@@ -61,7 +61,7 @@ public class SessionModel extends Observable implements IModel {
 	public void setServiceList(ArrayList<ArrayList<Object>> serviceList) {
 		this.serviceList = serviceList;
 	}
-	
+
 	public ArrayList<ArrayList<Object>> getClientList() {
 		return clientList;
 	}
@@ -71,14 +71,15 @@ public class SessionModel extends Observable implements IModel {
 	}
 
 	/*
-	 * This method retrieves all projects the current user is assigned to from the database
-	 * and adds them to an ArrayList for using them in a ComboBox (Dropdown).
+	 * This method retrieves all projects the current user is assigned to from the
+	 * database and adds them to an ArrayList for using them in a ComboBox
+	 * (Dropdown).
 	 */
 	public void retrieveProjects() {
 		this.projectList = new ArrayList<>();
 		ArrayList<Object> result = db.query("SELECT project.p_id, name FROM project "
-				+ "LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id "
-				+ "WHERE u_id = " + User.getUser().getU_id() + ";");
+				+ "LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id " + "WHERE u_id = "
+				+ User.getUser().getU_id() + ";");
 		result.forEach(entry -> {
 			System.out.println(entry);
 			ArrayList<Object> row = (ArrayList<Object>) entry;
@@ -87,9 +88,9 @@ public class SessionModel extends Observable implements IModel {
 		setChanged();
 		notifyObservers(this);
 	}
-	
+
 	/*
-	 * This method retrieves all services and adds them to an ArrayList for using 
+	 * This method retrieves all services and adds them to an ArrayList for using
 	 * them in a ComboBox (Dropdown).
 	 */
 	public void retrieveServices() {
@@ -103,18 +104,17 @@ public class SessionModel extends Observable implements IModel {
 		setChanged();
 		notifyObservers(this);
 	}
-	
+
 	/*
-	 * This method retrieves all clients the current user has written hour entries for
-	 * and adds them to an ArrayList for using them in a ComboBox (Dropdown).
+	 * This method retrieves all clients the current user has written hour entries
+	 * for and adds them to an ArrayList for using them in a ComboBox (Dropdown).
 	 */
 	public void retrieveClients() {
 		this.clientList = new ArrayList<>();
-		ArrayList<Object> result = db.query("SELECT customer.c_id, company FROM customer "
-				+ "LEFT JOIN project ON project.c_id = customer.c_id "
-				+ "LEFT JOIN assign_project_user ON assign_project_user.p_id = project.p_id "
-				+ "WHERE assign_project_user.u_id = " + User.getUser().getU_id() 
-				+ " GROUP BY customer.c_id;");
+		ArrayList<Object> result = db.query(
+				"SELECT customer.c_id, company FROM customer " + "LEFT JOIN project ON project.c_id = customer.c_id "
+						+ "LEFT JOIN assign_project_user ON assign_project_user.p_id = project.p_id "
+						+ "WHERE assign_project_user.u_id = " + User.getUser().getU_id() + " GROUP BY customer.c_id;");
 		result.forEach(entry -> {
 			System.out.println(entry);
 			ArrayList<Object> row = (ArrayList<Object>) entry;

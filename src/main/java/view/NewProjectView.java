@@ -197,8 +197,6 @@ public class NewProjectView implements IView {
 		return contentPanel;
 	}
 
-
-
 	public JComboBox<String> getDropDownClient() {
 		return dropDownClient;
 	}
@@ -215,11 +213,9 @@ public class NewProjectView implements IView {
 		return txtEndTime;
 	}
 
-
 	public JTextField getTextFieldProjectname() {
 		return textFieldProjectname;
 	}
-
 
 	public JLabel getLblErrorMessage() {
 		return lblErrorMessage;
@@ -247,7 +243,7 @@ public class NewProjectView implements IView {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		
+
 		if (arg instanceof NewProjectModel) {
 			ArrayList<String> clients = new ArrayList<>();
 			((NewProjectModel) arg).getClientList().forEach(client -> {
