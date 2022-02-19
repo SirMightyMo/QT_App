@@ -40,7 +40,12 @@ class IntegrationTest {
 	}
 
 	@Test
-	void integrationTest() {
+	void testAllElementsVisible_True() {
+
+		//////////////////////////////////////////////////////
+		///////////////////// Dashboard /////////////////////
+		////////////////////////////////////////////////////
+
 		// Main Menu
 		window.label("navLabelNavigation").requireVisible();
 		window.button("btnMenuDashboard").requireVisible();
@@ -49,7 +54,7 @@ class IntegrationTest {
 		window.label("lblEinstellungen").requireVisible();
 		window.button("btnMenuAccount").requireVisible();
 		window.button("btnMenuLogout").requireVisible();
-		
+
 		// Timer
 		window.label("lblProjectTV").requireVisible();
 		window.comboBox("comboBoxProject").requireVisible();
@@ -74,7 +79,7 @@ class IntegrationTest {
 		window.textBox("textFieldCommentTimerView").requireVisible();
 		window.button("btnReset").requireVisible();
 		window.button("btnSaveTimerView").requireVisible();
-		
+
 		// DashboardView (Aktuelle Projekte & Letzte Sitzungen)
 		window.label("lblCurrentProjects").requireVisible();
 		window.button("btnProjectShowMore").requireVisible();
@@ -82,14 +87,14 @@ class IntegrationTest {
 		window.label("lblLastSessions").requireVisible();
 		window.panel("dashboardLastSessionsPane").requireVisible();
 		window.button("btnSessionShowMore").requireVisible();
-		
+
 		// Neues Projekt anlegen
 		window.label("lblProject").requireVisible();
 		window.label("lblProjectnameNPV").requireVisible();
 		window.textBox("textFieldProjectname").requireVisible();
 		window.label("lblClientNPV").requireVisible();
 		window.comboBox("dropDownClient").requireVisible();
-		window.label("lblFromNPV").requireVisible();		
+		window.label("lblFromNPV").requireVisible();
 		window.textBox("txtStartTimeNPV").requireVisible();
 		window.label("lblToNPV").requireVisible();
 		window.textBox("txtEndTimeNPV").requireVisible();
@@ -97,47 +102,118 @@ class IntegrationTest {
 		window.button("btnSaveNPV").requireVisible();
 		window.button("btnLoadProjectsNPV").requireVisible();
 		
+		//////////////////////////////////////////////////////
+		///////////////////// Projekte //////////////////////
+		////////////////////////////////////////////////////
 		
+		// Projektübersicht (Tab 1)
+		window.button("btnMenuProjects").click();
+		window.label("lblProjects").requireVisible();
+		window.comboBox("comboBoxProject").requireVisible();
+		window.button("btnLoadProjects").requireVisible();
+		window.label("lblService").requireVisible();
+		window.comboBox("comboBoxService").requireVisible();
+		window.button("btnSearchButton").requireVisible();
+		window.label("lblFrom").requireVisible();
+		window.label("lblTo").requireVisible();
+		window.textBox("textFieldFrom").requireVisible();
+		window.textBox("textFieldTo").requireVisible();
+		window.button("btnSetStartDate_1").requireVisible();
+		window.button("btnSetStartDate_1").requireVisible();
+		window.panel("panel_project_overview").requireVisible();
 		
+		// Neues Projekt (Tab 2)
+		window.tabbedPane().selectTab(1);
+		window.label("lblNewProjectHead").requireVisible();
+		window.label("lblNewLabel_18").requireVisible();
+		window.label("lblNewLabel_19").requireVisible();
+		window.label("lblNewLabel_20").requireVisible();
+		window.label("lblNewLabel_21").requireVisible();
+		window.panel("panel_new_project").requireVisible();
+		window.panel("panel_input_form").requireVisible();
+		window.checkBox("chckbxActive").requireVisible();
+		window.textBox("textFieldProjectName").requireVisible();
+		window.textBox("textFieldClient").requireVisible();
+		window.textBox("textFieldStartDate").requireVisible();
+		window.textBox("textFieldEndDate").requireVisible();
 		
-		//		window.button("btnMenuProjects").click();
-//		window.tabbedPane().selectTab(3);
-//		window.textBox("textFieldNewService").enterText("abc");
-//		window.button("btnMenuProjects").click();
-//		window.button("btnMenuSessions").click();
-//		window.button("btnMenuDashboard").click();
-//		window.button("btnStart").click();
-//		window.button("btnStop").click();
-//		window.button("btnSave").click();
-//		window.button("btnMenuProjects").click();
-//		window.tabbedPane().selectTab(1);
-//		window.tabbedPane().selectTab(2);
-//		window.tabbedPane().selectTab(3);
-//		window.tabbedPane().selectTab(0);
-//		window.button("btnMenuSessions").click();
-//		window.tabbedPane().selectTab(1);
-//		window.tabbedPane().selectTab(0);
-
-		// window.button("btnStart").requireVisible();
-//		window.button("btnMenuDashboard").click();
-//		window.button("btnStart").requireVisible();
-
-//		window.tabbedPane().selectTab(1);
-
-//		try {
-//			TimeUnit.SECONDS.sleep(100);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		window.
-//		window.button("btnStart").click();
-//		window.textBox("textFieldCommentTimerView").requireVisible();
-//		window.textBox("textFieldCommentTimerView").enterText("IntegTest");
-//		window.button("btnStop").click();
-//		window.button("btnSaveTimerView").click();
-//		FrameFixture mainFrame = findFrame("main").using(robot());
-//		window.comboBox("comboBoxProject").click();
+		// Neuer Kunde (Tab 3)
+		window.tabbedPane().selectTab(2);
+		window.label("lblNewCustomer").requireVisible();
+		window.label("lblCustomerName").requireVisible();
+		window.label("lblContactPerson").requireVisible();
+		window.label("lblTelephone").requireVisible();
+		window.label("lblMobile").requireVisible();
+		window.label("lblStreet").requireVisible();
+		window.label("lblHouseNumber").requireVisible();
+		window.label("lblZip").requireVisible();
+		window.label("lblCity").requireVisible();
+		window.label("lblCountry").requireVisible();
+		window.textBox("textFieldClientName").requireVisible();
+		window.textBox("textFieldContact").requireVisible();
+		window.textBox("textFieldTelephone").requireVisible();
+		window.textBox("textFieldMobile").requireVisible();
+		window.textBox("textFieldStreet").requireVisible();
+		window.textBox("textFieldHouseNumber").requireVisible();
+		window.textBox("textFieldZip").requireVisible();
+		window.textBox("textFieldCity").requireVisible();
+		window.textBox("textFieldCountry").requireVisible();
+		window.button("btnSaveCustomer").requireVisible();
+		
+		// Neue Leistung (Tab 4)
+		window.tabbedPane().selectTab(3);
+		window.label("lblServiceHead").requireVisible();
+		window.label("lblNewService").requireVisible();
+		window.label("lblInternalRate").requireVisible();
+		window.label("lblExternalRate").requireVisible();
+		window.textBox("textFieldNewService").requireVisible();
+		window.textBox("textFieldInternalRate").requireVisible();
+		window.textBox("textFieldExternalRate").requireVisible();
+		window.button("btnSaveService").requireVisible();
+		
+		//////////////////////////////////////////////////////
+		///////////////////// Sitzungen /////////////////////
+		////////////////////////////////////////////////////
+		
+		// Tab 1
+		window.button("btnMenuSessions").click();
+		window.label("lblHeadTitel").requireVisible();
+		window.scrollPane("scrollPaneTable").requireVisible();
+		window.table("table").requireVisible();
+		window.label("lblProjects").requireVisible();
+		window.comboBox("comboBoxProject").requireVisible();
+		window.button("btnLoadProjects").requireVisible();
+		window.label("lblService").requireVisible();
+		window.comboBox("comboBoxService").requireVisible();
+		window.label("lblTimeFrame").requireVisible();
+		window.button("btnApplyFilter").requireVisible();
+		window.textBox("textFieldFrom").requireVisible();
+		window.label("lblFrom").requireVisible();
+		window.label("lblTo").requireVisible();
+		window.textBox("textFieldTo").requireVisible();
+		window.button("btnSetStartDate").requireVisible();
+		window.button("btnSetEndDate").requireVisible();
+		
+		// Tab 2
+		window.tabbedPane().selectTab(1);
+		window.label("lblNewHourEntryHeadline").requireVisible();
+		window.label("lblProjectNZ").requireVisible();
+		window.comboBox("dropDownProjectName").requireVisible();
+		window.label("lblServiceName").requireVisible();
+		window.label("lblDateNZ").requireVisible();
+		window.label("lblStartNZ").requireVisible();
+		window.comboBox("dropDownService").requireVisible();
+		window.textBox("textFieldDateNZ").requireVisible();
+		window.button("btnSetDate").requireVisible();
+		window.textBox("textFieldStartNZ").requireVisible();
+		window.button("btnSaveHourEntry").requireVisible();
+		window.button("btnResetInputFields").requireVisible();
+		window.label("lblEnd").requireVisible();
+		window.textBox("textFieldEnd").requireVisible();
+		window.label("lblPause").requireVisible();
+		window.textBox("textFieldPause").requireVisible();
+		window.label("lblCommentNZ").requireVisible();
+		window.textBox("textFieldCommentNZ").requireVisible();
 	}
 
 //	@Test
@@ -146,8 +222,49 @@ class IntegrationTest {
 //		window.button("btnPause").click();
 //		window.button("btnStop").click();
 //		window.button("btnSave").click();
-//		window.button("btnReset").click();
+//		window.button("btnReset").click();		window.button("btnMenuSessions").click();
+
 //		window.button("btnLoadProjects").click();
+
+	// window.button("btnMenuProjects").click();
+//	window.tabbedPane().selectTab(3);
+//	window.textBox("textFieldNewService").enterText("abc");
+//	window.button("btnMenuProjects").click();
+//	window.button("btnMenuSessions").click();
+//	window.button("btnMenuDashboard").click();
+//	window.button("btnStart").click();
+//	window.button("btnStop").click();
+//	window.button("btnSave").click();
+//	window.button("btnMenuProjects").click();
+//	window.tabbedPane().selectTab(1);
+//	window.tabbedPane().selectTab(2);
+//	window.tabbedPane().selectTab(3);
+//	window.tabbedPane().selectTab(0);
+//	window.button("btnMenuSessions").click();
+//	window.tabbedPane().selectTab(1);
+//	window.tabbedPane().selectTab(0);
+
+	// window.button("btnStart").requireVisible();
+//	window.button("btnMenuDashboard").click();
+//	window.button("btnStart").requireVisible();
+
+//	window.tabbedPane().selectTab(1);
+
+//	try {
+//		TimeUnit.SECONDS.sleep(100);
+//	} catch (InterruptedException e) {
+//		// TODO Auto-generated catch block
+//		e.printStackTrace();
+//	}
+//	window.
+//	window.button("btnStart").click();
+//	window.textBox("textFieldCommentTimerView").requireVisible();
+//	window.textBox("textFieldCommentTimerView").enterText("IntegTest");
+//	window.button("btnStop").click();
+//	window.button("btnSaveTimerView").click();
+//	FrameFixture mainFrame = findFrame("main").using(robot());
+//	window.comboBox("comboBoxProject").click();
+
 //	}
 
 //	@Test
