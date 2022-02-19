@@ -1,7 +1,7 @@
 package main.java.controller;
 
-import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -72,7 +72,7 @@ public class NewProjectController implements IController {
 		actionPerformed(new ActionEvent(this, 1, StaticActions.ACTION_NPROJECT_RESET));
 	}
 	
-	/*
+	/**
 	 * This method converts the start date String to a sql date format.
 	 */
 	public Date getStartDate() {
@@ -89,7 +89,7 @@ public class NewProjectController implements IController {
 		return startDate;
 	}
 
-	/*
+	/**
 	 * This method converts the end date String to a sql date format.
 	 */
 	public Date getEndDate() {
@@ -130,7 +130,7 @@ public class NewProjectController implements IController {
 		
 	}
 
-	/*
+	/**
 	 * Checks, if inputs were made and if start date lies before end date.
 	 * Marks invalid input fields red.
 	 */

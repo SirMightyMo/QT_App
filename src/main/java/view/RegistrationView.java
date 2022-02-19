@@ -53,11 +53,9 @@ public final class RegistrationView extends WindowSuperclass implements IView {
 	public RegistrationView() {
 		super();
 		getContentPane().setPreferredSize(new Dimension(400, 420));
-		String[] q = {
-				"Welches war Ihr erstes Konzert, das Sie besucht haben?",
+		String[] q = { "Welches war Ihr erstes Konzert, das Sie besucht haben?",
 				"Geben Sie Marke und Modell Ihres ersten Autos an.",
-				"An welchem Ort haben sich Ihre Eltern kennengelernt?"
-		};
+				"An welchem Ort haben sich Ihre Eltern kennengelernt?" };
 		setSecurityQuestions(q);
 		init();
 	}
@@ -105,7 +103,8 @@ public final class RegistrationView extends WindowSuperclass implements IView {
 		getContentPane().add(panelTwo);
 
 		securityQuestionPicker = new JComboBox(questions);
-		sl_panelTwo.putConstraint(SpringLayout.NORTH, securityQuestionPicker, 5, SpringLayout.SOUTH, securityQuestionLabel);
+		sl_panelTwo.putConstraint(SpringLayout.NORTH, securityQuestionPicker, 5, SpringLayout.SOUTH,
+				securityQuestionLabel);
 		sl_panelTwo.putConstraint(SpringLayout.WEST, securityQuestionPicker, 10, SpringLayout.WEST, panelTwo);
 		sl_panelTwo.putConstraint(SpringLayout.EAST, securityQuestionPicker, -10, SpringLayout.EAST, panelTwo);
 		securityQuestionPicker.setPreferredSize(new Dimension(250, 25));
@@ -117,7 +116,8 @@ public final class RegistrationView extends WindowSuperclass implements IView {
 		securityAnswerLabel = new JLabel("Ihre Antwort:");
 		sl_panelTwo.putConstraint(SpringLayout.EAST, securityAnswerLabel, -10, SpringLayout.EAST, panelTwo);
 		securityAnswerLabel.setPreferredSize(new Dimension(66, 25));
-		sl_panelTwo.putConstraint(SpringLayout.NORTH, securityAnswerLabel, 5, SpringLayout.SOUTH, securityQuestionPicker);
+		sl_panelTwo.putConstraint(SpringLayout.NORTH, securityAnswerLabel, 5, SpringLayout.SOUTH,
+				securityQuestionPicker);
 		sl_panelTwo.putConstraint(SpringLayout.WEST, securityAnswerLabel, 10, SpringLayout.WEST, panelTwo);
 		panelTwo.add(securityAnswerLabel);
 		securityAnswerLabel.setName("securityAnswerLabel");
@@ -126,7 +126,8 @@ public final class RegistrationView extends WindowSuperclass implements IView {
 		sl_panelTwo.putConstraint(SpringLayout.WEST, securityAnswerInputField, 10, SpringLayout.WEST, panelTwo);
 		sl_panelTwo.putConstraint(SpringLayout.EAST, securityAnswerInputField, -10, SpringLayout.EAST, panelTwo);
 		securityAnswerInputField.setPreferredSize(new Dimension(166, 25));
-		sl_panelTwo.putConstraint(SpringLayout.NORTH, securityAnswerInputField, 5, SpringLayout.SOUTH, securityAnswerLabel);
+		sl_panelTwo.putConstraint(SpringLayout.NORTH, securityAnswerInputField, 5, SpringLayout.SOUTH,
+				securityAnswerLabel);
 		panelTwo.add(securityAnswerInputField);
 		securityAnswerInputField.setName("securityAnswerInputField");
 		securityAnswerInputField.setBounds(100, 20, 165, 25);
@@ -198,7 +199,8 @@ public final class RegistrationView extends WindowSuperclass implements IView {
 		passwordInputField = new JPasswordField(0);
 		sl_panelOne.putConstraint(SpringLayout.NORTH, passwordLabel, 0, SpringLayout.NORTH, passwordInputField);
 		sl_panelOne.putConstraint(SpringLayout.WEST, passwordInputField, 10, SpringLayout.EAST, passwordLabel);
-		sl_panelOne.putConstraint(SpringLayout.NORTH, passwordInputField, 5, SpringLayout.SOUTH, emailConfirmInputField);
+		sl_panelOne.putConstraint(SpringLayout.NORTH, passwordInputField, 5, SpringLayout.SOUTH,
+				emailConfirmInputField);
 		sl_panelOne.putConstraint(SpringLayout.EAST, passwordInputField, -10, SpringLayout.EAST, panelOne);
 		passwordInputField.setPreferredSize(new Dimension(7, 25));
 		passwordInputField.setName("passwordInputField");
@@ -212,9 +214,12 @@ public final class RegistrationView extends WindowSuperclass implements IView {
 		panelOne.add(passwordConfirmLabel);
 
 		passwordConfirmInputField = new JPasswordField(0);
-		sl_panelOne.putConstraint(SpringLayout.NORTH, passwordConfirmLabel, 0, SpringLayout.NORTH, passwordConfirmInputField);
-		sl_panelOne.putConstraint(SpringLayout.NORTH, passwordConfirmInputField, 5, SpringLayout.SOUTH, passwordInputField);
-		sl_panelOne.putConstraint(SpringLayout.WEST, passwordConfirmInputField, 10, SpringLayout.EAST, passwordConfirmLabel);
+		sl_panelOne.putConstraint(SpringLayout.NORTH, passwordConfirmLabel, 0, SpringLayout.NORTH,
+				passwordConfirmInputField);
+		sl_panelOne.putConstraint(SpringLayout.NORTH, passwordConfirmInputField, 5, SpringLayout.SOUTH,
+				passwordInputField);
+		sl_panelOne.putConstraint(SpringLayout.WEST, passwordConfirmInputField, 10, SpringLayout.EAST,
+				passwordConfirmLabel);
 		sl_panelOne.putConstraint(SpringLayout.EAST, passwordConfirmInputField, -10, SpringLayout.EAST, panelOne);
 		passwordConfirmInputField.setPreferredSize(new Dimension(7, 25));
 		passwordConfirmInputField.setName("passwordInputField");
@@ -312,7 +317,6 @@ public final class RegistrationView extends WindowSuperclass implements IView {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
 
 	}
 }

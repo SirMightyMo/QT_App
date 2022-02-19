@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.PatternSyntaxException;
 
 import javax.swing.DefaultComboBoxModel;

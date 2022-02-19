@@ -12,7 +12,6 @@ import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -28,9 +28,6 @@ import main.java.controller.DatePicker;
 import main.java.controller.TimerHourController;
 import main.java.model.StaticActions;
 import main.java.model.TimerModel;
-import javax.swing.SpringLayout;
-import java.awt.ComponentOrientation;
-import javax.swing.UIManager;
 
 @SuppressWarnings("deprecation")
 public class TimerView implements IView {
@@ -338,7 +335,7 @@ public class TimerView implements IView {
 		confirmButtonPanel.setBackground(new Color(31, 32, 33));
 		contentPanel.add(confirmButtonPanel);
 
-		//Reset Button
+		// Reset Button
 		btnReset = new JButton("Reset");
 		btnReset.setName("btnReset");
 		btnReset.addActionListener(timerHourController);
@@ -346,7 +343,7 @@ public class TimerView implements IView {
 		btnReset.setActionCommand(StaticActions.ACTION_TIMER_RESET);
 		confirmButtonPanel.add(btnReset);
 
-		//Save Button
+		// Save Button
 		btnSaveTimerView = new JButton("Sichern");
 		btnSaveTimerView.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnSaveTimerView.setName("btnSaveTimerView");
@@ -365,7 +362,7 @@ public class TimerView implements IView {
 		lblErrorMessage = new JLabel("Error Message");
 		lblErrorMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
 		lblErrorMessage.setHorizontalAlignment(SwingConstants.CENTER);
-		//lblErrorMessage.setFont(new Font("Tahoma", Font.BOLD, 12));
+		// lblErrorMessage.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblErrorMessage.setForeground(new Color(255, 140, 0));
 		lblErrorMessage.setVisible(false);
 		SpringLayout sl_errorPanel = new SpringLayout();
@@ -429,7 +426,7 @@ public class TimerView implements IView {
 	public JComboBox getProjectDropdown() {
 		return projectDropdown;
 	}
-	
+
 	public JComboBox getServiceDropdown() {
 		return serviceDropdown;
 	}
@@ -441,7 +438,7 @@ public class TimerView implements IView {
 	public JButton getBtnSave() {
 		return btnSaveTimerView;
 	}
-	
+
 	public JButton getBtnReset() {
 		return btnReset;
 	}
@@ -461,7 +458,7 @@ public class TimerView implements IView {
 	public void setButtonsHighlighted(boolean buttonsHighlighted) {
 		this.buttonsHighlighted = buttonsHighlighted;
 	}
-	
+
 	public void setTextFieldCommentTimerView(JTextField textFieldCommentTimerView) {
 		this.textFieldCommentTimerView = textFieldCommentTimerView;
 	}
@@ -505,8 +502,9 @@ public class TimerView implements IView {
 				this.projectDropdown.setModel(new DefaultComboBoxModel(projectNames.toArray()));
 				System.out.println("Projects loaded into TimerView.");
 			}
-			
-			if (!((TimerModel) arg).isTimerRunning() && !((TimerModel) arg).isServiceSet() && ((TimerModel) arg).getServiceList() != null) {
+
+			if (!((TimerModel) arg).isTimerRunning() && !((TimerModel) arg).isServiceSet()
+					&& ((TimerModel) arg).getServiceList() != null) {
 				ArrayList<String> services = new ArrayList<>();
 				((TimerModel) arg).getServiceList().forEach(service -> {
 					services.add(service.get(1).toString());

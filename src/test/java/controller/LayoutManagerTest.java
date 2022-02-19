@@ -19,13 +19,9 @@ class LayoutManagerTest {
 		FlatDarkLaf.setup();
 		User.setUser(new User(1, "Bob", "bob@msn.com"));
 		lm = new LayoutManager();
-	}
-
-	@Test
-	void constructorTest() {
 		assertNotNull(lm);
 	}
-	
+
 	@Test
 	void testGetFont() {
 		assertEquals(LayoutManager.getFont("dinNeuzeitGrotesk_regular").deriveFont(16.0f).toString(),"java.awt.Font[family=DINNeuzeitGrotesk-BoldCond,name=DINNeuzeitGrotesk-BoldCond,style=plain,size=16]");

@@ -8,7 +8,7 @@ import java.util.TimerTask;
 import main.java.controller.DatabaseController;
 
 @SuppressWarnings("deprecation")
-public class TimerModel extends Observable implements IModel{
+public class TimerModel extends Observable implements IModel {
 
 	private boolean timerRunning;
 	private boolean timerPaused;
@@ -181,7 +181,9 @@ public class TimerModel extends Observable implements IModel{
 
 	public void retrieveProjects() {
 		this.projectList = new ArrayList<>();
-		ArrayList<Object> result = db.query("SELECT project.p_id, name FROM project LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id WHERE active = TRUE AND u_id = " + User.getUser().getU_id() + ";");
+		ArrayList<Object> result = db.query(
+				"SELECT project.p_id, name FROM project LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id WHERE active = TRUE AND u_id = "
+						+ User.getUser().getU_id() + ";");
 		result.forEach(entry -> {
 			ArrayList<Object> row = (ArrayList<Object>) entry;
 			this.projectList.add(row);
@@ -189,7 +191,7 @@ public class TimerModel extends Observable implements IModel{
 		setChanged();
 		notifyObservers(this);
 	}
-	
+
 	public void retrieveServices() {
 		this.serviceList = new ArrayList<>();
 		ArrayList<Object> result = db.query("SELECT s_id, name FROM service;");

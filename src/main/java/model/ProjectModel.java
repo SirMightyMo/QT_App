@@ -12,7 +12,7 @@ public class ProjectModel extends Observable implements IModel {
 	private boolean projectSet;
 	private Object[][] projectTable;
 	private DatabaseController db = DatabaseController.getInstance();
-	
+
 	// Constructor
 	public ProjectModel() {
 		super();
@@ -21,7 +21,9 @@ public class ProjectModel extends Observable implements IModel {
 	// Creates Object needed for JTable
 	public Object[][] getTableModel() {
 		this.projectList = new ArrayList<>();
-		ArrayList<Object> result = db.query("SELECT * FROM project LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id WHERE u_id = " + User.getUser().getU_id() + ";");
+		ArrayList<Object> result = db.query(
+				"SELECT * FROM project LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id WHERE u_id = "
+						+ User.getUser().getU_id() + ";");
 		projectTable = new Object[result.size()][7];
 		for (int i = 0; i < result.size(); i++) {
 			for (int j = 0; j < 7; j++) {
@@ -40,7 +42,7 @@ public class ProjectModel extends Observable implements IModel {
 				} else
 					projectTable[i][j] = row.get(j);
 			}
-			// TO DO Abfangen von Customer ID
+			// TODO: Abfangen von Customer ID
 
 		}
 
@@ -65,7 +67,9 @@ public class ProjectModel extends Observable implements IModel {
 
 	public void retrieveProjects() {
 		this.projectList = new ArrayList<>();
-		ArrayList<Object> result = db.query("SELECT project.p_id, name FROM project LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id WHERE u_id = " + User.getUser().getU_id() + ";");
+		ArrayList<Object> result = db.query(
+				"SELECT project.p_id, name FROM project LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id WHERE u_id = "
+						+ User.getUser().getU_id() + ";");
 		result.forEach(entry -> {
 			ArrayList<Object> row = (ArrayList<Object>) entry;
 			this.projectList.add(row);

@@ -74,7 +74,7 @@ public class SessionController implements IController {
 				ArrayList<Object> row = (ArrayList<Object>) result.get(i);
 				String value = row.get(j).toString();
 				// If column is for start or end time
-				if (j == 4 || j == 5) {				
+				if (j == 4 || j == 5) {
 					String[] split = value.split("\\.");
 					value = split[0] + ".000";
 					java.util.Date date = null;
@@ -108,18 +108,17 @@ public class SessionController implements IController {
 		this.sessionModel.setProjectSet(false);
 		this.sessionModel.retrieveProjects();
 	}
-	
+
 	public void actionLoadServices() {
 		this.sessionModel.setServiceSet(false);
 		this.sessionModel.retrieveServices();
 	}
-	
+
 	public void actionLoadClients() {
 		this.sessionModel.setClientSet(false);
 		this.sessionModel.retrieveClients();
 	}
-	
-	
+
 	public SessionView getSessionView() {
 		return sessionView;
 	}
@@ -130,18 +129,18 @@ public class SessionController implements IController {
 		String serviceFilter = "";
 		String startFilter = sessionView.getTextFieldFrom().getText();
 		String endFilter = sessionView.getTextFieldTo().getText();
-		
+
 		System.out.println(startFilter);
 		System.out.println(endFilter);
-		
-		List<RowFilter<Object,Object>> filters = new ArrayList<RowFilter<Object,Object>>();
+
+		List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		formatter.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
 		
 		if (sessionView.getComboBoxProject().getItemCount() > 0) {
 			projectFilter = sessionView.getComboBoxProject().getSelectedItem().toString();
 			if (!projectFilter.equals("")) {
-				filters.add(RowFilter.regexFilter("^" + projectFilter  + "$", 1));
+				filters.add(RowFilter.regexFilter("^" + projectFilter + "$", 1));
 			}
 		}
 		if (sessionView.getComboBoxClient().getItemCount() > 0) {
@@ -153,11 +152,11 @@ public class SessionController implements IController {
 		if (sessionView.getComboBoxService().getItemCount() > 0) {
 			serviceFilter = sessionView.getComboBoxService().getSelectedItem().toString();
 			if (!serviceFilter.equals("")) {
-				filters.add(RowFilter.regexFilter("^" + serviceFilter  + "$", 2));
+				filters.add(RowFilter.regexFilter("^" + serviceFilter + "$", 2));
 			}
 		}
 		if (!startFilter.equals("")) {
-			String start = startFilter.split(" ",1)[0].replace(".", "-");
+			String start = startFilter.split(" ", 1)[0].replace(".", "-");
 			java.util.Date startDate = null;
 			try {
 				startDate = formatter.parse(start);
@@ -166,10 +165,10 @@ public class SessionController implements IController {
 				System.out.println("Error while parsing Date: " + start);
 			}
 			if (startDate != null)
-				filters.add(RowFilter.dateFilter(ComparisonType.AFTER, startDate, 4));			
+				filters.add(RowFilter.dateFilter(ComparisonType.AFTER, startDate, 4));
 		}
 		if (!endFilter.equals("")) {
-			String end = endFilter.split(" ",1)[0].replace(".", "-");
+			String end = endFilter.split(" ", 1)[0].replace(".", "-");
 			java.util.Date endDate = null;
 			System.out.println(end);
 			try {
@@ -180,23 +179,21 @@ public class SessionController implements IController {
 			}
 			if (endDate != null)
 				endDate = new Date(endDate.getTime() + (1000 * 60 * 60 * 24)); // add one day, so it is included
-				filters.add(RowFilter.dateFilter(ComparisonType.BEFORE, endDate, 5));
+			filters.add(RowFilter.dateFilter(ComparisonType.BEFORE, endDate, 5));
 		}
-		
-		
-		
+
 		if (filters.size() > 0) {
-			sessionView.getSorter().setRowFilter(RowFilter.andFilter(filters));	
+			sessionView.getSorter().setRowFilter(RowFilter.andFilter(filters));
 		} else {
 			sessionView.getSorter().setRowFilter(null);
 		}
-		
+
 	}
 
 	public CustomTableModel getTableModel() {
 		return tableData;
 	}
-	
+
 	// ActionListener method
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -212,7 +209,7 @@ public class SessionController implements IController {
 			actionFilterEntries();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_NEW_SAVE)) {
-			
+
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_RESET)) {
 			actionLoadProjects();
@@ -245,31 +242,26 @@ public class SessionController implements IController {
 
 	@Override
 	public void insertUpdate(DocumentEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void changedUpdate(DocumentEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public IModel getModel() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public IView getView() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
