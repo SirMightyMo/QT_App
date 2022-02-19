@@ -132,13 +132,20 @@ public class ProjectController implements IController {
 		String customer;
 		Date startDate;
 		Date endDate;
+		Date today;
 		boolean active;
 		int customerID;
 
 		projectName = projectView.getNewProjectName();
 		startDate = projectView.getNewStartDate();
 		endDate = projectView.getNewEndDate();
-		active = projectView.getNewProjectStat();
+        today = new java.sql.Date(System.currentTimeMillis());
+		if(startDate.before(today) && endDate.after(today)) {
+			active = true;
+		}
+		else {
+			active = false;
+		}
 		customerID = projectView.getClientID();
 		
 		if (projectName.length() > 255) {
@@ -146,14 +153,14 @@ public class ProjectController implements IController {
 			return;
 		}
 
-		db.insert("INSERT INTO project(name, start_date, end_date, active, c_id) VALUES(" 
+		db.run("INSERT INTO project(name, start_date, end_date, active, c_id) VALUES(" 
 		+ "'" + projectName + "'," 
 		+ "'" + startDate + "'," 
 		+ "'" + endDate + "'," 
 		+ "'" + active + "'," 
 		+ "'" + customerID + "');");
 		
-		db.insert("INSERT INTO assign_project_user(p_id, u_id) VALUES("
+		db.run("INSERT INTO assign_project_user(p_id, u_id) VALUES("
 				+ "(SELECT MAX(p_id) FROM project)," 	// get newest projectID
 				+ User.getUser().getU_id() + ");");		// get User-ID
 		
@@ -229,7 +236,7 @@ public class ProjectController implements IController {
 			return;
 		}
 				
-		db.insert("INSERT INTO customer(company, contact, phone, mobile, street, house_number, zip, city, country) VALUES(" 
+		db.run("INSERT INTO customer(company, contact, phone, mobile, street, house_number, zip, city, country) VALUES(" 
 		+ "'" + company + "'," 
 		+ "'" + contact + "'," 
 		+ "'" + phone + "'," 
@@ -268,7 +275,7 @@ public class ProjectController implements IController {
 		}
 		
 
-		db.insert("INSERT INTO service(name, internal_rate, external_rate) VALUES(" 
+		db.run("INSERT INTO service(name, internal_rate, external_rate) VALUES(" 
 		+ "'" + service + "'," 
 		+ "'" + internal_rate + "'," 
 		+ "'" + external_rate + "');");		

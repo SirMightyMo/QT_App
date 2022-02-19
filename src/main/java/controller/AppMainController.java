@@ -48,6 +48,7 @@ public class AppMainController implements IController{
 		// organize listeners
 		dashboardController.getDashboardView().getBtnProjectShowMore().addActionListener(this);
 		dashboardController.getDashboardView().getBtnSessionShowMore().addActionListener(this);
+		sessionController.getSessionView().getBtnSaveEntry().addActionListener(dashboardController.getDashboardHourListController());
 	}
 
 	public void mouseClicked(MouseEvent me)

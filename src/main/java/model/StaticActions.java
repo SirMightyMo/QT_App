@@ -25,8 +25,9 @@ public class StaticActions implements IModel {
 	public static final String ACTION_SESSION_OVERVIEW_SET_PROJECT = "action_session_overview_set_project";
 	public static final String ACTION_SESSION_OVERVIEW_SET_CLIENT = "action_session_overview_set_client";
 	public static final String ACTION_SESSION_OVERVIEW_SET_SERVICE = "action_session_overview_set_service";
+	public static final String ACTION_SESSION_OVERVIEW_EDIT_PROJECT = "action_session_overview_edit_project";
+	public static final String ACTION_SESSION_OVERVIEW_DELETE_PROJECT = "action_session_overview_delete_project";
 	public static final String ACTION_SESSION_NEW_SET_PROJECT = "action_session_new_set_project";
-	public static final String ACTION_SESSION_NEW_SET_CLIENT = "action_session_new_set_client";
 	public static final String ACTION_SESSION_NEW_SET_SERVICE = "action_session_new_set_service";
 	public static final String ACTION_SESSION_NEW_SAVE = "action_session_save";
 

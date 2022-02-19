@@ -49,7 +49,7 @@ class DatabaseControllerTest {
 		String answer = "42";
 
 		assertNotNull(dc);
-		dc.insert("INSERT INTO users(username,password,email,security_question,answer)VALUES(" + "'" + username + "',"
+		dc.run("INSERT INTO users(username,password,email,security_question,answer)VALUES(" + "'" + username + "',"
 				+ "'" + password + "'," + "'" + email + "'," + "'" + security_question + "'," + "'" + answer + "');");
 	}
 

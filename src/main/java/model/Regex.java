@@ -1,5 +1,6 @@
 package main.java.model;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Regex {
@@ -12,4 +13,18 @@ public class Regex {
 			Pattern.compile("^(?:(?:31(\\/|-|\\.)(?:0?[13578]|1[02]))\\1|(?:(?:29|30)(\\/|-|\\.)(?:0?[13-9]|1[0-2])\\2))(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$|"
 					+ "^(?:29(\\/|-|\\.)0?2\\3(?:(?:(?:1[6-9]|[2-9]\\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|"
 					+ "^(?:0?[1-9]|1\\d|2[0-8])(\\/|-|\\.)(?:(?:0?[1-9])|(?:1[0-2]))\\4(?:(?:1[6-9]|[2-9]\\d)?\\d{2})$");
+	
+	public static final Pattern VALID_TIME_FORMAT_HH_MM = 
+			Pattern.compile("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$|^([0-1]?[0-9]|2[0-3]).[0-5][0-9]$");
+	
+	// 0,75; 0.75; 1.5
+	public static final Pattern VALID_TIME_FORMAT_H_DECIMAL = 
+			Pattern.compile("^\\\\d+[,]\\\\d{2}$|^\\\\d+[.]\\\\d{2}$");
+	
+	
+	public static boolean validate(String value, Pattern pattern) {
+		Matcher matcher = pattern.matcher(value);
+		return matcher.find();
+	}
+			
 }

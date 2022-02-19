@@ -11,11 +11,10 @@ import main.java.controller.DatabaseController;
 public class ProjectModel extends Observable implements IModel {
 
 	private ArrayList<ArrayList<Object>> projectList;
-	private ArrayList<ArrayList<Object>> serviceList;
 	private ArrayList<ArrayList<Object>> clientList;
 	private boolean projectSet;
-	private boolean serviceSet;
 	private boolean clientSet;
+
 	private Object[][] projectTable;
 	private DatabaseController db = DatabaseController.getInstance();
 
@@ -105,18 +104,8 @@ public class ProjectModel extends Observable implements IModel {
 		});
 		setChanged();
 		notifyObservers(this);
-	}/*
-	public void retrieveServices() {
-		this.serviceList = new ArrayList<>();
-		ArrayList<Object> result = db.query("SELECT s_id, name FROM service;");
-		result.forEach(entry -> {
-			//System.out.println(entry);
-			ArrayList<Object> row = (ArrayList<Object>) entry;
-			this.serviceList.add(row);
-		});
-		setChanged();
-		notifyObservers(this);
-	}*/
+	}
+	
 	public void retrieveClients() {
 		this.clientList = new ArrayList<>();
 		ArrayList<Object> result = db.query(
@@ -131,17 +120,12 @@ public class ProjectModel extends Observable implements IModel {
 		notifyObservers(this);
 	}
 
-	public void setClientSet(boolean b) {
-		// TODO Auto-generated method stub
-		
+	public void setClientSet(boolean clientSet) {
+		this.clientSet = clientSet;
 	}
-
-	public boolean isServiceSet() {
-		return serviceSet;
-	}
-
-	public void setServiceSet(boolean serviceSet) {
-		this.serviceSet = serviceSet;
+	
+	public boolean isClientSet() {
+		return clientSet;
 	}
 
 

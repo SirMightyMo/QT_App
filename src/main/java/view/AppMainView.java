@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.util.Observable;
 
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,9 +13,12 @@ import javax.swing.SwingConstants;
 import main.java.controller.AccountController;
 import main.java.controller.AppMainController;
 import main.java.controller.DashboardController;
+import main.java.controller.LayoutManager;
 import main.java.controller.ProjectController;
 import main.java.controller.SessionController;
 import main.java.model.StaticActions;
+import java.awt.Component;
+import java.awt.Point;
 
 public class AppMainView extends WindowSuperclass implements IView {
 
@@ -122,7 +126,8 @@ public class AppMainView extends WindowSuperclass implements IView {
 		menuPanel.add(btnPaneMenuDashboard);
 		btnPaneMenuDashboard.setLayout(null);
 
-		JButton btnMenuDashboard = new JButton("\u00B7 Dashboard\r\n");
+		JButton btnMenuDashboard = new JButton("Dashboard");
+		btnMenuDashboard.setIcon(LayoutManager.getImageIcon(LayoutManager.ICON_DASHBOARD, 20, 20));
 		btnMenuDashboard.setName("btnMenuDashboard");
 		btnMenuDashboard.setHorizontalAlignment(SwingConstants.LEFT);
 		btnMenuDashboard.setForeground(Color.WHITE);
@@ -151,7 +156,8 @@ public class AppMainView extends WindowSuperclass implements IView {
 		menuPanel.add(btnPaneMenuProjects);
 		btnPaneMenuProjects.setLayout(null);
 
-		JButton btnMenuProjects = new JButton("\u00B7 Projekte");
+		JButton btnMenuProjects = new JButton("Projekte");
+		btnMenuProjects.setIcon(LayoutManager.getImageIcon(LayoutManager.ICON_PROJECTS, 20, 20));
 		btnMenuProjects.setName("btnMenuProjects");
 		btnMenuProjects.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		btnMenuProjects.setForeground(Color.WHITE);
@@ -181,7 +187,8 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnPaneMenuSessions.setBounds(10, 242, 335, 66);
 		menuPanel.add(btnPaneMenuSessions);
 
-		JButton btnMenuSessions = new JButton("\u00B7 Sitzungen");
+		JButton btnMenuSessions = new JButton("Sitzungen");
+		btnMenuSessions.setIcon(LayoutManager.getImageIcon(LayoutManager.ICON_SESSIONS, 20, 20));
 		btnMenuSessions.setName("btnMenuSessions");
 		btnMenuSessions.setBounds(130, 11, 195, 44);
 		btnMenuSessions.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
@@ -214,8 +221,8 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnPaneMenuSettings.add(lblEinstellungen);
 		btnPaneMenuAccount.setLayout(null);
 
-		JButton btnMenuAccount = new JButton("\u00B7 Account");
-		btnMenuAccount.setName("btnMenuAccount");
+		JButton btnMenuAccount = new JButton("Account");
+		btnMenuAccount.setIcon(LayoutManager.getImageIcon(LayoutManager.ICON_ACCOUNT, 20, 20));
 		btnMenuAccount.setForeground(Color.WHITE);
 		btnMenuAccount.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		btnMenuAccount.setBounds(130, 11, 195, 44);
@@ -237,7 +244,9 @@ public class AppMainView extends WindowSuperclass implements IView {
 		});
 		btnPaneMenuLogout.setLayout(null);
 
-		JButton btnMenuLogout = new JButton("\u00B7 Logout\r\n");
+		JButton btnMenuLogout = new JButton("Logout");
+		btnMenuLogout.setBorderPainted(true);
+		btnMenuLogout.setIcon(LayoutManager.getImageIcon(LayoutManager.ICON_LOGOUT, 20, 20));
 		btnMenuLogout.setName("btnMenuLogout");
 		btnMenuLogout.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		btnMenuLogout.setForeground(Color.WHITE);
