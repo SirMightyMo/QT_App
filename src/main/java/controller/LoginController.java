@@ -71,7 +71,7 @@ public final class LoginController extends Hashing implements IController {
 			if (pwMatches) {
 				login(u_id, name, email);
 			} else {
-				view.setErrorMessage("Passwort ist korrekt");
+				view.setErrorMessage("Passwort inkorrekt");
 			}
 		}
 		
