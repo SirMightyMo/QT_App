@@ -1,4 +1,4 @@
-package test.java.view;
+package test.java;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -11,10 +11,17 @@ import main.java.model.User;
 import main.java.view.AppMainView;
 
 import java.awt.Dimension;
+import java.util.concurrent.TimeUnit;
 
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
+
+/**
+ * This class tests the application as a whole. For testing purposes<br>
+ * a robot is created, that simulates user inputs in different scenarios.<br>
+ * @author kevin
+ */
 
 class IntegrationTest {
 	private FrameFixture window;
@@ -40,8 +47,34 @@ class IntegrationTest {
 	}
 
 	@Test
-	void testAllElementsVisible_True() {
+	void integrationTest() {
+		testAllElementsVisible_true(); // Test if all elements are visible
+		testTimer_scenario1();
+	}
+	
+	/**
+	 * Following steps happen in this scenario:<br>
+	 * 1 Select a project<br>
+	 * 2 Select a service<br>
+	 * 3 Start timer<br>
+	 * 4 Pause timer<br>
+	 * 5 Stop timer<br>
+	 * 6 Enter a comment<br>
+	 * 7 Save entry 
+	 * @author kevin
+	 */
+	private void testTimer_scenario1() {
+		window.button("btnMenuDashboard").click();
+		window.comboBox("comboBoxProject").click().selectItem("Projekt 1");
+		window.comboBox("serviceDropdown").click().selectItem("Backend Stuff");
+		window.button("btnStart").click();
+		window.button("btnPause").click();
+		window.button("btnStop").click();
+		window.textBox("textFieldCommentTimerView").enterText("Conquering the world!");
+		window.button("btnSaveTimerView").click();
+	}
 
+	void testAllElementsVisible_true() {
 		//////////////////////////////////////////////////////
 		///////////////////// Dashboard /////////////////////
 		////////////////////////////////////////////////////
@@ -53,6 +86,7 @@ class IntegrationTest {
 		window.button("btnMenuSessions").requireVisible();
 		window.label("lblEinstellungen").requireVisible();
 		window.button("btnMenuAccount").requireVisible();
+		window.textBox("textFieldCommentTimerView").requireVisible();
 		window.button("btnMenuLogout").requireVisible();
 
 		// Timer
@@ -214,98 +248,39 @@ class IntegrationTest {
 		window.textBox("textFieldPause").requireVisible();
 		window.label("lblCommentNZ").requireVisible();
 		window.textBox("textFieldCommentNZ").requireVisible();
+		
+		//////////////////////////////////////////////////////
+		///////////////////// Account ///////////////////////
+		////////////////////////////////////////////////////
+		window.button("btnMenuAccount").click();
+		window.label("lblNewLabel").requireVisible();
+		window.label("lblNewLabel_1_2_2").requireVisible();
+		window.label("lblNewLabel_2").requireVisible();
+		window.checkBox("chckbxNewCheckBox_1").requireVisible();
+		window.checkBox("chckbxNewCheckBox").requireVisible();
+		window.checkBox("chckbxNewCheckBox_4").requireVisible();
+		window.checkBox("chckbxNewCheckBox_2").requireVisible();
+		window.label("lblNewLabel_1_2_1_3").requireVisible();
+		window.label("lblNewLabel_1_2_1_1_3").requireVisible();
+		window.textBox("textField_7").requireVisible();
+		window.textBox("textField_8").requireVisible();
+		window.label("lblNewLabel_1_2_1_1_1_1").requireVisible();
+		window.label("lblNewLabel_1_2_1_1_2_2").requireVisible();
+		window.textBox("textField_9").requireVisible();
+		window.label("lblNewLabel_1_2_1_2").requireVisible();
+		window.label("lblNewLabel_1_2_1_1_2_1").requireVisible();
+		window.comboBox("comboBox").requireVisible();
+		window.textBox("textField_6").requireVisible();
+		window.label("lblNewLabel_1_2_1_1_2_1_1").requireVisible();
+		window.textBox("textFieldAV").requireVisible();
+		window.label("lblNewLabel_1AV").requireVisible();
+		window.label("lblNewLabel_1_1").requireVisible();
+		window.textBox("textField_2AV").requireVisible();
+		window.textBox("textField_1AV").requireVisible();
+		window.label("lblNewLabel_1_1_1").requireVisible();
+		window.label("lblNewLabel_1_2").requireVisible();
+		window.button("btnNewButton").requireVisible();
+		
 	}
 
-//	@Test
-//	void testAllButtons() {
-//		window.button("btnStart").click();
-//		window.button("btnPause").click();
-//		window.button("btnStop").click();
-//		window.button("btnSave").click();
-//		window.button("btnReset").click();		window.button("btnMenuSessions").click();
-
-//		window.button("btnLoadProjects").click();
-
-	// window.button("btnMenuProjects").click();
-//	window.tabbedPane().selectTab(3);
-//	window.textBox("textFieldNewService").enterText("abc");
-//	window.button("btnMenuProjects").click();
-//	window.button("btnMenuSessions").click();
-//	window.button("btnMenuDashboard").click();
-//	window.button("btnStart").click();
-//	window.button("btnStop").click();
-//	window.button("btnSave").click();
-//	window.button("btnMenuProjects").click();
-//	window.tabbedPane().selectTab(1);
-//	window.tabbedPane().selectTab(2);
-//	window.tabbedPane().selectTab(3);
-//	window.tabbedPane().selectTab(0);
-//	window.button("btnMenuSessions").click();
-//	window.tabbedPane().selectTab(1);
-//	window.tabbedPane().selectTab(0);
-
-	// window.button("btnStart").requireVisible();
-//	window.button("btnMenuDashboard").click();
-//	window.button("btnStart").requireVisible();
-
-//	window.tabbedPane().selectTab(1);
-
-//	try {
-//		TimeUnit.SECONDS.sleep(100);
-//	} catch (InterruptedException e) {
-//		// TODO Auto-generated catch block
-//		e.printStackTrace();
-//	}
-//	window.
-//	window.button("btnStart").click();
-//	window.textBox("textFieldCommentTimerView").requireVisible();
-//	window.textBox("textFieldCommentTimerView").enterText("IntegTest");
-//	window.button("btnStop").click();
-//	window.button("btnSaveTimerView").click();
-//	FrameFixture mainFrame = findFrame("main").using(robot());
-//	window.comboBox("comboBoxProject").click();
-
-//	}
-
-//	@Test
-//	void testInsertComment() {
-//		window.textBox("textFieldComment").requireVisible();
-//		window.textBox("textFieldComment").enterText("Comment");
-//	}
-
-//	@Test
-//	void testProjectPanel() {
-//		window.panel("projectPanel").isEnabled();
-//	}
-
-//	@Test
-//	void testAllGuiElements() {
-//		JButtonFixture btnStart = window.button("btnStart");
-//		assertNotNull(btnStart);
-//		window.button("btnStart").click();
-//
-//		JButtonFixture btnPause = window.button("btnPause");
-//		assertNotNull(btnPause);
-//		window.button("btnPause").click();
-//
-//		JButtonFixture btnStop = window.button("btnStop");
-//		assertNotNull(btnStop);
-//		window.button("btnStop").click();
-//
-//		JButtonFixture btnSave = window.button("btnSave");
-//		assertNotNull(btnSave);
-//		window.button("btnSave").click();
-//
-//		JButtonFixture btnReset = window.button("btnReset");
-//		assertNotNull(btnReset);
-//		window.button("btnReset").click();
-//
-//		JButtonFixture btnLoadProjects = window.button("btnLoadProjects");
-//		assertNotNull(btnLoadProjects);
-//		window.button("btnLoadProjects").click();
-//
-//		JPanelFixture projectPanel = window.panel("projectPanel");
-//		assertNotNull(projectPanel);
-//		window.panel("projectPanel").isEnabled();
-//	}
 }
