@@ -21,6 +21,8 @@ import org.assertj.swing.fixture.FrameFixture;
 /**
  * This class tests the application as a whole. For testing purposes<br>
  * a robot is created, that simulates user inputs in different scenarios.<br>
+ * A full integration test takes approximately 70 seconds. <b>Do not move<br>
+ * the mouse or press any keys while the test is running.</b>
  * 
  * @author kevin
  */
@@ -50,28 +52,69 @@ class IntegrationTest {
 
 	@Test
 	void integrationTest() {
-//		testAllElementsVisible_true(); // Test if all elements are visible
-//		testTimer_scenario1();
-//		testTimer_scenario2();
-//		testDashboard_CreateProjectFromDashboard();
-//		testProjects_CreateProjectFromProjects();
-//		testProjects_CreateNewClient_ValidInputs();
+		testAllElementsVisible_true(); // Test if all elements are visible
+		testTimer_scenario1();
+		testTimer_scenario2();
+		testDashboard_CreateProjectFromDashboard();
+		testProjects_CreateProjectFromProjects();
+		testProjects_CreateNewClient_ValidInputs();
 		testProjects_CreateNewClient_InvalidZip();
+		testProjects_CreateNewService_ValidInputs();
+		testProjects_CreateNewService_InvalidInputs();
+	}
+	
+	/**
+	 * Following steps happen in this scenario:<br>
+	 * 1 Enter a service name (too long)<br>
+	 * 2 Enter invalid internal rate<br>
+	 * 3 Enter external rate<br>
+	 * 4 Save<br>
+	 * 5 Enter valid internal rate<br>
+	 * @author kevin
+	 */
+	void testProjects_CreateNewService_InvalidInputs() {
+		window.button("btnMenuProjects").click();
+		window.tabbedPane().selectTab(3);
+		window.textBox("textFieldNewService").enterText("Optimierung");
+		window.textBox("textFieldInternalRate").enterText("ABC");
+		window.textBox("textFieldExternalRate").enterText("150€");
+		window.button("btnSaveService").click();
+		window.textBox("textFieldInternalRate").setText("");
+		window.textBox("textFieldInternalRate").enterText("20");
+	}
+	
+	/**
+	 * Following steps happen in this scenario:<br>
+	 * 1 Enter a service name<br>
+	 * 2 Enter internal rate<br>
+	 * 3 Enter external rate<br>
+	 * 4 Save
+	 * 5 
+	 * @author kevin
+	 */
+	void testProjects_CreateNewService_ValidInputs() {
+		window.button("btnMenuProjects").click();
+		window.tabbedPane().selectTab(3);
+		window.textBox("textFieldNewService").enterText("Database Engineering");
+		window.textBox("textFieldInternalRate").enterText("50");
+		window.textBox("textFieldExternalRate").enterText("150€");
+		window.button("btnSaveService").click();
 	}
 
 	/**
 	 * Following steps happen in this scenario:<br>
-	 * 1 Enter a client name (too long)<br>
+	 * 1 Enter a client name<br>
 	 * 2 Enter a contact<br>
 	 * 3 Enter phone<br>
 	 * 4 Enter mobile<br>
 	 * 5 Enter street<br>
 	 * 6 Enter house number<br>
-	 * 7 Enter zip<br>
+	 * 7 Enter invalid zip<br>
 	 * 8 Enter city<br>
 	 * 9 Enter country<br>
-	 * 10 save
-	 * 
+	 * 10 Save<br>
+	 * 11 Enter valid zip<br>
+	 * 12 Save
 	 * @author kevin
 	 */
 	void testProjects_CreateNewClient_InvalidZip() {
@@ -102,7 +145,7 @@ class IntegrationTest {
 	 * 7 Enter zip<br>
 	 * 8 Enter city<br>
 	 * 9 Enter country<br>
-	 * 10 save
+	 * 10 Save
 	 * 
 	 * @author kevin
 	 */

@@ -252,8 +252,8 @@ public class ProjectController implements IController {
 		double external_rate;
 		
 		try {
-			internal_rate = Double.parseDouble(projectView.getTextFieldInternalRate().replace(',', '.'));
-			external_rate = Double.parseDouble(projectView.getTextFieldExternalRate().replace(',', '.'));
+			internal_rate = Double.parseDouble(projectView.getTextFieldInternalRate().replace(',', '.').replace('€', ' '));
+			external_rate = Double.parseDouble(projectView.getTextFieldExternalRate().replace(',', '.').replace('€', ' '));
 		} catch (NumberFormatException e) {
 			projectView.showErrorMessage(projectView.getLblErrorService(), "Interner- und externer Satz muss eine Zahl sein", 5000);
 			e.printStackTrace();
