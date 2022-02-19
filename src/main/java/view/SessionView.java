@@ -56,6 +56,7 @@ public class SessionView implements IView {
 	private JTextField textFieldEnd;
 	private JTextField textFieldPause;
 	private JTextField textFieldComment;
+	private JLabel lblErrorMessageNewEntry;
 
 
 	public class DateCellRenderer extends DefaultTableCellRenderer{
@@ -165,10 +166,7 @@ public class SessionView implements IView {
 		table.getColumnModel().getColumn(6).setPreferredWidth(70);
 		table.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
 		sorter = new TableRowSorter<>(table.getModel());
-		List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-		sortKeys.add(new RowSorter.SortKey(0, SortOrder.DESCENDING));
-		sorter.setSortKeys(sortKeys);
-		sorter.sort();
+		sortTableDescendingDate();
 		table.setRowSorter(sorter);
 
 		// Projects Label
@@ -241,7 +239,7 @@ public class SessionView implements IView {
 		btnApplyFilter.setActionCommand(StaticActions.ACTION_SESSION_OVERVIEW_SEARCH);
 
 		// input start date
-		textFieldFrom = new JTextField();
+		textFieldFrom = new JTextField("bitte Datum wählen...");
 		textFieldFrom.setEditable(false);
 		textFieldFrom.setHorizontalAlignment(SwingConstants.CENTER);
 		sl_panelHourEntryOverview.putConstraint(SpringLayout.WEST, textFieldFrom, 0, SpringLayout.WEST, comboBoxService);
@@ -267,7 +265,7 @@ public class SessionView implements IView {
 		panelHourEntryOverview.add(lblTo);
 
 		// input end date
-		textFieldTo = new JTextField();
+		textFieldTo = new JTextField("bitte Datum wählen...");
 		textFieldTo.setEditable(false);
 		textFieldTo.setHorizontalAlignment(SwingConstants.CENTER);
 		sl_panelHourEntryOverview.putConstraint(SpringLayout.NORTH, textFieldTo, -4, SpringLayout.NORTH, lblTo);
@@ -316,8 +314,9 @@ public class SessionView implements IView {
 		panelNewHourEntry.add(lblNewHourEntryHeadline);
 
 		JPanel panel_input_form = new JPanel();
-		slPanelNewHourEntry.putConstraint(SpringLayout.EAST, panel_input_form, -370, SpringLayout.EAST,
+		slPanelNewHourEntry.putConstraint(SpringLayout.EAST, panel_input_form, -850, SpringLayout.EAST,
 				panelNewHourEntry);
+		panel_input_form.setPreferredSize(new Dimension(350, 10));
 		panel_input_form.setName("panel_input_form");
 		slPanelNewHourEntry.putConstraint(SpringLayout.NORTH, panel_input_form, 80, SpringLayout.NORTH,
 				panelNewHourEntry);
@@ -334,6 +333,8 @@ public class SessionView implements IView {
 		panel_input_form.add(lblProject);
 
 		dropDownProjectName = new JComboBox<String>();
+		sl_panel_input_form.putConstraint(SpringLayout.WEST, dropDownProjectName, 73, SpringLayout.WEST,
+				panel_input_form);
 		dropDownProjectName.setName("dropDownProjectName");
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, lblProject, 3, SpringLayout.NORTH,
 				dropDownProjectName);
@@ -370,21 +371,36 @@ public class SessionView implements IView {
 		panel_input_form.add(dropDownService);
 
 		textFieldDate = new JTextField(20);
+		textFieldDate.setHorizontalAlignment(SwingConstants.CENTER);
+		textFieldDate.setText("bitte Datum wählen...");
+		textFieldDate.setEditable(false);
 		textFieldDate.setName("textFieldDate");
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, textFieldDate, -3, SpringLayout.NORTH,
 				lblDate);
 		panel_input_form.add(textFieldDate);
 
 		JButton btnSetEntryDate = new JButton("...");
+		sl_panel_input_form.putConstraint(SpringLayout.WEST, btnSetEntryDate, 352, SpringLayout.WEST,
+				panel_input_form);
 		btnSetEntryDate.setName("btnSetDate");
 		sl_panel_input_form.putConstraint(SpringLayout.EAST, textFieldDate, -6, SpringLayout.WEST,
 				btnSetEntryDate);
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, btnSetEntryDate, -4, SpringLayout.NORTH, lblDate);
-		sl_panel_input_form.putConstraint(SpringLayout.WEST, btnSetEntryDate, -33, SpringLayout.EAST,
-				dropDownProjectName);
 		sl_panel_input_form.putConstraint(SpringLayout.EAST, btnSetEntryDate, 0, SpringLayout.EAST,
 				dropDownProjectName);
 		panel_input_form.add(btnSetEntryDate);
+		
+		// Date Popup
+		final JFrame popupFrame = new JFrame();
+		popupFrame.setName("popupFrame");
+		btnSetEntryDate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				textFieldDate.setText(new DatePicker(popupFrame).setPickedDate().replace("-", "."));
+				if (textFieldDate.getText().equals("")) {
+					textFieldDate.setText("bitte Datum wählen...");
+				}
+			}
+		});
 
 		textFieldStart = new JTextField(5);
 		textFieldStart.setHorizontalAlignment(SwingConstants.CENTER);
@@ -412,7 +428,6 @@ public class SessionView implements IView {
 		JLabel lblEnd = new JLabel("Bis:");
 		lblEnd.setHorizontalAlignment(SwingConstants.RIGHT);
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, lblEnd, 0, SpringLayout.NORTH, lblStart);
-		sl_panel_input_form.putConstraint(SpringLayout.WEST, lblEnd, 10, SpringLayout.EAST, textFieldStart);
 		lblEnd.setName("lblEnd");
 		panel_input_form.add(lblEnd);
 		
@@ -430,10 +445,10 @@ public class SessionView implements IView {
 		panel_input_form.add(lblPause);
 		
 		textFieldPause = new JTextField(5);
+		sl_panel_input_form.putConstraint(SpringLayout.EAST, textFieldPause, -10, SpringLayout.EAST, panel_input_form);
 		textFieldPause.setHorizontalAlignment(SwingConstants.CENTER);
 		sl_panel_input_form.putConstraint(SpringLayout.EAST, lblPause, -5, SpringLayout.WEST, textFieldPause);
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, textFieldPause, 0, SpringLayout.NORTH, textFieldEnd);
-		sl_panel_input_form.putConstraint(SpringLayout.EAST, textFieldPause, 0, SpringLayout.EAST, btnSetEntryDate);
 		textFieldPause.setName("textFieldEndDate");
 		panel_input_form.add(textFieldPause);
 		
@@ -444,9 +459,8 @@ public class SessionView implements IView {
 		panel_input_form.add(lblComment);
 		
 		textFieldComment = new JTextField(20);
+		sl_panel_input_form.putConstraint(SpringLayout.EAST, textFieldComment, -10, SpringLayout.EAST, panel_input_form);
 		sl_panel_input_form.putConstraint(SpringLayout.WEST, textFieldStart, 0, SpringLayout.WEST,
-				textFieldComment);
-		sl_panel_input_form.putConstraint(SpringLayout.WEST, dropDownProjectName, 0, SpringLayout.WEST,
 				textFieldComment);
 		sl_panel_input_form.putConstraint(SpringLayout.WEST, dropDownService, 0, SpringLayout.WEST, textFieldComment);
 		sl_panel_input_form.putConstraint(SpringLayout.WEST, textFieldDate, 0, SpringLayout.WEST,
@@ -454,19 +468,17 @@ public class SessionView implements IView {
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, textFieldComment, -3, SpringLayout.NORTH, lblComment);
 		sl_panel_input_form.putConstraint(SpringLayout.WEST, textFieldComment, 5, SpringLayout.EAST, lblComment);
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, btnSaveEntry, 43, SpringLayout.SOUTH, textFieldComment);
-		sl_panel_input_form.putConstraint(SpringLayout.EAST, textFieldComment, 0, SpringLayout.EAST, textFieldPause);
 		textFieldComment.setName("textFieldComment");
-		panel_input_form.add(textFieldComment);
-
-		// Date Popup
-		final JFrame popupFrame = new JFrame();
-		popupFrame.setName("popupFrame");
-		btnSetEntryDate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				textFieldDate.setText(new DatePicker(popupFrame).setPickedDate().replace("-", "."));
-			}
-		});
+		panel_input_form.add(textFieldComment);		
 		
+		lblErrorMessageNewEntry = new JLabel("");
+		lblErrorMessageNewEntry.setForeground(new Color(255, 140, 0));
+		lblErrorMessageNewEntry.setPreferredSize(new Dimension(46, 25));
+		sl_panel_input_form.putConstraint(SpringLayout.WEST, lblErrorMessageNewEntry, 0, SpringLayout.WEST, panel_input_form);
+		sl_panel_input_form.putConstraint(SpringLayout.EAST, lblErrorMessageNewEntry, 0, SpringLayout.EAST, panel_input_form);
+		lblErrorMessageNewEntry.setHorizontalAlignment(SwingConstants.CENTER);
+		sl_panel_input_form.putConstraint(SpringLayout.NORTH, lblErrorMessageNewEntry, 85, SpringLayout.SOUTH, btnSaveEntry);
+		panel_input_form.add(lblErrorMessageNewEntry);
 
 		// Reset project table
 		JButton btnResetFilter = new JButton("Reset");
@@ -497,12 +509,17 @@ public class SessionView implements IView {
 		btnSetStartDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				textFieldFrom.setText(new DatePicker(popupFrame).setPickedDate().replace("-", "."));
-				System.out.print(textFieldFrom.getText());
+				if (textFieldFrom.getText().equals("")) {
+					textFieldFrom.setText("bitte Datum wählen...");
+				}
 			}
 		});
 		btnSetEndDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				textFieldTo.setText(new DatePicker(popupFrame).setPickedDate().replace("-", "."));
+				if (textFieldTo.getText().equals("")) {
+					textFieldTo.setText("bitte Datum wählen...");
+				}
 			}
 		});
 
@@ -601,6 +618,39 @@ public class SessionView implements IView {
 		return textFieldTo;
 	}
 
+	public JTextField getTextFieldDate() {
+		return textFieldDate;
+	}
+
+	public JTextField getTextFieldStart() {
+		return textFieldStart;
+	}
+
+	public JTextField getTextFieldEnd() {
+		return textFieldEnd;
+	}
+
+	public JTextField getTextFieldPause() {
+		return textFieldPause;
+	}
+
+	public JTextField getTextFieldComment() {
+		return textFieldComment;
+	}
+
+	public JLabel getLblErrorMessageNewEntry() {
+		return lblErrorMessageNewEntry;
+	}
+
+	public void sortTableDescendingDate() {
+		if (table.getModel().getRowCount() > 0) {
+			List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+			sortKeys.add(new RowSorter.SortKey(0, SortOrder.DESCENDING));
+			sorter.setSortKeys(sortKeys);
+			sorter.sort();
+		}
+	}
+	
 	@Override
 	public void update(Observable o, Object arg) {
 
@@ -633,6 +683,23 @@ public class SessionView implements IView {
 			System.out.println("Services loaded into ComboBox");
 		}
 		
+		if (arg instanceof SessionModel && ((SessionModel) arg).getProjectListNewEntry() != null) {
+			ArrayList<String> projectNames = new ArrayList<>();
+			((SessionModel) arg).getProjectListNewEntry().forEach(project -> {
+				projectNames.add(project.get(1).toString());
+			});
+			this.dropDownProjectName.setModel(new DefaultComboBoxModel(projectNames.toArray()));
+			System.out.println("Projects loaded into ComboBox");
+		}
+		if (arg instanceof SessionModel && ((SessionModel) arg).getServiceListNewEntry() != null) {
+			ArrayList<String> serviceNames = new ArrayList<>();
+			((SessionModel) arg).getServiceListNewEntry().forEach(service -> {
+				serviceNames.add(service.get(1).toString());
+			});
+			this.dropDownService.setModel(new DefaultComboBoxModel(serviceNames.toArray()));
+			System.out.println("Services loaded into ComboBox");
+		}
+
 	}
 
 	public void setTab(int i) {
@@ -649,5 +716,4 @@ public class SessionView implements IView {
 	public void setContentPane(JPanel contentPane) {
 		this.sessionPanel = contentPane;
 	}
-	
 }

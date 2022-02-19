@@ -43,7 +43,6 @@ public class TimerView implements IView {
 	private JTextField txtEndTime;
 	private JTextField textFieldCommentTimerView;
 	private JTextField textPauseDuration;
-	private JTextField hiddenTextFieldProjectID;
 	private JLabel lblErrorMessage;
 	private JButton btnSaveTimerView;
 	private JButton btnReset;

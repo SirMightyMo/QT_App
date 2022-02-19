@@ -196,7 +196,6 @@ public class TimerModel extends Observable implements IModel {
 		this.serviceList = new ArrayList<>();
 		ArrayList<Object> result = db.query("SELECT s_id, name FROM service;");
 		result.forEach(entry -> {
-			System.out.println(entry);
 			ArrayList<Object> row = (ArrayList<Object>) entry;
 			this.serviceList.add(row);
 		});
