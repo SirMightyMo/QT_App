@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
@@ -41,8 +42,10 @@ public class SessionController implements IController {
 	public SessionController() {
 		
 		this.tableData = new CustomTableModel(new String[] {
+				"#",
 				"Datum",
 				"Projekt",
+				"Kunde",
 				"Leistung",
 				"Beschreibung",
 				"Start",
@@ -65,25 +68,23 @@ public class SessionController implements IController {
 
 	public void queryData() {
 		ArrayList<Object> result = db.query(
-				"SELECT entry_date, project.name, service.name, hour_entry.description, start_time, end_time, time_minutes "
+				"SELECT hour_entry.h_id, entry_date, project.name, customer.company, service.name, hour_entry.description, start_time, end_time, time_minutes "
 				+ "FROM hour_entry "
-				+ "LEFT JOIN service "
-				+ "ON hour_entry.s_id = service.s_id "
-				+ "LEFT JOIN project "
-				+ "ON hour_entry.p_id = project.p_id "
+				+ "LEFT JOIN service ON hour_entry.s_id = service.s_id "
+				+ "LEFT JOIN project ON hour_entry.p_id = project.p_id "
+				+ "LEFT JOIN customer ON project.c_id = customer.c_id "
 				+ "WHERE u_id = " + User.getUser().getU_id()
-				+ " ORDER BY h_id "
-				+ "DESC LIMIT 15;");
-		Object[][] resultArray = new Object[result.size()][7];
+				+ " ORDER BY h_id DESC;");
+		Object[][] resultArray = new Object[result.size()][9];
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 		formatter.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
 		
 		for (int i = 0; i < result.size(); i++) {
-			for (int j = 0; j < 7; j++) {
+			for (int j = 0; j < 9; j++) {
 				ArrayList<Object> row = (ArrayList<Object>) result.get(i);
 				String value = row.get(j).toString();
 				// If column is for start or end time
-				if (j == 4 || j == 5) {
+				if (j == 6 || j == 7) {
 					String[] split = value.split("\\.");
 					value = split[0] + ".000";
 					java.util.Date date = null;
@@ -99,9 +100,11 @@ public class SessionController implements IController {
 				// else just convert to String 
 				} else {
 					if (j == 0) {
+						value = String.format("%1$5s", value).replace(' ', '0');
+					} else if (j == 1) {
 						value = LocalDate.parse(value)
 								.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-					} else if (j == 6) {
+					} else if (j == 8) {
 						String hours = (Integer.parseInt(value) / 60)+"";
 						String minutes = (Integer.parseInt(value) % 60)+"";
 						value = ("00" + hours).substring(hours.length()) + ":" + ("00" + minutes).substring(minutes.length()) + " h";
@@ -159,22 +162,22 @@ public class SessionController implements IController {
 		if (sessionView.getComboBoxProject().getItemCount() > 0) {
 			projectFilter = sessionView.getComboBoxProject().getSelectedItem().toString();
 			if (!projectFilter.equals("")) {
-				filters.add(RowFilter.regexFilter("^" + projectFilter + "$", 1));
+				filters.add(RowFilter.regexFilter("^" + projectFilter + "$", 2));
 			}
 		}
 		if (sessionView.getComboBoxClient().getItemCount() > 0) {
 			clientFilter = sessionView.getComboBoxClient().getSelectedItem().toString();
 			if (!clientFilter.equals("")) {
-				filters.add(RowFilter.regexFilter("^" + clientFilter + "$"));
+				filters.add(RowFilter.regexFilter("^" + clientFilter + "$", 3));
 			}
 		}
 		if (sessionView.getComboBoxService().getItemCount() > 0) {
 			serviceFilter = sessionView.getComboBoxService().getSelectedItem().toString();
 			if (!serviceFilter.equals("")) {
-				filters.add(RowFilter.regexFilter("^" + serviceFilter + "$", 2));
+				filters.add(RowFilter.regexFilter("^" + serviceFilter + "$", 4));
 			}
 		}
-		if (!startFilter.equals("")) {
+		if (!startFilter.equals("bitte Datum wählen...") && !startFilter.equals("")) {
 			String start = startFilter.split(" ", 1)[0].replace(".", "-");
 			java.util.Date startDate = null;
 			try {
@@ -185,9 +188,9 @@ public class SessionController implements IController {
 			}
 			if (startDate != null)
 				new Date(startDate.getTime() - (1000 * 60 * 60 * 24)); // subtract one day, so it is included
-				filters.add(RowFilter.dateFilter(ComparisonType.AFTER, startDate, 4));
+				filters.add(RowFilter.dateFilter(ComparisonType.AFTER, startDate, 6));
 		}
-		if (!endFilter.equals("")) {
+		if (!endFilter.equals("bitte Datum wählen...") && !endFilter.equals("")) {
 			String end = endFilter.split(" ", 1)[0].replace(".", "-");
 			java.util.Date endDate = null;
 			System.out.println(end);
@@ -199,7 +202,7 @@ public class SessionController implements IController {
 			}
 			if (endDate != null)
 				endDate = new Date(endDate.getTime() + (1000 * 60 * 60 * 24)); // add one day, so it is included
-			filters.add(RowFilter.dateFilter(ComparisonType.BEFORE, endDate, 5));
+			filters.add(RowFilter.dateFilter(ComparisonType.BEFORE, endDate, 7));
 		}
 
 		if (filters.size() > 0) {
@@ -261,7 +264,7 @@ public class SessionController implements IController {
 				return;
 			}
 					
-			db.insert("INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes,p_id,s_id,u_id) VALUES("
+			db.run("INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes,p_id,s_id,u_id) VALUES("
 							+ "'" + date + "'," 
 							+ "'" + comment + "'," 
 							+ "'" + start + "'," 
@@ -347,10 +350,12 @@ public class SessionController implements IController {
 			actionLoadServices();
 			actionLoadClients();
 			queryData();
-			sessionView.getSorter().setRowFilter(null);
-			sessionView.getTextFieldFrom().setText("");
-			sessionView.getTextFieldTo().setText("");
+			sessionView.sortTableDescendingDate();
+			sessionView.getTextFieldFrom().setText("bitte Datum wählen...");
+			sessionView.getTextFieldTo().setText("bitte Datum wählen...");
 			sessionView.getLblErrorMessageNewEntry().setText("");
+			sessionView.getBtnDeleteEntry().setVisible(false);
+    		sessionView.getBtnEditEntry().setVisible(false);
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_SET_PROJECT)) {
 			this.sessionModel.setProjectSet(true);
@@ -362,10 +367,22 @@ public class SessionController implements IController {
 			this.sessionModel.setServiceSet(true);
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_EDIT_PROJECT)) {
-			
+
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_DELETE_PROJECT)) {
-			
+			int row = sessionView.getHourEntryTable().getSelectedRow();
+			if (row > -1) {
+				int sessionID = Integer.parseInt((String) sessionView.getHourEntryTable().getValueAt(row, 0));
+				int input = JOptionPane.showConfirmDialog(null, 
+		                "Sind Sie sicher, dass Sie den ausgewählten Eintrag löschen möchten?", "Löschen bestätigen", 
+		                JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+		        // -1=abortX, 0=ok, 2=cancel
+		        
+				if (input == 0) {
+					db.run("DELETE FROM hour_entry WHERE h_id = " + sessionID + " AND u_id = " + User.getUser().getU_id() + ";");
+					queryData();
+				}
+			}
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_NEW_SAVE)) {
 			actionSaveEntry();

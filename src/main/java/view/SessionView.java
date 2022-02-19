@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -23,6 +25,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.RowSorter;
 import javax.swing.SortOrder;
 import javax.swing.SpringLayout;
@@ -58,7 +61,8 @@ public class SessionView implements IView {
 	private JTextField textFieldComment;
 	private JLabel lblErrorMessageNewEntry;
 	private JButton btnSaveEntry;
-
+	private JButton btnEditEntry;
+	private JButton btnDeleteEntry;
 
 	public class DateCellRenderer extends DefaultTableCellRenderer{
 
@@ -152,23 +156,45 @@ public class SessionView implements IView {
 		
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.setAutoCreateRowSorter(true);
-		table.getColumnModel().getColumn(0).setPreferredWidth(80);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.getColumnModel().getColumn(0).setPreferredWidth(25);
 		table.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
-		table.getColumnModel().getColumn(1).setPreferredWidth(240);
-		table.getColumnModel().getColumn(1).setCellRenderer(leftRenderer);
-		table.getColumnModel().getColumn(2).setPreferredWidth(120);
+		table.getColumnModel().getColumn(1).setPreferredWidth(80);
+		table.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
+		table.getColumnModel().getColumn(2).setPreferredWidth(240);
 		table.getColumnModel().getColumn(2).setCellRenderer(leftRenderer);
-		table.getColumnModel().getColumn(3).setPreferredWidth(240);
+		table.getColumnModel().getColumn(3).setPreferredWidth(120);
 		table.getColumnModel().getColumn(3).setCellRenderer(leftRenderer);
 		table.getColumnModel().getColumn(4).setPreferredWidth(120);
-		table.getColumnModel().getColumn(4).setCellRenderer(dateRenderer);
-		table.getColumnModel().getColumn(5).setPreferredWidth(120);
-		table.getColumnModel().getColumn(5).setCellRenderer(dateRenderer);
-		table.getColumnModel().getColumn(6).setPreferredWidth(70);
-		table.getColumnModel().getColumn(6).setCellRenderer(rightRenderer);
+		table.getColumnModel().getColumn(4).setCellRenderer(leftRenderer);
+		table.getColumnModel().getColumn(5).setPreferredWidth(240);
+		table.getColumnModel().getColumn(5).setCellRenderer(leftRenderer);
+		table.getColumnModel().getColumn(6).setPreferredWidth(120);
+		table.getColumnModel().getColumn(6).setCellRenderer(dateRenderer);
+		table.getColumnModel().getColumn(7).setPreferredWidth(120);
+		table.getColumnModel().getColumn(7).setCellRenderer(dateRenderer);
+		table.getColumnModel().getColumn(8).setPreferredWidth(70);
+		table.getColumnModel().getColumn(8).setCellRenderer(rightRenderer);
 		sorter = new TableRowSorter<>(table.getModel());
 		sortTableDescendingDate();
 		table.setRowSorter(sorter);
+		table.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+			    if (e.getClickCount() == 1) {
+			    	JTable target = (JTable) e.getSource();
+			    	if (target.getSelectedRow() > -1) {
+			    		btnDeleteEntry.setVisible(true);
+			    		btnEditEntry.setVisible(true);
+			    	} else {
+			    		btnDeleteEntry.setVisible(false);
+			    		btnEditEntry.setVisible(false);
+			    	}
+//			      int row = target.getSelectedRow();
+//			      int column = target.getSelectedColumn();
+			     // do some stuff
+			    }
+			  }
+		});
 
 		// Projects Label
 		JLabel lblProjectEntry = new JLabel("Projekt:");
@@ -230,8 +256,6 @@ public class SessionView implements IView {
 
 		// search button
 		JButton btnApplyFilter = new JButton("Suchen...");
-		sl_panelHourEntryOverview.putConstraint(SpringLayout.EAST, btnApplyFilter, -500, SpringLayout.EAST,
-				scrollPaneTable);
 		btnApplyFilter.setName("btnApplyFilter");
 		sl_panelHourEntryOverview.putConstraint(SpringLayout.SOUTH, btnApplyFilter, -19, SpringLayout.NORTH,
 				scrollPaneTable);
@@ -294,6 +318,28 @@ public class SessionView implements IView {
 		sl_panelHourEntryOverview.putConstraint(SpringLayout.SOUTH, btnSetEndDate, 0, SpringLayout.SOUTH, textFieldTo);
 		btnSetEndDate.setName("btnSetEndDate");
 		panelHourEntryOverview.add(btnSetEndDate);
+		
+		btnDeleteEntry = new JButton("L\u00F6schen");
+		btnDeleteEntry.setName("btnDeleteEntry");
+		btnDeleteEntry.addActionListener(sessionController);
+		btnDeleteEntry.setBackground(new Color(255, 102, 102));
+		btnDeleteEntry.setVisible(false);
+		btnDeleteEntry.setName("btnResetFilter");
+		btnDeleteEntry.setActionCommand(StaticActions.ACTION_SESSION_OVERVIEW_DELETE_PROJECT);
+		panelHourEntryOverview.add(btnDeleteEntry);
+		
+		btnEditEntry = new JButton("Bearbeiten");
+		btnEditEntry.setName("btnEditEntry");
+		btnEditEntry.setBackground(new Color(51, 153, 255));
+		btnEditEntry.addActionListener(sessionController);
+		btnEditEntry.setVisible(false);
+		sl_panelHourEntryOverview.putConstraint(SpringLayout.NORTH, btnDeleteEntry, 0, SpringLayout.NORTH, btnEditEntry);
+		sl_panelHourEntryOverview.putConstraint(SpringLayout.EAST, btnDeleteEntry, -10, SpringLayout.WEST, btnEditEntry);
+		sl_panelHourEntryOverview.putConstraint(SpringLayout.NORTH, btnEditEntry, 0, SpringLayout.NORTH, btnApplyFilter);
+		sl_panelHourEntryOverview.putConstraint(SpringLayout.EAST, btnEditEntry, 0, SpringLayout.EAST, scrollPaneTable);
+		btnEditEntry.setName("btnApplyFilter");
+		btnEditEntry.setActionCommand(StaticActions.ACTION_SESSION_OVERVIEW_EDIT_PROJECT);
+		panelHourEntryOverview.add(btnEditEntry);
 
 		////////////////////////////////////
 		///// Second Tab / new project /////
@@ -483,10 +529,10 @@ public class SessionView implements IView {
 
 		// Reset project table
 		JButton btnResetFilter = new JButton("Reset");
+		sl_panelHourEntryOverview.putConstraint(SpringLayout.WEST, btnApplyFilter, 10, SpringLayout.EAST, btnResetFilter);
+		sl_panelHourEntryOverview.putConstraint(SpringLayout.WEST, btnResetFilter, 50, SpringLayout.EAST, btnSetEndDate);
 		btnResetFilter.setName("btnResetFilter");
 		sl_panelHourEntryOverview.putConstraint(SpringLayout.NORTH, btnResetFilter, 0, SpringLayout.NORTH,
-				btnApplyFilter);
-		sl_panelHourEntryOverview.putConstraint(SpringLayout.EAST, btnResetFilter, -10, SpringLayout.WEST,
 				btnApplyFilter);
 		btnResetFilter.setName("btnResetFilter");
 		btnResetFilter.addActionListener(sessionController);
@@ -507,6 +553,7 @@ public class SessionView implements IView {
 		comboBoxClient.setName("comboBoxClient");
 		comboBoxClient.setActionCommand(StaticActions.ACTION_SESSION_OVERVIEW_SET_CLIENT);
 		panelHourEntryOverview.add(comboBoxClient);
+		
 		btnSetStartDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				textFieldFrom.setText(new DatePicker(popupFrame).setPickedDate().replace("-", "."));
@@ -567,7 +614,6 @@ public class SessionView implements IView {
 	}
 
 	public JTable getHourEntryTable() {
-		JTable table = this.table;
 		return table;
 	}
 
@@ -643,10 +689,18 @@ public class SessionView implements IView {
 		return lblErrorMessageNewEntry;
 	}
 
+	public JButton getBtnEditEntry() {
+		return btnEditEntry;
+	}
+
+	public JButton getBtnDeleteEntry() {
+		return btnDeleteEntry;
+	}
+	
 	public void sortTableDescendingDate() {
 		if (table.getModel().getRowCount() > 0) {
 			List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-			sortKeys.add(new RowSorter.SortKey(0, SortOrder.DESCENDING));
+			sortKeys.add(new RowSorter.SortKey(1, SortOrder.DESCENDING));
 			sorter.setSortKeys(sortKeys);
 			sorter.sort();
 		}
