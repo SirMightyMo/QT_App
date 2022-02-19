@@ -110,7 +110,7 @@ public class DashboardHourListController implements IController {
 		String event = e.getActionCommand();
 		
 		// When hour entry is being saved, retrieve new list data after one second
-		if (event.equalsIgnoreCase(StaticActions.ACTION_TIMER_SAVE)) {
+		if (event.equalsIgnoreCase(StaticActions.ACTION_TIMER_SAVE) || event.equalsIgnoreCase(StaticActions.ACTION_SESSION_NEW_SAVE)) {
 			ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 			executorService.schedule(runQueryData, 1, TimeUnit.SECONDS);
 		}

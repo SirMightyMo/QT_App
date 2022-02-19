@@ -57,6 +57,7 @@ public class SessionView implements IView {
 	private JTextField textFieldPause;
 	private JTextField textFieldComment;
 	private JLabel lblErrorMessageNewEntry;
+	private JButton btnSaveEntry;
 
 
 	public class DateCellRenderer extends DefaultTableCellRenderer{
@@ -411,7 +412,7 @@ public class SessionView implements IView {
 		lblProject.setName("lblProject");
 
 		// Save Button
-		JButton btnSaveEntry = new JButton("Speichern");
+		btnSaveEntry = new JButton("Speichern");
 		sl_panel_input_form.putConstraint(SpringLayout.WEST, btnSaveEntry, 190, SpringLayout.WEST, panel_input_form);
 		btnSaveEntry.setName("btnSaveHourEntry");
 		btnSaveEntry.addActionListener(sessionController);
@@ -651,6 +652,10 @@ public class SessionView implements IView {
 		}
 	}
 	
+	public JButton getBtnSaveEntry() {
+		return btnSaveEntry;
+	}
+
 	@Override
 	public void update(Observable o, Object arg) {
 

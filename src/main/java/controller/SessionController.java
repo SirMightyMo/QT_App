@@ -245,7 +245,7 @@ public class SessionController implements IController {
 			
 			// if start greater than end another day has started and a day needs to be added
 			int additionalDay = 0;
-			if (from.compareTo(to) < 0) {
+			if (to.compareTo(from) < 0) {
 				additionalDay = 1;
 			}
 			
@@ -254,6 +254,7 @@ public class SessionController implements IController {
 			
 			int pauseMinutes = calculateMinutesFromHourFormat(pause);
 			int durationMinutes = calculateMinutesBetweenLocalDateTimes(start, end) - pauseMinutes;
+			System.out.println("Dauer: " + durationMinutes);
 			
 			if (durationMinutes < 0){
 				sessionView.getLblErrorMessageNewEntry().setText("Fehler: Pause ist länger als Dauer.");
@@ -320,6 +321,7 @@ public class SessionController implements IController {
 			String[] split = pause.split(":");
 			int hours = Integer.parseInt(split[0]);
 			int minutes = Integer.parseInt(split[1]);
+			System.out.println(hours * 60 + minutes);
 			return hours * 60 + minutes;
 		} else {
 			return 0;
@@ -340,9 +342,6 @@ public class SessionController implements IController {
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_SEARCH)) {
 			actionFilterEntries();
 		}
-		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_NEW_SAVE)) {
-			actionSaveEntry();
-		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_RESET)) {
 			actionLoadProjects();
 			actionLoadServices();
@@ -361,6 +360,15 @@ public class SessionController implements IController {
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_SET_SERVICE)) {
 			this.sessionModel.setServiceSet(true);
+		}
+		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_EDIT_PROJECT)) {
+			
+		}
+		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_DELETE_PROJECT)) {
+			
+		}
+		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_NEW_SAVE)) {
+			actionSaveEntry();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_NEW_SET_PROJECT)) {
 			this.sessionModel.setProjectNewEntrySet(true);
