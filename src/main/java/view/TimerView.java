@@ -80,10 +80,11 @@ public class TimerView implements IView {
 		projectPanel.setLayout(sl_projectPanel);
 
 		JLabel lblProject = new JLabel("Projekt:");
+		lblProject.setName("lblProjectTV");
+		lblProject.setVisible(true);
 		lblProject.setForeground(Color.WHITE);
 		sl_projectPanel.putConstraint(SpringLayout.NORTH, lblProject, 13, SpringLayout.NORTH, projectPanel);
 		sl_projectPanel.putConstraint(SpringLayout.WEST, lblProject, 5, SpringLayout.WEST, projectPanel);
-		lblProject.setName("lblProject");
 		lblProject.setHorizontalAlignment(SwingConstants.CENTER);
 		projectPanel.add(lblProject);
 
@@ -99,7 +100,7 @@ public class TimerView implements IView {
 		sl_projectPanel.putConstraint(SpringLayout.NORTH, btnLoadProjects, 5, SpringLayout.NORTH, projectPanel);
 		sl_projectPanel.putConstraint(SpringLayout.WEST, btnLoadProjects, 5, SpringLayout.EAST, projectDropdown);
 		btnLoadProjects.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 14));
-		btnLoadProjects.setName("btnLoadProjects");
+		btnLoadProjects.setName("btnLoadProjectsTV");
 		btnLoadProjects.addActionListener(timerHourController);
 		btnLoadProjects.setActionCommand(StaticActions.ACTION_LOAD_PROJECTS);
 		projectPanel.add(btnLoadProjects);
@@ -152,7 +153,6 @@ public class TimerView implements IView {
 		contentPanel.add(durationPanel);
 
 		// Timer Label
-		lblProject.setName("timerLabel");
 		SpringLayout sl_durationPanel = new SpringLayout();
 		sl_durationPanel.putConstraint(SpringLayout.NORTH, durationLabel, 0, SpringLayout.NORTH, durationPanel);
 		sl_durationPanel.putConstraint(SpringLayout.WEST, durationLabel, 0, SpringLayout.WEST, durationPanel);
@@ -215,6 +215,7 @@ public class TimerView implements IView {
 		SpringLayout sl_datePanel = new SpringLayout();
 		datePanel.setLayout(sl_datePanel);
 		JLabel lblDatum = new JLabel("Datum:");
+		lblDatum.setName("lblDatum");
 		lblDatum.setForeground(Color.WHITE);
 		sl_datePanel.putConstraint(SpringLayout.NORTH, lblDatum, 9, SpringLayout.NORTH, datePanel);
 		sl_datePanel.putConstraint(SpringLayout.WEST, lblDatum, 5, SpringLayout.WEST, datePanel);
@@ -258,10 +259,12 @@ public class TimerView implements IView {
 		manualEntryPanel.setLayout(fl_manualEntryPanel);
 
 		JLabel lblFrom = new JLabel("Von:");
+		lblFrom.setName("lblFrom");
 		lblFrom.setForeground(Color.WHITE);
 		manualEntryPanel.add(lblFrom);
 
 		txtStartTime = new JTextField();
+		txtStartTime.setName("txtStartTime");
 		txtStartTime.setPreferredSize(new Dimension(7, 25));
 		txtStartTime.setEnabled(true);
 		lblFrom.setLabelFor(txtStartTime);
@@ -272,10 +275,12 @@ public class TimerView implements IView {
 		txtStartTime.setColumns(5);
 
 		JLabel lblTo = new JLabel("Bis:");
+		lblTo.setName("lblTo");
 		lblTo.setForeground(Color.WHITE);
 		manualEntryPanel.add(lblTo);
 
 		txtEndTime = new JTextField();
+		txtEndTime.setName("txtEndTime");
 		txtEndTime.setPreferredSize(new Dimension(7, 25));
 		txtEndTime.setEnabled(true);
 		lblTo.setLabelFor(txtEndTime);
@@ -296,6 +301,7 @@ public class TimerView implements IView {
 		panel.setLayout(sl_panel);
 
 		JLabel lblComment = new JLabel("Kommentar:");
+		lblComment.setName("lblComment");
 		lblComment.setForeground(Color.WHITE);
 		sl_panel.putConstraint(SpringLayout.NORTH, lblComment, 8, SpringLayout.NORTH, panel);
 		sl_panel.putConstraint(SpringLayout.WEST, lblComment, 5, SpringLayout.WEST, panel);
@@ -304,6 +310,7 @@ public class TimerView implements IView {
 		lblComment.setLabelFor(textFieldCommentTimerView);
 
 		textFieldCommentTimerView = new JTextField();
+		textFieldCommentTimerView.setName("textFieldCommentTimerView");
 		sl_panel.putConstraint(SpringLayout.NORTH, textFieldCommentTimerView, 5, SpringLayout.NORTH, panel);
 		sl_panel.putConstraint(SpringLayout.WEST, textFieldCommentTimerView, 80, SpringLayout.WEST, panel);
 		textFieldCommentTimerView.setName("textFieldCommentTimerView");
@@ -314,10 +321,12 @@ public class TimerView implements IView {
 		textFieldCommentTimerView.setHorizontalAlignment(SwingConstants.LEFT);
 
 		JLabel lblPauseDuration = new JLabel("Pause:");
+		lblPauseDuration.setName("lblPauseDuration");
 		lblPauseDuration.setForeground(Color.WHITE);
 		manualEntryPanel.add(lblPauseDuration);
 
 		textPauseDuration = new JTextField();
+		textPauseDuration.setName("textPauseDuration");
 		textPauseDuration.setPreferredSize(new Dimension(7, 25));
 		textPauseDuration.setEnabled(true);
 		lblPauseDuration.setLabelFor(textPauseDuration);

@@ -125,6 +125,7 @@ public class SessionView implements IView {
 
 		// Tabel Frame
 		JScrollPane scrollPaneTable = new JScrollPane();
+		scrollPaneTable.setName("scrollPaneTable");
 		sl_panelHourEntryOverview.putConstraint(SpringLayout.EAST, scrollPaneTable, -10, SpringLayout.EAST,
 				panelHourEntryOverview);
 		scrollPaneTable.setName("scrollPaneTable");
@@ -138,6 +139,7 @@ public class SessionView implements IView {
 		
 		// Creating the table
 		table = new JTable(sessionController.getTableModel());
+		table.setName("table");
 		sessionController.getTableModel().addTableModelListener(table); // add JTable as listener for data changes
 		int columnCount = table.getColumnModel().getColumnCount(); // get columncount for following for-loop
 		for (int i = 0; i < columnCount; i++) {
@@ -376,7 +378,7 @@ public class SessionView implements IView {
 		panel_input_form.setLayout(sl_panel_input_form);
 
 		JLabel lblProject = new JLabel("Projekt:");
-		lblProject.setName("lblProject");
+		lblProject.setName("lblProjectNZ");
 		panel_input_form.add(lblProject);
 
 		dropDownProjectName = new JComboBox<String>();
@@ -401,12 +403,12 @@ public class SessionView implements IView {
 		JLabel lblDate = new JLabel("Datum:");
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, lblDate, 20, SpringLayout.SOUTH, lblServiceName);
 		sl_panel_input_form.putConstraint(SpringLayout.WEST, lblDate, 10, SpringLayout.WEST, panel_input_form);
-		lblDate.setName("lblDate");
+		lblDate.setName("lblDateNZ");
 		panel_input_form.add(lblDate);
 
 		JLabel lblStart = new JLabel("Von:");
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, lblStart, 20, SpringLayout.SOUTH, lblDate);
-		lblStart.setName("lblStart");
+		lblStart.setName("lblStartNZ");
 		panel_input_form.add(lblStart);
 
 		dropDownService = new JComboBox<String>();
@@ -418,10 +420,12 @@ public class SessionView implements IView {
 		panel_input_form.add(dropDownService);
 
 		textFieldDate = new JTextField(20);
+
 		textFieldDate.setHorizontalAlignment(SwingConstants.CENTER);
 		textFieldDate.setText("bitte Datum wählen...");
 		textFieldDate.setEditable(false);
-		textFieldDate.setName("textFieldDate");
+		textFieldDate.setName("textFieldDateNZ");
+
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, textFieldDate, -3, SpringLayout.NORTH,
 				lblDate);
 		panel_input_form.add(textFieldDate);
@@ -450,12 +454,11 @@ public class SessionView implements IView {
 		});
 
 		textFieldStart = new JTextField(5);
+		textFieldStart.setName("textFieldStartNZ");
 		textFieldStart.setHorizontalAlignment(SwingConstants.CENTER);
 		sl_panel_input_form.putConstraint(SpringLayout.EAST, lblStart, -5, SpringLayout.WEST, textFieldStart);
-		textFieldStart.setName("textFieldEndDate");
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, textFieldStart, -3, SpringLayout.NORTH, lblStart);
 		panel_input_form.add(textFieldStart);
-		lblProject.setName("lblProject");
 
 		// Save Button
 		btnSaveEntry = new JButton("Speichern");
@@ -482,7 +485,7 @@ public class SessionView implements IView {
 		textFieldEnd.setHorizontalAlignment(SwingConstants.CENTER);
 		sl_panel_input_form.putConstraint(SpringLayout.EAST, lblEnd, -5, SpringLayout.WEST, textFieldEnd);
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, textFieldEnd, -3, SpringLayout.NORTH, lblEnd);
-		textFieldEnd.setName("textFieldEndDate");
+		textFieldEnd.setName("textFieldEnd");
 		panel_input_form.add(textFieldEnd);
 		
 		JLabel lblPause = new JLabel("Pause:");
@@ -496,13 +499,13 @@ public class SessionView implements IView {
 		textFieldPause.setHorizontalAlignment(SwingConstants.CENTER);
 		sl_panel_input_form.putConstraint(SpringLayout.EAST, lblPause, -5, SpringLayout.WEST, textFieldPause);
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, textFieldPause, 0, SpringLayout.NORTH, textFieldEnd);
-		textFieldPause.setName("textFieldEndDate");
+		textFieldPause.setName("textFieldPause");
 		panel_input_form.add(textFieldPause);
 		
 		JLabel lblComment = new JLabel("Kommentar:");
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, lblComment, 20, SpringLayout.SOUTH, lblStart);
 		sl_panel_input_form.putConstraint(SpringLayout.WEST, lblComment, 10, SpringLayout.WEST, panel_input_form);
-		lblComment.setName("lblComment");
+		lblComment.setName("lblCommentNZ");
 		panel_input_form.add(lblComment);
 		
 		textFieldComment = new JTextField(20);
@@ -515,7 +518,8 @@ public class SessionView implements IView {
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, textFieldComment, -3, SpringLayout.NORTH, lblComment);
 		sl_panel_input_form.putConstraint(SpringLayout.WEST, textFieldComment, 5, SpringLayout.EAST, lblComment);
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, btnSaveEntry, 43, SpringLayout.SOUTH, textFieldComment);
-		textFieldComment.setName("textFieldComment");
+
+		textFieldComment.setName("textFieldCommentNZ");
 		panel_input_form.add(textFieldComment);		
 		
 		lblErrorMessageNewEntry = new JLabel("");

@@ -80,7 +80,6 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnPaneMenuNavigation.setLayout(null);
 
 		JLabel lblMenuLabel = new JLabel("Navigation");
-		lblMenuLabel.setName("Navigation");
 		lblMenuLabel.setBounds(108, 11, 217, 44);
 		lblMenuLabel.setName("navLabelNavigation");
 		lblMenuLabel.setFont(dinNeuzeitGrotesk_regular.deriveFont(20.0f));
@@ -215,7 +214,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 
 		JLabel lblEinstellungen = new JLabel("Einstellungen");
 		lblEinstellungen.setHorizontalAlignment(SwingConstants.LEFT);
-		lblEinstellungen.setName("navLabelNavigation");
+		lblEinstellungen.setName("lblEinstellungen");
 		lblEinstellungen.setForeground(Color.WHITE);
 		lblEinstellungen.setFont(dinNeuzeitGrotesk_regular.deriveFont(20.0f));
 		lblEinstellungen.setBounds(108, 11, 217, 44);
@@ -223,6 +222,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnPaneMenuAccount.setLayout(null);
 
 		JButton btnMenuAccount = new JButton("Account");
+		btnMenuAccount.setName("btnMenuAccount");
 		btnMenuAccount.setIcon(LayoutManager.getImageIcon(LayoutManager.ICON_ACCOUNT, 20, 20));
 		btnMenuAccount.setForeground(Color.WHITE);
 		btnMenuAccount.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
@@ -337,5 +337,9 @@ public class AppMainView extends WindowSuperclass implements IView {
 
 	public void setSessionView(SessionView sessionView) {
 		this.sessionView = sessionView;
+	}
+	
+	public void setFrameToLeftUpperCorner(){
+		setLocation(0, 0);
 	}
 }

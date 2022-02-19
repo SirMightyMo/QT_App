@@ -686,7 +686,7 @@ public class ProjectView implements IView {
 		panelInputFormCustomer.add(lblTelephone);
 
 		JLabel lblMobile = new JLabel("Handy:");
-		lblContactPerson.setName("lblMobile");
+		lblMobile.setName("lblMobile");
 		slPanelInputFormCustomer.putConstraint(SpringLayout.NORTH, lblMobile, 20, SpringLayout.SOUTH, lblTelephone);
 		slPanelInputFormCustomer.putConstraint(SpringLayout.WEST, lblTelephone, 0, SpringLayout.WEST, lblMobile);
 		slPanelInputFormCustomer.putConstraint(SpringLayout.WEST, lblMobile, 20, SpringLayout.WEST,
@@ -878,7 +878,7 @@ public class ProjectView implements IView {
 		panelService.setLayout(slPanelService);
 
 		JLabel lblServiceHead = new JLabel("Neue Leistung anlegen:");
-		lblServiceHead.setName("lblNewService");
+		lblServiceHead.setName("lblServiceHead");
 		slPanelService.putConstraint(SpringLayout.NORTH, lblServiceHead, 10, SpringLayout.NORTH, panelService);
 		slPanelService.putConstraint(SpringLayout.WEST, lblServiceHead, 10, SpringLayout.WEST, panelService);
 		lblServiceHead.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -948,7 +948,7 @@ public class ProjectView implements IView {
 		textFieldNewService.setColumns(10);
 
 		textFieldInternalRate = new JTextField();
-		textFieldInternalRate.setName("textFieldContact");
+		textFieldInternalRate.setName("textFieldInternalRate");
 		slPanelInputFormService.putConstraint(SpringLayout.EAST, lblInternalRate, -24, SpringLayout.WEST,
 				textFieldInternalRate);
 		slPanelInputFormService.putConstraint(SpringLayout.NORTH, textFieldInternalRate, 14, SpringLayout.SOUTH,

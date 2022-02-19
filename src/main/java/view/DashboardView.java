@@ -77,6 +77,7 @@ public class DashboardView implements IView {
 		dashbPanel.add(projectPanel);
 
 		JLabel lblCurrentProjects = new JLabel("Aktuelle Projekte\r\n");
+		lblCurrentProjects.setName("lblCurrentProjects");
 		lblCurrentProjects.setForeground(Color.WHITE);
 		lblCurrentProjects.setBounds(10, 11, 105, 24);
 		projectPanel.add(lblCurrentProjects);
@@ -116,6 +117,7 @@ public class DashboardView implements IView {
 		dashbPanel.add(sessionPanel);
 
 		JLabel lblLastSessions = new JLabel("Letzte Sitzungen\r\n");
+		lblLastSessions.setName("lblLastSessions");
 		lblLastSessions.setForeground(Color.WHITE);
 		lblLastSessions.setBounds(10, 11, 102, 24);
 		sessionPanel.add(lblLastSessions);

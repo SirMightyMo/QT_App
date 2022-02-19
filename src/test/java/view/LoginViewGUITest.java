@@ -2,6 +2,8 @@ package test.java.view;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.concurrent.TimeUnit;
+
 import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
@@ -12,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 
+import main.java.controller.LayoutManager;
 import main.java.view.LoginView;
 
 class LoginViewGUITest {
@@ -26,6 +29,7 @@ class LoginViewGUITest {
 	@BeforeEach
 	public void setUp() {
 		FlatDarkLaf.setup();
+		new LayoutManager();
 		LoginView frame = GuiActionRunner.execute(() -> new LoginView());
 		window = new FrameFixture(frame);
 		window.show(); // shows the frame to test
@@ -54,20 +58,29 @@ class LoginViewGUITest {
 	}
 	
 	@Test
-	void testInsertComment() {
-		window.textBox("usernameInputField").enterText("Testuser");
+	void testLogin_ValidCredentials() {
+		window.textBox("usernameInputField").enterText("Bob");
 		window.textBox("passwordInputField").enterText("abc");
+		window.button("loginButton").click();
+	}
+	
+	@Test
+	void testLogin_InvalidCredentials() throws InterruptedException {
+		window.textBox("usernameInputField").enterText("Bobo");
+		window.textBox("passwordInputField").enterText("abcdef");
+		window.button("loginButton").click();
+		TimeUnit.SECONDS.sleep(5);
 	}
 	
 	@Test
 	void testLoginElements_CorrectLabeling() {
-		assertTrue(window.label("usernameLabel").text().equals("Username:"));
-		assertTrue(window.label("passwordLabel").text().equals("Password:"));
+		assertTrue(window.label("usernameLabel").text().equals("Benutzername:"));
+		assertTrue(window.label("passwordLabel").text().equals("Passwort:"));
 	}
 	
-	@Test
-	void testLoginElements_WrongLabeling() {
-		assertFalse(window.label("usernameLabel").text().equals("User"));
-		assertFalse(window.label("passwordLabel").text().equals("Pass"));
-	}
+//	@Test
+//	void testLoginElements_WrongLabeling() {
+//		assertFalse(window.label("usernameLabel").text().equals("User"));
+//		assertFalse(window.label("passwordLabel").text().equals("Pass"));
+//	}
 }
