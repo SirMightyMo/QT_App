@@ -126,8 +126,9 @@ public class ProjectView implements IView {
 		panel_project_overview.setName("panel_project_overview");
 		tabbedPane.addTab("Projektübersicht", null, panel_project_overview, null);
 		SpringLayout sl_panel_project_overview = new SpringLayout();
-		sl_panel_project_overview.putConstraint(SpringLayout.EAST, comboBoxProject, -434, SpringLayout.EAST,
-				panel_project_overview);
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, comboBoxProject, 58, SpringLayout.NORTH, panel_project_overview);
+		sl_panel_project_overview.putConstraint(SpringLayout.WEST, comboBoxProject, 245, SpringLayout.WEST, panel_project_overview);
+		sl_panel_project_overview.putConstraint(SpringLayout.EAST, comboBoxProject, -434, SpringLayout.EAST, panel_project_overview);
 		panel_project_overview.setLayout(sl_panel_project_overview);
 
 		////////////////////////////////////
@@ -146,15 +147,13 @@ public class ProjectView implements IView {
 
 		// Tabel Frame
 		JScrollPane scrollPaneTable = new JScrollPane();
-		scrollPaneTable.setName("scrollPaneTable");
-		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, scrollPaneTable, -541, SpringLayout.SOUTH,
-				panel_project_overview);
-		sl_panel_project_overview.putConstraint(SpringLayout.WEST, scrollPaneTable, 10, SpringLayout.WEST,
-				panel_project_overview);
-		sl_panel_project_overview.putConstraint(SpringLayout.SOUTH, scrollPaneTable, -35, SpringLayout.SOUTH,
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, scrollPaneTable, 132, SpringLayout.SOUTH, lblHeadTitel);
+		sl_panel_project_overview.putConstraint(SpringLayout.WEST, scrollPaneTable, 10, SpringLayout.WEST, panel_project_overview);
+		sl_panel_project_overview.putConstraint(SpringLayout.SOUTH, scrollPaneTable, -211, SpringLayout.SOUTH,
 				panel_project_overview);
 		sl_panel_project_overview.putConstraint(SpringLayout.EAST, scrollPaneTable, 895, SpringLayout.WEST,
 				panel_project_overview);
+		scrollPaneTable.setName("scrollPaneTable");
 		panel_project_overview.add(scrollPaneTable);
 		
 		// create table
@@ -173,10 +172,9 @@ public class ProjectView implements IView {
 		
 		// Projects Label
 		JLabel lblProjects = new JLabel("Projekt Name:");
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, lblProjects, 3, SpringLayout.NORTH, comboBoxProject);
+		sl_panel_project_overview.putConstraint(SpringLayout.EAST, lblProjects, -50, SpringLayout.WEST, comboBoxProject);
 		lblProjects.setName("lblProjects");
-		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, comboBoxProject, -3, SpringLayout.NORTH,
-				lblProjects);
-		sl_panel_project_overview.putConstraint(SpringLayout.WEST, comboBoxProject, 22, SpringLayout.EAST, lblProjects);
 		panel_project_overview.add(lblProjects);
 		panel_project_overview.add(comboBoxProject);
 
@@ -190,108 +188,100 @@ public class ProjectView implements IView {
 
 		// refresh button projects
 		JButton btnLoadProjects = new JButton("\u21BB");
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, btnLoadProjects, -5, SpringLayout.NORTH, lblProjects);
+		sl_panel_project_overview.putConstraint(SpringLayout.SOUTH, btnLoadProjects, 4, SpringLayout.SOUTH, lblProjects);
+		sl_panel_project_overview.putConstraint(SpringLayout.EAST, btnLoadProjects, 44, SpringLayout.EAST, comboBoxProject);
 		btnLoadProjects.setName("btnLoadProjects");
 		btnLoadProjects.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 14));
-		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, btnLoadProjects, -4, SpringLayout.NORTH,
-				lblProjects);
-		sl_panel_project_overview.putConstraint(SpringLayout.WEST, btnLoadProjects, 14, SpringLayout.EAST,
-				comboBoxProject);
 		panel_project_overview.add(btnLoadProjects);
 		btnLoadProjects.addActionListener(projectController);
 		btnLoadProjects.setActionCommand(StaticActions.ACTION_LOAD_PROJECTS);
 
 		// Client Label
 		JLabel lblClient = new JLabel("Kunde:");
+		sl_panel_project_overview.putConstraint(SpringLayout.WEST, lblClient, 0, SpringLayout.WEST, lblProjects);
 		lblClient.setName("lblService");
-		sl_panel_project_overview.putConstraint(SpringLayout.WEST, lblProjects, 0, SpringLayout.WEST, lblClient);
-		sl_panel_project_overview.putConstraint(SpringLayout.SOUTH, lblProjects, -17, SpringLayout.NORTH, lblClient);
 		panel_project_overview.add(lblClient);
 
 		// Client DropDown
 		JComboBox comboBoxClient = new JComboBox<String>();
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, lblClient, 4, SpringLayout.NORTH, comboBoxClient);
+		sl_panel_project_overview.putConstraint(SpringLayout.EAST, lblClient, -50, SpringLayout.WEST, comboBoxClient);
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, comboBoxClient, 10, SpringLayout.SOUTH, comboBoxProject);
+		sl_panel_project_overview.putConstraint(SpringLayout.EAST, comboBoxClient, 0, SpringLayout.EAST,
+				comboBoxProject);
 		comboBoxClient.setName("comboBoxService");
 		comboBoxClient.setActionCommand(StaticActions.ACTION_PROJECT_SET_CLIENT);
-		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, comboBoxClient, -4, SpringLayout.NORTH,
-				lblClient);
 		sl_panel_project_overview.putConstraint(SpringLayout.WEST, comboBoxClient, 0, SpringLayout.WEST,
-				comboBoxProject);
-		sl_panel_project_overview.putConstraint(SpringLayout.EAST, comboBoxClient, 0, SpringLayout.EAST,
 				comboBoxProject);
 		panel_project_overview.add(comboBoxClient);
 
 		// Time Frame Label
 		JLabel lblTimeFrame = new JLabel("Zeitraum:");
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, lblTimeFrame, 6, SpringLayout.SOUTH, lblClient);
+		sl_panel_project_overview.putConstraint(SpringLayout.WEST, lblTimeFrame, 0, SpringLayout.WEST, lblProjects);
+		sl_panel_project_overview.putConstraint(SpringLayout.SOUTH, lblTimeFrame, -20, SpringLayout.NORTH, scrollPaneTable);
+		sl_panel_project_overview.putConstraint(SpringLayout.EAST, lblTimeFrame, 0, SpringLayout.EAST, lblProjects);
 		lblTimeFrame.setName("lblTimeFrame");
-		sl_panel_project_overview.putConstraint(SpringLayout.WEST, lblClient, 0, SpringLayout.WEST, lblTimeFrame);
-		sl_panel_project_overview.putConstraint(SpringLayout.SOUTH, lblClient, -20, SpringLayout.NORTH, lblTimeFrame);
 		panel_project_overview.add(lblTimeFrame);
 
 		// search button
 		JButton btnSearchButton = new JButton("Suchen...");
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, btnSearchButton, 90, SpringLayout.SOUTH, lblHeadTitel);
+		sl_panel_project_overview.putConstraint(SpringLayout.WEST, btnSearchButton, 816, SpringLayout.WEST, panel_project_overview);
 		btnSearchButton.setName("btnSearchButton");
 		sl_panel_project_overview.putConstraint(SpringLayout.SOUTH, btnSearchButton, -19, SpringLayout.NORTH,
 				scrollPaneTable);
-		sl_panel_project_overview.putConstraint(SpringLayout.EAST, btnSearchButton, -10, SpringLayout.EAST,
-				panel_project_overview);
-		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, lblTimeFrame, 4, SpringLayout.NORTH,
-				btnSearchButton);
 		panel_project_overview.add(btnSearchButton);
 		btnSearchButton.addActionListener(projectController);
 		btnSearchButton.setActionCommand(StaticActions.ACTION_SEARCH_PROJECTS);
 
 		// input start date
 		textFieldFrom = new JTextField();
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, textFieldFrom, 6, SpringLayout.NORTH, lblTimeFrame);
+		sl_panel_project_overview.putConstraint(SpringLayout.WEST, textFieldFrom, 245, SpringLayout.WEST, panel_project_overview);
 		textFieldFrom.setName("textFieldFrom");
-		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, textFieldFrom, 1, SpringLayout.NORTH,
-				btnSearchButton);
 		panel_project_overview.add(textFieldFrom);
 		textFieldFrom.setColumns(10);
 
 		// input start date label
 		JLabel lblFrom = new JLabel("von:");
+		sl_panel_project_overview.putConstraint(SpringLayout.EAST, lblFrom, -6, SpringLayout.WEST, textFieldFrom);
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, lblFrom, 9, SpringLayout.NORTH, lblTimeFrame);
+		sl_panel_project_overview.putConstraint(SpringLayout.WEST, lblFrom, 6, SpringLayout.EAST, lblTimeFrame);
 		lblFrom.setName("lblFrom");
-		sl_panel_project_overview.putConstraint(SpringLayout.WEST, textFieldFrom, 9, SpringLayout.EAST, lblFrom);
-		sl_panel_project_overview.putConstraint(SpringLayout.EAST, lblFrom, -669, SpringLayout.EAST,
-				panel_project_overview);
-		sl_panel_project_overview.putConstraint(SpringLayout.EAST, lblTimeFrame, -13, SpringLayout.WEST, lblFrom);
-		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, lblFrom, 4, SpringLayout.NORTH, btnSearchButton);
 		panel_project_overview.add(lblFrom);
 
 		// input end date label
 		JLabel lblTo = new JLabel("bis:");
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, lblTo, 9, SpringLayout.NORTH, lblTimeFrame);
 		lblTo.setName("lblTo");
-		sl_panel_project_overview.putConstraint(SpringLayout.EAST, textFieldFrom, -45, SpringLayout.WEST, lblTo);
-		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, lblTo, 0, SpringLayout.NORTH, lblTimeFrame);
 		panel_project_overview.add(lblTo);
 
 		// input end date
 		textFieldTo = new JTextField();
-		textFieldTo.setName("textFieldTo");
 		sl_panel_project_overview.putConstraint(SpringLayout.EAST, lblTo, -6, SpringLayout.WEST, textFieldTo);
-		sl_panel_project_overview.putConstraint(SpringLayout.EAST, textFieldTo, -6, SpringLayout.EAST, comboBoxProject);
-		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, textFieldTo, -3, SpringLayout.NORTH, lblTimeFrame);
-		sl_panel_project_overview.putConstraint(SpringLayout.WEST, textFieldTo, 392, SpringLayout.WEST,
-				panel_project_overview);
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, textFieldTo, 6, SpringLayout.NORTH, lblTimeFrame);
+		sl_panel_project_overview.putConstraint(SpringLayout.WEST, textFieldTo, 398, SpringLayout.WEST, panel_project_overview);
+		sl_panel_project_overview.putConstraint(SpringLayout.EAST, textFieldTo, 0, SpringLayout.EAST, comboBoxProject);
+		textFieldTo.setName("textFieldTo");
 		panel_project_overview.add(textFieldTo);
 		textFieldTo.setColumns(10);
 
 		JButton btnSetStartDate_1 = new JButton("...");
+		sl_panel_project_overview.putConstraint(SpringLayout.WEST, lblTo, 6, SpringLayout.EAST, btnSetStartDate_1);
+		sl_panel_project_overview.putConstraint(SpringLayout.EAST, btnSetStartDate_1, -549, SpringLayout.EAST, panel_project_overview);
+		sl_panel_project_overview.putConstraint(SpringLayout.EAST, textFieldFrom, -6, SpringLayout.WEST, btnSetStartDate_1);
+		sl_panel_project_overview.putConstraint(SpringLayout.WEST, btnSetStartDate_1, 330, SpringLayout.WEST, panel_project_overview);
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, btnSetStartDate_1, 5, SpringLayout.NORTH, lblTimeFrame);
 		btnSetStartDate_1.setName("btnSetStartDate_1");
-		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, btnSetStartDate_1, -4, SpringLayout.NORTH,
-				lblTimeFrame);
-		sl_panel_project_overview.putConstraint(SpringLayout.WEST, btnSetStartDate_1, 13, SpringLayout.EAST,
-				textFieldFrom);
-		sl_panel_project_overview.putConstraint(SpringLayout.EAST, btnSetStartDate_1, -6, SpringLayout.WEST, lblTo);
 		panel_project_overview.add(btnSetStartDate_1);
 
 		JButton btnSetStartDate_1_1 = new JButton("...");
+		sl_panel_project_overview.putConstraint(SpringLayout.WEST, btnSetStartDate_1_1, 14, SpringLayout.EAST, textFieldTo);
+		sl_panel_project_overview.putConstraint(SpringLayout.WEST, btnLoadProjects, 0, SpringLayout.WEST, btnSetStartDate_1_1);
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, btnSetStartDate_1_1, 5, SpringLayout.NORTH, lblTimeFrame);
 		btnSetStartDate_1_1.setName("btnSetStartDate_1_1");
-		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, btnSetStartDate_1_1, -4, SpringLayout.NORTH,
-				lblTimeFrame);
-		sl_panel_project_overview.putConstraint(SpringLayout.WEST, btnSetStartDate_1_1, 6, SpringLayout.EAST,
-				textFieldTo);
-		sl_panel_project_overview.putConstraint(SpringLayout.EAST, btnSetStartDate_1_1, -319, SpringLayout.WEST,
-				btnSearchButton);
 		panel_project_overview.add(btnSetStartDate_1_1);
 
 		////////////////////////////////////
@@ -454,12 +444,13 @@ public class ProjectView implements IView {
 
 		// Reset project table
 		JButton btnResetProjects = new JButton("\u21BB");
+		sl_panel_project_overview.putConstraint(SpringLayout.EAST, btnSetStartDate_1_1, -269, SpringLayout.WEST, btnResetProjects);
+		sl_panel_project_overview.putConstraint(SpringLayout.SOUTH, btnResetProjects, 32, SpringLayout.NORTH, lblTimeFrame);
+		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, btnResetProjects, 9, SpringLayout.NORTH, lblTimeFrame);
+		sl_panel_project_overview.putConstraint(SpringLayout.WEST, btnResetProjects, 780, SpringLayout.WEST, panel_project_overview);
+		sl_panel_project_overview.putConstraint(SpringLayout.EAST, btnResetProjects, -6, SpringLayout.WEST, btnSearchButton);
 		btnResetProjects.setName("btnResetProjects");
 		btnResetProjects.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 14));
-		sl_panel_project_overview.putConstraint(SpringLayout.NORTH, btnResetProjects, 0, SpringLayout.NORTH,
-				lblTimeFrame);
-		sl_panel_project_overview.putConstraint(SpringLayout.EAST, btnResetProjects, -7, SpringLayout.WEST,
-				btnSearchButton);
 		btnResetProjects.addActionListener(projectController);
 		btnResetProjects.setActionCommand(StaticActions.ACTION_RESET_PROJECTS);
 		panel_project_overview.add(btnResetProjects);
@@ -1117,7 +1108,6 @@ public class ProjectView implements IView {
 			table.getColumnModel().getColumn(5).setPreferredWidth(115);
 			table.setAutoCreateRowSorter(true);
 			
-
 			table.getColumnModel().getColumn(2).setCellRenderer(dateRenderer);
 			table.getColumnModel().getColumn(3).setCellRenderer(dateRenderer);
 			System.out.println("Update project View");
