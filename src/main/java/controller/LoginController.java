@@ -1,7 +1,6 @@
 package main.java.controller;
 
 import java.awt.event.ActionEvent;
-import java.lang.reflect.Method;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import javax.swing.event.DocumentEvent;
 
 import main.java.model.Hashing;
 import main.java.model.IModel;
-import main.java.model.LoginModel;
 import main.java.model.User;
 import main.java.view.IView;
 import main.java.view.LoginView;
@@ -18,12 +16,10 @@ import main.java.view.LoginView;
 public final class LoginController extends Hashing implements IController {
 
 	private LoginView view;
-	private LoginModel model;
 	private DatabaseController dbc = DatabaseController.getInstance();
 
 	public LoginController() {
 		this.view = new LoginView();
-		this.model = new LoginModel();
 		this.init();
 	}
 

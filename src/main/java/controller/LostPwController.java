@@ -11,22 +11,17 @@ import javax.swing.event.DocumentEvent;
 
 import main.java.model.Hashing;
 import main.java.model.IModel;
-import main.java.model.LoginModel;
-import main.java.model.LostPwModel;
 import main.java.model.Regex;
 import main.java.view.IView;
-import main.java.view.LoginView;
 import main.java.view.LostPwView;
 
 public final class LostPwController extends Hashing implements IController {
 
 		private LostPwView view;
-		private LostPwModel model;
 		private DatabaseController dbc = DatabaseController.getInstance();
 
 		public LostPwController() {
 			this.view = new LostPwView();
-			this.model = new LostPwModel();
 			this.init();
 		}
 		
@@ -171,8 +166,7 @@ public final class LostPwController extends Hashing implements IController {
 
 		@Override
 		public IModel getModel() {
-			
-			return this.model;
+			return null;
 		};
 
 		@Override
