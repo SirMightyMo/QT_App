@@ -56,7 +56,7 @@ public class NewProjectView implements IView {
 		lblProject.setName("lblProject");
 		lblProject.setHorizontalAlignment(SwingConstants.CENTER);
 		projectPanel.add(lblProject);
-		lblProject.setName("timerLabel");
+		lblProject.setName("lblProject");
 				
 						JPanel panel = new JPanel();
 						panel.setBackground(new Color(31, 32, 33));
@@ -64,6 +64,7 @@ public class NewProjectView implements IView {
 						panel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 						
 								JLabel lblComment = new JLabel("Projektname:");
+								lblComment.setName("lblProjectnameNPV");
 								panel.add(lblComment);
 								lblComment.setHorizontalAlignment(SwingConstants.CENTER);
 								lblComment.setLabelFor(textFieldProjectname);
@@ -83,11 +84,13 @@ public class NewProjectView implements IView {
 				clientPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 				
 				JLabel lblClient = new JLabel("Kunde:");
+				lblClient.setName("lblClientNPV");
 				clientPanel.add(lblClient);
 				lblClient.setHorizontalAlignment(SwingConstants.CENTER);
 				lblClient.setLabelFor(dropDownClient);
 				
 						dropDownClient = new JComboBox<String>();
+						dropDownClient.setName("dropDownClient");
 						dropDownClient.setMaximumRowCount(5);
 						dropDownClient.setName("dropDownClient");
 						clientPanel.add(dropDownClient);
@@ -100,9 +103,11 @@ public class NewProjectView implements IView {
 		manualEntryPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
 		JLabel lblFrom = new JLabel("Start:");
+		lblFrom.setName("lblFromNPV");
 		manualEntryPanel.add(lblFrom);
 
 		txtStartTime = new JTextField();
+		txtStartTime.setName("txtStartTimeNPV");
 		txtStartTime.setEnabled(true);
 		txtStartTime.setEditable(false);
 		lblFrom.setLabelFor(txtStartTime);
@@ -137,9 +142,12 @@ public class NewProjectView implements IView {
 		});
 
 		JLabel lblTo = new JLabel("Ende:");
+		lblTo.setName("lblToNPV");
+		
 		manualEntryPanel.add(lblTo);
 
 		txtEndTime = new JTextField();
+		txtEndTime.setName("txtEndTimeNPV");
 		txtEndTime.setEnabled(true);
 		txtEndTime.setEditable(false);
 		lblTo.setLabelFor(txtEndTime);
@@ -179,15 +187,15 @@ public class NewProjectView implements IView {
 
 		//Save Button
 		btnSave = new JButton("Sichern");
-		btnSave.setName("btnSave");
+		btnSave.setName("btnSaveNPV");
 		btnSave.addActionListener(newProjectController);
 		btnSave.setActionCommand(StaticActions.ACTION_NPROJECT_SAVE);
 		confirmButtonPanel.add(btnSave);
 		
 				JButton btnLoadProjects = new JButton("\u21BB");
+				btnLoadProjects.setName("btnLoadProjectsNPV");
 				confirmButtonPanel.add(btnLoadProjects);
 				btnLoadProjects.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 14));
-				btnLoadProjects.setName("btnLoadProjects");
 				btnLoadProjects.addActionListener(newProjectController);
 				btnLoadProjects.setActionCommand(StaticActions.ACTION_NPROJECT_RESET);
 
@@ -196,8 +204,6 @@ public class NewProjectView implements IView {
 	public JPanel getContentPanel() {
 		return contentPanel;
 	}
-
-
 
 	public JComboBox<String> getDropDownClient() {
 		return dropDownClient;
@@ -215,11 +221,9 @@ public class NewProjectView implements IView {
 		return txtEndTime;
 	}
 
-
 	public JTextField getTextFieldProjectname() {
 		return textFieldProjectname;
 	}
-
 
 	public JLabel getLblErrorMessage() {
 		return lblErrorMessage;
@@ -247,7 +251,7 @@ public class NewProjectView implements IView {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		
+
 		if (arg instanceof NewProjectModel) {
 			ArrayList<String> clients = new ArrayList<>();
 			((NewProjectModel) arg).getClientList().forEach(client -> {

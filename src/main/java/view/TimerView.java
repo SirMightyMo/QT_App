@@ -12,7 +12,6 @@ import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -43,7 +43,6 @@ public class TimerView implements IView {
 	private JTextField txtEndTime;
 	private JTextField textFieldCommentTimerView;
 	private JTextField textPauseDuration;
-	private JTextField hiddenTextFieldProjectID;
 	private JLabel lblErrorMessage;
 	private JButton btnSaveTimerView;
 	private JButton btnReset;
@@ -52,31 +51,41 @@ public class TimerView implements IView {
 	private JTextField txtDateInput;
 	private JButton btnDatePicker;
 
-	/**
-	 * Create Frame
-	 */
 	public TimerView(TimerHourController timerHourController) {
 		//setFont(new Font("Open Sans ExtraBold", Font.PLAIN, 12));
 		contentPanel = new JPanel();
 		contentPanel.setName("contentPanelTimerView");
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5)); // top, left, bottom, right
-		contentPanel.setBounds(0, 0, 1850, 1080);
+		contentPanel.setBounds(0, 0, 354, 600);
 		contentPanel.setBackground(new Color(31, 32, 33));
-		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+		SpringLayout sl_contentPanel = new SpringLayout();
+		contentPanel.setLayout(sl_contentPanel);
 
 		// Project
 		JPanel projectPanel = new JPanel();
+		projectPanel.setPreferredSize(new Dimension(10, 40));
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, projectPanel, 5, SpringLayout.NORTH, contentPanel);
+		projectPanel.setMinimumSize(new Dimension(10, 25));
+		sl_contentPanel.putConstraint(SpringLayout.WEST, projectPanel, 5, SpringLayout.WEST, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.EAST, projectPanel, -5, SpringLayout.EAST, contentPanel);
 		projectPanel.setName("projectPanel");
 		contentPanel.add(projectPanel);
-		projectPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		projectPanel.setBackground(new Color(31, 32, 33));
+		SpringLayout sl_projectPanel = new SpringLayout();
+		sl_projectPanel.putConstraint(SpringLayout.NORTH, projectDropdown, 10, SpringLayout.NORTH, projectPanel);
+		sl_projectPanel.putConstraint(SpringLayout.WEST, projectDropdown, 80, SpringLayout.WEST, projectPanel);
+		projectPanel.setLayout(sl_projectPanel);
 
 		JLabel lblProject = new JLabel("Projekt:");
-		lblProject.setName("lblProject");
+		lblProject.setName("lblProjectTV");
+		lblProject.setVisible(true);
+		lblProject.setForeground(Color.WHITE);
+		sl_projectPanel.putConstraint(SpringLayout.NORTH, lblProject, 13, SpringLayout.NORTH, projectPanel);
+		sl_projectPanel.putConstraint(SpringLayout.WEST, lblProject, 5, SpringLayout.WEST, projectPanel);
 		lblProject.setHorizontalAlignment(SwingConstants.CENTER);
 		projectPanel.add(lblProject);
 
-		projectDropdown.setPreferredSize(new Dimension(200, 20));
+		projectDropdown.setPreferredSize(new Dimension(200, 25));
 		projectDropdown.setName("comboBoxProject");
 		lblProject.setLabelFor(projectDropdown);
 		projectDropdown.setAlignmentX(0.0f);
@@ -85,33 +94,37 @@ public class TimerView implements IView {
 		projectPanel.add(projectDropdown);
 
 		JButton btnLoadProjects = new JButton("\u21BB");
+		sl_projectPanel.putConstraint(SpringLayout.NORTH, btnLoadProjects, 5, SpringLayout.NORTH, projectPanel);
+		sl_projectPanel.putConstraint(SpringLayout.WEST, btnLoadProjects, 5, SpringLayout.EAST, projectDropdown);
 		btnLoadProjects.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 14));
-		btnLoadProjects.setName("btnLoadProjects");
+		btnLoadProjects.setName("btnLoadProjectsTV");
 		btnLoadProjects.addActionListener(timerHourController);
 		btnLoadProjects.setActionCommand(StaticActions.ACTION_LOAD_PROJECTS);
 		projectPanel.add(btnLoadProjects);
 
-		hiddenTextFieldProjectID = new JTextField();
-		//hiddenTextFieldProjectID.setFont(new Font("Tahoma", Font.PLAIN, 5));
-		hiddenTextFieldProjectID.setHorizontalAlignment(SwingConstants.RIGHT);
-		hiddenTextFieldProjectID.setEnabled(false);
-		hiddenTextFieldProjectID.setEditable(false);
-		hiddenTextFieldProjectID.setVisible(false);
-		projectPanel.add(hiddenTextFieldProjectID);
-
 		// Service
 		JPanel servicePanel = new JPanel();
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, servicePanel, 5, SpringLayout.SOUTH, projectPanel);
+		servicePanel.setPreferredSize(new Dimension(10, 40));
+		sl_contentPanel.putConstraint(SpringLayout.WEST, servicePanel, 5, SpringLayout.WEST, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.EAST, servicePanel, -5, SpringLayout.EAST, contentPanel);
 		servicePanel.setName("servicePanel");
 		contentPanel.add(servicePanel);
-		servicePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		servicePanel.setBackground(new Color(31, 32, 33));
+		SpringLayout sl_servicePanel = new SpringLayout();
+		sl_servicePanel.putConstraint(SpringLayout.NORTH, serviceDropdown, 10, SpringLayout.NORTH, servicePanel);
+		sl_servicePanel.putConstraint(SpringLayout.WEST, serviceDropdown, 80, SpringLayout.WEST, servicePanel);
+		servicePanel.setLayout(sl_servicePanel);
 
 		JLabel lblService = new JLabel("Leistung:");
+		lblService.setForeground(Color.WHITE);
+		sl_servicePanel.putConstraint(SpringLayout.NORTH, lblService, 13, SpringLayout.NORTH, servicePanel);
+		sl_servicePanel.putConstraint(SpringLayout.WEST, lblService, 5, SpringLayout.WEST, servicePanel);
 		lblService.setName("lblService");
 		lblService.setHorizontalAlignment(SwingConstants.CENTER);
 		servicePanel.add(lblService);
 
-		serviceDropdown.setPreferredSize(new Dimension(200, 20));
+		serviceDropdown.setPreferredSize(new Dimension(200, 25));
 		serviceDropdown.setName("serviceDropdown");
 		lblService.setLabelFor(serviceDropdown);
 		serviceDropdown.setAlignmentX(0.0f);
@@ -120,6 +133,8 @@ public class TimerView implements IView {
 		servicePanel.add(serviceDropdown);
 
 		JButton btnLoadServices = new JButton("\u21BB");
+		sl_servicePanel.putConstraint(SpringLayout.NORTH, btnLoadServices, 5, SpringLayout.NORTH, servicePanel);
+		sl_servicePanel.putConstraint(SpringLayout.WEST, btnLoadServices, 5, SpringLayout.EAST, serviceDropdown);
 		btnLoadServices.setFont(new Font("Lucida Sans Unicode", Font.BOLD, 14));
 		btnLoadServices.setName("btnLoadServices");
 		btnLoadServices.addActionListener(timerHourController);
@@ -127,24 +142,36 @@ public class TimerView implements IView {
 		servicePanel.add(btnLoadServices);
 		
 		JPanel durationPanel = new JPanel();
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, durationPanel, 20, SpringLayout.SOUTH, servicePanel);
+		durationPanel.setPreferredSize(new Dimension(10, 80));
+		sl_contentPanel.putConstraint(SpringLayout.EAST, durationPanel, -5, SpringLayout.EAST, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.WEST, durationPanel, 5, SpringLayout.WEST, contentPanel);
 		durationPanel.setBackground(new Color(31, 32, 33));
 		contentPanel.add(durationPanel);
 
 		// Timer Label
-		JLabel timerLabel = new JLabel("");
-		lblProject.setName("timerLabel");
-		durationPanel.add(timerLabel);
-		timerLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		SpringLayout sl_durationPanel = new SpringLayout();
+		sl_durationPanel.putConstraint(SpringLayout.NORTH, durationLabel, 0, SpringLayout.NORTH, durationPanel);
+		sl_durationPanel.putConstraint(SpringLayout.WEST, durationLabel, 0, SpringLayout.WEST, durationPanel);
+		sl_durationPanel.putConstraint(SpringLayout.SOUTH, durationLabel, 0, SpringLayout.SOUTH, durationPanel);
+		sl_durationPanel.putConstraint(SpringLayout.EAST, durationLabel, 0, SpringLayout.EAST, durationPanel);
+		durationPanel.setLayout(sl_durationPanel);
+		durationLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		durationLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		durationPanel.add(durationLabel);
 
 		// Duration Label
 		durationLabel.setName("durationLabel");
 		durationLabel.setBounds(55, 5, 258, 83);
-		durationLabel.setFont(new Font("Adam", Font.PLAIN, 78));
+		durationLabel.setFont(new Font("Tahoma", Font.PLAIN, 72));
 		durationLabel.setForeground(Color.WHITE);
 
 		// Pane for buttons
 		JPanel buttonPanel = new JPanel();
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, buttonPanel, 25, SpringLayout.SOUTH, durationPanel);
+		buttonPanel.setPreferredSize(new Dimension(10, 50));
+		sl_contentPanel.putConstraint(SpringLayout.WEST, buttonPanel, 5, SpringLayout.WEST, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.EAST, buttonPanel, -5, SpringLayout.EAST, contentPanel);
 		buttonPanel.setBackground(new Color(31, 32, 33));
 		contentPanel.add(buttonPanel);
 
@@ -153,6 +180,7 @@ public class TimerView implements IView {
 		btnStart.setName("btnStart");
 		btnStart.setIcon(new ImageIcon(TimerView.class.getResource("/main/resources/img/icons/play.gif")));
 		btnStart.addActionListener(timerHourController);
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		btnStart.setActionCommand(StaticActions.ACTION_TIMER_START); // Defined in Class StaticActions
 		buttonPanel.add(btnStart);
 
@@ -174,22 +202,38 @@ public class TimerView implements IView {
 		
 		// Date Picker
 		JPanel datePanel = new JPanel();
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, datePanel, 5, SpringLayout.SOUTH, buttonPanel);
+		datePanel.setPreferredSize(new Dimension(10, 40));
+		sl_contentPanel.putConstraint(SpringLayout.WEST, datePanel, 5, SpringLayout.WEST, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.EAST, datePanel, -5, SpringLayout.EAST, contentPanel);
 		datePanel.setBackground(new Color(31, 32, 33));
 		datePanel.setName("datePanel");
 		contentPanel.add(datePanel);
+		SpringLayout sl_datePanel = new SpringLayout();
+		datePanel.setLayout(sl_datePanel);
 		JLabel lblDatum = new JLabel("Datum:");
+		lblDatum.setName("lblDatum");
+		lblDatum.setForeground(Color.WHITE);
+		sl_datePanel.putConstraint(SpringLayout.NORTH, lblDatum, 9, SpringLayout.NORTH, datePanel);
+		sl_datePanel.putConstraint(SpringLayout.WEST, lblDatum, 5, SpringLayout.WEST, datePanel);
 		datePanel.add(lblDatum);
 		
 		txtDateInput = new JTextField();
+		sl_datePanel.putConstraint(SpringLayout.WEST, txtDateInput, 80, SpringLayout.WEST, datePanel);
+		txtDateInput.setPreferredSize(new Dimension(200, 25));
+		sl_datePanel.putConstraint(SpringLayout.NORTH, txtDateInput, 6, SpringLayout.NORTH, datePanel);
 		txtDateInput.setName("txtDateInput");
 		txtDateInput.setText("");
 		txtDateInput.setHorizontalAlignment(SwingConstants.CENTER);
 		txtDateInput.setEnabled(true);
-		txtDateInput.setColumns(15);
+		//txtDateInput.setColumns(24);
 		txtDateInput.getDocument().addDocumentListener(timerHourController);
 		datePanel.add(txtDateInput);
 		
 		btnDatePicker = new JButton("...");
+		btnDatePicker.setPreferredSize(new Dimension(41, 25));
+		sl_datePanel.putConstraint(SpringLayout.NORTH, btnDatePicker, 5, SpringLayout.NORTH, datePanel);
+		sl_datePanel.putConstraint(SpringLayout.WEST, btnDatePicker, 5, SpringLayout.EAST, txtDateInput);
 		btnDatePicker.setName("btnDatePicker");
 		final JFrame popupFrame = new JFrame();
 		popupFrame.setName("popupFrame");
@@ -202,13 +246,23 @@ public class TimerView implements IView {
 		datePanel.add(btnDatePicker);
 
 		JPanel manualEntryPanel = new JPanel();
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, manualEntryPanel, 5, SpringLayout.SOUTH, datePanel);
+		manualEntryPanel.setPreferredSize(new Dimension(10, 40));
+		sl_contentPanel.putConstraint(SpringLayout.WEST, manualEntryPanel, 5, SpringLayout.WEST, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.EAST, manualEntryPanel, -5, SpringLayout.EAST, contentPanel);
 		manualEntryPanel.setBackground(new Color(31, 32, 33));
 		contentPanel.add(manualEntryPanel);
+		FlowLayout fl_manualEntryPanel = new FlowLayout(FlowLayout.CENTER, 5, 5);
+		manualEntryPanel.setLayout(fl_manualEntryPanel);
 
 		JLabel lblFrom = new JLabel("Von:");
+		lblFrom.setName("lblFrom");
+		lblFrom.setForeground(Color.WHITE);
 		manualEntryPanel.add(lblFrom);
 
 		txtStartTime = new JTextField();
+		txtStartTime.setName("txtStartTime");
+		txtStartTime.setPreferredSize(new Dimension(7, 25));
 		txtStartTime.setEnabled(true);
 		lblFrom.setLabelFor(txtStartTime);
 		txtStartTime.setHorizontalAlignment(SwingConstants.CENTER);
@@ -218,9 +272,13 @@ public class TimerView implements IView {
 		txtStartTime.setColumns(5);
 
 		JLabel lblTo = new JLabel("Bis:");
+		lblTo.setName("lblTo");
+		lblTo.setForeground(Color.WHITE);
 		manualEntryPanel.add(lblTo);
 
 		txtEndTime = new JTextField();
+		txtEndTime.setName("txtEndTime");
+		txtEndTime.setPreferredSize(new Dimension(7, 25));
 		txtEndTime.setEnabled(true);
 		lblTo.setLabelFor(txtEndTime);
 		txtEndTime.setHorizontalAlignment(SwingConstants.CENTER);
@@ -230,27 +288,43 @@ public class TimerView implements IView {
 		txtEndTime.setColumns(5);
 
 		JPanel panel = new JPanel();
+		panel.setPreferredSize(new Dimension(10, 40));
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, panel, 395, SpringLayout.NORTH, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.WEST, panel, 5, SpringLayout.WEST, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.EAST, panel, -5, SpringLayout.EAST, contentPanel);
 		panel.setBackground(new Color(31, 32, 33));
 		contentPanel.add(panel);
+		SpringLayout sl_panel = new SpringLayout();
+		panel.setLayout(sl_panel);
 
 		JLabel lblComment = new JLabel("Kommentar:");
+		lblComment.setName("lblComment");
+		lblComment.setForeground(Color.WHITE);
+		sl_panel.putConstraint(SpringLayout.NORTH, lblComment, 8, SpringLayout.NORTH, panel);
+		sl_panel.putConstraint(SpringLayout.WEST, lblComment, 5, SpringLayout.WEST, panel);
 		panel.add(lblComment);
 		lblComment.setHorizontalAlignment(SwingConstants.CENTER);
 		lblComment.setLabelFor(textFieldCommentTimerView);
 
 		textFieldCommentTimerView = new JTextField();
 		textFieldCommentTimerView.setName("textFieldCommentTimerView");
+		sl_panel.putConstraint(SpringLayout.NORTH, textFieldCommentTimerView, 5, SpringLayout.NORTH, panel);
+		sl_panel.putConstraint(SpringLayout.WEST, textFieldCommentTimerView, 80, SpringLayout.WEST, panel);
+		textFieldCommentTimerView.setName("textFieldCommentTimerView");
 		panel.add(textFieldCommentTimerView);
 		textFieldCommentTimerView.setAlignmentX(Component.LEFT_ALIGNMENT);
-		textFieldCommentTimerView.setPreferredSize(new Dimension(300, 20));
+		textFieldCommentTimerView.setPreferredSize(new Dimension(246, 25));
 		textFieldCommentTimerView.setToolTipText("");
 		textFieldCommentTimerView.setHorizontalAlignment(SwingConstants.LEFT);
-		textFieldCommentTimerView.setColumns(20);
 
 		JLabel lblPauseDuration = new JLabel("Pause:");
+		lblPauseDuration.setName("lblPauseDuration");
+		lblPauseDuration.setForeground(Color.WHITE);
 		manualEntryPanel.add(lblPauseDuration);
 
 		textPauseDuration = new JTextField();
+		textPauseDuration.setName("textPauseDuration");
+		textPauseDuration.setPreferredSize(new Dimension(7, 25));
 		textPauseDuration.setEnabled(true);
 		lblPauseDuration.setLabelFor(textPauseDuration);
 		textPauseDuration.setHorizontalAlignment(SwingConstants.CENTER);
@@ -259,33 +333,49 @@ public class TimerView implements IView {
 		textPauseDuration.setColumns(5);
 
 		JPanel confirmButtonPanel = new JPanel();
+		confirmButtonPanel.setPreferredSize(new Dimension(10, 40));
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, confirmButtonPanel, 460, SpringLayout.NORTH, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.WEST, confirmButtonPanel, 5, SpringLayout.WEST, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.EAST, confirmButtonPanel, -5, SpringLayout.EAST, contentPanel);
 		confirmButtonPanel.setBackground(new Color(31, 32, 33));
-		FlowLayout flowLayout = (FlowLayout) confirmButtonPanel.getLayout();
 		contentPanel.add(confirmButtonPanel);
 
-		//Reset Button
+		// Reset Button
 		btnReset = new JButton("Reset");
 		btnReset.setName("btnReset");
 		btnReset.addActionListener(timerHourController);
+		confirmButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		btnReset.setActionCommand(StaticActions.ACTION_TIMER_RESET);
 		confirmButtonPanel.add(btnReset);
 
-		//Save Button
+		// Save Button
 		btnSaveTimerView = new JButton("Sichern");
+		btnSaveTimerView.setAlignmentX(Component.CENTER_ALIGNMENT);
 		btnSaveTimerView.setName("btnSaveTimerView");
 		btnSaveTimerView.addActionListener(timerHourController);
 		btnSaveTimerView.setActionCommand(StaticActions.ACTION_TIMER_SAVE);
 		confirmButtonPanel.add(btnSaveTimerView);
 
 		JPanel errorPanel = new JPanel();
+		errorPanel.setPreferredSize(new Dimension(10, 40));
+		sl_contentPanel.putConstraint(SpringLayout.NORTH, errorPanel, 525, SpringLayout.NORTH, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.WEST, errorPanel, 5, SpringLayout.WEST, contentPanel);
+		sl_contentPanel.putConstraint(SpringLayout.EAST, errorPanel, -5, SpringLayout.EAST, contentPanel);
 		errorPanel.setBackground(new Color(31, 32, 33));
-		FlowLayout flowLayout_1 = (FlowLayout) errorPanel.getLayout();
 		contentPanel.add(errorPanel);
 
 		lblErrorMessage = new JLabel("Error Message");
-		//lblErrorMessage.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblErrorMessage.setAlignmentX(Component.CENTER_ALIGNMENT);
+		lblErrorMessage.setHorizontalAlignment(SwingConstants.CENTER);
+		// lblErrorMessage.setFont(new Font("Tahoma", Font.BOLD, 12));
 		lblErrorMessage.setForeground(new Color(255, 140, 0));
 		lblErrorMessage.setVisible(false);
+		SpringLayout sl_errorPanel = new SpringLayout();
+		sl_errorPanel.putConstraint(SpringLayout.NORTH, lblErrorMessage, 0, SpringLayout.NORTH, errorPanel);
+		sl_errorPanel.putConstraint(SpringLayout.WEST, lblErrorMessage, 50, SpringLayout.WEST, errorPanel);
+		sl_errorPanel.putConstraint(SpringLayout.SOUTH, lblErrorMessage, 0, SpringLayout.SOUTH, errorPanel);
+		sl_errorPanel.putConstraint(SpringLayout.EAST, lblErrorMessage, -50, SpringLayout.EAST, errorPanel);
+		errorPanel.setLayout(sl_errorPanel);
 		errorPanel.add(lblErrorMessage);
 
 	}
@@ -341,13 +431,9 @@ public class TimerView implements IView {
 	public JComboBox getProjectDropdown() {
 		return projectDropdown;
 	}
-	
+
 	public JComboBox getServiceDropdown() {
 		return serviceDropdown;
-	}
-
-	public JTextField getHiddenTextFieldProjectID() {
-		return hiddenTextFieldProjectID;
 	}
 
 	public JLabel getLblErrorMessage() {
@@ -357,7 +443,7 @@ public class TimerView implements IView {
 	public JButton getBtnSave() {
 		return btnSaveTimerView;
 	}
-	
+
 	public JButton getBtnReset() {
 		return btnReset;
 	}
@@ -377,11 +463,16 @@ public class TimerView implements IView {
 	public void setButtonsHighlighted(boolean buttonsHighlighted) {
 		this.buttonsHighlighted = buttonsHighlighted;
 	}
-	
+
 	public void setTextFieldCommentTimerView(JTextField textFieldCommentTimerView) {
 		this.textFieldCommentTimerView = textFieldCommentTimerView;
 	}
 
+	/**
+	 * Shows an error message (given String) for a given amount of time.
+	 * @param message String representing the message.
+	 * @param duration Duration in milliseconds.
+	 */
 	public void showErrorMessage(String message, long duration) {
 		lblErrorMessage.setText(message);
 		if (!isErrorVisible()) {
@@ -421,8 +512,9 @@ public class TimerView implements IView {
 				this.projectDropdown.setModel(new DefaultComboBoxModel(projectNames.toArray()));
 				System.out.println("Projects loaded into TimerView.");
 			}
-			
-			if (!((TimerModel) arg).isTimerRunning() && !((TimerModel) arg).isServiceSet() && ((TimerModel) arg).getServiceList() != null) {
+
+			if (!((TimerModel) arg).isTimerRunning() && !((TimerModel) arg).isServiceSet()
+					&& ((TimerModel) arg).getServiceList() != null) {
 				ArrayList<String> services = new ArrayList<>();
 				((TimerModel) arg).getServiceList().forEach(service -> {
 					services.add(service.get(1).toString());

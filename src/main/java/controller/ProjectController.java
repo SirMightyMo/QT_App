@@ -1,21 +1,22 @@
 package main.java.controller;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.TimeZone;
 
-import javax.swing.JTable;
+import javax.swing.RowFilter;
+import javax.swing.RowFilter.ComparisonType;
 import javax.swing.event.DocumentEvent;
-import javax.swing.table.DefaultTableModel;
 
 import main.java.model.IModel;
 import main.java.model.ProjectModel;
 import main.java.model.StaticActions;
 import main.java.model.User;
 import main.java.view.IView;
-import main.java.view.ProjectView;
 import main.java.view.ProjectView;
 
 public class ProjectController implements IController {
@@ -26,7 +27,12 @@ public class ProjectController implements IController {
 
 	private DatabaseController db = DatabaseController.getInstance();
 
-	// Constructor
+	/**
+	 * Constructor for ProjectController
+	 * Calls the methods to fill dropdowns with information.
+	 * 
+     * @author Mo
+     */
 	@SuppressWarnings("deprecation")
 	public ProjectController() {
 		
@@ -35,8 +41,9 @@ public class ProjectController implements IController {
 
 		this.projectModel.addObserver(this.projectView);
 		projectModel.retrieveProjects();
-
+		projectModel.retrieveClients();
 		actionLoadProjects();
+		actionLoadClients();
 	}
 
 	public void actionLoadProjects() {
@@ -54,45 +61,127 @@ public class ProjectController implements IController {
 	public void actionResetProjects() {
 		projectView.updateTable(this);
 	}
-
-	public void actionSearchProjects() {
-		if (projectView.getComboBox().getItemCount() > 0) {
-			projectView.filterProjects(projectView.getComboBox().getSelectedItem().toString());			
-		}
+	public void actionLoadClients() {
+		this.projectModel.setClientSet(false);
+		this.projectModel.retrieveClients();
 	}
 
 	/**
-	 * This method saves a new project to the database
+	 * Reads data given by user to filter the Project View.
+	 * If filters are filled out, this method adds them to a List of Row Filters.
+	 * It then applies these filters with an AND operation on the table data.
+	 * 
+	 * @author Mo
+	 */
+	public void actionSearchProjects() {
+		String projectFilter = "";
+		String clientFilter = "";
+		String serviceFilter = "";
+		String startFilter = projectView.getTextFieldFrom().getText();
+		String endFilter = projectView.getTextFieldTo().getText();
+
+		System.out.println(startFilter);
+		System.out.println(endFilter);
+
+		List<RowFilter<Object, Object>> filters = new ArrayList<RowFilter<Object, Object>>();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		formatter.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"));
+		
+		if (projectView.getComboBox().getItemCount() > 0) {
+			projectFilter = projectView.getComboBox().getSelectedItem().toString();
+			if (!projectFilter.equals("")) {
+				filters.add(RowFilter.regexFilter("^" + projectFilter + "$", 1));
+			}
+		}
+		if (projectView.getComboBoxClient().getItemCount() > 0) {
+			clientFilter = projectView.getComboBoxClient().getSelectedItem().toString();
+			if (!clientFilter.equals("")) {
+				filters.add(RowFilter.regexFilter("^" + clientFilter + "$"));
+			}
+		}
+		if (!startFilter.equals("")) {
+			String start = startFilter.split(" ", 1)[0].replace(".", "-");
+			java.util.Date startDate = null;
+			try {
+				startDate = formatter.parse(start);
+				System.out.println("Filter from: " + startDate);
+			} catch (ParseException e) {
+				System.out.println("Error while parsing Date: " + start);
+			}
+			if (startDate != null)
+				startDate = new Date(startDate.getTime() - (1000 * 60 * 60 * 24));
+				filters.add(RowFilter.dateFilter(ComparisonType.AFTER, startDate, 2));
+		}
+		if (!endFilter.equals("")) {
+			String end = endFilter.split(" ", 1)[0].replace(".", "-");
+			java.util.Date endDate = null;
+			System.out.println(end);
+			try {
+				endDate = formatter.parse(end);
+				System.out.println("Filter to: " + endDate);
+			} catch (ParseException e) {
+				System.out.println("Error while parsing Date: " + end);
+			}
+			if (endDate != null)
+				endDate = new Date(endDate.getTime() + (1000 * 60 * 60 * 24)); // add one day, so it is included
+			filters.add(RowFilter.dateFilter(ComparisonType.BEFORE, endDate, 3));
+		}
+
+		if (filters.size() > 0) {
+			projectView.getSorter().setRowFilter(RowFilter.andFilter(filters));
+		} else {
+			projectView.getSorter().setRowFilter(null);
+		}
+
+	}
+	
+
+	/**
+	 * Gets the values from the user input form for a new project
+	 * and saves it to the database. Switches back to tab 1
+	 * 
 	 * @author Mo
 	 */
 	public void actionSaveProject() {
 		String projectName;
+		String customer;
 		Date startDate;
 		Date endDate;
+		Date today;
 		boolean active;
 		int customerID;
 
 		projectName = projectView.getNewProjectName();
 		startDate = projectView.getNewStartDate();
 		endDate = projectView.getNewEndDate();
-		active = projectView.getNewProjectStat();
+        today = new java.sql.Date(System.currentTimeMillis());
+		if(startDate.before(today) && endDate.after(today)) {
+			active = true;
+		}
+		else {
+			active = false;
+		}
 		customerID = projectView.getClientID();
+		
+		if (projectName.length() > 255) {
+			projectView.showErrorMessage(projectView.getLblErrorProject(), "Projektname darf maximal 255 Zeichen lang sein!", 5000);
+			return;
+		}
 
-		db.insert("INSERT INTO project(name, start_date, end_date, active, c_id) VALUES(" 
+		db.run("INSERT INTO project(name, start_date, end_date, active, c_id) VALUES(" 
 		+ "'" + projectName + "'," 
 		+ "'" + startDate + "'," 
 		+ "'" + endDate + "'," 
 		+ "'" + active + "'," 
 		+ "'" + customerID + "');");
 		
-		db.insert("INSERT INTO assign_project_user(p_id, u_id) VALUES("
+		db.run("INSERT INTO assign_project_user(p_id, u_id) VALUES("
 				+ "(SELECT MAX(p_id) FROM project)," 	// get newest projectID
 				+ User.getUser().getU_id() + ");");		// get User-ID
 		
 		projectModel.retrieveProjects();
 		projectView.updateTable(this);
 		projectView.setTab(0);
-
 	}
 	
 	/**
@@ -110,8 +199,6 @@ public class ProjectController implements IController {
 		String city = projectView.getTextFieldCity();
 		String country = projectView.getTextFieldCountry();
 		String zip = projectView.getTextFieldZip();
-		
-		projectView.setLblErrorVisible(false);
 		
 		try {
 			if (Integer.parseInt(zip) > 99999 || Integer.parseInt(zip) < 0) {
@@ -164,7 +251,7 @@ public class ProjectController implements IController {
 			return;
 		}
 				
-		db.insert("INSERT INTO customer(company, contact, phone, mobile, street, house_number, zip, city, country) VALUES(" 
+		db.run("INSERT INTO customer(company, contact, phone, mobile, street, house_number, zip, city, country) VALUES(" 
 		+ "'" + company + "'," 
 		+ "'" + contact + "'," 
 		+ "'" + phone + "'," 
@@ -187,8 +274,8 @@ public class ProjectController implements IController {
 		double external_rate;
 		
 		try {
-			internal_rate = Double.parseDouble(projectView.getTextFieldInternalRate().replace(',', '.'));
-			external_rate = Double.parseDouble(projectView.getTextFieldExternalRate().replace(',', '.'));
+			internal_rate = Double.parseDouble(projectView.getTextFieldInternalRate().replace(',', '.').replace('€', ' '));
+			external_rate = Double.parseDouble(projectView.getTextFieldExternalRate().replace(',', '.').replace('€', ' '));
 		} catch (NumberFormatException e) {
 			projectView.showErrorMessage(projectView.getLblErrorService(), "Interner- und externer Satz muss eine Zahl sein", 5000);
 			e.printStackTrace();
@@ -203,12 +290,13 @@ public class ProjectController implements IController {
 		}
 		
 
-		db.insert("INSERT INTO service(name, internal_rate, external_rate) VALUES(" 
+		db.run("INSERT INTO service(name, internal_rate, external_rate) VALUES(" 
 		+ "'" + service + "'," 
 		+ "'" + internal_rate + "'," 
 		+ "'" + external_rate + "');");		
 	}
 
+	
 	// ActionListener method
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -217,6 +305,7 @@ public class ProjectController implements IController {
 
 		if (event.equalsIgnoreCase(StaticActions.ACTION_LOAD_PROJECTS)) {
 			actionLoadProjects();
+			actionLoadClients();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SEARCH_PROJECTS)) {
 			actionSearchProjects();

@@ -1,5 +1,15 @@
 package main.java.model;
 
+/**
+ * Class holds static and final Action-Strings.
+ * These actions are available from all classes 
+ * and should be set as ActionCommand when an action
+ * is needed.<br>
+ * This way it is always clear, which actions already 
+ * have been set or fired and redundance could be 
+ * avoided.
+ */
+
 public class StaticActions implements IModel {
 
 	// Timer actions
@@ -19,16 +29,20 @@ public class StaticActions implements IModel {
 	public static final String ACTION_SAVE_CUSTOMER = "action_save_customer";
 	public static final String ACTION_SAVE_SERVICE = "action_save_service";
 	
-	public static final String ACTION_SESSION_OVERVIEW_RESET = "action_sessionoverview_reset";
+	public static final String ACTION_SESSION_OVERVIEW_RESET = "action_session_overview_reset";
 	public static final String ACTION_SESSION_OVERVIEW_LOAD = "action_session_load";
 	public static final String ACTION_SESSION_OVERVIEW_SEARCH = "action_session_search";
 	public static final String ACTION_SESSION_OVERVIEW_SET_PROJECT = "action_session_overview_set_project";
 	public static final String ACTION_SESSION_OVERVIEW_SET_CLIENT = "action_session_overview_set_client";
 	public static final String ACTION_SESSION_OVERVIEW_SET_SERVICE = "action_session_overview_set_service";
+	public static final String ACTION_SESSION_OVERVIEW_EDIT_PROJECT = "action_session_overview_edit_project";
+	public static final String ACTION_SESSION_OVERVIEW_DELETE_PROJECT = "action_session_overview_delete_project";
 	public static final String ACTION_SESSION_NEW_SET_PROJECT = "action_session_new_set_project";
-	public static final String ACTION_SESSION_NEW_SET_CLIENT = "action_session_new_set_client";
 	public static final String ACTION_SESSION_NEW_SET_SERVICE = "action_session_new_set_service";
 	public static final String ACTION_SESSION_NEW_SAVE = "action_session_save";
+	public static final String ACTION_SESSION_NEW_RESET = "action_session_overview_reset";
+	public static final String ACTION_SESSION_EDIT_SAVE = "action_session_edit_save";
+	public static final String ACTION_SESSION_EDIT_ABORT = "action_session_edit_abort";
 
 	public static final String ACTION_MENU_DASHBOARD = "action_menu_dashboard";
 	public static final String ACTION_MENU_PROJECTS = "action_menu_projects";
@@ -38,5 +52,6 @@ public class StaticActions implements IModel {
 	
 	public static final String ACTION_NPROJECT_SAVE = "action_nproject_save";
 	public static final String ACTION_NPROJECT_RESET = "action_nproject_reset";
+	public static final String ACTION_PROJECT_SET_CLIENT = "action_project_set_client";
 	
 }

@@ -1,6 +1,7 @@
 package main.java.controller;
 
 import java.awt.event.ActionEvent;
+import java.lang.reflect.Method;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
@@ -31,6 +32,15 @@ public final class LoginController extends Hashing implements IController {
 		view.getRegisterButton().addActionListener(e -> this.registration());
 	}
 
+	/**
+	 * Queries the hashed password from database and compares it to the
+	 * plaintext password-input by the user.
+	 * When passwords match it calls the method login() method.
+	 * If not, it show an error message.
+	 * 
+	 * @see main.java.model.Hashing#validatePassword(String, String)
+	 * @author Leander, Sven
+	 */
 	private void securityCheck() {
 		if (view.getErrorMessage() != null) {
 			view.deleteErrorMessage();
@@ -51,7 +61,7 @@ public final class LoginController extends Hashing implements IController {
 		ArrayList<Object> result = dbc.query(sql, true);
 		
 		if (result.isEmpty()) {
-			view.setErrorMessage("User does not exist!");
+			view.setErrorMessage("Ungültiger Benutzername");
 		} else {
 			if (view.getErrorMessage() != null) {
 				view.deleteErrorMessage();
@@ -71,7 +81,7 @@ public final class LoginController extends Hashing implements IController {
 			if (pwMatches) {
 				login(u_id, name, email);
 			} else {
-				view.setErrorMessage("Password is incorrect!");
+				view.setErrorMessage("Passwort inkorrekt");
 			}
 		}
 		

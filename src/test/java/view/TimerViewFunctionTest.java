@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import main.java.controller.LayoutManager;
 import main.java.controller.TimerHourController;
 import main.java.model.User;
 import main.java.view.TimerView;
@@ -17,6 +18,8 @@ class TimerViewFunctionTest {
 	
 	@BeforeEach
 	void init() {
+		User.setUser(new User(1, "Bob", "bob@msn.com"));
+		new LayoutManager();
 		tv = new TimerView(new TimerHourController());
 	}
 

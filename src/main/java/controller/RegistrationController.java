@@ -16,123 +16,118 @@ import main.java.view.IView;
 import main.java.view.RegistrationView;
 
 public final class RegistrationController extends Hashing implements IController {
-	
+
 	private RegistrationView view;
 	private DatabaseController dbc = DatabaseController.getInstance();
-	
+
 	public RegistrationController() {
-		
+
 		this.view = new RegistrationView();
 		this.init();
 	}
-	
-	
+
 	private void init() {
-		view.getLoginButton().addActionListener(e -> 
-			this.login()	
-		);
-		view.getRegisterButton().addActionListener(e->
-			this.registration()
-		);
+		view.getLoginButton().addActionListener(e -> this.login());
+		view.getRegisterButton().addActionListener(e -> this.registration());
 	}
-	
-	
+
 	private boolean inputCheck() {
 		if (view.getErrorMessage() != null) {
 			view.deleteErrorMessage();
 		}
-		if(checkUsername() && checkEmail() && checkPassword() && checkSecurityQuestion()) {
+		if (checkUsername() && checkEmail() && checkPassword() && checkSecurityQuestion()) {
 			return true;
 		} else {
 			return false;
 		}
-		
+
 	}
-	
+
 	private boolean checkUsername() {
 		if (view.getErrorMessage() != null) {
 			view.deleteErrorMessage();
 		}
-		
+
 		String chosenUsername = view.getUsernameInput();
 		if (!chosenUsername.isEmpty()) {
 			if (!usernameIsTaken(chosenUsername)) {
-				return true;				
+				return true;
 			} else {
-				view.setErrorMessage("Username already taken!");
+				view.setErrorMessage("Benutzername bereits vergeben");
 				return false;
 			}
-		}
-		else {
-			view.setErrorMessage("Choose a username!");
+		} else {
+			view.setErrorMessage("Benutzername darf nicht leer sein");
 			return false;
 		}
 	}
-	
-	
+
 	private boolean checkEmail() {
-		
+
 		if (view.getErrorMessage() != null) {
 			view.deleteErrorMessage();
 		}
-		
+
 		String emailIn = view.getEmailInput();
 		String emailConfirm = view.getEmailConfirmInput();
-		
+
 		if (emailIn.equals(emailConfirm) && !emailIn.isEmpty() && validateEmail(emailIn)) {
 			return true;
 		}
-		
+
 		else {
-			view.setErrorMessage("Invalid E-Mail!");
+			view.setErrorMessage("Ungültige E-Mailadresse");
 			return false;
 		}
 	}
-	
-	
+
 	private boolean validateEmail(String email) {
 		Matcher matcher = Regex.VALID_EMAIL_ADDRESS_REGEX.matcher(email);
-        return matcher.find();
+		return matcher.find();
 	}
 
-
 	private boolean checkPassword() {
-		
+
 		char[] pwIn = this.view.getPasswordInput();
 		char[] pwConfirm = this.view.getPasswordConfirmInput();
-		
-		if (pwIn.length < 6){
-			view.setErrorMessage("Password needs at least 6 characters.");
+
+		if (pwIn.length < 6) {
+			view.setErrorMessage("Passwort muss mind. 6 Zeichen lang sein");
 			return false;
 		}
-		if (!Arrays.equals(pwIn, pwConfirm)) {			
-			view.setErrorMessage("Passwords not matching.");
+		if (!Arrays.equals(pwIn, pwConfirm)) {
+			view.setErrorMessage("Passwörter stimmen nicht überein");
 			return false;
 		}
 		return true;
 	}
-	
+
 	private boolean checkSecurityQuestion() {
-		
+
 		String answer = view.getSecurityAnswer();
-		
+
 		if (!answer.isEmpty()) {
 			return true;
-		}
-		else {
-			view.setErrorMessage("Choose a security-question and answer it!");
+		} else {
+			view.setErrorMessage("Keine Sicherheitsfrage gewählt");
 			return false;
 		}
 	}
-	
+
 	private void login() {
 		new LoginController();
 		this.view.dispose();
 	}
 	
+	/**
+	 * Reads user input, hashes password and inserts new user information
+	 * to database.
+	 * It then calls a method to switch to the login dialog.
+	 * @author Leander, Sven
+	 */
 	private void registration() {
 		String hash = null;
-		if(inputCheck()) {
+		if (inputCheck()) {
 			String username = view.getUsernameInput();
 			char[] password = view.getPasswordInput();
 			try {
@@ -140,13 +135,13 @@ public final class RegistrationController extends Hashing implements IController
 			} catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
 				e.printStackTrace();
 			}
-			
+
 			String email = view.getEmailInput();
 			int selectedQuestion = view.getSecurityQuestionPicker().getSelectedIndex();
 			String security_question = view.getQuestions()[selectedQuestion];
 			String answer = view.getSecurityAnswer();
-			
-			dbc.insert("INSERT INTO users(username,password,email,security_question,answer)VALUES("
+
+			dbc.run("INSERT INTO users(username,password,email,security_question,answer)VALUES("
 					+ "'" + username + "',"
 					+ "'" + hash + "',"
 					+ "'" + email + "',"
@@ -161,45 +156,34 @@ public final class RegistrationController extends Hashing implements IController
 		ArrayList<Object> result = dbc.query("SELECT username FROM users WHERE username='" + username + "'", true);
 		return (!result.isEmpty());
 	}
-		
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 	}
 
 	@Override
 	public void insertUpdate(DocumentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	@Override
 	public void changedUpdate(DocumentEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
 
+	}
 
 	@Override
 	public IModel getModel() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 	@Override
 	public IView getView() {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

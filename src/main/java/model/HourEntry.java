@@ -1,11 +1,12 @@
 package main.java.model;
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Observable;
 
 @SuppressWarnings("deprecation")
-public class HourEntry extends Observable implements IModel{
-	
+public class HourEntry extends Observable implements IModel {
+
 	private String date;
 	private long sessionTimeInSeconds;
 	private long pauseTimeInSeconds;
@@ -20,8 +21,7 @@ public class HourEntry extends Observable implements IModel{
 	private int projectID;
 	private String service;
 	private String comment;
-	
-	
+
 	// Constructor
 	public HourEntry(String date) {
 		super();
@@ -45,7 +45,7 @@ public class HourEntry extends Observable implements IModel{
 		if (startTime != null && endTime != null) {
 			long duration = Duration.between(startTime, endTime).getSeconds() - pauseTimeInSeconds;
 			this.sessionTimeInSeconds = duration;
-			setSessionTimeInMinutes();			
+			setSessionTimeInMinutes();
 		}
 	}
 
@@ -53,7 +53,8 @@ public class HourEntry extends Observable implements IModel{
 		return pauseTimeInSeconds;
 	}
 
-	// Automatic setter, when pauseStart & pausEnd are defined (Timer is used); adds up pauses in one session
+	// Automatic setter, when pauseStart & pausEnd are defined (Timer is used); adds
+	// up pauses in one session
 	public void setPauseTimeInSeconds() {
 		if (pauseStart != null && pauseEnd != null) {
 			long duration = Duration.between(pauseStart, pauseEnd).getSeconds();
@@ -62,8 +63,9 @@ public class HourEntry extends Observable implements IModel{
 			setSessionTimeInSeconds();
 		}
 	}
-	
-	// Manual setter for manually edited textfield; overwrites existing pauseTimeInSeconds
+
+	// Manual setter for manually edited textfield; overwrites existing
+	// pauseTimeInSeconds
 	public void setPauseTimeInSeconds(long duration) {
 		this.pauseTimeInSeconds = duration;
 		setPauseTimeInMinutes();
@@ -74,7 +76,7 @@ public class HourEntry extends Observable implements IModel{
 	}
 
 	public void setSessionTimeInMinutes() {
-		this.sessionTimeInMinutes = Math.round((float) this.sessionTimeInSeconds/60);
+		this.sessionTimeInMinutes = Math.round((float) this.sessionTimeInSeconds / 60);
 	}
 
 	public long getPauseTimeInMinutes() {
@@ -82,7 +84,7 @@ public class HourEntry extends Observable implements IModel{
 	}
 
 	public void setPauseTimeInMinutes() {
-		this.pauseTimeInMinutes = Math.round((float) this.pauseTimeInSeconds/60);
+		this.pauseTimeInMinutes = Math.round((float) this.pauseTimeInSeconds / 60);
 	}
 
 	public LocalDateTime getStartTime() {
@@ -103,7 +105,7 @@ public class HourEntry extends Observable implements IModel{
 		}
 		this.endTime = endTime;
 		if (endTime != null) {
-			this.setSessionTimeInSeconds();			
+			this.setSessionTimeInSeconds();
 		}
 	}
 
@@ -166,7 +168,13 @@ public class HourEntry extends Observable implements IModel{
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	
+
+	/**
+	 * Converts the saved pauseTimeInMinutes to
+	 * a String in format HH:mm.
+	 * @return String in Format HH:mm
+	 * @author Leander
+	 */
 	public String pauseMinutesToFormattedString() {
 		int hours = (int) pauseTimeInMinutes / 60;
 		int minutes = (int) pauseTimeInMinutes % 60;

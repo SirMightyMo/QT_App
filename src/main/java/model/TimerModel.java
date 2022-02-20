@@ -8,7 +8,7 @@ import java.util.TimerTask;
 import main.java.controller.DatabaseController;
 
 @SuppressWarnings("deprecation")
-public class TimerModel extends Observable implements IModel{
+public class TimerModel extends Observable implements IModel {
 
 	private boolean timerRunning;
 	private boolean timerPaused;
@@ -102,7 +102,10 @@ public class TimerModel extends Observable implements IModel{
 	}
 
 	/**
-	 * Additional Methods
+	 * Starts a new TimerTask to update 
+	 * the time information in this model every
+	 * second.
+	 * @author Leander
 	 */
 	public void startTimer() {
 		if (!timerRunning) {
@@ -118,6 +121,12 @@ public class TimerModel extends Observable implements IModel{
 		}
 	}
 
+	/**
+	 * Cancels (Stops) the TimerTask (if it
+	 * is running) so time information is no 
+	 * longer updated.
+	 * @author Leander
+	 */
 	public void pauseTimer() {
 		if (timerRunning) {
 			taskTimer.cancel();
@@ -126,6 +135,11 @@ public class TimerModel extends Observable implements IModel{
 		}
 	}
 
+	/**
+	 * Stops the timer if it is running or 
+	 * paused.
+	 * @author Leander
+	 */
 	public void stopTimer() {
 		if (timerRunning || timerPaused) {
 			taskTimer.cancel();
@@ -134,6 +148,11 @@ public class TimerModel extends Observable implements IModel{
 		}
 	}
 
+	/**
+	 * Resets time information to default 
+	 * values (0) and notifies the models 
+	 * observers.
+	 */
 	public void stopAndResetTimer() {
 		stopTimer();
 		this.setTimerHours(0);
@@ -143,6 +162,12 @@ public class TimerModel extends Observable implements IModel{
 		notifyObservers(this);
 	}
 
+	/**
+	 * Adds one second every time this 
+	 * method is being called. Increases  
+	 * minutes and hours if nessecary.<br>
+	 * Notifes the models observers.
+	 */
 	public void updateTimer() {
 		if (timerRunning) {
 			timerSeconds += 1;
@@ -159,6 +184,14 @@ public class TimerModel extends Observable implements IModel{
 		notifyObservers(this);
 	}
 
+	/**
+	 * Creates a String from the stored time information
+	 * in format HH:mm or HH:mm:ss depending on the given 
+	 * boolean argument.
+	 * @param showSeconds Set true if seconds should be 
+	 * returned in String.
+	 * @return String in format HH:mm or HH:mm:ss
+	 */
 	public String timerToString(boolean showSeconds) {
 		String seconds = Integer.toString(timerSeconds);
 		String minutes = Integer.toString(timerMinutes);
@@ -179,9 +212,17 @@ public class TimerModel extends Observable implements IModel{
 		}
 	}
 
+	/**
+	 * This method retrieves all projects the current user is assigned to from the
+	 * database and adds them to an ArrayList for using them in a ComboBox
+	 * (Dropdown).
+	 * @author Leander
+	 */
 	public void retrieveProjects() {
 		this.projectList = new ArrayList<>();
-		ArrayList<Object> result = db.query("SELECT project.p_id, name FROM project LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id WHERE active = TRUE AND u_id = " + User.getUser().getU_id() + ";");
+		ArrayList<Object> result = db.query(
+				"SELECT project.p_id, name FROM project LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id WHERE active = TRUE AND u_id = "
+						+ User.getUser().getU_id() + ";");
 		result.forEach(entry -> {
 			ArrayList<Object> row = (ArrayList<Object>) entry;
 			this.projectList.add(row);
@@ -189,12 +230,16 @@ public class TimerModel extends Observable implements IModel{
 		setChanged();
 		notifyObservers(this);
 	}
-	
+
+	/**
+	 * This method retrieves all services and adds them to an ArrayList for using
+	 * them in a ComboBox (Dropdown).
+	 * @author Leander
+	 */
 	public void retrieveServices() {
 		this.serviceList = new ArrayList<>();
 		ArrayList<Object> result = db.query("SELECT s_id, name FROM service;");
 		result.forEach(entry -> {
-			System.out.println(entry);
 			ArrayList<Object> row = (ArrayList<Object>) entry;
 			this.serviceList.add(row);
 		});

@@ -13,6 +13,26 @@ import org.h2.jdbc.JdbcSQLSyntaxErrorException;
 import main.java.model.IModel;
 import main.java.view.IView;
 
+/**
+ * DatabaseController controlls connections to the database.
+ * It implements public methods for querying data or running
+ * SQL statements.<br>
+ * This Class implements the 'Singleton Pattern' and therefore
+ * instanciates itself. No further instance of this class is 
+ * possible. The information about this instance is also saved
+ * in this class itself and can be accessed through a method.
+ * <p>
+ * This way, it is neither needed nor possible to instanciate more 
+ * than one DatabaseController and this one instance can be used 
+ * for all database actions.
+ * <p>
+ * At the moment, the database is always accessed with the 
+ * same credentials. Database connection maybe could be 
+ * established with unique credentials for each user?
+ * @author Leander
+ *
+ */
+
 public class DatabaseController implements IController {
 
 	private final String JDBC_DRIVER = "org.h2.Driver";
@@ -28,6 +48,10 @@ public class DatabaseController implements IController {
 		this.pass = pass;
 	}
 	
+	/**
+	 * Returns the instance of this class (Singleton Pattern)
+	 * @return One and only instance of this class.
+	 */
 	public static DatabaseController getInstance() {
 		return DBC;
 	}
@@ -64,6 +88,11 @@ public class DatabaseController implements IController {
 		return DB_URL;
 	}
 
+	/**
+	 * Opens connection to database with given credentials set in class.
+	 * 
+	 * @author Leander
+	 */
 	public void connect() {
 		try {
 			Class.forName(JDBC_DRIVER);
@@ -76,6 +105,11 @@ public class DatabaseController implements IController {
 		}
 	}
 
+	/**
+	 * Closes connection to database.
+	 * 
+	 * @author Leander
+	 */
 	public void close() {
 		try {
 			dbConnection.close();
@@ -85,17 +119,16 @@ public class DatabaseController implements IController {
 		}
 	}
 
-	/*
-	 * insert(String sql)
-	 * 
-	 * This method takes a String as an argument. For the method to work this String
-	 * needs to be a valid SQL statement.
+	/**
+	 * Takes SQL commands as String and runs them on database.
 	 * 
 	 * Example:
 	 * "INSERT INTO tablename(column1, column2, column3) VALUES('value1','value2','value3');"
 	 * 
+	 * @param sql		The SQL command to be runned.
+	 * @author Leander
 	 */
-	public void insert(String sql) {
+	public void run(String sql) {
 		Statement statement = null;
 		try {
 			Class.forName(JDBC_DRIVER);
@@ -113,22 +146,14 @@ public class DatabaseController implements IController {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-//			try {
-//				dbConnection.close();
-//			} catch (SQLException e) {
-//				e.printStackTrace();
-//			}
 		}
 	}
 
-	/*
-	 * query(String sql):
-	 * 
-	 * This method takes a String as an argument. For the method to work this String
-	 * needs to be a valid SQL statement.
-	 * 
+	/**
+	 * Takes SQL query as String and queries data from database.
+	 * <p>
 	 * Example: "SELECT column1, column2 FROM tablename;"
-	 * 
+	 * <p>
 	 * The method connects to the database, creates and executes the statement. The
 	 * results retrieved are stored temporarily in a ResultSet. Since the only
 	 * information given is the SQL statement as a String, the method does not
@@ -138,21 +163,25 @@ public class DatabaseController implements IController {
 	 * Objects and adds the according values of the row. It then adds these
 	 * ArrayLists containing the complete retrieved row's data to another final
 	 * ArrayList of Objects 'resultArrayList'.
-	 * 
+	 * <p>
 	 * This resultArrayList is the returned by the method. For reading/computing the
 	 * results of the inner ArrayLists, the values have to be casted to the
 	 * according object type:
-	 * 
+	 * <p>
 	 * ArrayList<Object> result =
 	 * db.query("SELECT column1, column2 FROM tablename;"); result.forEach(entry ->
 	 * { ArrayList<Object> row = (ArrayList<Object> entry); // do something with
 	 * row-ArrayList here }
-	 * 
-	 * "Visual Dummy-Example": ResultList( RowList(valueOfColumn1, valueOfColumn2),
+	 * <p>
+	 * "Visual Dummy-Example": 
+	 * ResultList( RowList(valueOfColumn1, valueOfColumn2),
 	 * RowList(valueOfColumn1, valueOfColumn2), RowList(valueOfColumn1,
 	 * valueOfColumn2), ... ) -> ResultList contains RowLists, that contain the
 	 * values of queried columns.
-	 * 
+	 * <p>
+	 * @param sql The SQL command for querying data.
+	 * @return An ArrayList containing ArrayLists (rows of db result).
+	 * @author Leander
 	 */
 	public ArrayList<Object> query(String sql) {
 		ArrayList<Object> resultArrayList = new ArrayList<>();
@@ -198,11 +227,6 @@ public class DatabaseController implements IController {
 				e.printStackTrace();
 			}
 		}
-//		try {
-//			dbConnection.close();
-//		} catch (SQLException e) {
-//			System.out.println(e.getMessage());
-//		}
 		return resultArrayList;
 	}
 
@@ -223,9 +247,18 @@ public class DatabaseController implements IController {
 			return 1;
 	}
 
-	// If only one row (or one row with just one value) is expected, set flag to true.
-	// The ArrayList consists just of these value(s) (type 'Object', need to be casted)
-	// and does NOT contain another ArrayList.
+	/**
+	 * Takes SQL query as String and queries data from database.
+	 * If only one row (or one row with just one value) is expected, set flag to true.
+	 * The ArrayList consists just of these value(s) (type 'Object', need to be casted)
+	 * and does NOT contain another ArrayList.
+	 * <p>
+	 * @see DatabaseController#query(String sql)
+	 * @param sql The SQL command for querying data.
+	 * @param onlyOneRowExpected Set 'true' if only one result row is expected.
+	 * @return ArrayList containing the queried data from database.
+	 * @author Leander
+	 */
 	public ArrayList<Object> query(String sql, boolean onlyOneRowExpected) {
 		if (onlyOneRowExpected) {
 			ArrayList<Object> resultArrayList = new ArrayList<>();
@@ -266,11 +299,6 @@ public class DatabaseController implements IController {
 					e.printStackTrace();
 				}
 			}
-//			try {
-//				dbConnection.close();
-//			} catch (SQLException e) {
-//				System.out.println(e.getMessage());
-//			}
 			return resultArrayList;
 		} else {
 			return query(sql);
@@ -306,8 +334,6 @@ public class DatabaseController implements IController {
 
 			statement.close();
 			bReader.close();
-			//dbConnection.close();
-
 			System.out.println("SQL-Script " + scriptFilePath + " executed successfully");
 		} catch (Exception e) {
 			System.out.println("Problem executing SQL Script");
@@ -319,37 +345,31 @@ public class DatabaseController implements IController {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void insertUpdate(DocumentEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void changedUpdate(DocumentEvent e) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public IModel getModel() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public IView getView() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }

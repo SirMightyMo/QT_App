@@ -1,7 +1,7 @@
 package main.java.controller;
 
-import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,6 +14,13 @@ import main.java.model.StaticActions;
 import main.java.model.User;
 import main.java.view.IView;
 import main.java.view.NewProjectView;
+
+/**
+ * Controlls view and model for small panel on dashboard to
+ * create new projects.
+ * @author Leander
+ *
+ */
 
 public class NewProjectController implements IController {
 
@@ -47,7 +54,9 @@ public class NewProjectController implements IController {
 	}
 	
 	/**
-	 * This method saves a new project to the database
+	 * Reads user input for new project information and writes data to project table 
+	 * as well as to assign_project_user table. 
+	 * @author Leander
 	 */
 	public void actionSaveProject() {
 		String projectName = this.newProjectView.getTextFieldProjectname().getText();
@@ -59,20 +68,20 @@ public class NewProjectController implements IController {
 		int comboBoxIndex = this.newProjectView.getDropDownClient().getSelectedIndex();
 		int clientID = (int) newProjectModel.getClientList().get(comboBoxIndex).get(0);
 
-		db.insert("INSERT INTO project(name, start_date, end_date, active, c_id) VALUES(" 
+		db.run("INSERT INTO project(name, start_date, end_date, active, c_id) VALUES(" 
 		+ "'" + projectName + "'," 
 		+ "'" + startDate + "'," 
 		+ "'" + endDate + "'," 
 		+ "'" + active + "'," 
 		+ "'" + clientID + "');");
 		
-		db.insert("INSERT INTO assign_project_user(p_id, u_id) VALUES("
+		db.run("INSERT INTO assign_project_user(p_id, u_id) VALUES("
 				+ "(SELECT MAX(p_id) FROM project)," 	// get newest projectID
 				+ User.getUser().getU_id() + ");");		// get User-ID
 		actionPerformed(new ActionEvent(this, 1, StaticActions.ACTION_NPROJECT_RESET));
 	}
 	
-	/*
+	/**
 	 * This method converts the start date String to a sql date format.
 	 */
 	public Date getStartDate() {
@@ -89,7 +98,7 @@ public class NewProjectController implements IController {
 		return startDate;
 	}
 
-	/*
+	/**
 	 * This method converts the end date String to a sql date format.
 	 */
 	public Date getEndDate() {
@@ -130,7 +139,7 @@ public class NewProjectController implements IController {
 		
 	}
 
-	/*
+	/**
 	 * Checks, if inputs were made and if start date lies before end date.
 	 * Marks invalid input fields red.
 	 */

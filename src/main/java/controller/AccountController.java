@@ -6,11 +6,8 @@ import javax.swing.event.DocumentEvent;
 
 import main.java.model.AccountModel;
 import main.java.model.IModel;
-import main.java.model.TimerModel;
-import main.java.model.User;
 import main.java.view.AccountView;
 import main.java.view.IView;
-import main.java.view.TimerView;
 
 public class AccountController implements IController {
 	
