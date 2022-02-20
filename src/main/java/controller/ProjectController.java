@@ -152,6 +152,11 @@ public class ProjectController implements IController {
 		int customerID;
 
 		projectName = projectView.getNewProjectName();
+		if (projectView.getComboBoxClientNewP().getItemCount() > 0) {
+			customer = (String) projectView.getComboBoxClientNewP().getSelectedItem();
+		} else {
+			customer = "";
+		}
 		startDate = projectView.getNewStartDate();
 		endDate = projectView.getNewEndDate();
         today = new java.sql.Date(System.currentTimeMillis());
@@ -162,6 +167,11 @@ public class ProjectController implements IController {
 			active = false;
 		}
 		customerID = projectView.getClientID();
+		
+		if (customer.equals("")) {
+			projectView.showErrorMessage(projectView.getLblErrorProject(), "Kein Kunde gewählt!", 5000);
+			return;
+		}
 		
 		if (projectName.length() > 255) {
 			projectView.showErrorMessage(projectView.getLblErrorProject(), "Projektname darf maximal 255 Zeichen lang sein!", 5000);

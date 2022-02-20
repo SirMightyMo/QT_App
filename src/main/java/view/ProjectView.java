@@ -55,8 +55,8 @@ public class ProjectView implements IView {
 	private TableRowSorter<TableModel> sorter;
 	private JComboBox<String> comboBoxProject = new JComboBox<String>();
 	private JComboBox<String> comboBoxClient = new JComboBox<String>();
+	private JComboBox<String> comboBoxClientNewP;
 	private JTextField textFieldProjectName;
-	private JTextField textFieldClient;
 	private JTextField textFieldStartDate;
 	private JTextField textFieldEndDate;
 	private JTextField textFieldFrom;
@@ -377,16 +377,16 @@ public class ProjectView implements IView {
 		sl_panel_input_form.putConstraint(SpringLayout.EAST, lblErrorProject, 100, SpringLayout.EAST, panel_input_form);
 		panel_input_form.add(lblErrorProject);
 		
-		textFieldClient = new JTextField();
-		textFieldClient.setName("textFieldClient");
-		sl_panel_input_form.putConstraint(SpringLayout.EAST, lblNewLabel_19, -24, SpringLayout.WEST, textFieldClient);
-		sl_panel_input_form.putConstraint(SpringLayout.NORTH, textFieldClient, 14, SpringLayout.SOUTH,
+		comboBoxClientNewP = new JComboBox<String>();
+		comboBoxClientNewP.setName("textFieldClient");
+		sl_panel_input_form.putConstraint(SpringLayout.EAST, lblNewLabel_19, -24, SpringLayout.WEST, comboBoxClientNewP);
+		sl_panel_input_form.putConstraint(SpringLayout.NORTH, comboBoxClientNewP, 14, SpringLayout.SOUTH,
 				textFieldProjectName);
-		sl_panel_input_form.putConstraint(SpringLayout.WEST, textFieldClient, 144, SpringLayout.WEST, panel_input_form);
-		sl_panel_input_form.putConstraint(SpringLayout.EAST, textFieldClient, 0, SpringLayout.EAST,
+		sl_panel_input_form.putConstraint(SpringLayout.WEST, comboBoxClientNewP, 144, SpringLayout.WEST, panel_input_form);
+		sl_panel_input_form.putConstraint(SpringLayout.EAST, comboBoxClientNewP, 0, SpringLayout.EAST,
 				textFieldProjectName);
-		panel_input_form.add(textFieldClient);
-		textFieldClient.setColumns(10);
+		panel_input_form.add(comboBoxClientNewP);
+
 		// start date input field
 		textFieldStartDate = new JTextField(20);
 		textFieldStartDate.setName("textFieldStartDate");
@@ -1075,6 +1075,8 @@ public class ProjectView implements IView {
 				//System.out.println(clientNames);
 			});
 			this.comboBoxClient.setModel(new DefaultComboBoxModel(clientNames.toArray()));
+			clientNames.remove(0); // Remove empty entry for New Project Client Dropdown
+			this.comboBoxClientNewP.setModel(new DefaultComboBoxModel(clientNames.toArray()));
 			System.out.println("Client loaded into Project View");
 		}
 	}
@@ -1144,6 +1146,10 @@ public class ProjectView implements IView {
 		this.comboBoxClient = comboBox;
 	}
 
+	public JComboBox<String> getComboBoxClientNewP() {
+		return comboBoxClientNewP;
+	}
+	
 	public TableRowSorter<TableModel> getSorter() {
 		return sorter;
 	}

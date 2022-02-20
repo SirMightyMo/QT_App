@@ -46,6 +46,9 @@ public class TimerHourController implements IController {
 
 		actionLoadProjects();
 		actionLoadServices();
+		if (timerModel.getProjectList().isEmpty() || timerModel.getServiceList().isEmpty()) {
+			deactivateTimeTracker();
+		}
 	}
 
 	// Getter/Setter
@@ -328,7 +331,7 @@ public class TimerHourController implements IController {
 			// if (date.matches("")) {
 			//	this.hourEntry = new HourEntry(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE));				
 			//}
-			if (validateDate(date)) {
+			if (Regex.validate(date, Regex.VALID_DATE_FORMAT_DD_MM_YYYY)) {
 				String[] dateParts;
 				String dateString;
 				if (date.contains(".")) {
@@ -537,9 +540,8 @@ public class TimerHourController implements IController {
 				// set selected item to latest project
 				this.timerView.getProjectDropdown().setSelectedIndex(projectListIndex);
 			}
-			// check if user has projects; if not, deactivate time tracking
-			ArrayList<Object> userProjects = db.query("SELECT project.p_id FROM project LEFT JOIN assign_project_user ON project.p_id = assign_project_user.p_id WHERE u_id = " + User.getUser().getU_id() + ";");
-			if (userProjects.isEmpty()) {
+			// check if user has projects and service; if not, deactivate time tracking
+			if (timerModel.getProjectList().isEmpty() || timerModel.getServiceList().isEmpty()) {
 				deactivateTimeTracker();
 			}
 		}
@@ -585,9 +587,8 @@ public class TimerHourController implements IController {
 				// set selected item to latest project
 				this.timerView.getServiceDropdown().setSelectedIndex(serviceListIndex);
 			}
-			// check if there are services; if not, deactivate time tracking
-			ArrayList<Object> services = db.query("SELECT s_id FROM service;");
-			if (services.isEmpty()) {
+			// check if there are projects & services; if not, deactivate time tracking
+			if (timerModel.getProjectList().isEmpty() || timerModel.getServiceList().isEmpty()) {
 				deactivateTimeTracker();
 			}
 		}
@@ -613,7 +614,7 @@ public class TimerHourController implements IController {
 		timerView.getBtnStop().setEnabled(false);
 
 		timerView.getLblErrorMessage().setVisible(true);
-		timerView.getLblErrorMessage().setText("Please create a new project to track time for!");
+		timerView.getLblErrorMessage().setText("Erstellen/Wählen Sie zuerst Projekt und Leistung.");
 		
 	}
 	
@@ -705,14 +706,14 @@ public class TimerHourController implements IController {
 			actionCalculateDurationView();
 		}
 		if (e.getDocument() == timerView.getTxtDateInput().getDocument() && !dateAutomaticallySet) {
-			if (validateDate(timerView.getTxtDateInput().getText())) {
+			timerView.getTxtDateInput().setBackground(new Color(70, 73, 75));
+			if (!Regex.validate(timerView.getTxtDateInput().getText(), Regex.VALID_DATE_FORMAT_DD_MM_YYYY)) {
+				timerView.getTxtDateInput().setBackground(new Color(175,25,65));
+				timerView.getLblErrorMessage().setText("Falsches Datumsformat!");
+			} else {
 				String[] dateParts = timerView.getTxtDateInput().getText().split("\\.");			
 				String date = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
 				createHourEntry(date);
-				timerView.getTxtDateInput().setBackground(new Color(70, 73, 75));
-			} else {
-				timerView.getTxtDateInput().setBackground(new Color(175,25,65));
-				timerView.showErrorMessage("Invalid date format!", 3000);
 			}
 		}
 	}

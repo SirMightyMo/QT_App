@@ -151,8 +151,9 @@ public class NewProjectController implements IController {
 		Date startDate = getStartDate();
 		Date endDate = getEndDate();
 		boolean startBeforeEnd = (startDate.before(endDate) || startDate.equals(endDate));
+		int clientCount = newProjectView.getDropDownClient().getItemCount();
 		
-		if (!name.equals("") && !start.equals("...") && !end.equals("...") && startBeforeEnd) {
+		if (!name.equals("") && !start.equals("...") && !end.equals("...") && startBeforeEnd && clientCount > 0) {
 			newProjectView.getTextFieldProjectname().setBackground(new Color(70, 73, 75));
 			newProjectView.getTxtStartTime().setBackground(new Color(70, 73, 75));
 			newProjectView.getTxtEndTime().setBackground(new Color(70, 73, 75));

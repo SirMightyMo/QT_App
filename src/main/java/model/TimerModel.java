@@ -16,9 +16,9 @@ public class TimerModel extends Observable implements IModel {
 	private int timerMinutes;
 	private int timerHours;
 	private Timer taskTimer;
-	private ArrayList<ArrayList<Object>> projectList;
+	private ArrayList<ArrayList<Object>> projectList = new ArrayList<>();
 	private boolean projectSet;
-	private ArrayList<ArrayList<Object>> serviceList;
+	private ArrayList<ArrayList<Object>> serviceList = new ArrayList<>();
 	private boolean serviceSet;
 	private DatabaseController db = DatabaseController.getInstance();
 

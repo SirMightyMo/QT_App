@@ -121,6 +121,7 @@ public final class LoginView extends WindowSuperclass implements IView {
 		panel_2.add(errorMessage);
 		this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
 		this.pack();
+		this.setResizable(false);
 		this.setVisible(true);
 	}
 
