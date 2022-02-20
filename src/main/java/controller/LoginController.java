@@ -30,6 +30,7 @@ public final class LoginController extends Hashing implements IController {
 	private void init() {
 		view.getLoginButton().addActionListener(e -> this.securityCheck());
 		view.getRegisterButton().addActionListener(e -> this.registration());
+		view.getLostPwButton().addActionListener(e -> this.lostPw());
 	}
 
 	/**
@@ -96,7 +97,13 @@ public final class LoginController extends Hashing implements IController {
 
 	private void registration() {
 		System.out.println("Sie werden weitergeleitet");
-		RegistrationController r = new RegistrationController();
+		new RegistrationController();
+		this.view.dispose();
+	}
+	
+	private void lostPw() {
+		System.out.println("Passwort wiederherstellung eingeleitet");
+		new LostPwController();
 		this.view.dispose();
 	}
 
