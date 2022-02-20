@@ -1,5 +1,12 @@
 package main.java.model;
 
+/**
+ * This class stores information about the user neded 
+ * in different classes.
+ * @author Leander
+ *
+ */
+
 public class User implements IModel {
 
 	private int u_id;
@@ -7,6 +14,19 @@ public class User implements IModel {
 	private String email;
 	private static User user; // hold itself
 
+	/**
+	 * Instanciates a User with the given information.<br>
+	 * (Should be handed with successfull login).<br>
+	 * Stores the instanciated user in a static Variable,
+	 * to make it accessable from all classes. <br>
+	 * No sensitive data is stored, but information about 
+	 * u_id makes database information available since it 
+	 * is one criteria to read data.
+	 * 
+	 * @param u_id Unique identifier of user in database.
+	 * @param name Username
+	 * @param email E-Mail
+	 */
 	public User(int u_id, String name, String email) {
 		this.u_id = u_id;
 		this.name = name;

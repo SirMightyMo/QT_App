@@ -50,29 +50,33 @@ class IntegrationTest {
 		window.cleanUp();
 	}
 
+	/**
+	 * Main test method that calls all test methods in a certain order.
+	 * @author kevin
+	 */
 	@Test
 	void integrationTest() {
-		testAllElementsVisible_true(); // Test if all elements are visible
-		testTimer_scenario1();
-		testTimer_scenario2();
+		testAllElementsVisible(); // Test if all elements are visible
+		testTimer_StartStopSave();
+		testTimer_StartStopReset();
 		testDashboard_CreateProjectFromDashboard();
 		testProjects_CreateProjectFromProjects();
 		testProjects_CreateNewClient_ValidInputs();
 		testProjects_CreateNewClient_InvalidZip();
 		testProjects_CreateNewService_ValidInputs();
-		testProjects_CreateNewService_InvalidInputs();
+		testProjects_CreateNewClient_InvalidZip();
 	}
 	
 	/**
 	 * Following steps happen in this scenario:<br>
-	 * 1 Enter a service name (too long)<br>
+	 * 1 Enter a service name<br>
 	 * 2 Enter invalid internal rate<br>
 	 * 3 Enter external rate<br>
 	 * 4 Save<br>
 	 * 5 Enter valid internal rate<br>
 	 * @author kevin
 	 */
-	void testProjects_CreateNewService_InvalidInputs() {
+	void testProjects_CreateNewService_InvalidInternalRate() {
 		window.button("btnMenuProjects").click();
 		window.tabbedPane().selectTab(3);
 		window.textBox("textFieldNewService").enterText("Optimierung");
@@ -224,7 +228,7 @@ class IntegrationTest {
 	 * 
 	 * @author kevin
 	 */
-	void testTimer_scenario2() {
+	void testTimer_StartStopReset() {
 		window.button("btnMenuDashboard").click();
 		window.comboBox("serviceDropdown").click().selectItem("Frontend Design");
 		window.comboBox("comboBoxProject").click().selectItem("Projekt 2");
@@ -245,7 +249,7 @@ class IntegrationTest {
 	 * 
 	 * @author kevin
 	 */
-	void testTimer_scenario1() {
+	void testTimer_StartStopSave() {
 		window.button("btnMenuDashboard").click();
 		window.comboBox("comboBoxProject").click().selectItem("Projekt 1");
 		window.comboBox("serviceDropdown").click().selectItem("Backend Stuff");
@@ -261,7 +265,7 @@ class IntegrationTest {
 	 * 
 	 * @author kevin
 	 */
-	void testAllElementsVisible_true() {
+	void testAllElementsVisible() {
 		//////////////////////////////////////////////////////
 		///////////////////// Dashboard /////////////////////
 		////////////////////////////////////////////////////
@@ -468,5 +472,4 @@ class IntegrationTest {
 		window.button("btnNewButton").requireVisible();
 
 	}
-
 }

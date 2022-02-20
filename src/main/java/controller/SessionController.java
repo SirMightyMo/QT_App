@@ -46,6 +46,15 @@ public class SessionController implements IController {
 	private CustomTableModel tableData;
 	private DatabaseController db = DatabaseController.getInstance();
 
+	
+	/**
+	 * Creates a new CustomTableModel for hour entries and sets header titles.
+     * Calls method to query needed data and sets renderer properties for table.
+     * It also calls the methods to fill dropdowns with information.
+	 * 
+     * @author Leander
+     * 
+     */
 	// Constructor
 	@SuppressWarnings("deprecation")
 	public SessionController() {
@@ -74,8 +83,17 @@ public class SessionController implements IController {
 		actionLoadClients();
 		actionLoadProjectsNewEntry();
 		actionLoadServicesNewEntry();
+		sumDuration();
 	}
 
+	/**
+	 * Queries needed data for displaying hour entry information.
+	 * Formats everything to Strings except start and end times.
+	 * This information is stored as actual "Date" object, for 
+	 * making it possible to filter for time periods.
+	 * 
+	 * @author Leander
+	 */
 	public void queryData() {
 		ArrayList<Object> result = db.query(
 				"SELECT hour_entry.h_id, entry_date, project.name, customer.company, service.name, hour_entry.description, start_time, end_time, time_minutes, pause_minutes "
@@ -152,6 +170,19 @@ public class SessionController implements IController {
 		return sessionView;
 	}
 
+	/**
+	 * Reads data given by user to filter with.
+	 * If filters are filled out, this method adds them to a List of Row Filters.
+	 * It then applies these filters with an AND operation on the table data.
+	 * <p>
+	 * <b>Filters:</b><br>
+	 * Projectname<br>
+	 * Client<br>
+	 * Service<br>
+	 * From (Date)<br>
+	 * To (Date)<br>
+	 * @author Leander
+	 */
 	public void actionFilterEntries() {
 		String projectFilter = "";
 		String clientFilter = "";
@@ -220,6 +251,19 @@ public class SessionController implements IController {
 		return tableData;
 	}
 
+	/**
+	 * Sets view to read userinput data from depending on given argument.
+	 * Reads userinput from view, validates it and then updates or inserts data
+	 * to database (also depending on boolean argument).
+	 * <p>
+	 * If this method is called through an action fired by an "edit view", it updates
+	 * the data in the database (argument = true). <br>
+	 * If this method is called through an action fired by the "new entry" view 
+	 * (normal tabbed pane) it inserts new data (new entry is being created).
+	 * @param editingExistentEntry Set 'true' if existent hour entry data should be
+	 * edited and not being newly created.
+	 * @author Leander
+	 */
 	public void actionSaveEntry(boolean editingExistentEntry) {
 		SessionView view = null;
 		if (editingExistentEntry) {
@@ -332,6 +376,15 @@ public class SessionController implements IController {
 		
 	}
 
+	/**
+	 * Creates a LocalDateTime object from Date object for day and a String 
+	 * representing a time in format HH:mm
+	 * 
+	 * @param date Date object containing the wanted day.
+	 * @param time String in HH:mm format.
+	 * @return Parsed LocalDateTime
+	 * @author Leander
+	 */
 	private LocalDateTime createLocalDateTime(java.sql.Date date, String time) {
 		time = time.replace(".", ":");
 		LocalDate dateFrom = date.toLocalDate();
@@ -340,15 +393,35 @@ public class SessionController implements IController {
 		return start;
 	}
 	
+	/**
+	 * Creates a Date object from a given String in format dd-MM-yyyy.
+	 * @param dd_MM_yyyy String in format dd-MM-yyyy
+	 * @return Date object
+	 * @author Leander
+	 */
 	private java.sql.Date createDateFromString(String dd_MM_yyyy) {
 		String[] splitDate = dd_MM_yyyy.replace(".", "-").split("-");
  		return java.sql.Date.valueOf(splitDate[2] + "-" + splitDate[1] + "-" + splitDate[0]);
 	}
 	
+	/**
+	 * Calculates the minutes between two given dates (LocalDateTime) 
+	 * rounded to minutes.
+	 * @param start LocalDateTime of start
+	 * @param end LocalDateTime of end
+	 * @return Integer representing the amount of minutes between dates.
+	 * @author Leander
+	 */
 	private int calculateMinutesBetweenLocalDateTimes(LocalDateTime start, LocalDateTime end) {
 		return Math.round(Duration.between(start, end).getSeconds() / 60);
 	}
 	
+	/**
+	 * Calculates minutes from a String in format HH:mm.
+	 * @param pause String in time format HH:mm
+	 * @return Integer representing the amount of minutes.
+	 * @author Leander
+	 */
 	private int calculateMinutesFromHourFormat(String pause) {
 		if (Regex.validate(pause, Regex.VALID_TIME_FORMAT_HH_MM)) {
 			String[] split = pause.split(":");
@@ -373,18 +446,15 @@ public class SessionController implements IController {
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_SEARCH)) {
 			actionFilterEntries();
+			sumDuration();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_RESET)) {
 			actionLoadProjects();
 			actionLoadServices();
 			actionLoadClients();
 			queryData();
-			sessionView.sortTableDescendingDate();
-			sessionView.getTextFieldFrom().setText("bitte Datum wählen...");
-			sessionView.getTextFieldTo().setText("bitte Datum wählen...");
-			sessionView.getLblErrorMessageNewEntry().setText("");
-			sessionView.getBtnDeleteEntry().setVisible(false);
-    		sessionView.getBtnEditEntry().setVisible(false);
+			sumDuration();
+			resetInputFieldsOverview();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_SET_PROJECT)) {
 			this.sessionModel.setProjectSet(true);
@@ -396,64 +466,10 @@ public class SessionController implements IController {
 			this.sessionModel.setServiceSet(true);
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_EDIT_PROJECT)) {
-			int row = sessionView.getHourEntryTable().getSelectedRow();
-			if (row > -1) {			
-				DateFormat df = new SimpleDateFormat("HH:mm");
-				
-				// Read values from TableModel
-				editedSessionID = Integer.parseInt((String) sessionView.getHourEntryTable().getValueAt(row, 0));
-				String project = (String) sessionView.getHourEntryTable().getValueAt(row, 2);
-				String service = (String) sessionView.getHourEntryTable().getValueAt(row, 4);
-				String date = (String) sessionView.getHourEntryTable().getValueAt(row, 1);
-				String from = df.format((java.util.Date) sessionView.getHourEntryTable().getValueAt(row, 6));
-				String to = df.format((java.util.Date) sessionView.getHourEntryTable().getValueAt(row, 7));
-				String pause = ((String) sessionView.getHourEntryTable().getValueAt(row, 9)).split(" ")[0];
-				String comment = (String) sessionView.getHourEntryTable().getValueAt(row, 5);
-				
-				// Instanciate new view and new model, but keep this controller
-				editView = new SessionView(this);
-				editModel = new SessionModel();
-				editModel.addObserver(editView);
-				editModel.retrieveProjectsNewEntry();
-				editModel.retrieveServicesNewEntry();
-				
-				// Pre-fillout input fields
-				editView.getDropDownProjectName().setSelectedItem(project);
-				editView.getDropDownService().setSelectedItem(service);
-				editView.getTextFieldDate().setText(date);
-				editView.getTextFieldStart().setText(from);
-				editView.getTextFieldEnd().setText(to);
-				editView.getTextFieldPause().setText(pause);
-				editView.getTextFieldComment().setText(comment);
-							
-				// Change button-behaviour and texts
-				editView.getBtnSaveEntry().setActionCommand(StaticActions.ACTION_SESSION_EDIT_SAVE);
-				editView.getBtnResetEntry().setText("Abbrechen");
-				editView.getBtnResetEntry().setActionCommand(StaticActions.ACTION_SESSION_EDIT_ABORT);
-				
-				// Setup new JDialog
-				frame = new JDialog(new JFrame(), "Eintrag bearbeiten", true);
-				frame.getContentPane().add(editView.getPanelInputForm()); // Just load Input-Panel
-				frame.pack();
-				frame.setLocationRelativeTo(null);
-				frame.setResizable(false);
-				frame.setVisible(true);				
-			}			
+			openEditDialog();			
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_DELETE_PROJECT)) {
-			int row = sessionView.getHourEntryTable().getSelectedRow();
-			if (row > -1) {
-				int sessionID = Integer.parseInt((String) sessionView.getHourEntryTable().getValueAt(row, 0));
-				int input = JOptionPane.showConfirmDialog(null, 
-		                "Sind Sie sicher, dass Sie den ausgewählten Eintrag löschen möchten?", "Löschen bestätigen", 
-		                JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
-		        // -1=abortX, 0=ok, 2=cancel
-		        
-				if (input == 0) {
-					db.run("DELETE FROM hour_entry WHERE h_id = " + sessionID + " AND u_id = " + User.getUser().getU_id() + ";");
-					queryData();
-				}
-			}
+			deleteSelectedMethod();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_NEW_SAVE)) {
 			actionSaveEntry(false);
@@ -461,12 +477,7 @@ public class SessionController implements IController {
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_NEW_RESET)) {
 			actionLoadProjectsNewEntry();
 			actionLoadServicesNewEntry();
-			sessionView.getTextFieldDate().setText("bitte Datum wählen...");
-			sessionView.getTextFieldStart().setText("");
-			sessionView.getTextFieldEnd().setText("");
-			sessionView.getTextFieldPause().setText("");
-			sessionView.getTextFieldComment().setText("");
-			sessionView.getLblErrorMessageNewEntry().setText("");
+			resetFieldsNewEntry();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_NEW_SET_PROJECT)) {
 			this.sessionModel.setProjectNewEntrySet(true);
@@ -482,6 +493,132 @@ public class SessionController implements IController {
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_EDIT_ABORT)) {
 			this.frame.dispose();
 		}
+	}
+
+	/**
+	 * Gets all visible duration values from column "Dauer" 
+	 * and calculates a sum. <br>
+	 * This sum is then displayed under the JTable.
+	 */
+	private void sumDuration() {
+		System.out.println(Integer.parseInt("00"));
+		int total = 0;
+		for(int i = 0; i < sessionView.getHourEntryTable().getRowCount(); i++){
+			String[] values = ((String) sessionView.getHourEntryTable().getValueAt(i, 8)).replace(" h", "").split(":");
+			int hours = Integer.parseInt(values[0]);
+	        int minutes = Integer.parseInt(values[1]);
+	        total += hours*60;
+	        total += minutes;
+	    }
+		String durationSum = String.format("%1$2s", total/60).replace(' ', '0') + ":" + String.format("%1$2s", total%60).replace(' ', '0') + " Std.";
+		sessionView.getLblDurationSum().setText("Summe Arbeitszeit: " + durationSum);
+	}
+	
+	/**
+	 * Resets all fields in the "new entry" tab to their defaults.
+	 * @author Leander
+	 */
+	private void resetFieldsNewEntry() {
+		sessionView.getTextFieldDate().setText("bitte Datum wählen...");
+		sessionView.getTextFieldStart().setText("");
+		sessionView.getTextFieldEnd().setText("");
+		sessionView.getTextFieldPause().setText("");
+		sessionView.getTextFieldComment().setText("");
+		sessionView.getLblErrorMessageNewEntry().setText("");
+	}
+
+	/**
+	 * Reads information from selected table row and asks for confirmation.
+	 * When confirmed, this method deletes the selected hour entry from 
+	 * database and re-queries data.
+	 * 
+	 * @author Leander
+	 */
+	private void deleteSelectedMethod() {
+		int row = sessionView.getHourEntryTable().getSelectedRow();
+		if (row > -1) {
+			int sessionID = Integer.parseInt((String) sessionView.getHourEntryTable().getValueAt(row, 0));
+			int input = JOptionPane.showConfirmDialog(null, 
+		            "Sind Sie sicher, dass Sie den ausgewählten Eintrag löschen möchten?", "Löschen bestätigen", 
+		            JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+		    // -1=abortX, 0=ok, 2=cancel
+		    
+			if (input == 0) {
+				db.run("DELETE FROM hour_entry WHERE h_id = " + sessionID + " AND u_id = " + User.getUser().getU_id() + ";");
+				queryData();
+			}
+		}
+	}
+
+	/**
+	 * Opens edit dialog for selected hour entry if a table row is selected.
+	 * <p>
+	 * Reads data from the selected table row and places it intro 
+	 * the user input fields (pre fillout).<br>
+	 * <p>
+	 * The view is generated from the input form panel defined in the class
+	 * 'SessionView'.<br>
+	 * To work slightly different, this method changes the fired actions and
+	 * the appearance of the buttons in this view.
+	 * @author Leander
+	 */
+	private void openEditDialog() {
+		int row = sessionView.getHourEntryTable().getSelectedRow();
+		if (row > -1) {			
+			DateFormat df = new SimpleDateFormat("HH:mm");
+			
+			// Read values from TableModel
+			editedSessionID = Integer.parseInt((String) sessionView.getHourEntryTable().getValueAt(row, 0));
+			String project = (String) sessionView.getHourEntryTable().getValueAt(row, 2);
+			String service = (String) sessionView.getHourEntryTable().getValueAt(row, 4);
+			String date = (String) sessionView.getHourEntryTable().getValueAt(row, 1);
+			String from = df.format((java.util.Date) sessionView.getHourEntryTable().getValueAt(row, 6));
+			String to = df.format((java.util.Date) sessionView.getHourEntryTable().getValueAt(row, 7));
+			String pause = ((String) sessionView.getHourEntryTable().getValueAt(row, 9)).split(" ")[0];
+			String comment = (String) sessionView.getHourEntryTable().getValueAt(row, 5);
+			
+			// Instanciate new view and new model, but keep this controller
+			editView = new SessionView(this);
+			editModel = new SessionModel();
+			editModel.addObserver(editView);
+			editModel.retrieveProjectsNewEntry();
+			editModel.retrieveServicesNewEntry();
+			
+			// Pre-fillout input fields
+			editView.getDropDownProjectName().setSelectedItem(project);
+			editView.getDropDownService().setSelectedItem(service);
+			editView.getTextFieldDate().setText(date);
+			editView.getTextFieldStart().setText(from);
+			editView.getTextFieldEnd().setText(to);
+			editView.getTextFieldPause().setText(pause);
+			editView.getTextFieldComment().setText(comment);
+						
+			// Change button-behaviour and texts
+			editView.getBtnSaveEntry().setActionCommand(StaticActions.ACTION_SESSION_EDIT_SAVE);
+			editView.getBtnResetEntry().setText("Abbrechen");
+			editView.getBtnResetEntry().setActionCommand(StaticActions.ACTION_SESSION_EDIT_ABORT);
+			
+			// Setup new JDialog
+			frame = new JDialog(new JFrame(), "Eintrag bearbeiten", true);
+			frame.getContentPane().add(editView.getPanelInputForm()); // Just load Input-Panel
+			frame.pack();
+			frame.setLocationRelativeTo(null);
+			frame.setResizable(false);
+			frame.setVisible(true);				
+		}
+	}
+
+	/**
+	 * Resets als input field to their default values.
+	 * @author Leander
+	 */
+	private void resetInputFieldsOverview() {
+		sessionView.sortTableDescendingDate();
+		sessionView.getTextFieldFrom().setText("bitte Datum wählen...");
+		sessionView.getTextFieldTo().setText("bitte Datum wählen...");
+		sessionView.getLblErrorMessageNewEntry().setText("");
+		sessionView.getBtnDeleteEntry().setVisible(false);
+		sessionView.getBtnEditEntry().setVisible(false);
 	}
 
 	@Override

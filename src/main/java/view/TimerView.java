@@ -51,9 +51,6 @@ public class TimerView implements IView {
 	private JTextField txtDateInput;
 	private JButton btnDatePicker;
 
-	/**
-	 * Create Frame
-	 */
 	public TimerView(TimerHourController timerHourController) {
 		//setFont(new Font("Open Sans ExtraBold", Font.PLAIN, 12));
 		contentPanel = new JPanel();
@@ -471,6 +468,11 @@ public class TimerView implements IView {
 		this.textFieldCommentTimerView = textFieldCommentTimerView;
 	}
 
+	/**
+	 * Shows an error message (given String) for a given amount of time.
+	 * @param message String representing the message.
+	 * @param duration Duration in milliseconds.
+	 */
 	public void showErrorMessage(String message, long duration) {
 		lblErrorMessage.setText(message);
 		if (!isErrorVisible()) {

@@ -64,7 +64,18 @@ public class SessionView implements IView {
 	private JButton btnResetEntry;
 	private JButton btnEditEntry;
 	private JButton btnDeleteEntry;
+	private JLabel lblDurationSum;
 
+	/**
+	 * Extends DefaultTableCellRenderer for creating a custom 
+	 * CellRenderer that formats Date Objects to better readable 
+	 * Strings. <br>
+	 * It implements a method that checks if a given cell value 
+	 * is an instance of 'java.util.Date'. If so, it formats 
+	 * the given information to 'dd.MM.yyyy HH:mm Uhr'
+	 * @author Leander
+	 *
+	 */
 	public class DateCellRenderer extends DefaultTableCellRenderer{
 
 		private static final long serialVersionUID = 1L;
@@ -559,6 +570,15 @@ public class SessionView implements IView {
 		comboBoxClient.setActionCommand(StaticActions.ACTION_SESSION_OVERVIEW_SET_CLIENT);
 		panelHourEntryOverview.add(comboBoxClient);
 		
+		lblDurationSum = new JLabel("");
+		lblDurationSum.setPreferredSize(new Dimension(250, 25));
+		lblDurationSum.setForeground(Color.ORANGE);
+		lblDurationSum.setHorizontalAlignment(SwingConstants.RIGHT);
+		sl_panelHourEntryOverview.putConstraint(SpringLayout.NORTH, lblDurationSum, 5, SpringLayout.SOUTH, scrollPaneTable);
+		sl_panelHourEntryOverview.putConstraint(SpringLayout.SOUTH, lblDurationSum, -10, SpringLayout.SOUTH, panelHourEntryOverview);
+		sl_panelHourEntryOverview.putConstraint(SpringLayout.EAST, lblDurationSum, 0, SpringLayout.EAST, scrollPaneTable);
+		panelHourEntryOverview.add(lblDurationSum);
+		
 		btnSetStartDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				textFieldFrom.setText(new DatePicker(popupFrame).setPickedDate().replace("-", "."));
@@ -731,6 +751,14 @@ public class SessionView implements IView {
 		return btnResetEntry;
 	}
 
+	public JLabel getLblDurationSum() {
+		return lblDurationSum;
+	}
+
+	/**
+	 * Sets new ComboBox-Models (updates dropdowns), when observed model information
+	 * changes.
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 

@@ -17,6 +17,11 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import main.java.controller.LayoutManager;
 import main.java.view.LoginView;
 
+/**
+ * Tests for LoginView
+ * @author kevin
+ *
+ */
 class LoginViewGUITest {
 
 	private FrameFixture window;
@@ -42,7 +47,7 @@ class LoginViewGUITest {
 	}
 	
 	@Test
-	void testLoginElements_Visible() {
+	void testLoginElements_AllElementsVisible() {
 		window.label("usernameLabel").requireVisible();
 		window.label("passwordLabel").requireVisible();
 		window.textBox("usernameInputField").requireVisible();
@@ -52,20 +57,20 @@ class LoginViewGUITest {
 	}
 	
 	@Test
-	void testLoginElements_Clickable() {
+	void testLoginElements_ButtonsClickable() {
 		window.button("loginButton").click();
 		window.button("registerButton").click();
 	}
 	
 	@Test
-	void testLogin_ValidCredentials() {
+	void testLogin_EnterValidCredentials() {
 		window.textBox("usernameInputField").enterText("Bob");
 		window.textBox("passwordInputField").enterText("abc");
 		window.button("loginButton").click();
 	}
 	
 	@Test
-	void testLogin_InvalidCredentials() throws InterruptedException {
+	void testLogin_EnterInvalidCredentials() throws InterruptedException {
 		window.textBox("usernameInputField").enterText("Bobo");
 		window.textBox("passwordInputField").enterText("abcdef");
 		window.button("loginButton").click();
@@ -73,14 +78,14 @@ class LoginViewGUITest {
 	}
 	
 	@Test
-	void testLoginElements_CorrectLabeling() {
+	void testLoginElements_CorrectLabeling_True() {
 		assertTrue(window.label("usernameLabel").text().equals("Benutzername:"));
 		assertTrue(window.label("passwordLabel").text().equals("Passwort:"));
 	}
 	
-//	@Test
-//	void testLoginElements_WrongLabeling() {
-//		assertFalse(window.label("usernameLabel").text().equals("User"));
-//		assertFalse(window.label("passwordLabel").text().equals("Pass"));
-//	}
+	@Test
+	void testLoginElements_WrongLabeling_True() {
+		assertFalse(window.label("usernameLabel").text().equals("User"));
+		assertFalse(window.label("passwordLabel").text().equals("Pass"));
+	}
 }

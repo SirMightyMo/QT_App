@@ -20,6 +20,15 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import main.java.model.IModel;
 import main.java.view.IView;
 
+/**
+ * Is reponsible for setting up all needed look and feel properties,
+ * loading fonts, images etc. <br>
+ * Implements methods for getting fonts or images in other classes when needed.
+ *  
+ * @author Leander
+ *
+ */
+
 public class LayoutManager implements IController {
 	Font dinNeuzeitGrotesk_regular;
 
@@ -47,12 +56,21 @@ public class LayoutManager implements IController {
 	public static final String IMAGE_TIMELINE = "timeline-dummy.png";
 	public static final String IMAGE_PRODUCTIVITY = "productivity-dummy.png";
 
+	/** 
+	 * Calls methods responsible for setting up general look and feel.
+	 * @author Leander
+	 */
 	public LayoutManager() {
 		loadFonts();
 		loadIcons();
 		setupUI();
 	}
 
+	/**
+	 * Calls FlatLaf look and feel method, changes appearance of some components.
+	 * Sets font for every component defined in 'String[] components'. 
+	 * @author Leander
+	 */
 	private void setupUI() {
 		FlatDarkLaf.setup();
 		UIManager.put("Button.arc", 999);
@@ -68,6 +86,12 @@ public class LayoutManager implements IController {
 		//System.out.println(UIManager.getColor("TextField.background"));
 	}
 	
+	/**
+	 * Loads all Icons/Images based on defined filepaths in class.
+	 * Puts Icons to a Hashmap to make them accessable via method.
+	 * @see LayoutManager#getImageIcon
+	 * @author Leander
+	 */
 	private void loadIcons() {
 		for (int i = 0; i < iconPaths.length; i++) {
 			try {
@@ -80,6 +104,16 @@ public class LayoutManager implements IController {
 		}
 	}
 	
+	/**
+	 * Gets, resizes and returns an image contained in the HashMap.
+	 * 
+	 * @param icon Static final String as defined in this class.
+	 * @param width New width of image in pixels.
+	 * @param height New height of image in pixels.
+	 * @see main.java.controller.LayoutManager
+	 * @return ImageIcon resizedImage
+	 * @author Leander
+	 */
 	public static ImageIcon getImageIcon(String icon, int width, int height) {
 		Image result = null;
 		for (String key : icons.keySet()) {
@@ -92,6 +126,14 @@ public class LayoutManager implements IController {
 		return new ImageIcon(resizedImg);
 	}
 	
+	/**
+	 * Gets and returns an image contained in the HashMap.
+	 * 
+	 * @param icon Static final String as defined in this class.
+	 * @see main.java.controller.LayoutManager
+	 * @return The loaded Image
+	 * @author Leander
+	 */
 	public static ImageIcon getImageIcon(String icon) {
 		Image result = null;
 		for (String key : icons.keySet()) {
@@ -103,6 +145,12 @@ public class LayoutManager implements IController {
 		return new ImageIcon(result);
 	}	
 	
+	/**
+	 * Loads all fonts based on defined filepaths in class.
+	 * Puts fonts to a Hashmap to make them accessable via method.
+	 * @see LayoutManager#getFont
+	 * @author Leander
+	 */
 	private void loadFonts() {
 		// Load & register font
 		InputStream is = LayoutManager.class
@@ -115,7 +163,15 @@ public class LayoutManager implements IController {
 		}
 	}
 	
-	// Look for font and return
+
+	/**
+	 * Gets and returns a font contained in the HashMap.
+	 * 
+	 * @param font Static final String as defined in this class.
+	 * @see main.java.controller.LayoutManager
+	 * @return The loaded font.
+	 * @author Leander
+	 */
 	public static Font getFont(String font) {
 		Font result = null;
 		for (String key : fonts.keySet()) {

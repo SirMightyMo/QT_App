@@ -1,6 +1,6 @@
 package test.java.model;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +11,11 @@ import main.java.controller.LayoutManager;
 import main.java.model.TimerModel;
 import main.java.model.User;
 
+/**
+ * Tests for TimerModel
+ * @author kevin
+ *
+ */
 class TimerModelTest {
 	
 	TimerModel tm;
@@ -24,7 +29,7 @@ class TimerModelTest {
 	}
 
 	@Test
-	void testTimerToString() {
+	void testTimerToString_Valid_True() {
 		
 		//seconds <10
 		tm.setTimerHours(1);

@@ -6,7 +6,6 @@ import javax.swing.event.DocumentEvent;
 
 import main.java.model.DashboardModel;
 import main.java.model.IModel;
-import main.java.model.User;
 import main.java.view.DashboardView;
 import main.java.view.IView;
 import main.java.view.NewProjectView;

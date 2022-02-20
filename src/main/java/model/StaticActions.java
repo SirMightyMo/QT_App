@@ -1,5 +1,15 @@
 package main.java.model;
 
+/**
+ * Class holds static and final Action-Strings.
+ * These actions are available from all classes 
+ * and should be set as ActionCommand when an action
+ * is needed.<br>
+ * This way it is always clear, which actions already 
+ * have been set or fired and redundance could be 
+ * avoided.
+ */
+
 public class StaticActions implements IModel {
 
 	// Timer actions

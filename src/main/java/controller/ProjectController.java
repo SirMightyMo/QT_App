@@ -27,7 +27,12 @@ public class ProjectController implements IController {
 
 	private DatabaseController db = DatabaseController.getInstance();
 
-	// Constructor
+	/**
+	 * Constructor for ProjectController
+	 * Calls the methods to fill dropdowns with information.
+	 * 
+     * @author Mo
+     */
 	@SuppressWarnings("deprecation")
 	public ProjectController() {
 		
@@ -61,6 +66,13 @@ public class ProjectController implements IController {
 		this.projectModel.retrieveClients();
 	}
 
+	/**
+	 * Reads data given by user to filter the Project View.
+	 * If filters are filled out, this method adds them to a List of Row Filters.
+	 * It then applies these filters with an AND operation on the table data.
+	 * 
+	 * @author Mo
+	 */
 	public void actionSearchProjects() {
 		String projectFilter = "";
 		String clientFilter = "";
@@ -125,7 +137,10 @@ public class ProjectController implements IController {
 	
 
 	/**
-	 * This method saves a new project to the database
+	 * Gets the values from the user input form for a new project
+	 * and saves it to the database. Switches back to tab 1
+	 * 
+	 * @author Mo
 	 */
 	public void actionSaveProject() {
 		String projectName;

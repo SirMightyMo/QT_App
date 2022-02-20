@@ -15,6 +15,13 @@ import main.java.model.User;
 import main.java.view.IView;
 import main.java.view.NewProjectView;
 
+/**
+ * Controlls view and model for small panel on dashboard to
+ * create new projects.
+ * @author Leander
+ *
+ */
+
 public class NewProjectController implements IController {
 
 	private NewProjectModel newProjectModel;
@@ -47,7 +54,9 @@ public class NewProjectController implements IController {
 	}
 	
 	/**
-	 * This method saves a new project to the database
+	 * Reads user input for new project information and writes data to project table 
+	 * as well as to assign_project_user table. 
+	 * @author Leander
 	 */
 	public void actionSaveProject() {
 		String projectName = this.newProjectView.getTextFieldProjectname().getText();

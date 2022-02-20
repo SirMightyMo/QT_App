@@ -65,11 +65,14 @@ public class DashboardProjectListController implements IController {
 		view.getTable().getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 	}
 	
-	/*
-	 * This method queries the project data of the last 15 projects entered in db (descending p_id).
+	/**
+	 * Queries the project data of the last 15 projects entered in db (descending p_id).
 	 * Table 'project' is joined with 'assign_project_user' to query projects assigned to logged in 
 	 * user only. It also joins the table 'customer' to get the company names of the client referenced
 	 * by its c_id.
+	 * Data is then set as tabledata.
+	 * 
+	 * @author Leander
 	 */
 	public void queryData() {
 		ArrayList<Object> result = db.query(

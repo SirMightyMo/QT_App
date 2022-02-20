@@ -222,7 +222,7 @@ public final class RegistrationView extends WindowSuperclass implements IView {
 				passwordConfirmLabel);
 		sl_panelOne.putConstraint(SpringLayout.EAST, passwordConfirmInputField, -10, SpringLayout.EAST, panelOne);
 		passwordConfirmInputField.setPreferredSize(new Dimension(7, 25));
-		passwordConfirmInputField.setName("passwordInputField");
+		passwordConfirmInputField.setName("passwordConfirmInputField");
 		panelOne.add(passwordConfirmInputField);
 
 		panel = new JPanel();

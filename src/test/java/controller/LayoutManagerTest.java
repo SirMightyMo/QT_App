@@ -1,6 +1,7 @@
 package test.java.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -10,8 +11,14 @@ import com.formdev.flatlaf.FlatDarkLaf;
 import main.java.controller.LayoutManager;
 import main.java.model.User;
 
+/**
+ * Unit Tests for LayoutManager
+ * 
+ * @author kevin
+ *
+ */
 class LayoutManagerTest {
-	
+
 	LayoutManager lm;
 
 	@BeforeEach
@@ -24,8 +31,8 @@ class LayoutManagerTest {
 
 	@Test
 	void testGetFont() {
-		assertEquals(LayoutManager.getFont("dinNeuzeitGrotesk_regular").deriveFont(16.0f).toString(),"java.awt.Font[family=DINNeuzeitGrotesk-BoldCond,name=DINNeuzeitGrotesk-BoldCond,style=plain,size=16]");
+		assertEquals(LayoutManager.getFont("dinNeuzeitGrotesk_regular").deriveFont(16.0f).toString(),
+				"java.awt.Font[family=DINNeuzeitGrotesk-BoldCond,name=DINNeuzeitGrotesk-BoldCond,style=plain,size=16]");
 	}
-
 
 }

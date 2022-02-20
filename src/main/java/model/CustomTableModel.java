@@ -7,6 +7,12 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumnModel;
 
+/**
+ * Class for creating custom table models.
+ * @author Leander
+ *
+ */
+
 public class CustomTableModel extends AbstractTableModel implements IModel {
 
 	private static final long serialVersionUID = 1L;

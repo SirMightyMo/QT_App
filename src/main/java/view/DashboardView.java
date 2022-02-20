@@ -1,6 +1,10 @@
 package main.java.view;
 
 import java.awt.Color;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Observable;
 
 import javax.swing.BoxLayout;
@@ -15,7 +19,10 @@ import main.java.controller.LayoutManager;
 import main.java.controller.NewProjectController;
 import main.java.controller.TimerHourController;
 import main.java.model.StaticActions;
+import main.java.model.User;
+
 import javax.swing.JTextPane;
+import javax.swing.SwingConstants;
 
 public class DashboardView implements IView {
 
@@ -199,7 +206,7 @@ public class DashboardView implements IView {
 				+ "Morgen, 10:00 Uhr:\t MA Gespräch \n\n"
 				+ "Morgen, 17:00 Uhr:\t Review \n\n"
 				+ "24.02., 10:00 Uhr:\t Fortbildung \n\n"
-				+ "25.02., 10:00 Uhr:\t Forbildung");
+				+ "25.02., 10:00 Uhr:\t Fortbildung");
 		textPane.setBackground(new Color(31, 32, 33));
 		textPane.setBounds(10, 69, 257, 344);
 		upcomingPanel.add(textPane);
@@ -212,6 +219,18 @@ public class DashboardView implements IView {
 		dashbPanel.add(newprojectPanel);
 		NewProjectView newProjectView = newProjectController.getNewProjectView();
 		newprojectPanel.add(newProjectView.getContentPanel());
+		
+		JLabel lblGreeting = new JLabel("Hallo, " + User.getUser().getName());
+		lblGreeting.setForeground(Color.ORANGE);
+		lblGreeting.setFont(LayoutManager.getFont("dinNeuzeitGrotesk_regular").deriveFont(54.0f));
+		lblGreeting.setBounds(375, 18, 809, 65);
+		dashbPanel.add(lblGreeting);
+		
+		JLabel lblToday = new JLabel("Heute: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
+		lblToday.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblToday.setForeground(Color.ORANGE);
+		lblToday.setBounds(1194, 43, 277, 40);
+		dashbPanel.add(lblToday);
 	}
 
 	public static long getSerialversionuid() {

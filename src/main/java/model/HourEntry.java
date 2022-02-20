@@ -169,6 +169,12 @@ public class HourEntry extends Observable implements IModel {
 		this.comment = comment;
 	}
 
+	/**
+	 * Converts the saved pauseTimeInMinutes to
+	 * a String in format HH:mm.
+	 * @return String in Format HH:mm
+	 * @author Leander
+	 */
 	public String pauseMinutesToFormattedString() {
 		int hours = (int) pauseTimeInMinutes / 60;
 		int minutes = (int) pauseTimeInMinutes % 60;
