@@ -42,6 +42,6 @@ public class StaticActions implements IModel {
 	
 	public static final String ACTION_NPROJECT_SAVE = "action_nproject_save";
 	public static final String ACTION_NPROJECT_RESET = "action_nproject_reset";
-	public static final String ACTION_PROJECT_SET_CLIENT = "action_project_set_client";;
+	public static final String ACTION_PROJECT_SET_CLIENT = "action_project_set_client";
 	
 }

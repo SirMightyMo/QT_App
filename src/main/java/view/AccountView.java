@@ -30,12 +30,12 @@ public class AccountView implements IView {
 
 		accountPanel = new JPanel();
 		accountPanel.setName("dashboardMainPane");
-		accountPanel.setBounds(0, 0, 1490, 1060);
+		accountPanel.setBounds(0, 0, 1490, 960);
 		accountPanel.setBackground(new Color(47,48,52));
 		accountPanel.setLayout(null);
 		
 		JPanel accountPanel1 = new JPanel();
-		accountPanel1.setBounds(10, 87, 1470, 943);
+		accountPanel1.setBounds(10, 87, 1470, 862);
 		accountPanel1.setName("dashboardTimerPane");
 		accountPanel1.setBackground(new Color(31,32,33));
 		accountPanel.add(accountPanel1);
@@ -223,7 +223,7 @@ public class AccountView implements IView {
 		JPanel panel_1_1_1 = new JPanel();
 		panel_1_1_1.setLayout(null);
 		panel_1_1_1.setBackground(new Color(31, 32, 33));
-		panel_1_1_1.setBounds(30, 835, 457, 65);
+		panel_1_1_1.setBounds(497, 759, 457, 65);
 		accountPanel1.add(panel_1_1_1);
 		
 		JButton btnNewButton = new JButton("Änderungen verwerfen");

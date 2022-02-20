@@ -11,9 +11,11 @@ import javax.swing.JPanel;
 import main.java.controller.DashboardController;
 import main.java.controller.DashboardHourListController;
 import main.java.controller.DashboardProjectListController;
+import main.java.controller.LayoutManager;
 import main.java.controller.NewProjectController;
 import main.java.controller.TimerHourController;
 import main.java.model.StaticActions;
+import javax.swing.JTextPane;
 
 public class DashboardView implements IView {
 
@@ -37,7 +39,7 @@ public class DashboardView implements IView {
 
 		dashbPanel = new JPanel();
 		dashbPanel.setName("dashboardMainPane");
-		dashbPanel.setBounds(0, 0, 1490, 1060);
+		dashbPanel.setBounds(0, 0, 1490, 960);
 		dashbPanel.setBackground(new Color(47, 48, 52));
 
 		dashbPanel.setLayout(null);
@@ -50,7 +52,11 @@ public class DashboardView implements IView {
 		JPanel productPanel = new JPanel();
 		productPanel.setName("dashboardProductivityPane");
 		productPanel.setBackground(new Color(31, 32, 33));
-		productPanel.setBounds(10, 699, 355, 330);
+		productPanel.setBounds(10, 699, 355, 250);
+		JLabel productImage = new JLabel(LayoutManager.getImageIcon(LayoutManager.IMAGE_PRODUCTIVITY, 230, 199));
+		productImage.setBounds(10, 40, 335, 199);
+		productImage.setVisible(true);
+		productPanel.add(productImage);
 		dashbPanel.add(productPanel);
 		productPanel.setLayout(null);
 
@@ -113,7 +119,7 @@ public class DashboardView implements IView {
 		sessionPanel.setName("dashboardLastSessionsPane");
 		sessionPanel.setLayout(null);
 		sessionPanel.setBackground(new Color(31, 32, 33));
-		sessionPanel.setBounds(375, 522, 721, 507);
+		sessionPanel.setBounds(375, 522, 721, 427);
 		dashbPanel.add(sessionPanel);
 
 		JLabel lblLastSessions = new JLabel("Letzte Sitzungen\r\n");
@@ -129,7 +135,7 @@ public class DashboardView implements IView {
 		btnSessionShowMore.setForeground(Color.ORANGE);
 		btnSessionShowMore.setContentAreaFilled(false);
 		btnSessionShowMore.setBorderPainted(false);
-		btnSessionShowMore.setBounds(541, 467, 170, 23);
+		btnSessionShowMore.setBounds(541, 397, 170, 23);
 		sessionPanel.add(btnSessionShowMore);
 		btnSessionShowMore.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -146,19 +152,24 @@ public class DashboardView implements IView {
 		panelHourList.setLayout(new BoxLayout(panelHourList, BoxLayout.X_AXIS));
 		panelHourList.add(hourListController.getView().getScrollPane());
 		panelHourList.setBackground(new Color(35, 36, 38));
-		panelHourList.setBounds(10, 68, 701, 388);
+		panelHourList.setBounds(10, 68, 701, 324);
 		sessionPanel.add(panelHourList);
 
 		JPanel timelinePanel = new JPanel();
 		timelinePanel.setName("dashboardTimelinePane");
-		timelinePanel.setLayout(null);
+		//timelinePanel.setLayout(null);
 		timelinePanel.setBackground(new Color(31, 32, 33));
-		timelinePanel.setBounds(1106, 522, 365, 245);
+		timelinePanel.setBounds(1106, 522, 365, 171);
+		timelinePanel.setLayout(null);
+		JLabel timelineImage = new JLabel(LayoutManager.getImageIcon(LayoutManager.IMAGE_TIMELINE, 345, 120));
+		timelineImage.setBounds(10, 40, 345, 120);
+		timelineImage.setVisible(true);
+		timelinePanel.add(timelineImage);
 		dashbPanel.add(timelinePanel);
 
 		JLabel lblTimeline = new JLabel("Timeline");
 		lblTimeline.setForeground(Color.WHITE);
-		lblTimeline.setBounds(10, 11, 70, 24);
+		lblTimeline.setBounds(10, 11, 102, 24);
 		timelinePanel.add(lblTimeline);
 
 		JPanel upcomingPanel = new JPanel();
@@ -177,12 +188,27 @@ public class DashboardView implements IView {
 		lblActivities.setForeground(Color.WHITE);
 		lblActivities.setBounds(10, 30, 75, 28);
 		upcomingPanel.add(lblActivities);
+		
+		JTextPane textPane = new JTextPane();
+		textPane.setText(
+				"Heute, 10:00 Uhr:\t Pr‰sentation \n\n"
+				+ "Heute, 10:00 Uhr:\t Telefonat \n\n"
+				+ "Heute, 12:00 Uhr:\t Mittagessen KD \n\n"
+				+ "Heute, 16:00 Uhr:\t Briefing \n\n"
+				+ "Morgen, 08:00 Uhr:\t Auﬂentermin \n\n"
+				+ "Morgen, 10:00 Uhr:\t MA Gespr‰ch \n\n"
+				+ "Morgen, 17:00 Uhr:\t Review \n\n"
+				+ "24.02., 10:00 Uhr:\t Fortbildung \n\n"
+				+ "25.02., 10:00 Uhr:\t Forbildung");
+		textPane.setBackground(new Color(31, 32, 33));
+		textPane.setBounds(10, 69, 257, 344);
+		upcomingPanel.add(textPane);
 
 		JPanel newprojectPanel = new JPanel();
 		newprojectPanel.setName("dashboardNewProjectPane");
 		newprojectPanel.setLayout(null);
 		newprojectPanel.setBackground(new Color(31, 32, 33));
-		newprojectPanel.setBounds(1106, 778, 365, 251);
+		newprojectPanel.setBounds(1106, 704, 365, 245);
 		dashbPanel.add(newprojectPanel);
 		NewProjectView newProjectView = newProjectController.getNewProjectView();
 		newprojectPanel.add(newProjectView.getContentPanel());

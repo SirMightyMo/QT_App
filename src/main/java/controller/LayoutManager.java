@@ -34,14 +34,18 @@ public class LayoutManager implements IController {
 	
 	String[] iconPaths = { "/main/resources/img/icons/account-outline.png", "/main/resources/img/icons/calendar-clock.png", 
 			"/main/resources/img/icons/folder-outline.png", "/main/resources/img/icons/logout.png", 
-			"/main/resources/img/icons/view-dashboard-outline.png", };
+			"/main/resources/img/icons/view-dashboard-outline.png",
+			"/main/resources/img/images/timeline-dummy.png",
+			"/main/resources/img/images/productivity-dummy.png",
+			"/main/resources/img/images/timeline-dummy.png"};
 	
 	public static final String ICON_ACCOUNT = "account-outline.png";
 	public static final String ICON_SESSIONS = "calendar-clock.png";
 	public static final String ICON_PROJECTS = "folder-outline.png";
 	public static final String ICON_DASHBOARD = "view-dashboard-outline.png";
 	public static final String ICON_LOGOUT = "logout.png";
-	
+	public static final String IMAGE_TIMELINE = "timeline-dummy.png";
+	public static final String IMAGE_PRODUCTIVITY = "productivity-dummy.png";
 
 	public LayoutManager() {
 		loadFonts();

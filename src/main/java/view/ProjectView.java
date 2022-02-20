@@ -100,13 +100,13 @@ public class ProjectView implements IView {
 		
 		projectPanel = new JPanel();
 		projectPanel.setName("projectPanelMainPane");
-		projectPanel.setBounds(0, 0, 1490, 1060);
+		projectPanel.setBounds(0, 0, 1490, 960);
 		projectPanel.setBackground(new Color(47, 48, 52));
 		projectPanel.setLayout(null);
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5)); // top, left, bottom, right
-		contentPane.setBounds(10, 87, 1470, 944);
+		contentPane.setBounds(10, 87, 1470, 862);
 		contentPane.setBackground(new Color(31, 32, 33));
 		projectPanel.add(contentPane);
 
@@ -118,7 +118,7 @@ public class ProjectView implements IView {
 
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setName("projectViewTabbedPane");
-		tabbedPane.setBounds(15, 15, 910, 909);
+		tabbedPane.setBounds(15, 15, 910, 830);
 		contentPane.add(tabbedPane);
 
 		JPanel panel_project_overview = new JPanel();

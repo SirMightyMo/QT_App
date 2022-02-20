@@ -84,12 +84,12 @@ public class SessionView implements IView {
 	public SessionView(SessionController sessionController) {
 		sessionPanel = new JPanel();
 		sessionPanel.setName("dashboardMainPane");
-		sessionPanel.setBounds(0, 0, 1490, 1060);
+		sessionPanel.setBounds(0, 0, 1490, 960);
 		sessionPanel.setBackground(new Color(47,48,52));
 		sessionPanel.setLayout(null);
 		
 		JPanel sessionPanel1 = new JPanel();
-		sessionPanel1.setBounds(10, 87, 1470, 944);
+		sessionPanel1.setBounds(10, 87, 1470, 862);
 		sessionPanel1.setName("dashboardTimerPane");
 		sessionPanel1.setBackground(new Color(31,32,33));
 		sessionPanel.add(sessionPanel1);
@@ -103,7 +103,7 @@ public class SessionView implements IView {
 		lblNewLabel.setForeground(Color.WHITE);
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(15, 15, 1400, 909);
+		tabbedPane.setBounds(15, 15, 1400, 830);
 		sessionPanel1.add(tabbedPane);
 
 		JPanel panelHourEntryOverview = new JPanel();
@@ -200,9 +200,9 @@ public class SessionView implements IView {
 
 		// Projects Label
 		JLabel lblProjectEntry = new JLabel("Projekt:");
+		sl_panelHourEntryOverview.putConstraint(SpringLayout.NORTH, lblProjectEntry, 50, SpringLayout.NORTH, panelHourEntryOverview);
 		sl_panelHourEntryOverview.putConstraint(SpringLayout.NORTH, comboBoxProject, -4, SpringLayout.NORTH,
 				lblProjectEntry);
-		sl_panelHourEntryOverview.putConstraint(SpringLayout.NORTH, lblProjectEntry, 120, SpringLayout.NORTH, panelHourEntryOverview);
 		sl_panelHourEntryOverview.putConstraint(SpringLayout.WEST, lblProjectEntry, 150, SpringLayout.WEST, panelHourEntryOverview);
 		lblProjectEntry.setName("lblProjects");
 		sl_panelHourEntryOverview.putConstraint(SpringLayout.WEST, comboBoxProject, 22, SpringLayout.EAST, lblProjectEntry);

@@ -2,6 +2,7 @@ package main.java.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.awt.Color;
 
 import javax.swing.JLabel;
 import javax.swing.event.DocumentEvent;
@@ -130,6 +131,12 @@ public class AppMainController implements IController{
 			
 			this.appMainView.getContentPanel().repaint();
 			visibleView="Dashboard";
+			
+			appMainView.setMenuPointActive(new Boolean[]{false, true, true, true});
+			appMainView.getBtnMenuAccount().setForeground(Color.WHITE);
+			appMainView.getBtnMenuProjects().setForeground(Color.WHITE);
+			appMainView.getBtnMenuDashboard().setForeground(Color.ORANGE);
+			appMainView.getBtnMenuSessions().setForeground(Color.WHITE);
 		}
 
 		if (event.equalsIgnoreCase(StaticActions.ACTION_MENU_PROJECTS)) 
@@ -152,6 +159,12 @@ public class AppMainController implements IController{
 			}
 			this.appMainView.getContentPanel().repaint();
 			visibleView="Projects";
+			
+			appMainView.setMenuPointActive(new Boolean[]{true, false, true, true});
+			appMainView.getBtnMenuAccount().setForeground(Color.WHITE);
+			appMainView.getBtnMenuProjects().setForeground(Color.ORANGE);
+			appMainView.getBtnMenuDashboard().setForeground(Color.WHITE);
+			appMainView.getBtnMenuSessions().setForeground(Color.WHITE);
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_MENU_SESSIONS)) {
 			this.appMainView.getContentPanel().add(this.appMainView.getSessionView().getSessionPanel());
@@ -169,6 +182,12 @@ public class AppMainController implements IController{
 			}
 			this.appMainView.getContentPanel().repaint();
 			visibleView="Sessions";
+			
+			appMainView.setMenuPointActive(new Boolean[]{true, true, false, true});
+			appMainView.getBtnMenuAccount().setForeground(Color.WHITE);
+			appMainView.getBtnMenuProjects().setForeground(Color.WHITE);
+			appMainView.getBtnMenuDashboard().setForeground(Color.WHITE);
+			appMainView.getBtnMenuSessions().setForeground(Color.ORANGE);
 		}
 
 		if (event.equalsIgnoreCase(StaticActions.ACTION_MENU_ACCOUNT)) 
@@ -188,6 +207,12 @@ public class AppMainController implements IController{
 			}
 			this.appMainView.getContentPanel().repaint();
 			visibleView="AccountSettings";
+			
+			appMainView.setMenuPointActive(new Boolean[]{true, true, true, false});
+			appMainView.getBtnMenuAccount().setForeground(Color.ORANGE);
+			appMainView.getBtnMenuProjects().setForeground(Color.WHITE);
+			appMainView.getBtnMenuDashboard().setForeground(Color.WHITE);
+			appMainView.getBtnMenuSessions().setForeground(Color.WHITE);
 			System.out.println(visibleView);
 		}
 

@@ -32,7 +32,15 @@ public class AppMainView extends WindowSuperclass implements IView {
 	private AccountView accountView;
 	private ProjectView projectView;
 	private SessionView sessionView;
-
+	
+	// 0 Dashboard, 1 Projects, 2 Session, 3 Account
+	private Boolean[] menuPointActive = {false, true, true, true};
+	
+	private JButton btnMenuDashboard;
+	private JButton btnMenuProjects;
+	private JButton btnMenuSessions;
+	private JButton btnMenuAccount;
+	
 	boolean hasclicked1 = false;
 	JLabel click1label = null;
 
@@ -55,7 +63,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 		accountController = appMainController.getAccountController();
 		projectController = appMainController.getProjectController();
 		sessionController = appMainController.getSessionController();
-		setBounds(100, 100, 1850, 1080); // x, y, width, height
+		setBounds(100, 100, 1850, 1000); // x, y, width, height
 		setLocationRelativeTo(null); // Center Frame
 		setResizable(false);
 
@@ -67,7 +75,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 
 		JPanel menuPanel = new JPanel();
 		menuPanel.setName("navMainPane");
-		menuPanel.setBounds(0, 0, 346, 1060);
+		menuPanel.setBounds(0, 0, 346, 960);
 		menuPanel.setBackground(new Color(31, 32, 33));
 		panel_1.add(menuPanel);
 		menuPanel.setLayout(null);
@@ -107,7 +115,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 
 		contentPanel = new JPanel();
 		contentPanel.setName("dashboardMainPane");
-		contentPanel.setBounds(345, 0, 1490, 1041);
+		contentPanel.setBounds(345, 0, 1490, 960);
 		contentPanel.setBackground(new Color(47, 48, 52));
 		panel_1.add(contentPanel);
 		contentPanel.setLayout(null);
@@ -126,11 +134,11 @@ public class AppMainView extends WindowSuperclass implements IView {
 		menuPanel.add(btnPaneMenuDashboard);
 		btnPaneMenuDashboard.setLayout(null);
 
-		JButton btnMenuDashboard = new JButton("Dashboard");
+		btnMenuDashboard = new JButton("Dashboard");
 		btnMenuDashboard.setIcon(LayoutManager.getImageIcon(LayoutManager.ICON_DASHBOARD, 20, 20));
 		btnMenuDashboard.setName("btnMenuDashboard");
 		btnMenuDashboard.setHorizontalAlignment(SwingConstants.LEFT);
-		btnMenuDashboard.setForeground(Color.WHITE);
+		btnMenuDashboard.setForeground(Color.ORANGE);
 		btnMenuDashboard.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
 		btnMenuDashboard.setBounds(130, 11, 195, 44);
 		btnPaneMenuDashboard.add(btnMenuDashboard);
@@ -141,11 +149,13 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnMenuDashboard.setBorderPainted(false);
 		btnMenuDashboard.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnMenuDashboard.setForeground(Color.ORANGE);
+				if (menuPointActive[0])
+					btnMenuDashboard.setForeground(Color.ORANGE);
 			}
 
 			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnMenuDashboard.setForeground(Color.WHITE);
+				if (menuPointActive[0])
+					btnMenuDashboard.setForeground(Color.WHITE);
 			}
 		});
 
@@ -156,7 +166,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 		menuPanel.add(btnPaneMenuProjects);
 		btnPaneMenuProjects.setLayout(null);
 
-		JButton btnMenuProjects = new JButton("Projekte");
+		btnMenuProjects = new JButton("Projekte");
 		btnMenuProjects.setIcon(LayoutManager.getImageIcon(LayoutManager.ICON_PROJECTS, 20, 20));
 		btnMenuProjects.setName("btnMenuProjects");
 		btnMenuProjects.setFont(dinNeuzeitGrotesk_regular.deriveFont(18.0f));
@@ -173,11 +183,13 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnMenuProjects.setActionCommand(StaticActions.ACTION_MENU_PROJECTS);
 		btnMenuProjects.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnMenuProjects.setForeground(Color.ORANGE);
+				if (menuPointActive[1])
+					btnMenuProjects.setForeground(Color.ORANGE);
 			}
 
 			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnMenuProjects.setForeground(Color.WHITE);
+				if (menuPointActive[1])	
+					btnMenuProjects.setForeground(Color.WHITE);
 			}
 		});
 
@@ -187,7 +199,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnPaneMenuSessions.setBounds(10, 242, 335, 66);
 		menuPanel.add(btnPaneMenuSessions);
 
-		JButton btnMenuSessions = new JButton("Sitzungen");
+		btnMenuSessions = new JButton("Sitzungen");
 		btnMenuSessions.setIcon(LayoutManager.getImageIcon(LayoutManager.ICON_SESSIONS, 20, 20));
 		btnMenuSessions.setName("btnMenuSessions");
 		btnMenuSessions.setBounds(130, 11, 195, 44);
@@ -204,11 +216,13 @@ public class AppMainView extends WindowSuperclass implements IView {
 
 		btnMenuSessions.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnMenuSessions.setForeground(Color.ORANGE);
+				if (menuPointActive[2])
+					btnMenuSessions.setForeground(Color.ORANGE);
 			}
 
 			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnMenuSessions.setForeground(Color.WHITE);
+				if (menuPointActive[2])
+					btnMenuSessions.setForeground(Color.WHITE);
 			}
 		});
 
@@ -221,7 +235,7 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnPaneMenuSettings.add(lblEinstellungen);
 		btnPaneMenuAccount.setLayout(null);
 
-		JButton btnMenuAccount = new JButton("Account");
+		btnMenuAccount = new JButton("Account");
 		btnMenuAccount.setName("btnMenuAccount");
 		btnMenuAccount.setIcon(LayoutManager.getImageIcon(LayoutManager.ICON_ACCOUNT, 20, 20));
 		btnMenuAccount.setForeground(Color.WHITE);
@@ -236,11 +250,13 @@ public class AppMainView extends WindowSuperclass implements IView {
 		btnMenuAccount.setActionCommand(StaticActions.ACTION_MENU_ACCOUNT);
 		btnMenuAccount.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
-				btnMenuAccount.setForeground(Color.ORANGE);
+				if (menuPointActive[3])
+					btnMenuAccount.setForeground(Color.ORANGE);
 			}
 
 			public void mouseExited(java.awt.event.MouseEvent evt) {
-				btnMenuAccount.setForeground(Color.WHITE);
+				if (menuPointActive[3])
+					btnMenuAccount.setForeground(Color.WHITE);
 			}
 		});
 		btnPaneMenuLogout.setLayout(null);
@@ -339,6 +355,30 @@ public class AppMainView extends WindowSuperclass implements IView {
 		this.sessionView = sessionView;
 	}
 	
+	public JButton getBtnMenuDashboard() {
+		return btnMenuDashboard;
+	}
+
+	public JButton getBtnMenuProjects() {
+		return btnMenuProjects;
+	}
+
+	public JButton getBtnMenuSessions() {
+		return btnMenuSessions;
+	}
+
+	public JButton getBtnMenuAccount() {
+		return btnMenuAccount;
+	}
+	
+	public Boolean[] getMenuPointActive() {
+		return menuPointActive;
+	}
+
+	public void setMenuPointActive(Boolean[] menuPointActive) {
+		this.menuPointActive = menuPointActive;
+	}
+
 	public void setFrameToLeftUpperCorner(){
 		setLocation(0, 0);
 	}
