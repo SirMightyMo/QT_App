@@ -83,6 +83,7 @@ public class SessionController implements IController {
 		actionLoadClients();
 		actionLoadProjectsNewEntry();
 		actionLoadServicesNewEntry();
+		sumDuration();
 	}
 
 	/**
@@ -445,12 +446,14 @@ public class SessionController implements IController {
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_SEARCH)) {
 			actionFilterEntries();
+			sumDuration();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_RESET)) {
 			actionLoadProjects();
 			actionLoadServices();
 			actionLoadClients();
 			queryData();
+			sumDuration();
 			resetInputFieldsOverview();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_SET_PROJECT)) {
@@ -492,6 +495,25 @@ public class SessionController implements IController {
 		}
 	}
 
+	/**
+	 * Gets all visible duration values from column "Dauer" 
+	 * and calculates a sum. <br>
+	 * This sum is then displayed under the JTable.
+	 */
+	private void sumDuration() {
+		System.out.println(Integer.parseInt("00"));
+		int total = 0;
+		for(int i = 0; i < sessionView.getHourEntryTable().getRowCount(); i++){
+			String[] values = ((String) sessionView.getHourEntryTable().getValueAt(i, 8)).replace(" h", "").split(":");
+			int hours = Integer.parseInt(values[0]);
+	        int minutes = Integer.parseInt(values[1]);
+	        total += hours*60;
+	        total += minutes;
+	    }
+		String durationSum = String.format("%1$2s", total/60).replace(' ', '0') + ":" + String.format("%1$2s", total%60).replace(' ', '0') + " Std.";
+		sessionView.getLblDurationSum().setText("Summe Arbeitszeit: " + durationSum);
+	}
+	
 	/**
 	 * Resets all fields in the "new entry" tab to their defaults.
 	 * @author Leander
