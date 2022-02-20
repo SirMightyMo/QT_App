@@ -168,15 +168,15 @@ public class DatabaseController implements IController {
 	 * results of the inner ArrayLists, the values have to be casted to the
 	 * according object type:
 	 * <p>
-	 * ArrayList<Object> result =
-	 * db.query("SELECT column1, column2 FROM tablename;"); result.forEach(entry ->
-	 * { ArrayList<Object> row = (ArrayList<Object> entry); // do something with
+	 * ArrayList result =
+	 * db.query("SELECT column1, column2 FROM tablename;"); result.forEach(entry =>
+	 * { ArrayList row = (ArrayList entry); // do something with
 	 * row-ArrayList here }
 	 * <p>
 	 * "Visual Dummy-Example": 
 	 * ResultList( RowList(valueOfColumn1, valueOfColumn2),
 	 * RowList(valueOfColumn1, valueOfColumn2), RowList(valueOfColumn1,
-	 * valueOfColumn2), ... ) -> ResultList contains RowLists, that contain the
+	 * valueOfColumn2), ... ) => ResultList contains RowLists, that contain the
 	 * values of queried columns.
 	 * <p>
 	 * @param sql The SQL command for querying data.

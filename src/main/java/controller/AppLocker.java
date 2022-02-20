@@ -9,7 +9,7 @@ import java.nio.channels.OverlappingFileLockException;
 /**
  * This class prevents the application from trying to run multiple instances.
  * Code adapted and originally from: 
- * <a href="#{@link}">{@link https://www.rgagnon.com/javadetails/java-0288.html}</a> (20.02.2022 00:00)
+ * <a href="https://www.rgagnon.com/javadetails/java-0288.html">https://www.rgagnon.com/javadetails/java-0288.html</a> (20.02.2022 00:00)
  * It creates a temporary file and locks it. If another instance tries to access this file, it fails.
  */
 
