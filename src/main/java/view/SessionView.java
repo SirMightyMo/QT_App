@@ -64,6 +64,7 @@ public class SessionView implements IView {
 	private JButton btnResetEntry;
 	private JButton btnEditEntry;
 	private JButton btnDeleteEntry;
+	private JLabel lblDurationSum;
 
 	/**
 	 * Extends DefaultTableCellRenderer for creating a custom 
@@ -569,6 +570,15 @@ public class SessionView implements IView {
 		comboBoxClient.setActionCommand(StaticActions.ACTION_SESSION_OVERVIEW_SET_CLIENT);
 		panelHourEntryOverview.add(comboBoxClient);
 		
+		lblDurationSum = new JLabel("");
+		lblDurationSum.setPreferredSize(new Dimension(250, 25));
+		lblDurationSum.setForeground(Color.ORANGE);
+		lblDurationSum.setHorizontalAlignment(SwingConstants.RIGHT);
+		sl_panelHourEntryOverview.putConstraint(SpringLayout.NORTH, lblDurationSum, 5, SpringLayout.SOUTH, scrollPaneTable);
+		sl_panelHourEntryOverview.putConstraint(SpringLayout.SOUTH, lblDurationSum, -10, SpringLayout.SOUTH, panelHourEntryOverview);
+		sl_panelHourEntryOverview.putConstraint(SpringLayout.EAST, lblDurationSum, 0, SpringLayout.EAST, scrollPaneTable);
+		panelHourEntryOverview.add(lblDurationSum);
+		
 		btnSetStartDate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
 				textFieldFrom.setText(new DatePicker(popupFrame).setPickedDate().replace("-", "."));
@@ -739,6 +749,10 @@ public class SessionView implements IView {
 
 	public JButton getBtnResetEntry() {
 		return btnResetEntry;
+	}
+
+	public JLabel getLblDurationSum() {
+		return lblDurationSum;
 	}
 
 	/**
