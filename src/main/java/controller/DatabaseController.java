@@ -242,13 +242,31 @@ public class DatabaseController implements IController {
 	 * @author kevin
 	 */
 	public int initializeDB() {
-		if (executeSQLScript("/main/resources/data/createTables.sql") == 0
-				/*&& executeSQLScript("./src/main/resources/data/insertDummyData.sql") == 0*/) { // If dummy-data needed,
-																								// remove inline comment
+		int createdTables = executeSQLScript("/main/resources/data/createTables.sql");
+		int insertedDummy = 0;
+		
+		if (!foundBob()) {
+			insertedDummy = executeSQLScript("/main/resources/data/insertDummyData.sql");			
+		}
+		
+		if (createdTables == 0 && insertedDummy == 0) {																			
 			System.out.println("Database successfully initialized");
 			return 0;
 		} else 
 			return 1;
+	}
+	
+	/**
+	 * Looks for Bob in Database.
+	 */
+	private boolean foundBob() {
+		String sql = "SELECT u_id FROM users WHERE u_id = '1' AND username = 'Bob'";
+		ArrayList<Object> result = query(sql, true);
+		if (result.isEmpty()) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	/**
