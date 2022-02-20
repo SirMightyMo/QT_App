@@ -156,6 +156,7 @@ public class NewProjectController implements IController {
 			newProjectView.getTextFieldProjectname().setBackground(new Color(70, 73, 75));
 			newProjectView.getTxtStartTime().setBackground(new Color(70, 73, 75));
 			newProjectView.getTxtEndTime().setBackground(new Color(70, 73, 75));
+			newProjectView.getDropDownClient().setBackground(new Color(70, 73, 75));
 			return true;
 		} else {
 			if (name.equals("")) {
@@ -166,6 +167,9 @@ public class NewProjectController implements IController {
 						}
 			if (end.equals("...") || !startBeforeEnd) {
 				newProjectView.getTxtEndTime().setBackground(new Color(175,25,65));
+			}
+			if (newProjectView.getDropDownClient().getItemCount() == 0) {
+				newProjectView.getDropDownClient().setBackground(new Color(175,25,65));
 			}
 			return false;
 		}
