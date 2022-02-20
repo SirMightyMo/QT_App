@@ -22,7 +22,11 @@ public class ProjectModel extends Observable implements IModel {
 	public ProjectModel() {
 		super();
 	}
-
+	/**
+	 * This method retrieves all projects from the database and formats it so the date can be used as a JTable
+	 * 
+	 * @author Mo
+	 */
 	// Creates Object needed for JTable
 	public Object[][] getTableModel() {
 		this.projectList = new ArrayList<>();
@@ -62,8 +66,6 @@ public class ProjectModel extends Observable implements IModel {
 				} else
 					projectTable[i][j] = row.get(j);
 			}
-			// TODO: Abfangen von Customer ID
-
 		}
 
 		return projectTable;
@@ -91,7 +93,12 @@ public class ProjectModel extends Observable implements IModel {
 	public void setClientList(ArrayList<ArrayList<Object>> clientList) {
 		this.clientList = clientList;
 	}
-
+	/**
+	 * This method retrieves all projects the current user is assigned to from the
+	 * database and adds them to an ArrayList for using them in a ComboBox
+	 * (Dropdown).
+	 * @author Leander
+	 */
 	public void retrieveProjects() {
 		this.projectList = new ArrayList<>();
 		ArrayList<Object> result = db.query(
@@ -105,7 +112,11 @@ public class ProjectModel extends Observable implements IModel {
 		setChanged();
 		notifyObservers(this);
 	}
-	
+	/**
+	 * This method retrieves all clients the current user has written hour entries
+	 * for and adds them to an ArrayList for using them in a ComboBox (Dropdown).
+	 * @author Leander
+	 */
 	public void retrieveClients() {
 		this.clientList = new ArrayList<>();
 		ArrayList<Object> result = db.query(

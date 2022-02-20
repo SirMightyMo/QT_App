@@ -1010,8 +1010,8 @@ public class ProjectView implements IView {
 		lbl.setVisible(true);
 	}
 	/**
-	 * Returns the user input converted sql.Date format
-	 * @author mo
+	 * Returns the user input (start date) converted to sql.Date format
+	 * @author Mo
 	 */
 	public Date getNewStartDate() {
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
@@ -1026,7 +1026,10 @@ public class ProjectView implements IView {
 		startDate.setTime(inputStartDate.getTime());
 		return startDate;
 	}
-
+	/**
+	 * Returns the user input (end date) converted to sql.Date format
+	 * @author Mo
+	 */
 	public Date getNewEndDate() {
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		java.sql.Date endDate = new Date(System.currentTimeMillis());
@@ -1071,7 +1074,7 @@ public class ProjectView implements IView {
 
 	/**
 	 * Updates JTable Object
-	 * @author mo
+	 * @author Mo
 	 * @param arg: ProjectController
 	 */
 	public void updateTable(Object arg) {
