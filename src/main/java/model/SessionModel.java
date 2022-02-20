@@ -108,10 +108,11 @@ public class SessionModel extends Observable implements IModel {
 		this.serviceSetNewEntry = serviceSetNewEntry;
 	}
 
-	/*
+	/**
 	 * This method retrieves all projects the current user is assigned to from the
 	 * database and adds them to an ArrayList for using them in a ComboBox
 	 * (Dropdown).
+	 * @author Leander
 	 */
 	public void retrieveProjects() {
 		this.projectList = new ArrayList<>();
@@ -126,9 +127,10 @@ public class SessionModel extends Observable implements IModel {
 		notifyObservers(this);
 	}
 
-	/*
+	/**
 	 * This method retrieves all services and adds them to an ArrayList for using
 	 * them in a ComboBox (Dropdown).
+	 * @author Leander
 	 */
 	public void retrieveServices() {
 		this.serviceList = new ArrayList<>();
@@ -141,9 +143,10 @@ public class SessionModel extends Observable implements IModel {
 		notifyObservers(this);
 	}
 
-	/*
+	/**
 	 * This method retrieves all clients the current user has written hour entries
 	 * for and adds them to an ArrayList for using them in a ComboBox (Dropdown).
+	 * @author Leander
 	 */
 	public void retrieveClients() {
 		this.clientList = new ArrayList<>();
@@ -159,10 +162,11 @@ public class SessionModel extends Observable implements IModel {
 		notifyObservers(this);
 	}
 	
-	/*
+	/**
 	 * This method retrieves all projects the current user is assigned to from the
 	 * database and adds them to an ArrayList for using them in a ComboBox
 	 * (Dropdown).
+	 * @author Leander
 	 */
 	public void retrieveProjectsNewEntry() {
 		this.projectListNewEntry = new ArrayList<>();
@@ -177,9 +181,10 @@ public class SessionModel extends Observable implements IModel {
 		notifyObservers(this);
 	}
 
-	/*
+	/**
 	 * This method retrieves all services and adds them to an ArrayList for using
 	 * them in a ComboBox (Dropdown).
+	 * @author Leander
 	 */
 	public void retrieveServicesNewEntry() {
 		this.serviceListNewEntry = new ArrayList<>();

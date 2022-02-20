@@ -27,6 +27,14 @@ public class DashboardHourListController implements IController {
 	private DatabaseController db = DatabaseController.getInstance();
 	Runnable runQueryData = () -> queryData();
 	
+	/**
+	 * Creates a new CustomTableModel and sets header titles.
+     * Calls method to query needed data and sets renderer properties for table,
+     * since the used view is also used by other controllers with different needs.
+	 * 
+     * @author Leander
+     * 
+     */
 	public DashboardHourListController() {
 		this.tableData = new CustomTableModel(new String[] {
 			"Datum",
@@ -65,6 +73,13 @@ public class DashboardHourListController implements IController {
 		view.getTable().getColumnModel().getColumn(5).setCellRenderer(rightRenderer);
 	}
 	
+	/**
+	 * Queries 15 hour entries from database where user-id matches the user that is logged in.
+	 * It formats all data to Strings.
+	 * Data is then set as tabledata.
+	 * 
+	 * @author Leander
+	 */
 	public void queryData() {
 		ArrayList<Object> result = db.query(
 				"SELECT entry_date, project.name, service.name, start_time, end_time, time_minutes "

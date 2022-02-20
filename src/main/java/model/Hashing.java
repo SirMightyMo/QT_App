@@ -8,9 +8,22 @@ import java.security.spec.InvalidKeySpecException;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
+/**
+ * Abstract class containing methods for hashing and validating
+ * passwords.
+ * @author Leander
+ *
+ */
+
 public abstract class Hashing {
 
-	// Hash a password
+	/**
+	 * Generates a hash from provided plaintext String.
+	 * @param password Char-Array containing the plaintext password.
+	 * @return String containing the hashed password. Information divided by ":"
+	 * @throws NoSuchAlgorithmException
+	 * @throws InvalidKeySpecException
+	 */
 	protected static String generatePasswordHash(char[] password)
 			throws NoSuchAlgorithmException, InvalidKeySpecException {
 		int iterations = 10; // Number of encryption iterations
@@ -25,7 +38,11 @@ public abstract class Hashing {
 		return iterations + ":" + toHex(salt) + ":" + toHex(hash);
 	}
 
-	// Generate Salt (factor of randomness)
+	/**
+	 * Generates 'Salt', a factor of randomness for hashing passwords.
+	 * @return Byte-Array containing the salt information.
+	 * @throws NoSuchAlgorithmException
+	 */
 	protected static byte[] getSalt() throws NoSuchAlgorithmException {
 		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
 		byte[] salt = new byte[16];
@@ -33,7 +50,12 @@ public abstract class Hashing {
 		return salt;
 	}
 
-	// create hexadecimal String from byte array
+	/**
+	 * Creates a String representing hexadecimal numbers.
+	 * @param array
+	 * @return Hexadecimal
+	 * @throws NoSuchAlgorithmException
+	 */
 	protected static String toHex(byte[] array) throws NoSuchAlgorithmException {
 		BigInteger big = new BigInteger(1, array);
 		String hex = big.toString(16);
@@ -46,7 +68,12 @@ public abstract class Hashing {
 		}
 	}
 
-	// create byte array from hexadecimal String
+	/**
+	 * Creates Byte-Array from String
+	 * @param hex
+	 * @return Byte-Array
+	 * @throws NoSuchAlgorithmException
+	 */
 	protected static byte[] fromHex(String hex) throws NoSuchAlgorithmException {
 		byte[] bytes = new byte[hex.length() / 2];
 		for (int i = 0; i < bytes.length; i++) {
@@ -55,6 +82,15 @@ public abstract class Hashing {
 		return bytes;
 	}
 
+	/**
+	 * Hashes plaintext password and compares it to given 
+	 * hash information to validate if both match.
+	 * @param plaintext
+	 * @param hashedInfo
+	 * @return true if passwords match, false if not.
+	 * @throws NoSuchAlgorithmException
+	 * @throws InvalidKeySpecException
+	 */
 	protected static boolean validatePassword(String plaintext, String hashedInfo)
 			throws NoSuchAlgorithmException, InvalidKeySpecException {
 		String[] parts = hashedInfo.split(":");

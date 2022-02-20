@@ -27,6 +27,11 @@ public class NewProjectModel extends Observable implements IModel {
 		this.clientList = clientList;
 	}
 
+	/**
+	 * Retrieves client information from database and saves it 
+	 * to an ArrayList. This List is thought to be used for 
+	 * setting data of a JComboBox (dropdown) in a view.
+	 */
 	public void retrieveClients() {
 		this.clientList = new ArrayList<>();
 		ArrayList<Object> result = db.query("SELECT c_id, company FROM customer;");

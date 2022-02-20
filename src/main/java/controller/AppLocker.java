@@ -1,11 +1,15 @@
 package main.java.controller;
 
-import java.io.*;
-import java.nio.channels.*;
+import java.io.File;
+import java.io.RandomAccessFile;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
+import java.nio.channels.OverlappingFileLockException;
 
-/*
+/**
  * This class prevents the application from trying to run multiple instances.
- * Code adapted and originally from: https://www.rgagnon.com/javadetails/java-0288.html (20.02.2022 00:00)
+ * Code adapted and originally from: 
+ * <a href="#{@link}">{@link https://www.rgagnon.com/javadetails/java-0288.html}</a> (20.02.2022 00:00)
  * It creates a temporary file and locks it. If another instance tries to access this file, it fails.
  */
 
@@ -18,6 +22,11 @@ public class AppLocker {
        
     }
 
+    /**
+     * Method creates and locks temporary file if file is not already being locked.
+     * @return true if instance of app is already running and locking file;
+     * false if file is no other instance is blocking file 
+     */
     public boolean isAppActive() {
         try {
             file = new File
@@ -44,7 +53,7 @@ public class AppLocker {
                         closeLock();
                         deleteFile();
                     }
-                });
+            });
             return false;
         }
         catch (Exception e) {

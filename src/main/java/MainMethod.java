@@ -15,6 +15,11 @@ public class MainMethod {
 		
 	}
 	
+	/**
+	 * Starts the App if there is not running an instance of the application
+	 * already. 
+	 * @see main.java.controller.AppLocker#isAppActive()
+	 */
 	static void startApp() {
         AppLocker al = new AppLocker();
 

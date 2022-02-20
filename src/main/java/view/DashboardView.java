@@ -199,7 +199,7 @@ public class DashboardView implements IView {
 				+ "Morgen, 10:00 Uhr:\t MA Gespräch \n\n"
 				+ "Morgen, 17:00 Uhr:\t Review \n\n"
 				+ "24.02., 10:00 Uhr:\t Fortbildung \n\n"
-				+ "25.02., 10:00 Uhr:\t Forbildung");
+				+ "25.02., 10:00 Uhr:\t Fortbildung");
 		textPane.setBackground(new Color(31, 32, 33));
 		textPane.setBounds(10, 69, 257, 344);
 		upcomingPanel.add(textPane);

@@ -65,6 +65,16 @@ public class SessionView implements IView {
 	private JButton btnEditEntry;
 	private JButton btnDeleteEntry;
 
+	/**
+	 * Extends DefaultTableCellRenderer for creating a custom 
+	 * CellRenderer that formats Date Objects to better readable 
+	 * Strings. <br>
+	 * It implements a method that checks if a given cell value 
+	 * is an instance of 'java.util.Date'. If so, it formats 
+	 * the given information to 'dd.MM.yyyy HH:mm Uhr'
+	 * @author Leander
+	 *
+	 */
 	public class DateCellRenderer extends DefaultTableCellRenderer{
 
 		private static final long serialVersionUID = 1L;
@@ -731,6 +741,10 @@ public class SessionView implements IView {
 		return btnResetEntry;
 	}
 
+	/**
+	 * Sets new ComboBox-Models (updates dropdowns), when observed model information
+	 * changes.
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 

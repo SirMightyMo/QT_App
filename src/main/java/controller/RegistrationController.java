@@ -119,6 +119,12 @@ public final class RegistrationController extends Hashing implements IController
 		this.view.dispose();
 	}
 	
+	/**
+	 * Reads user input, hashes password and inserts new user information
+	 * to database.
+	 * It then calls a method to switch to the login dialog.
+	 * @author Leander, Sven
+	 */
 	private void registration() {
 		String hash = null;
 		if (inputCheck()) {

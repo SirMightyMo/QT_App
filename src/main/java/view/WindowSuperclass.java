@@ -11,8 +11,9 @@ import javax.swing.JFrame;
 public abstract class WindowSuperclass extends JFrame implements IView {
 
 	/**
-	 * This superclass should be used for all settings regarding the design of the
-	 * application. Views that create a separate window should extend this class
+	 * This superclass should be used for settings needed in views 
+	 * creating a JFrame. <br>
+	 * Views that create a separate window should extend this class
 	 * instead of JFrame to automatically inherit all setted options.
 	 */
 
