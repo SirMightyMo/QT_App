@@ -648,12 +648,12 @@ public class ProjectView implements IView {
 		panelNewClient.add(lblNewCustomer);
 
 		JPanel panelInputFormCustomer = new JPanel();
+		slPanelNewClient.putConstraint(SpringLayout.SOUTH, panelInputFormCustomer, -200, SpringLayout.SOUTH,
+				panelNewClient);
 		panelInputFormCustomer.setName("panelInputFormCustomer");
 		slPanelNewClient.putConstraint(SpringLayout.NORTH, panelInputFormCustomer, 80, SpringLayout.NORTH,
 				panelNewClient);
 		slPanelNewClient.putConstraint(SpringLayout.WEST, panelInputFormCustomer, 150, SpringLayout.WEST,
-				panelNewClient);
-		slPanelNewClient.putConstraint(SpringLayout.SOUTH, panelInputFormCustomer, -333, SpringLayout.SOUTH,
 				panelNewClient);
 		slPanelNewClient.putConstraint(SpringLayout.EAST, panelInputFormCustomer, -425, SpringLayout.EAST,
 				panelNewClient);
@@ -860,11 +860,11 @@ public class ProjectView implements IView {
 
 		// Save Button
 		JButton btnSaveCustomer = new JButton("Speichern");
-		btnSaveCustomer.setName("btnSaveCustomer");
-		slPanelInputFormCustomer.putConstraint(SpringLayout.NORTH, btnSaveCustomer, 43, SpringLayout.SOUTH,
+		slPanelInputFormCustomer.putConstraint(SpringLayout.NORTH, btnSaveCustomer, 20, SpringLayout.SOUTH,
 				textFieldCountry);
-		slPanelInputFormCustomer.putConstraint(SpringLayout.WEST, btnSaveCustomer, 0, SpringLayout.WEST,
-				textFieldProjectName);
+		slPanelInputFormCustomer.putConstraint(SpringLayout.WEST, btnSaveCustomer, 120, SpringLayout.WEST,
+				panelInputFormCustomer);
+		btnSaveCustomer.setName("btnSaveCustomer");
 		btnSaveCustomer.addActionListener(projectController);
 		btnSaveCustomer.setActionCommand(StaticActions.ACTION_SAVE_CUSTOMER);
 		panelInputFormCustomer.add(btnSaveCustomer);

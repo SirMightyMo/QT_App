@@ -372,9 +372,9 @@ public class TimerView implements IView {
 		lblErrorMessage.setVisible(false);
 		SpringLayout sl_errorPanel = new SpringLayout();
 		sl_errorPanel.putConstraint(SpringLayout.NORTH, lblErrorMessage, 0, SpringLayout.NORTH, errorPanel);
-		sl_errorPanel.putConstraint(SpringLayout.WEST, lblErrorMessage, 50, SpringLayout.WEST, errorPanel);
+		sl_errorPanel.putConstraint(SpringLayout.WEST, lblErrorMessage, 0, SpringLayout.WEST, errorPanel);
 		sl_errorPanel.putConstraint(SpringLayout.SOUTH, lblErrorMessage, 0, SpringLayout.SOUTH, errorPanel);
-		sl_errorPanel.putConstraint(SpringLayout.EAST, lblErrorMessage, -50, SpringLayout.EAST, errorPanel);
+		sl_errorPanel.putConstraint(SpringLayout.EAST, lblErrorMessage, 0, SpringLayout.EAST, errorPanel);
 		errorPanel.setLayout(sl_errorPanel);
 		errorPanel.add(lblErrorMessage);
 

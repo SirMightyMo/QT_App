@@ -2,13 +2,17 @@ package main.java.controller;
 
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
-import java.io.FileReader;
-import java.sql.*;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import javax.swing.event.DocumentEvent;
-
-import org.h2.jdbc.JdbcSQLSyntaxErrorException;
 
 import main.java.model.IModel;
 import main.java.view.IView;
@@ -238,8 +242,8 @@ public class DatabaseController implements IController {
 	 * @author kevin
 	 */
 	public int initializeDB() {
-		if (executeSQLScript("./src/main/resources/data/createTables.sql") == 0
-				&& executeSQLScript("./src/main/resources/data/insertDummyData.sql") == 0) { // If dummy-data needed,
+		if (executeSQLScript("/main/resources/data/createTables.sql") == 0
+				/*&& executeSQLScript("./src/main/resources/data/insertDummyData.sql") == 0*/) { // If dummy-data needed,
 																								// remove inline comment
 			System.out.println("Database successfully initialized");
 			return 0;
@@ -313,10 +317,12 @@ public class DatabaseController implements IController {
 	 */
 	
 	public int executeSQLScript(String scriptFilePath) {
-		BufferedReader bReader = null;
 		Statement statement = null;
 
 		try {
+			InputStream is = getClass().getResourceAsStream(scriptFilePath);
+			InputStreamReader isr = new InputStreamReader(is);
+			BufferedReader br = new BufferedReader(isr);
 			// Load Driver for H2
 			Class.forName(JDBC_DRIVER);
 			// Create Connection
@@ -324,16 +330,15 @@ public class DatabaseController implements IController {
 			// Create Statement object
 			statement = dbConnection.createStatement();
 			// Read file
-			bReader = new BufferedReader(new FileReader(scriptFilePath));
 			String line = null;
 
-			while ((line = bReader.readLine()) != null) {
+			while ((line = br.readLine()) != null) {
 				// execute query
 				statement.executeUpdate(line);
 			}
 
 			statement.close();
-			bReader.close();
+			br.close();
 			System.out.println("SQL-Script " + scriptFilePath + " executed successfully");
 		} catch (Exception e) {
 			System.out.println("Problem executing SQL Script");
