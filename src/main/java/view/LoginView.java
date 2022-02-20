@@ -12,6 +12,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 import javax.swing.SwingUtilities;
+import java.awt.GridLayout;
 
 public final class LoginView extends WindowSuperclass implements IView {
 
@@ -28,7 +29,7 @@ public final class LoginView extends WindowSuperclass implements IView {
 	private JPanel panel;
 	private JPanel panel_1;
 	private JPanel panel_2;
-	private JLabel lblNewLabel;
+	private JButton lostPwButton;
 
 	public LoginView() {
 		super();
@@ -110,7 +111,10 @@ public final class LoginView extends WindowSuperclass implements IView {
 		springLayout.putConstraint(SpringLayout.SOUTH, panel_2, 0, SpringLayout.SOUTH, getContentPane());
 		springLayout.putConstraint(SpringLayout.EAST, panel_2, 0, SpringLayout.EAST, getContentPane());
 		getContentPane().add(panel_2);
-		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		panel_2.setLayout(new GridLayout(2, 1, 0, 0));
+		
+		lostPwButton = new JButton("Passwort vergessen");
+		panel_2.add(lostPwButton);
 
 		errorMessage = new JLabel("");
 		errorMessage.setPreferredSize(new Dimension(400, 25));
@@ -153,6 +157,10 @@ public final class LoginView extends WindowSuperclass implements IView {
 
 	public JButton getRegisterButton() {
 		return this.registerButton;
+	}
+	
+	public JButton getLostPwButton() {
+		return this.lostPwButton;
 	}
 
 	@Override
