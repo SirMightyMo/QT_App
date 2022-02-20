@@ -1,7 +1,6 @@
 package main.java.controller;
 
 import java.awt.event.ActionEvent;
-import java.lang.reflect.Method;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import javax.swing.event.DocumentEvent;
 
 import main.java.model.Hashing;
 import main.java.model.IModel;
-import main.java.model.LoginModel;
 import main.java.model.User;
 import main.java.view.IView;
 import main.java.view.LoginView;
@@ -18,18 +16,17 @@ import main.java.view.LoginView;
 public final class LoginController extends Hashing implements IController {
 
 	private LoginView view;
-	private LoginModel model;
 	private DatabaseController dbc = DatabaseController.getInstance();
 
 	public LoginController() {
 		this.view = new LoginView();
-		this.model = new LoginModel();
 		this.init();
 	}
 
 	private void init() {
 		view.getLoginButton().addActionListener(e -> this.securityCheck());
 		view.getRegisterButton().addActionListener(e -> this.registration());
+		view.getLostPwButton().addActionListener(e -> this.lostPw());
 	}
 
 	/**
@@ -96,7 +93,13 @@ public final class LoginController extends Hashing implements IController {
 
 	private void registration() {
 		System.out.println("Sie werden weitergeleitet");
-		RegistrationController r = new RegistrationController();
+		new RegistrationController();
+		this.view.dispose();
+	}
+	
+	private void lostPw() {
+		System.out.println("Passwort wiederherstellung eingeleitet");
+		new LostPwController();
 		this.view.dispose();
 	}
 
