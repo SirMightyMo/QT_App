@@ -627,6 +627,9 @@ public class ProjectView implements IView {
 		this.textFieldExternalRate = textFieldExternalRate;
 	}
 
+	/**
+	 * Creates elements of the third tab in "Projekte"
+	 */
 	private void createTab3() {
 		// HEAD //
 
@@ -867,6 +870,10 @@ public class ProjectView implements IView {
 		panelInputFormCustomer.add(btnSaveCustomer);
 	}
 
+	/**
+	 * Creates elements for the fourth tab in "Projekte"
+	 * @author kevin
+	 */
 	private void createTab4() {
 
 		// HEAD //
