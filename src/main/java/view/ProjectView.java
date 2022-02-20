@@ -860,7 +860,7 @@ public class ProjectView implements IView {
 
 		// Save Button
 		JButton btnSaveCustomer = new JButton("Speichern");
-		slPanelInputFormCustomer.putConstraint(SpringLayout.NORTH, btnSaveCustomer, 20, SpringLayout.SOUTH,
+		slPanelInputFormCustomer.putConstraint(SpringLayout.NORTH, btnSaveCustomer, 50, SpringLayout.SOUTH,
 				textFieldCountry);
 		slPanelInputFormCustomer.putConstraint(SpringLayout.WEST, btnSaveCustomer, 120, SpringLayout.WEST,
 				panelInputFormCustomer);
