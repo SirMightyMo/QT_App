@@ -453,6 +453,7 @@ public class SessionController implements IController {
 			actionLoadClients();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_SEARCH)) {
+			queryData();
 			if (sessionView.getHourEntryTable().getRowCount() > 0) {
 				actionFilterEntries();
 				sumDuration();				
@@ -463,6 +464,7 @@ public class SessionController implements IController {
 			actionLoadServices();
 			actionLoadClients();
 			queryData();
+			sessionView.getSorter().setRowFilter(null);
 			sumDuration();
 			resetInputFieldsOverview();
 		}
