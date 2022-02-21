@@ -379,6 +379,7 @@ public class ProjectView implements IView {
 		
 		comboBoxClientNewP = new JComboBox<String>();
 		comboBoxClientNewP.setName("textFieldClient");
+		comboBoxClientNewP.setActionCommand(StaticActions.ACTION_SET_CLIENT_NEWP);
 		sl_panel_input_form.putConstraint(SpringLayout.EAST, lblNewLabel_19, -24, SpringLayout.WEST, comboBoxClientNewP);
 		sl_panel_input_form.putConstraint(SpringLayout.NORTH, comboBoxClientNewP, 14, SpringLayout.SOUTH,
 				textFieldProjectName);
@@ -561,6 +562,42 @@ public class ProjectView implements IView {
 
 	public String getTextFieldCountry() {
 		return textFieldCountry.getText();
+	}
+	
+	public JTextField getFieldClientName() {
+		return textFieldClientName;
+	}
+
+	public JTextField getFieldContact() {
+		return textFieldContact;
+	}
+
+	public JTextField getFieldTelephone() {
+		return textFieldTelephone;
+	}
+
+	public JTextField getFieldMobile() {
+		return textFieldMobile;
+	}
+
+	public JTextField getFieldStreet() {
+		return textFieldStreet;
+	}
+
+	public JTextField getFieldHouseNumber() {
+		return textFieldHouseNumber;
+	}
+
+	public JTextField getFieldZip() {
+		return textFieldZip;
+	}
+
+	public JTextField getFieldCity() {
+		return textFieldCity;
+	}
+
+	public JTextField getFieldCountry() {
+		return textFieldCountry;
 	}
 
 	public String getTextFieldNewService() {
@@ -1072,10 +1109,15 @@ public class ProjectView implements IView {
 			clientNames.add(""); // Empty entry for filtering "nothing"
 			((ProjectModel) arg).getClientList().forEach(client -> {
 				clientNames.add(client.get(1).toString());
-				//System.out.println(clientNames);
 			});
 			this.comboBoxClient.setModel(new DefaultComboBoxModel(clientNames.toArray()));
-			clientNames.remove(0); // Remove empty entry for New Project Client Dropdown
+			System.out.println("Client loaded into Project View");
+		}
+		if (arg instanceof ProjectModel && ((ProjectModel) arg).getClientListNewP() != null) {
+			ArrayList<String> clientNames = new ArrayList<>();
+			((ProjectModel) arg).getClientListNewP().forEach(client -> {
+				clientNames.add(client.get(1).toString());
+			});
 			this.comboBoxClientNewP.setModel(new DefaultComboBoxModel(clientNames.toArray()));
 			System.out.println("Client loaded into Project View");
 		}
