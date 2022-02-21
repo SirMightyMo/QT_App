@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.RowFilter;
 import javax.swing.RowFilter.ComparisonType;
@@ -327,9 +330,15 @@ public class ProjectController implements IController {
 		String event = e.getActionCommand();
 		System.out.println("ACTION: " + event.toString()); // For debugging
 
+		if (event.equalsIgnoreCase(StaticActions.ACTION_NPROJECT_SAVE)) {
+			ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+			executorService.schedule(() -> {
+				actionLoadProjects();
+				actionResetProjects();
+			}, 1, TimeUnit.SECONDS);
+		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_LOAD_PROJECTS)) {
 			actionLoadProjects();
-			actionLoadClients();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SEARCH_PROJECTS)) {
 			actionSearchProjects();
