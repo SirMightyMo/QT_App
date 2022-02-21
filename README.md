@@ -4,6 +4,9 @@
 Bei erstmaliger Nutzung der App muss zunächst ein Benutzer über den Registrieren Button 
 angelegt werden. Die Anmeldung erfolgt über das Login Formular.
 
+## Passwort vergessen
+Sollte das Passwort in Vergessenheit geraten sein, kann über den Button "Passwort Vergessen" in der Login Maske das Passwort zurückgesetzt werden.
+
 ## Kunde, Projekte und Leistungen anlegen
 Nachdem die App gestartet wurde befinden wir uns im Dashboard. Damit wir unsere Arbeitszeit für ein Projekt 
 erfassen können, muss zunächst ein Kunde, ein Projekt und eine Leistung angelegt werden. Um einen Kunden anzulegen, 
@@ -36,3 +39,9 @@ Zeiteintrag löschen: Doppelklick auf den Eintrag und rechts den Button "Lösche
 
 ### Neuer Zeiteintrag 
 Über den Reiter "Neuer Zeiteintrag" kann manuell, ohne Verwendung des Timers ein Zeiteintrag hinzugefügt werden. Dazu die entsprechenden Einträge machen und anschließend speichern.
+
+## Account
+Hier finden sich alle accountbezogenen Einstellungen wie Benachrichtigungen, Passwort ändern etc.
+
+## Logout
+Über den Button "Logout" im Menü wird der aktuelle Benutzer abgemeldet.
