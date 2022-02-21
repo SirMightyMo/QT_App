@@ -16,6 +16,6 @@ INSERT INTO assign_project_user(p_id,u_id)VALUES('2','1');
 INSERT INTO assign_project_user(p_id,u_id)VALUES('3','1');
 INSERT INTO assign_project_user(p_id,u_id)VALUES('4','1');
 
-INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes, p_id, s_id, u_id)VALUES('2021-02-16','Wichtige Funktionen geschrieben','2021-09-17 18:47:52.069','2012-09-17 18:47:52.069','60','240','1','1','1');
+INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes, p_id, s_id, u_id)VALUES('2021-02-16','Wichtige Funktionen geschrieben','2021-02-16 15:00:00.000','2021-02-16 17:15:00.000','105','30','1','1','1');
 
-INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes, p_id, s_id, u_id)VALUES('2021-02-16','Noch mehr wichtige Funktionen geschrieben','2021-09-18 18:47:52.069','2012-09-18 18:47:52.069','523','35','2','2','1');
+INSERT INTO hour_entry(entry_date,description,start_time,end_time,time_minutes,pause_minutes, p_id, s_id, u_id)VALUES('2021-02-17','Noch mehr wichtige Funktionen geschrieben','2021-02-17 09:00:00.000','2021-02-17 14:00:00.000','285','15','2','2','1');
