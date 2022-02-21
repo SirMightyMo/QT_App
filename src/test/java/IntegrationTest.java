@@ -66,7 +66,7 @@ class IntegrationTest {
 		testProjects_CreateNewClient_ValidInputs();
 		testProjects_CreateNewClient_InvalidZip();
 		testProjects_CreateNewService_ValidInputs();
-		testProjects_CreateNewClient_InvalidZip();
+		testProjects_CreateNewService_InvalidInternalRate();
 	}
 	
 	/**
@@ -126,6 +126,7 @@ class IntegrationTest {
 	void testProjects_CreateNewClient_InvalidZip() {
 		window.button("btnMenuProjects").click();
 		window.tabbedPane().selectTab(2);
+		window.textBox("textFieldClientName").requireVisible();
 		window.textBox("textFieldClientName").setText("");
 		window.textBox("textFieldContact").setText("");
 		window.textBox("textFieldTelephone").setText("");
