@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import main.java.controller.AppMainController;
+import main.java.controller.DatabaseController;
 import main.java.controller.LayoutManager;
 import main.java.model.User;
 import main.java.view.AppMainView;
@@ -32,6 +33,7 @@ class IntegrationTest {
 	@BeforeAll
 	public static void setUpOnce() {
 		FailOnThreadViolationRepaintManager.install();
+		DatabaseController.getInstance().initializeDB();
 	}
 
 	@BeforeEach
@@ -40,7 +42,7 @@ class IntegrationTest {
 		User.setUser(new User(1, "Bob", "bob@msn.com"));
 		AppMainView frame = GuiActionRunner.execute(() -> new AppMainController().getAppMainView());
 		window = new FrameFixture(frame);
-		window.show(new Dimension(1850, 1080)); // shows the frame to test in needed Dimension (see AppMainView Class)
+		window.show(new Dimension(1850, 1000)); // shows the frame to test in needed Dimension (see AppMainView Class)
 		frame.setFrameToLeftUpperCorner();
 	}
 
@@ -192,7 +194,7 @@ class IntegrationTest {
 		window.button("btnMenuProjects").click();
 		window.tabbedPane().selectTab(1);
 		window.textBox("textFieldProjectName").enterText("Bytecode Velocity");
-		window.textBox("textFieldClient").enterText("Apple");
+		window.comboBox("textFieldClient").selectItem(1);
 		window.textBox("textFieldStartDate").setText("03-03-2020");
 		window.textBox("textFieldEndDate").setText("04-04-2030");
 		window.button("btnSaveProject").click();
@@ -356,7 +358,7 @@ class IntegrationTest {
 		window.label("lblNewLabel_20").requireVisible();
 		window.label("lblNewLabel_21").requireVisible();
 		window.textBox("textFieldProjectName").requireVisible();
-		window.textBox("textFieldClient").requireVisible();
+		window.comboBox("textFieldClient").requireVisible();
 		window.textBox("textFieldStartDate").requireVisible();
 		window.textBox("textFieldEndDate").requireVisible();
 		window.button("btnSaveProject").requireVisible();

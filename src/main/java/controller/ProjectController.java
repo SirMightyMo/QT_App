@@ -42,6 +42,7 @@ public class ProjectController implements IController {
 		this.projectModel.addObserver(this.projectView);
 		projectModel.retrieveProjects();
 		projectModel.retrieveClients();
+		projectModel.retrieveAllClients();
 		actionLoadProjects();
 		actionLoadClients();
 	}
@@ -63,7 +64,9 @@ public class ProjectController implements IController {
 	}
 	public void actionLoadClients() {
 		this.projectModel.setClientSet(false);
+		this.projectModel.setClientSetNewP(false);
 		this.projectModel.retrieveClients();
+		this.projectModel.retrieveAllClients();
 	}
 
 	/**
@@ -152,6 +155,11 @@ public class ProjectController implements IController {
 		int customerID;
 
 		projectName = projectView.getNewProjectName();
+		if (projectView.getComboBoxClientNewP().getItemCount() > 0) {
+			customer = (String) projectView.getComboBoxClientNewP().getSelectedItem();
+		} else {
+			customer = "";
+		}
 		startDate = projectView.getNewStartDate();
 		endDate = projectView.getNewEndDate();
         today = new java.sql.Date(System.currentTimeMillis());
@@ -162,6 +170,11 @@ public class ProjectController implements IController {
 			active = false;
 		}
 		customerID = projectView.getClientID();
+		
+		if (customer.equals("")) {
+			projectView.showErrorMessage(projectView.getLblErrorProject(), "Kein Kunde gewählt!", 5000);
+			return;
+		}
 		
 		if (projectName.length() > 255) {
 			projectView.showErrorMessage(projectView.getLblErrorProject(), "Projektname darf maximal 255 Zeichen lang sein!", 5000);
@@ -261,6 +274,17 @@ public class ProjectController implements IController {
 		+ "'" + zip + "'," 
 		+ "'" + city + "'," 
 		+ "'" + country + "');");
+		
+		projectModel.retrieveAllClients();
+		projectView.getFieldClientName().setText("");
+		projectView.getFieldContact().setText("");
+		projectView.getFieldTelephone().setText("");
+		projectView.getFieldMobile().setText("");
+		projectView.getFieldStreet().setText("");
+		projectView.getFieldHouseNumber().setText("");
+		projectView.getFieldZip().setText("");
+		projectView.getFieldCity().setText("");
+		projectView.getFieldCountry().setText("");
 	}
 	
 	/**
@@ -321,6 +345,15 @@ public class ProjectController implements IController {
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SAVE_SERVICE)) {
 			actionSaveService();
+		}
+		if (event.equalsIgnoreCase(StaticActions.ACTION_SET_PROJECT)) {
+			projectModel.setProjectSet(true);
+		}
+		if (event.equalsIgnoreCase(StaticActions.ACTION_SET_CLIENT_NEWP)) {
+			projectModel.setClientSetNewP(true);
+		}
+		if (event.equalsIgnoreCase(StaticActions.ACTION_PROJECT_SET_CLIENT)) {
+			projectModel.setClientSet(true);
 		}
 	}
 

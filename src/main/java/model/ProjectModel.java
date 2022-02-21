@@ -12,8 +12,10 @@ public class ProjectModel extends Observable implements IModel {
 
 	private ArrayList<ArrayList<Object>> projectList;
 	private ArrayList<ArrayList<Object>> clientList;
+	private ArrayList<ArrayList<Object>> clientListNewP;
 	private boolean projectSet;
 	private boolean clientSet;
+	private boolean clientSetNewP;
 
 	private Object[][] projectTable;
 	private DatabaseController db = DatabaseController.getInstance();
@@ -113,7 +115,7 @@ public class ProjectModel extends Observable implements IModel {
 		notifyObservers(this);
 	}
 	/**
-	 * This method retrieves all clients the current user has written hour entries
+	 * This method retrieves ONLY clients the current user has written hour entries
 	 * for and adds them to an ArrayList for using them in a ComboBox (Dropdown).
 	 * @author Leander
 	 */
@@ -130,6 +132,22 @@ public class ProjectModel extends Observable implements IModel {
 		setChanged();
 		notifyObservers(this);
 	}
+	
+	/**
+	 * This method retrieves ALL clients and adds them to an ArrayList 
+	 * for using them in a ComboBox (Dropdown).
+	 * @author Leander
+	 */
+	public void retrieveAllClients() {
+		this.clientListNewP = new ArrayList<>();
+		ArrayList<Object> result = db.query("SELECT c_id, company FROM customer;");
+		result.forEach(entry -> {
+			ArrayList<Object> row = (ArrayList<Object>) entry;
+			this.clientListNewP.add(row);
+		});
+		setChanged();
+		notifyObservers(this);
+	}
 
 	public void setClientSet(boolean clientSet) {
 		this.clientSet = clientSet;
@@ -137,6 +155,15 @@ public class ProjectModel extends Observable implements IModel {
 	
 	public boolean isClientSet() {
 		return clientSet;
+	}
+	public boolean isClientSetNewP() {
+		return clientSetNewP;
+	}
+	public void setClientSetNewP(boolean clientSetNewP) {
+		this.clientSetNewP = clientSetNewP;
+	}
+	public ArrayList<ArrayList<Object>> getClientListNewP() {
+		return clientListNewP;
 	}
 
 

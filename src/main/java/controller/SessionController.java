@@ -138,7 +138,7 @@ public class SessionController implements IController {
 				}
 			}
 		}
-		this.tableData.setData(resultArray);
+		this.tableData.setData(resultArray);		
 	}
 	
 	public void actionLoadProjects() {
@@ -283,6 +283,14 @@ public class SessionController implements IController {
 		view.getLblErrorMessageNewEntry().setText("");
 		
 		// Get information from input
+		if (view.getDropDownProjectName().getItemCount() < 1) {
+			view.getLblErrorMessageNewEntry().setText("Bitte wählen/erstellen Sie zuerst ein Projekt.");
+			return;
+		} 
+		if (view.getDropDownService().getItemCount() < 1) {
+			view.getLblErrorMessageNewEntry().setText("Bitte wählen/erstellen Sie zuerst eine Leistung.");
+			return;
+		}
 		int projectDropdownIndex = view.getDropDownProjectName().getSelectedIndex();
 		int projectID = (int) model.getProjectListNewEntry().get(projectDropdownIndex).get(0);
 
@@ -445,8 +453,10 @@ public class SessionController implements IController {
 			actionLoadClients();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_SEARCH)) {
-			actionFilterEntries();
-			sumDuration();
+			if (sessionView.getHourEntryTable().getRowCount() > 0) {
+				actionFilterEntries();
+				sumDuration();				
+			}
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_RESET)) {
 			actionLoadProjects();

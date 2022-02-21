@@ -73,7 +73,11 @@ public class CustomTableModel extends AbstractTableModel implements IModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		return data[rowIndex][columnIndex];
+		if (getRowCount() > 0) {
+			return data[rowIndex][columnIndex];			
+		} else {
+			return "";
+		}
 	}
 
 	@SuppressWarnings("unchecked")
