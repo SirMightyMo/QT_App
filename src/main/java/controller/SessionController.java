@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -447,12 +450,22 @@ public class SessionController implements IController {
 		String event = e.getActionCommand();
 		System.out.println("ACTION: " + event.toString());
 
+		if (event.equalsIgnoreCase(StaticActions.ACTION_TIMER_SAVE)) {
+			ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+			executorService.schedule(() -> {
+				queryData();
+				sessionView.getSorter().setRowFilter(null);
+				sumDuration();
+			}, 1, TimeUnit.SECONDS);
+			
+		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_LOAD)) {
 			actionLoadProjects();
 			actionLoadServices();
 			actionLoadClients();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_OVERVIEW_SEARCH)) {
+			queryData();
 			if (sessionView.getHourEntryTable().getRowCount() > 0) {
 				actionFilterEntries();
 				sumDuration();				
@@ -463,6 +476,7 @@ public class SessionController implements IController {
 			actionLoadServices();
 			actionLoadClients();
 			queryData();
+			sessionView.getSorter().setRowFilter(null);
 			sumDuration();
 			resetInputFieldsOverview();
 		}
@@ -483,6 +497,7 @@ public class SessionController implements IController {
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_NEW_SAVE)) {
 			actionSaveEntry(false);
+			queryData();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SESSION_NEW_RESET)) {
 			actionLoadProjectsNewEntry();

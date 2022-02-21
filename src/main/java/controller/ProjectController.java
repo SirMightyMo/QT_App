@@ -7,6 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.RowFilter;
 import javax.swing.RowFilter.ComparisonType;
@@ -147,7 +150,6 @@ public class ProjectController implements IController {
 	 */
 	public void actionSaveProject() {
 		String projectName;
-		String customer;
 		Date startDate;
 		Date endDate;
 		Date today;
@@ -155,10 +157,15 @@ public class ProjectController implements IController {
 		int customerID;
 
 		projectName = projectView.getNewProjectName();
+		
 		if (projectView.getComboBoxClientNewP().getItemCount() > 0) {
-			customer = (String) projectView.getComboBoxClientNewP().getSelectedItem();
+			int comboBoxIndex = this.projectView.getComboBoxClientNewP().getSelectedIndex();
+			customerID = (int) projectModel.getClientListNewP().get(comboBoxIndex).get(0);
+			//customerID = projectView.getClientID();
+			System.out.println(customerID);
 		} else {
-			customer = "";
+			projectView.showErrorMessage(projectView.getLblErrorProject(), "Kein Kunde gewählt!", 5000);
+			return;
 		}
 		startDate = projectView.getNewStartDate();
 		endDate = projectView.getNewEndDate();
@@ -168,12 +175,6 @@ public class ProjectController implements IController {
 		}
 		else {
 			active = false;
-		}
-		customerID = projectView.getClientID();
-		
-		if (customer.equals("")) {
-			projectView.showErrorMessage(projectView.getLblErrorProject(), "Kein Kunde gewählt!", 5000);
-			return;
 		}
 		
 		if (projectName.length() > 255) {
@@ -327,9 +328,15 @@ public class ProjectController implements IController {
 		String event = e.getActionCommand();
 		System.out.println("ACTION: " + event.toString()); // For debugging
 
+		if (event.equalsIgnoreCase(StaticActions.ACTION_NPROJECT_SAVE)) {
+			ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+			executorService.schedule(() -> {
+				actionLoadProjects();
+				actionResetProjects();
+			}, 1, TimeUnit.SECONDS);
+		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_LOAD_PROJECTS)) {
 			actionLoadProjects();
-			actionLoadClients();
 		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SEARCH_PROJECTS)) {
 			actionSearchProjects();

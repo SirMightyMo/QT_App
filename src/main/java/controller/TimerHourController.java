@@ -660,6 +660,12 @@ public class TimerHourController implements IController {
 		String event = e.getActionCommand();
 		System.out.println("ACTION: " + event.toString()); // For debugging
 
+		if (event.equalsIgnoreCase(StaticActions.ACTION_NPROJECT_SAVE) && !timerModel.isTimerRunning()) {
+			ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+			executorService.schedule(() -> {
+				actionLoadProjects();
+			}, 1, TimeUnit.SECONDS);
+		}
 		if (event.equalsIgnoreCase(StaticActions.ACTION_TIMER_START)) {
 			actionStartTimer();
 			dateAutomaticallySet = true;
@@ -683,6 +689,10 @@ public class TimerHourController implements IController {
 
 		if (event.equalsIgnoreCase(StaticActions.ACTION_LOAD_PROJECTS)) {
 			actionLoadProjects();
+			if (timerModel.isTimerRunning()) {
+				timerView.getBtnDatePicker().setEnabled(false);
+				timerView.getTxtDateInput().setEnabled(false);
+			}
 		}
 
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SET_PROJECT)) {
@@ -691,6 +701,10 @@ public class TimerHourController implements IController {
 		
 		if (event.equalsIgnoreCase(StaticActions.ACTION_LOAD_SERVICES)) {
 			actionLoadServices();
+			if (timerModel.isTimerRunning()) {
+				timerView.getBtnDatePicker().setEnabled(false);
+				timerView.getTxtDateInput().setEnabled(false);
+			}
 		}
 
 		if (event.equalsIgnoreCase(StaticActions.ACTION_SET_SERVICE)) {

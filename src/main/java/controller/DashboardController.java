@@ -37,6 +37,7 @@ public class DashboardController implements IController {
 		timerHourController.getTimerView().getBtnSave().addActionListener(dashboardHourListController);
 		timerHourController.getTimerView().getBtnSave().addActionListener(dashboardProjectListController);
 		((NewProjectView) newProjectController.getView()).getBtnSave().addActionListener(dashboardProjectListController);
+		newProjectController.getNewProjectView().getBtnSave().addActionListener(timerHourController);
 		
 	}
 
