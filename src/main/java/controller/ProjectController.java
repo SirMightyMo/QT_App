@@ -150,7 +150,6 @@ public class ProjectController implements IController {
 	 */
 	public void actionSaveProject() {
 		String projectName;
-		String customer;
 		Date startDate;
 		Date endDate;
 		Date today;
@@ -158,10 +157,15 @@ public class ProjectController implements IController {
 		int customerID;
 
 		projectName = projectView.getNewProjectName();
+		
 		if (projectView.getComboBoxClientNewP().getItemCount() > 0) {
-			customer = (String) projectView.getComboBoxClientNewP().getSelectedItem();
+			int comboBoxIndex = this.projectView.getComboBoxClientNewP().getSelectedIndex();
+			customerID = (int) projectModel.getClientListNewP().get(comboBoxIndex).get(0);
+			//customerID = projectView.getClientID();
+			System.out.println(customerID);
 		} else {
-			customer = "";
+			projectView.showErrorMessage(projectView.getLblErrorProject(), "Kein Kunde gewählt!", 5000);
+			return;
 		}
 		startDate = projectView.getNewStartDate();
 		endDate = projectView.getNewEndDate();
@@ -171,12 +175,6 @@ public class ProjectController implements IController {
 		}
 		else {
 			active = false;
-		}
-		customerID = projectView.getClientID();
-		
-		if (customer.equals("")) {
-			projectView.showErrorMessage(projectView.getLblErrorProject(), "Kein Kunde gewählt!", 5000);
-			return;
 		}
 		
 		if (projectName.length() > 255) {
